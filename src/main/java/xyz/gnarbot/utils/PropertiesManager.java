@@ -5,6 +5,12 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Properties;
 
+/**
+ * Simple I/O manager for Properties.
+ *
+ * @see Properties
+ * @author Hexavalon
+ */
 public class PropertiesManager
 {
     private final String path;
@@ -20,15 +26,15 @@ public class PropertiesManager
         this(null, null, null, true);
     }
     
-    public PropertiesManager(Object anchor, String path, String fileName)
+    public PropertiesManager(Object anchor, String resourcePath, String fileName)
     {
-        this(anchor, path, fileName, false);
+        this(anchor, resourcePath, fileName, false);
     }
     
-    private PropertiesManager(Object anchor, String path, String fileName, boolean readOnly)
+    private PropertiesManager(Object anchor, String resourcePath, String fileName, boolean readOnly)
     {
         this.anchor = anchor;
-        this.path = path;
+        this.path = resourcePath;
         this.fileName = fileName;
         this.readOnly = readOnly;
     }

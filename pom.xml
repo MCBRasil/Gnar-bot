@@ -31,7 +31,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.gmail.hexragon.gn4rBot.GnarBotKt</mainClass>
+							<mainClass>xyz.gnarbot.Bot</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
