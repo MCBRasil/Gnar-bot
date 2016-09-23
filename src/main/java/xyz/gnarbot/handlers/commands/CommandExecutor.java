@@ -19,7 +19,7 @@ public abstract class CommandExecutor
      * @param msg Message object passed into the execution.
      * @param args Arguments passed into the execution.
      */
-    public abstract void execute(Message msg, String[] args);
+    public abstract void execute(Message msg, String label, String[] args);
     
     /**
      * Returns the description of the command.

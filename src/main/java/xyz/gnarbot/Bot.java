@@ -1,10 +1,10 @@
 package xyz.gnarbot;
 
-import xyz.gnarbot.commands.general.TestCommand;
-import xyz.gnarbot.handlers.commands.CommandHandler;
-import xyz.gnarbot.injection.InjectHandler;
 
-import java.lang.reflect.Field;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import xyz.gnarbot.commands.general.TestCommand;
+import xyz.gnarbot.injection.ShardInjectorModule;
 
 /**
  * Main class of the bot.
@@ -13,13 +13,13 @@ public class Bot
 {
     public static void main(String[] args)
     {
-        Field[] fields = InjectHandler.findFields(TestCommand.class);
+        Injector injector = Guice.createInjector(new ShardInjectorModule(new Shard()));
         
-        for (Field field : fields)
-        {
-            System.out.println(field.getType());
-        }
+        TestCommand command = new TestCommand();
         
-        InjectHandler.injectFields(new TestCommand(), new CommandHandler());
+        injector.injectMembers(command);
+    
+        System.out.println(command.id);
     }
 }
+

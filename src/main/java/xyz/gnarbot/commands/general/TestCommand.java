@@ -1,21 +1,16 @@
 package xyz.gnarbot.commands.general;
 
-import net.dv8tion.jda.entities.Guild;
+import com.google.inject.Inject;
 import net.dv8tion.jda.entities.Message;
 import xyz.gnarbot.handlers.commands.CommandExecutor;
-import xyz.gnarbot.handlers.commands.CommandHandler;
-import xyz.gnarbot.injection.Inject;
 
 public class TestCommand extends CommandExecutor
 {
     @Inject
-    private CommandHandler commandHandler;
-    
-    @Inject
-    private Guild guild;
+    public String id;
     
     @Override
-    public void execute(Message msg, String[] args)
+    public void execute(Message msg, String label, String[] args)
     {
         
     }

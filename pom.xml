@@ -8,12 +8,12 @@
 	<artifactId>xyz.gnarbot</artifactId>
 	<version>1.0</version>
 	<properties>
-		<kotlin.version>1.0.3</kotlin.version>
+		<kotlin.version>1.0.4</kotlin.version>
 	</properties>
 	<packaging>jar</packaging>
 
 	<build>
-		<finalName>Mega_Gnar</finalName>
+		<finalName>Gnar</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -66,13 +66,22 @@
 			<name>jcenter-bintray</name>
 			<url>http://jcenter.bintray.com</url>
 		</repository>
-		<!--<repository>-->
-			<!--<id>local-repo</id>-->
-			<!--<url>file://${basedir}/local-repository</url>-->
-		<!--</repository>-->
 	</repositories>
 
 	<dependencies>
+
+		<!--KOTLIN-->
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-stdlib</artifactId>
+			<version>${kotlin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+			<artifactId>kotlin-test-junit</artifactId>
+			<version>${kotlin.version}</version>
+			<scope>test</scope>
+		</dependency>
 
 		<!--JDA-->
 		<dependency>
@@ -96,17 +105,11 @@
 			<version>1.9.2</version>
 		</dependency>
 
-		<!--KOTLIN-->
+		<!--GUICE-->
 		<dependency>
-			<groupId>org.jetbrains.kotlin</groupId>
-			<artifactId>kotlin-stdlib</artifactId>
-			<version>${kotlin.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jetbrains.kotlin</groupId>
-			<artifactId>kotlin-test-junit</artifactId>
-			<version>${kotlin.version}</version>
-			<scope>test</scope>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>4.1.0</version>
 		</dependency>
 	</dependencies>
 </project>
