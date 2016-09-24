@@ -1,5 +1,8 @@
 package xyz.gnarbot.gnar.handlers
 
+/**
+ * Permission levels for [Member] handled by the bot.
+ */
 enum class Clearance(val value : Int)
 {
     BOT_MASTER(3),

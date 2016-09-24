@@ -1,7 +1,7 @@
 package xyz.gnarbot.gnar.handlers.commands;
 
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
-import xyz.gnarbot.gnar.GuildHandler;
+import xyz.gnarbot.gnar.Host;
 import xyz.gnarbot.gnar.handlers.Member;
 import xyz.gnarbot.gnar.utils.Note;
 
@@ -9,20 +9,20 @@ import java.util.Arrays;
 
 public class CommandHandler extends CommandRegistry
 {
-    private final GuildHandler guildHandler;
+    private final Host host;
     
     private int requests = 0;
     
     private String token = "_"; //default token
     
-    public CommandHandler(GuildHandler guildHandler)
+    public CommandHandler(Host host)
     {
-        this.guildHandler = guildHandler;
+        this.host = host;
     }
     
     public void inheritFrom(CommandDistributor distributor)
     {
-        distributor.getSingletonCommands().entrySet().forEach(entry -> registerCommand(entry.getKey(), entry.getValue()));
+        distributor.getSingletonCommands().forEach(this::registerCommand);
         distributor.getManagedCommands().forEach(this::registerCommand);
     }
     
@@ -38,9 +38,12 @@ public class CommandHandler extends CommandRegistry
         this.token = token;
     }
     
+    /**
+     * Call the command based on the message content.
+     * @param event Message event.
+     */
     public void callCommand(MessageReceivedEvent event)
     {
-        Member member = guildHandler.getMemberHandler().asMember(event.getAuthor());
         String messageContent = event.getMessage().getContent();
         
         if (messageContent.startsWith(token))
@@ -51,7 +54,8 @@ public class CommandHandler extends CommandRegistry
             String label = tokens[0];
             String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
             
-            Note note = new Note(guildHandler, event.getMessage());
+            Note note = new Note(host, event.getMessage());
+            Member member = host.getMemberHandler().asMember(event.getAuthor());
             
             for (String regCommand : getRegistry().keySet())
             {

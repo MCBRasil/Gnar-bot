@@ -1,7 +1,7 @@
 package xyz.gnarbot.gnar.utils
 
 import net.dv8tion.jda.entities.Message
-import xyz.gnarbot.gnar.GuildHandler
+import xyz.gnarbot.gnar.Host
 import xyz.gnarbot.gnar.handlers.Member
 
 /**
@@ -9,14 +9,14 @@ import xyz.gnarbot.gnar.handlers.Member
  *
  * @see Message
  */
-class Note(private val guildHandler : GuildHandler, private val message : Message) : Message by message
+class Note(private val host : Host, private val message : Message) : Message by message
 {
     /**
      * The author of this Message as a [Member] instance.
      *
-     * @return Message author
+     * @return Message author as Member.
      */
-    override fun getAuthor() : Member? = guildHandler.memberHandler.asMember(author)
+    override fun getAuthor() : Member = host.memberHandler.asMember(message.author)
     
     /**
      * Stylized quick-reply to a message.
@@ -24,7 +24,7 @@ class Note(private val guildHandler : GuildHandler, private val message : Messag
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun reply(msg : String) = message.channel.sendMessage("${message.author.username} \u279c $msg")
+    fun reply(msg : String) = message.channel.sendMessage("__**${message.author.username}**__ \u279c $msg")
     
     /**
      * Quick-reply to a message.
@@ -35,7 +35,7 @@ class Note(private val guildHandler : GuildHandler, private val message : Messag
     fun replyRaw(msg : String) = message.channel.sendMessage(msg)
     
     /**
-     * Gives string representation.
+     * @return String representation of the note.
      */
-    override fun toString() = "Note(author=${author?.username}, content=\"$content\")"
+    override fun toString() = "Note(id=$id, author=${author.username}, content=\"$content\")"
 }

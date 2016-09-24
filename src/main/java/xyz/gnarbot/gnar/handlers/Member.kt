@@ -19,7 +19,7 @@ class Member(private val guild : Guild, private val user : User) : User by user
         {
             isBot ->                            Clearance.BOT
             Bot.adminIDs.contains(user.id) ->   Clearance.BOT_MASTER
-            user === guild.owner ->            Clearance.SERVER_OWNER
+            user === guild.owner ->             Clearance.SERVER_OWNER
             hasRoleNamed("Bot Commander") ->    Clearance.BOT_COMMANDER
             else ->                             Clearance.USER
         }
@@ -36,8 +36,11 @@ class Member(private val guild : Guild, private val user : User) : User by user
         return false
     }
     
+    /**
+     * @return String representation of the member.
+     */
     override fun toString() : String
     {
-        return "Person(id=${user.id}, name=${user.username}, guild=${guild.name})"
+        return "Member(id=${user.id}, name=${user.username}, guild=${guild.name}, clearance=$clearance)"
     }
 }

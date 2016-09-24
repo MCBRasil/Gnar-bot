@@ -2,7 +2,7 @@ package xyz.gnarbot.gnar.handlers.commands;
 
 import java.util.*;
 
-public class CommandRegistry
+public abstract class CommandRegistry
 {
     private Map<String, CommandExecutor> registry = new LinkedHashMap<>();
     
@@ -19,12 +19,13 @@ public class CommandRegistry
             
             Command meta = cls.getAnnotation(Command.class);
             
+            cmd.setAliases(meta.aliases());
             cmd.setDescription(meta.description());
             cmd.setClearance(meta.clearance());
             cmd.setShownInHelp(meta.showInHelp());
             cmd.setUsage(meta.usage());
             
-            Arrays.stream(meta.aliases()).forEach(s -> registerCommand(s, cmd));
+            Arrays.stream(cmd.getAliases()).forEach(s -> registerCommand(s, cmd));
         }
         catch (IllegalAccessException | InstantiationException e)
         {

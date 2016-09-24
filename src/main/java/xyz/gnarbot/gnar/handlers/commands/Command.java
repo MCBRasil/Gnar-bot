@@ -26,13 +26,13 @@ public @interface Command
      * Returns the description of this command.
      * @return The description of this command.
      */
-    String description() default "No descriptions provided.";
+    String description() default "No description provided.";
     
     /**
      * Returns the usage of this command.
      * @return The usage of this command.
      */
-    String usage() default "";
+    String usage() default "No usage provided";
     
     /**
      * Returns if the command is shown in _help.

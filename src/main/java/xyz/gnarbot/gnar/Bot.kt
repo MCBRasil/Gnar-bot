@@ -8,7 +8,7 @@ import java.util.concurrent.Executors
 
 fun main(args : Array<String>)
 {
-    Bot(Bot.authTokens.getProperty("token"), 1)
+    Bot(Bot.authTokens.getProperty("beta-bot"), 1)
 }
 
 /**
@@ -42,21 +42,36 @@ class Bot(token :  String, shardsNum : Int)
     
     init
     {
-        for (id in 0 .. shardsNum - 1)
-        {
-            val jda = JDABuilder()
-                    .useSharding(id, shardsNum)
-                    .setBotToken(token)
-                    .buildBlocking()
+        println("Initializing Gnar-Bot with token='$token', shards=$shardsNum.")
+    
+        val jda = JDABuilder()
+                //.useSharding(id, shardsNum)
+                .setBotToken(token)
+                .buildBlocking()
+    
+        jda.accountManager.setUsername("GNAR")
+        jda.accountManager.setGame("_help | _invite")
+        jda.accountManager.update()
+    
+        jda.isAutoReconnect = true
+    
+        shards.add(Shard(0, jda))
         
-            jda.accountManager.setUsername("GNAR")
-            jda.accountManager.setGame("_help | _invite")
-            jda.accountManager.update()
-        
-            jda.isAutoReconnect = true
-
-            shards.add(Shard(id, jda))
-        }
+//        for (id in 0 .. shardsNum - 1)
+//        {
+//            val jda = JDABuilder()
+//                    .useSharding(id, shardsNum)
+//                    .setBotToken(token)
+//                    .buildBlocking()
+//
+//            jda.accountManager.setUsername("GNAR")
+//            jda.accountManager.setGame("_help | _invite")
+//            jda.accountManager.update()
+//
+//            jda.isAutoReconnect = true
+//
+//            shards.add(Shard(id, jda))
+//        }
     }
 }
 

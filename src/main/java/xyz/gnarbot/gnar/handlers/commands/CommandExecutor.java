@@ -3,23 +3,44 @@ package xyz.gnarbot.gnar.handlers.commands;
 import xyz.gnarbot.gnar.handlers.Clearance;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.Arrays;
+
 /**
  * Abstract class that is extended when creating a command.
  */
 public abstract class CommandExecutor
 {
-    private String description = "No descriptions provided.";
-    private String usage = null;
+    private String[] aliases;
+    private String description = "No description provided.";
+    private String usage = "No usage provided.";
     private Clearance clearance = Clearance.USER;
-    private boolean showInHelp = true;
+    private boolean shownInHelp = true;
     
     /**
      * Abstract method to be executed when the command is called.
      *
-     * @param msg Message object passed into the execution.
+     * @param msg  Message object passed into the execution.
      * @param args Arguments passed into the execution.
      */
     public abstract void execute(Note msg, String label, String[] args);
+    
+    /**
+     * Returns the aliases of the command.
+     * @return The aliases of the command.
+     */
+    public String[] getAliases()
+    {
+        return aliases;
+    }
+    
+    /**
+     * Set the aliases of the command.
+     * @param aliases Varargs list of aliases.
+     */
+    public void setAliases(String... aliases)
+    {
+        this.aliases = aliases;
+    }
     
     /**
      * Returns the description of the command.
@@ -81,7 +102,7 @@ public abstract class CommandExecutor
      */
     public boolean isShownInHelp()
     {
-        return showInHelp;
+        return shownInHelp;
     }
     
     /**
@@ -90,6 +111,15 @@ public abstract class CommandExecutor
      */
     public void setShownInHelp(boolean bool)
     {
-        this.showInHelp = bool;
+        this.shownInHelp = bool;
+    }
+    
+    /**
+     * @return String representation of the command.
+     */
+    @Override
+    public String toString()
+    {
+        return this.getClass().getSimpleName() + "(aliases=" + Arrays.toString(aliases) + ", desc=\"" + description + "\", usage=\"" + usage + "\", clearance=" + clearance + ", shownInHelp=" + shownInHelp + ")";
     }
 }
