@@ -1,7 +1,7 @@
-package xyz.gnarbot.handlers.commands;
+package xyz.gnarbot.gnar.handlers.commands;
 
-import net.dv8tion.jda.entities.Message;
-import xyz.gnarbot.handlers.Person.Permission;
+import xyz.gnarbot.gnar.handlers.Clearance;
+import xyz.gnarbot.gnar.utils.Note;
 
 /**
  * Abstract class that is extended when creating a command.
@@ -10,7 +10,7 @@ public abstract class CommandExecutor
 {
     private String description = "No descriptions provided.";
     private String usage = null;
-    private Permission permission = Permission.USER;
+    private Clearance clearance = Clearance.USER;
     private boolean showInHelp = true;
     
     /**
@@ -19,7 +19,7 @@ public abstract class CommandExecutor
      * @param msg Message object passed into the execution.
      * @param args Arguments passed into the execution.
      */
-    public abstract void execute(Message msg, String label, String[] args);
+    public abstract void execute(Note msg, String label, String[] args);
     
     /**
      * Returns the description of the command.
@@ -43,18 +43,18 @@ public abstract class CommandExecutor
      * Returns the permission required to execute the command.
      * @return The permission required to execute the command.
      */
-    public Permission getPermission()
+    public Clearance getClearance()
     {
-        return permission;
+        return clearance;
     }
     
     /**
      * Set the permission required to execute the command.
      * @param perm New permission required.
      */
-    public void setPermission(Permission perm)
+    public void setClearance(Clearance perm)
     {
-        this.permission = perm;
+        this.clearance = perm;
     }
     
     /**
@@ -88,7 +88,7 @@ public abstract class CommandExecutor
      * Set if the command is to be shown in _help.
      * @param bool Is the command going to be shown in help?
      */
-    public void showInHelp(boolean bool)
+    public void setShownInHelp(boolean bool)
     {
         this.showInHelp = bool;
     }

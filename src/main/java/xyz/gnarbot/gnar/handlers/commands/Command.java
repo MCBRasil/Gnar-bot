@@ -1,6 +1,6 @@
-package xyz.gnarbot.handlers.commands;
+package xyz.gnarbot.gnar.handlers.commands;
 
-import xyz.gnarbot.handlers.Person;
+import xyz.gnarbot.gnar.handlers.Clearance;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -44,5 +44,5 @@ public @interface Command
      * Returns the permission required for this command.
      * @return The permission required for this command.
      */
-    Person.Permission permissionRequired() default Person.Permission.USER;
+    Clearance clearance() default Clearance.USER;
 }

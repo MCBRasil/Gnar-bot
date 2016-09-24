@@ -13,7 +13,7 @@
 	<packaging>jar</packaging>
 
 	<build>
-		<finalName>Gnar</finalName>
+		<finalName>GuildHandler</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -31,7 +31,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>xyz.gnarbot.Bot</mainClass>
+							<mainClass>xyz.gnarbot.gnar.Bot</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

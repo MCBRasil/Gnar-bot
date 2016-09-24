@@ -1,4 +1,4 @@
-package xyz.gnarbot.utils;
+package xyz.gnarbot.gnar.utils;
 
 import java.io.*;
 import java.nio.file.Files;
