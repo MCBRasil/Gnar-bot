@@ -1,141 +1,83 @@
 package xyz.gnarbot.gnar
 
 import net.dv8tion.jda.JDABuilder
+import net.dv8tion.jda.entities.User
+import net.dv8tion.jda.utils.SimpleLog
+import xyz.gnarbot.gnar.utils.readProperties
 import java.io.File
 import java.util.Date
-import java.util.Properties
 import java.util.concurrent.Executors
 
 fun main(args : Array<String>)
 {
-    Bot(Bot.authTokens.getProperty("beta-bot"), 1)
+    Bot.initBot(Bot.authTokens.getProperty("main-bot"), 4)
 }
 
 /**
- * Main class of the bot.
+ * Main class of the bot. Implemented as a singleton.
  */
-class Bot(token :  String, shardsNum : Int)
+object Bot
 {
-    companion object
+    @JvmStatic val LOG = SimpleLog.getLog("Bot")!!
+    
+    private var init = false
+    
+    val shards      = mutableListOf<Shard>()
+    val admins      = mutableSetOf<User>()
+    
+    val startTime = System.currentTimeMillis()
+    val authTokens = File("_DATA/tokens.properties").readProperties()
+    val scheduler = Executors.newSingleThreadScheduledExecutor()
+    
+    fun initBot(token : String, num_shards : Int)
     {
-        @JvmStatic val shards      = mutableListOf<Shard>()
+        if (init) throw IllegalStateException("Bot instance have already been initialized.")
+        init = true
     
-        @JvmStatic val startTime   = System.currentTimeMillis()
-        @JvmStatic val adminIDs    = File("_DATA/administrators").readLines()
-        @JvmStatic val authTokens  = Properties().apply { load(File("_DATA/tokens.properties").inputStream()) }
-        @JvmStatic val scheduler   = Executors.newSingleThreadScheduledExecutor()
-    
-        @JvmStatic
-        fun getUptimeStamp(compact: Boolean = false) : String
-        {
-            val seconds = (Date().time - startTime) / 1000
-            val minutes = seconds / 60
-            val hours = minutes / 60
-            val days = hours / 24
-            return when
-            {
-                compact -> "$days days, ${hours % 24} hours, ${minutes % 60} minutes and ${seconds % 60} seconds"
-                else    -> "${days}d ${hours % 24}h ${minutes % 60}m ${seconds % 60}s"
-            }
-        }
-    }
-    
-    init
-    {
-        println("Initializing Gnar-Bot with token='$token', shards=$shardsNum.")
-    
-        val jda = JDABuilder()
-                //.useSharding(id, shardsNum)
-                .setBotToken(token)
-                .buildBlocking()
-    
-        jda.accountManager.setUsername("GNAR")
-        jda.accountManager.setGame("_help | _invite")
-        jda.accountManager.update()
-    
-        jda.isAutoReconnect = true
-    
-        shards.add(Shard(0, jda))
+        LOG.info("Initializing Bot.")
+        LOG.info("Bot token is \"$token\".")
+        LOG.info("Requesting $num_shards shards.")
         
-//        for (id in 0 .. shardsNum - 1)
-//        {
-//            val jda = JDABuilder()
-//                    .useSharding(id, shardsNum)
-//                    .setBotToken(token)
-//                    .buildBlocking()
-//
-//            jda.accountManager.setUsername("GNAR")
-//            jda.accountManager.setGame("_help | _invite")
-//            jda.accountManager.update()
-//
-//            jda.isAutoReconnect = true
-//
-//            shards.add(Shard(id, jda))
-//        }
+        val adminIDs = File("_DATA/administrators").readLines()
+        
+        for (id in 0 .. num_shards - 1)
+        {
+            val jda = JDABuilder().run {
+                if (num_shards > 1) useSharding(id, num_shards)
+                setBotToken(token)
+                setAutoReconnect(true)
+                buildBlocking()
+            }
+        
+            jda.accountManager.setUsername("GNAR")
+            jda.accountManager.setGame("_help | _invite")
+            jda.accountManager.update()
+            
+            adminIDs.map { jda.getUserById(it) }.forEach { admins += it }
+        
+            shards += Shard(id, jda)
+        }
+        
+        LOG.info("Bot is now connected to discord.")
     }
+    
+    val uptime : String
+        get()
+        {
+            val s = (Date().time - startTime) / 1000
+            val m = s / 60
+            val h = m / 60
+            val d = h / 24
+            return "$d days, ${h % 24} hours, ${m % 60} minutes and ${s % 60} seconds"
+        }
+    
+    val simpleUptime : String
+        get()
+        {
+            val s = (Date().time - startTime) / 1000
+            val m = s / 60
+            val h = m / 60
+            val d = h / 24
+            return "${d}d ${h % 24}h ${m % 60}m ${s % 60}s"
+        }
 }
-
-//
-//class Bot(val token : String, shardsNum : Int)
-//{
-//    companion object Data
-//    {
-//        @JvmStatic val shards      = arrayListOf<Shard>()
-//
-//        @JvmStatic val startTime   = System.currentTimeMillis()
-//        @JvmStatic val adminIDs    = File("_DATA/administrators").readLines()
-//        @JvmStatic val authTokens  = PropertiesManager().load(File("_DATA/tokens.properties"))!!
-//        @JvmStatic val scheduler   = Executors.newSingleThreadScheduledExecutor()!!
-//
-//        @JvmStatic
-//        fun getUptimeStamp(compact: Boolean = false) : String
-//        {
-//            val seconds = (Date().time - startTime) / 1000
-//            val minutes = seconds / 60
-//            val hours = minutes / 60
-//            val days = hours / 24
-//            return when
-//            {
-//                compact -> "$days days, ${hours % 24} hours, ${minutes % 60} minutes and ${seconds % 60} seconds"
-//                else    -> "${days}d ${hours % 24}h ${minutes % 60}m ${seconds % 60}s"
-//            }
-//        }
-//
-//        @JvmStatic
-//        fun getGuildCount() : Int
-//        {
-//            return shards.map { it.jda.guilds.size }.sum()
-//        }
-//
-//        @JvmStatic
-//        fun getGuildManagers() : List<GuildManager>
-//        {
-//            return shards.flatMap { it.guildManagers }
-//        }
-//    }
-//
-//    init
-//    {
-//        var servers = 0
-//
-//        for (id in 0 .. shardsNum - 1)
-//        {
-//            val jda = JDABuilder()
-//                    .useSharding(id, shardsNum)
-//                    .setBotToken(token)
-//                    .buildBlocking()
-//
-//            jda.accountManager.setUsername("GNAR")
-//            jda.accountManager.setGame("_help | _invite")
-//            jda.accountManager.update()
-//
-//            jda.isAutoReconnect = true
-//
-//            servers += jda.guilds.size
-//
-//            shards.add(GnarShard(jda, id))
-//        }
-//
-//        DiscordBotsInfo.updateServerCount(servers)
-//    }
-//}

@@ -1,34 +1,63 @@
 package xyz.gnarbot.gnar.handlers
 
-import net.dv8tion.jda.entities.Guild
+import net.dv8tion.jda.entities.Role
 import net.dv8tion.jda.entities.User
 import xyz.gnarbot.gnar.Bot
+import xyz.gnarbot.gnar.Host
 
 /**
  * Gnar's wrapper class for JDA's [User].
  *
  * @see User
  */
-class Member(private val guild : Guild, private val user : User) : User by user
+class Member(private val host : Host, private val user : User) : User by user
 {
+    val isBotMaster : Boolean
+        get() = Bot.admins.contains(user)
+    
     var clearance = Clearance.USER
     
     init
     {
+        // Automatically assign permission.
         clearance = when
         {
             isBot ->                            Clearance.BOT
-            Bot.adminIDs.contains(user.id) ->   Clearance.BOT_MASTER
-            user === guild.owner ->             Clearance.SERVER_OWNER
-            hasRoleNamed("Bot Commander") ->    Clearance.BOT_COMMANDER
+            isBotMaster ->        Clearance.BOT_MASTER
+            user == host.owner ->              Clearance.SERVER_OWNER
+            hasRole("Bot Commander") ->         Clearance.BOT_COMMANDER
             else ->                             Clearance.USER
         }
     }
     
-    fun hasRoleNamed(name : String) : Boolean
+    /**
+     * Check if the member have a role named [name].
+     *
+     * @param name Role name.
+     * @return If the member have a role named [name].
+     */
+    fun hasRole(name : String) : Boolean
     {
-        guild.getRolesForUser(user)?.forEach {
+        host.getRolesForUser(user)?.forEach {
             if (it.name == name)
+            {
+                return true
+            }
+        }
+        return false
+    }
+    
+    /**
+     * Check if the member have the role [role].
+     *
+     * @param role Role.
+     * @return If the member have the role [role].
+     * @param
+     */
+    fun hasRole(role : Role) : Boolean
+    {
+        host.getRolesForUser(user)?.forEach {
+            if (it == role)
             {
                 return true
             }
@@ -41,6 +70,6 @@ class Member(private val guild : Guild, private val user : User) : User by user
      */
     override fun toString() : String
     {
-        return "Member(id=${user.id}, name=${user.username}, guild=${guild.name}, clearance=$clearance)"
+        return "Member(id=${user.id}, name=${user.username}, guild=${host.name}, clearance=$clearance)"
     }
 }

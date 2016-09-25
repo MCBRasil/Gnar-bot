@@ -1,25 +1,23 @@
 package xyz.gnarbot.gnar.handlers.commands
 
 import com.google.inject.Inject
-import net.dv8tion.jda.entities.Guild
-import xyz.gnarbot.gnar.Host
-import xyz.gnarbot.gnar.handlers.MemberHandler
 import java.lang.reflect.Field
 import java.util.ArrayList
-import java.util.HashMap
 
 class CommandDistributor
 {
-    /**
-     * Command type classifications.
-     */
+    annotation class Managed
+    
+    /** Command type classifications. */
     enum class CommandType
     {
+        /** Does not inject anything. Same instances across all hosts. */
         SINGLETON,
+        /** Need to inject something. Different instances. */
         MANAGED
     }
     
-    val singletonCommands = HashMap<String, CommandExecutor>()
+    val singletonCommands = mutableMapOf<String, CommandExecutor>()
     val managedCommands = mutableListOf<Class<out CommandExecutor>>()
     
     /**
@@ -61,7 +59,7 @@ class CommandDistributor
     
         for (alias in cmd.aliases)
         {
-            singletonCommands.put(alias, cmd)
+            singletonCommands[alias] = cmd
         }
     }
     
@@ -70,7 +68,10 @@ class CommandDistributor
      *
      * @param cls Class to register.
      */
-    fun registerAsManaged(cls : Class<out CommandExecutor>) = managedCommands.add(cls)
+    fun registerAsManaged(cls : Class<out CommandExecutor>)
+    {
+        managedCommands += cls
+    }
     
     private companion object
     {
@@ -104,14 +105,13 @@ class CommandDistributor
          */
         @JvmStatic fun classify(cls : Class<out CommandExecutor>) : CommandType
         {
+            if (cls.isAnnotationPresent(Managed::class.java)) return CommandType.MANAGED
+            
             val types = findInjectableFields(cls).map { it.type }
         
             return when
             {
-                types.contains(Guild::class.java) ||
-                        types.contains(Host::class.java) ||
-                        types.contains(CommandHandler::class.java) ||
-                        types.contains(MemberHandler::class.java) -> CommandType.MANAGED
+                types.size > 0 -> CommandType.MANAGED
                 else -> CommandType.SINGLETON
             }
         }

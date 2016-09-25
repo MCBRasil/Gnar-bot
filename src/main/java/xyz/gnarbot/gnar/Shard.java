@@ -5,11 +5,11 @@ import net.dv8tion.jda.entities.Guild;
 import xyz.gnarbot.gnar.commands.general.TestCommand;
 import xyz.gnarbot.gnar.handlers.commands.CommandDistributor;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Individual sharded instances of the bot.
+ * Individual shard instances of the bot.
  */
 public class Shard
 {
@@ -17,7 +17,8 @@ public class Shard
     private final JDA jda;
     
     private final CommandDistributor distributor = new CommandDistributor();
-    private final Map<Guild, Host> hosts = new HashMap<>(1000);
+    // LinkedHashMap access is faster. Pre-allocate to waste less CPU cycles.
+    private final Map<Guild, Host> hosts = new LinkedHashMap<>(1000);
     
     public Shard(int id, JDA jda)
     {

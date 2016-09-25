@@ -15,9 +15,12 @@ public class TestCommand extends CommandExecutor
     @Override
     public void execute(Note msg, String label, String[] args)
     {
+        msg.reply(host.getShard().toString());
         msg.reply(host.toString());
         msg.reply(this.toString());
-        msg.reply(msg.toString());
-        msg.reply(msg.getAuthor().toString());
+        //msg.reply(msg.toString());
+        //msg.reply(msg.getAuthor().toString());
+    
+        msg.reply(String.valueOf(msg.getAuthor().isBotMaster()));
     }
 }

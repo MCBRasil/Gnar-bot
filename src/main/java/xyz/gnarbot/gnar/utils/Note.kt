@@ -9,7 +9,7 @@ import xyz.gnarbot.gnar.handlers.Member
  *
  * @see Message
  */
-class Note(private val host : Host, private val message : Message) : Message by message
+class Note(val host : Host, private val message : Message) : Message by message
 {
     /**
      * The author of this Message as a [Member] instance.
@@ -19,12 +19,19 @@ class Note(private val host : Host, private val message : Message) : Message by 
     override fun getAuthor() : Member = host.memberHandler.asMember(message.author)
     
     /**
+     * Get mentioned users of this Message as [Member] instances.
+     *
+     * @return Immutable list of mentioned [Member] instances.
+     */
+    override fun getMentionedUsers() : List<Member> = message.mentionedUsers.map { host.memberHandler.asMember(it) }
+    
+    /**
      * Stylized quick-reply to a message.
      *
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun reply(msg : String) = message.channel.sendMessage("__**${message.author.username}**__ \u279c $msg")
+    fun reply(msg : String) : Message = message.channel.sendMessage("__**${message.author.username}**__ \u279c $msg")
     
     /**
      * Quick-reply to a message.

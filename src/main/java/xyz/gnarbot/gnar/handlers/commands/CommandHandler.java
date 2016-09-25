@@ -20,7 +20,13 @@ public class CommandHandler extends CommandRegistry
         this.host = host;
     }
     
-    public void inheritFrom(CommandDistributor distributor)
+    /**
+     * Extract command classes/instances from CommandDistributor
+     * and register it in this handler.
+     *
+     * @param distributor CommandDistributor instance.
+     */
+    public void recieveFrom(CommandDistributor distributor)
     {
         distributor.getSingletonCommands().forEach(this::registerCommand);
         distributor.getManagedCommands().forEach(this::registerCommand);
@@ -57,15 +63,15 @@ public class CommandHandler extends CommandRegistry
             Note note = new Note(host, event.getMessage());
             Member member = host.getMemberHandler().asMember(event.getAuthor());
             
-            for (String regCommand : getRegistry().keySet())
+            for (String cmdLabel : getRegistry().keySet())
             {
-                if (label.equalsIgnoreCase(token + regCommand))
+                if (label.equalsIgnoreCase(token + cmdLabel))
                 {
-                    CommandExecutor cmd = getRegistry().get(regCommand);
+                    CommandExecutor cmd = getRegistry().get(cmdLabel);
     
                     if (cmd.getClearance().getValue() > member.getClearance().getValue())
                     {
-                        note.reply("You do not have sufficient permission to use this command.");
+                        note.reply("Insufficient permission.");
                         return;
                     }
                     
@@ -76,7 +82,7 @@ public class CommandHandler extends CommandRegistry
                     }
                     catch (RuntimeException e)
                     {
-                        note.reply("An exception occurred while executing this command. " + e.toString());
+                        note.reply("Error: `" + e.toString() + "` occurred.");
                         e.printStackTrace();
                     }
                     
@@ -86,6 +92,10 @@ public class CommandHandler extends CommandRegistry
         }
     }
     
+    /**
+     * Return the amount of successful requests on this command handler.
+     * @return the amount of successful requests on this command handler.
+     */
     public int getRequests()
     {
         return requests;
