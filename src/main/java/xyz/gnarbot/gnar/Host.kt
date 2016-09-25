@@ -66,22 +66,6 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     override fun toString() : String = "Host(id=$id, shard=${shard.id}, guild=${guild.name})"
     
     /**
-     * Injector module for the Host.
-     */
-    private inner class HostModule : AbstractModule()
-    {
-        public override fun configure()
-        {
-            bind(Guild::class.java).toInstance(guild)
-            bind(CommandHandler::class.java).toInstance(commandHandler)
-            bind(MemberHandler::class.java).toInstance(memberHandler)
-            bind(Host::class.java).toInstance(this@Host)
-            bind(Shard::class.java).toInstance(shard)
-        }
-    }
-    
-    
-    /**
      * Attempt to ban the member from the guild.
      * @return If the bot had permission to ban.
      */
@@ -147,6 +131,21 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
         catch (e : PermissionException)
         {
             return false
+        }
+    }
+    
+    /**
+     * Injector module for the Host.
+     */
+    private inner class HostModule : AbstractModule()
+    {
+        public override fun configure()
+        {
+            bind(Guild::class.java).toInstance(guild)
+            bind(CommandHandler::class.java).toInstance(commandHandler)
+            bind(MemberHandler::class.java).toInstance(memberHandler)
+            bind(Host::class.java).toInstance(this@Host)
+            bind(Shard::class.java).toInstance(shard)
         }
     }
 }

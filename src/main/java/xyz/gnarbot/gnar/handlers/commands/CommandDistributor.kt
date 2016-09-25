@@ -3,6 +3,7 @@ package xyz.gnarbot.gnar.handlers.commands
 import com.google.inject.Inject
 import java.lang.reflect.Field
 import java.util.ArrayList
+import kotlin.jvm.JvmStatic as static
 
 class CommandDistributor
 {
@@ -82,7 +83,7 @@ class CommandDistributor
          * @param cls Target class.
          * @return Fields in target class annotated with [@Inject][Inject].
          */
-        @JvmStatic fun findInjectableFields(cls : Class<*>) : Array<Field>
+        @static fun findInjectableFields(cls : Class<*>) : Array<Field>
         {
             val fields = ArrayList<Field>()
             
@@ -103,7 +104,7 @@ class CommandDistributor
          * @param cls Target class.
          * @return Command type.
          */
-        @JvmStatic fun classify(cls : Class<out CommandExecutor>) : CommandType
+        @static fun classify(cls : Class<out CommandExecutor>) : CommandType
         {
             if (cls.isAnnotationPresent(Managed::class.java)) return CommandType.MANAGED
             

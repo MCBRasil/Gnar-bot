@@ -52,7 +52,6 @@ class Member(private val host : Host, private val user : User) : User by user
      *
      * @param role Role.
      * @return If the member have the role [role].
-     * @param
      */
     fun hasRole(role : Role) : Boolean
     {

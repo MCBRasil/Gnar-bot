@@ -7,6 +7,7 @@ import xyz.gnarbot.gnar.utils.readProperties
 import java.io.File
 import java.util.Date
 import java.util.concurrent.Executors
+import kotlin.jvm.JvmStatic as static
 
 fun main(args : Array<String>)
 {
@@ -18,12 +19,13 @@ fun main(args : Array<String>)
  */
 object Bot
 {
-    @JvmStatic val LOG = SimpleLog.getLog("Bot")!!
+    @static val LOG = SimpleLog.getLog("Bot")!!
     
-    private var init = false
+    var initialized = false
+        private set
     
-    val shards      = mutableListOf<Shard>()
-    val admins      = mutableSetOf<User>()
+    val shards = mutableListOf<Shard>()
+    val admins = mutableSetOf<User>()
     
     val startTime = System.currentTimeMillis()
     val authTokens = File("_DATA/tokens.properties").readProperties()
@@ -31,9 +33,9 @@ object Bot
     
     fun initBot(token : String, num_shards : Int)
     {
-        if (init) throw IllegalStateException("Bot instance have already been initialized.")
-        init = true
-    
+        if (initialized) throw IllegalStateException("Bot instance have already been initialized.")
+        initialized = true
+        
         LOG.info("Initializing Bot.")
         LOG.info("Bot token is \"$token\".")
         LOG.info("Requesting $num_shards shards.")
@@ -48,13 +50,13 @@ object Bot
                 setAutoReconnect(true)
                 buildBlocking()
             }
-        
+            
             jda.accountManager.setUsername("GNAR")
             jda.accountManager.setGame("_help | _invite")
             jda.accountManager.update()
             
             adminIDs.map { jda.getUserById(it) }.forEach { admins += it }
-        
+            
             shards += Shard(id, jda)
         }
         
