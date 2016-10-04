@@ -9,11 +9,6 @@ import java.util.Date
 import java.util.concurrent.Executors
 import kotlin.jvm.JvmStatic as static
 
-fun main(args : Array<String>)
-{
-    Bot.initBot(Bot.authTokens.getProperty("main-bot"), 4)
-}
-
 /**
  * Main class of the bot. Implemented as a singleton.
  */
@@ -27,9 +22,12 @@ object Bot
     val shards = mutableListOf<Shard>()
     val admins = mutableSetOf<User>()
     
+    @static val files = BotFiles()
+    
     val startTime = System.currentTimeMillis()
-    val authTokens = File("_DATA/tokens.properties").readProperties()
     val scheduler = Executors.newSingleThreadScheduledExecutor()
+    
+    val authTokens = File(files.dataFolder, "tokens.properties").readProperties()
     
     fun initBot(token : String, num_shards : Int)
     {
@@ -82,4 +80,10 @@ object Bot
             val d = h / 24
             return "${d}d ${h % 24}h ${m % 60}m ${s % 60}s"
         }
+    
+    class BotFiles
+    {
+        val dataFolder = File("_data").apply { if (!exists()) mkdir() }
+        val hostsFolder = File(dataFolder, "hosts").apply { if (!exists()) mkdir() }
+    }
 }

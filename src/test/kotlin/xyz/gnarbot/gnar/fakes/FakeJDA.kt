@@ -5,8 +5,5 @@ import net.dv8tion.jda.entities.impl.JDAImpl
 
 object FakeJDA : JDAImpl(false, false, false)
 {
-    override fun getTextChannelById(id : String?) : TextChannel
-    {
-        return FakeTextChannel
-    }
+    override fun getTextChannelById(id : String?) : TextChannel = FakeTextChannel
 }

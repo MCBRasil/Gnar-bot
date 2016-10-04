@@ -5,11 +5,11 @@ import net.dv8tion.jda.entities.Message
 import net.dv8tion.jda.entities.MessageChannel
 import net.dv8tion.jda.entities.impl.MessageImpl
 import net.dv8tion.jda.events.message.MessageReceivedEvent
+import kotlin.jvm.JvmStatic as static
 
 object FakeMessage
 {
-    @JvmStatic
-    fun create(string : String) : Message
+    @static fun create(string : String) : Message
     {
         val msgBuilder = MessageBuilder()
     
@@ -21,18 +21,14 @@ object FakeMessage
         }
     }
     
-    @JvmStatic
-    fun createEvent(string : String) : MessageReceivedEvent
+    @static fun createEvent(string : String) : MessageReceivedEvent
     {
         return MessageReceivedEvent(FakeJDA, 200, FakeMessage.create(string))
     }
     
     class FakeMessageImpl() : MessageImpl("000000000000000000", FakeJDA)
     {
-        override fun getChannel() : MessageChannel
-        {
-            return FakeTextChannel
-        }
+        override fun getChannel() : MessageChannel = FakeTextChannel
     }
 }
 

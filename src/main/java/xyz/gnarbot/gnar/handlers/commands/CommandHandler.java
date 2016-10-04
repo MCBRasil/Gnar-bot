@@ -32,7 +32,10 @@ public class CommandHandler extends CommandRegistry
         distributor.getManagedCommands().forEach(this::registerCommand);
     }
     
-    @Deprecated
+    /**
+     * Returns the token of the handler.
+     * @return The token of the handler.
+     */
     public String getToken()
     {
         return token;

@@ -11,7 +11,7 @@ import net.dv8tion.jda.managers.GuildManager
 import org.json.JSONObject
 import xyz.gnarbot.gnar.handlers.MemberHandler
 import xyz.gnarbot.gnar.handlers.commands.CommandHandler
-import xyz.gnarbot.gnar.utils.NullableJSONObject
+import xyz.gnarbot.gnar.utils.NullableJSON
 import java.io.File
 
 /**
@@ -49,12 +49,12 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     /** Load JSON instance from the Host's storage. */
     fun loadJSON()
     {
-        file = File("_DATA/servers/$id.json")
+        file = File(Bot.files.hostsFolder, "$id.json")
         file.createNewFile()
     
         val content = file.readText()
-        if (content.length == 0) jsonObject = NullableJSONObject()
-        else jsonObject = NullableJSONObject(content)
+        if (content.length == 0) jsonObject = NullableJSON()
+        else jsonObject = NullableJSON(content)
     }
     
     /** Save the JSON instance of the Host. */
@@ -63,7 +63,7 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     /**
      * @return String representation of the Host.
      */
-    override fun toString() : String = "Host(id=$id, shard=${shard.id}, guild=${guild.name})"
+    override fun toString() : String = "Host(id=$id, shard=${shard.id}, guild=\"${guild.name}\")"
     
     /**
      * Attempt to ban the member from the guild.

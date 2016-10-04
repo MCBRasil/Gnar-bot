@@ -9,5 +9,6 @@ object FakeUser : UserImpl("000000000000000000", FakeJDA)
         setUserName("Fake User")
         avatarId = id
         discriminator = id
+        privateChannel = FakePrivateChannel
     }
 }

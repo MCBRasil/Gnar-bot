@@ -39,7 +39,7 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun replyRaw(msg : String) = message.channel.sendMessage(msg)
+    fun replyRaw(msg : String) : Message = message.channel.sendMessage(msg)
     
     /**
      * @return String representation of the note.

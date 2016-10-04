@@ -1,13 +1,13 @@
 package xyz.gnarbot.gnar.fakes
 
 import net.dv8tion.jda.entities.Message
-import net.dv8tion.jda.entities.impl.TextChannelImpl
+import net.dv8tion.jda.entities.impl.PrivateChannelImpl
 
-object FakeTextChannel : TextChannelImpl("000000000000000000", FakeGuild)
+object FakePrivateChannel : PrivateChannelImpl("000000000000000000", FakeUser, FakeJDA)
 {
     override fun sendMessage(msg : String) : Message
     {
-        FakeBot.LOG.info(msg)
+        FakeBot.PLOG.info(msg)
         return FakeMessage.create(msg)
     }
     

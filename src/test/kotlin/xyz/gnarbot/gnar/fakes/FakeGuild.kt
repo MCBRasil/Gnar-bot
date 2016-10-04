@@ -10,5 +10,6 @@ object FakeGuild : GuildImpl(FakeJDA, "000000000000000000")
         name = "Fake Guild"
         region = Region.US_CENTRAL
         isAvailable = true
+        owner = FakeUser
     }
 }

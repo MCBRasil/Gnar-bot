@@ -19,7 +19,7 @@ public class TestCommand extends CommandExecutor
         msg.reply(host.toString());
         msg.reply(this.toString());
         //msg.reply(msg.toString());
-        //msg.reply(msg.getAuthor().toString());
+        msg.reply(msg.getAuthor().toString());
     
         msg.reply(String.valueOf(msg.getAuthor().isBotMaster()));
     }

@@ -6,25 +6,26 @@ import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.Host
 
 /**
- * Gnar's wrapper class for JDA's [User].
+ * Bot's wrapper class for JDA's [User].
  *
  * @see User
  */
 class Member(private val host : Host, private val user : User) : User by user
 {
     val isBotMaster : Boolean
-        get() = Bot.admins.contains(user)
     
     var clearance = Clearance.USER
     
     init
     {
+        isBotMaster = Bot.admins.contains(user)
+        
         // Automatically assign permission.
         clearance = when
         {
             isBot ->                            Clearance.BOT
-            isBotMaster ->        Clearance.BOT_MASTER
-            user == host.owner ->              Clearance.SERVER_OWNER
+            isBotMaster ->                      Clearance.BOT_MASTER
+            user == host.owner ->               Clearance.SERVER_OWNER
             hasRole("Bot Commander") ->         Clearance.BOT_COMMANDER
             else ->                             Clearance.USER
         }
@@ -69,6 +70,6 @@ class Member(private val host : Host, private val user : User) : User by user
      */
     override fun toString() : String
     {
-        return "Member(id=${user.id}, name=${user.username}, guild=${host.name}, clearance=$clearance)"
+        return "Member(id=${user.id}, name=\"${user.username}\", guild=\"${host.name}\", clearance=$clearance)"
     }
 }

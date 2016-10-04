@@ -5,6 +5,9 @@ import java.lang.reflect.Field
 import java.util.ArrayList
 import kotlin.jvm.JvmStatic as static
 
+/**
+ * Holds and classifies commands.
+ */
 class CommandDistributor
 {
     annotation class Managed
@@ -31,7 +34,7 @@ class CommandDistributor
     {
         if (!cls.isAnnotationPresent(Command::class.java))
         {
-            throw IllegalStateException("@Command annotation not found for class: " + cls.name)
+            throw IllegalStateException("@Command annotation not found for class: ${cls.name}")
         }
         
         when (classify(cls))
