@@ -24,3 +24,8 @@ _data/.DS_Store
 *.properties
 
 _data/administrators
+*.jar
+target/classes/administrators
+*.jpg
+*.txt
+*.png

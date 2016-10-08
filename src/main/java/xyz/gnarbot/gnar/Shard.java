@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar;
 
 import com.gmail.hexragon.gn4rBot.command.general.HelpCommand;
+import com.gmail.hexragon.gn4rBot.command.general.StartAdventureCommand;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.entities.Guild;
 import xyz.gnarbot.gnar.commands.games.OverwatchLookupCommand;
@@ -35,6 +36,7 @@ public class Shard
         jda.addEventListener(new ShardListener(this));
     
         distributor.register(HelpCommand.class);
+        distributor.register(StartAdventureCommand.class);
         distributor.register(InviteBotCommand.class);
         distributor.register(MathCommand.class);
         distributor.register(GoogleCommand.class);
