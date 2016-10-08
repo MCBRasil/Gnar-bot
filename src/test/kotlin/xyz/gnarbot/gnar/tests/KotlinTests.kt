@@ -25,18 +25,18 @@ class KotlinTests
     @Test
     fun `TestCommand test`()
     {
-        FakeBot.sendToHost("_wow")
+        FakeBot.send("_wow")
     }
     
     @Test
     fun `HelpCommand test`()
     {
-        FakeBot.sendToHost("_help")
+        FakeBot.send("_help")
     }
     
     @Test
     fun `OverwatchLookupCommand test`()
     {
-        FakeBot.sendToHost("_ow Avalon#11557")
+        FakeBot.send("_ow Avalon#11557")
     }
 }

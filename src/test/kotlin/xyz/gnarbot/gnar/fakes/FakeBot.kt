@@ -11,8 +11,10 @@ object FakeBot
     private val shard = Shard(0, FakeJDA)
     private val host = shard.getHost(FakeGuild)
     
-    fun sendToHost(string : String)
+    fun send(string : String)
     {
         host.handleMessageEvent(FakeMessage.createEvent(string))
     }
+    
+    
 }

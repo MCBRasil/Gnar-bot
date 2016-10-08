@@ -63,8 +63,7 @@ public class GoogleCommand extends CommandExecutor
             
             
             if (!links.isEmpty()) msg.updateMessage(joiner.toString());
-            else
-                msg.updateMessage(String.format("%s ➜ No results for `%s`.", note.getAuthor().getAsMention(), query));
+            else msg.updateMessage(String.format("%s ➜ No results for `%s`.", note.getAuthor().getAsMention(), query));
         }
         catch (IOException e)
         {

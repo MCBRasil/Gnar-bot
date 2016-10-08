@@ -42,6 +42,14 @@ class Note(val host : Host, private val message : Message) : Message by message
     fun replyRaw(msg : String) : Message = message.channel.sendMessage(msg)
     
     /**
+     * Append and update a message.
+     *
+     * @param append The text to append.
+     * @return The updated Message.
+     */
+    fun updateAppend(append : String?) : Message = updateMessage(content + append)
+    
+    /**
      * @return String representation of the note.
      */
     override fun toString() = "Note(id=$id, author=${author.username}, content=\"$content\")"

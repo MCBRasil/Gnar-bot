@@ -7,6 +7,6 @@ public class JavaTests extends TestCase
 {
     public void testTestCommand()
     {
-        FakeBot.INSTANCE.sendToHost("_wow");
+        FakeBot.INSTANCE.send("_wow");
     }
 }
