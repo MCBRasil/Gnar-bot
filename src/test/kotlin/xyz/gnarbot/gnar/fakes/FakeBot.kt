@@ -1,7 +1,7 @@
 package xyz.gnarbot.gnar.fakes
 
 import net.dv8tion.jda.utils.SimpleLog
-import xyz.gnarbot.gnar.Shard
+import xyz.gnarbot.gnar.handlers.servers.Shard
 
 object FakeBot
 {

@@ -5,11 +5,11 @@ import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.User;
 import xyz.gnarbot.gnar.Bot;
-import xyz.gnarbot.gnar.Shard;
+import xyz.gnarbot.gnar.handlers.servers.Shard;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.handlers.commands.CommandHandler;
-import xyz.gnarbot.gnar.utils.GnarQuotes;
+import xyz.gnarbot.gnar.utils.BotData;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.StringJoiner;
@@ -97,7 +97,7 @@ public class BotInfoCommand extends CommandExecutor
         joiner.add("\u258C Library _____ JDA");
         joiner.add("\u258C Uptime ______ " + Bot.INSTANCE.getSimpleUptime() + ".");
         
-        note.reply("**" + GnarQuotes.getRandomQuote() + "** Here is all of my information!");
+        note.reply("**" + BotData.randomQuote() + "** Here is all of my information!");
         
         note.getChannel().sendMessage("```xl\n" + joiner.toString() + "```\n");
     }

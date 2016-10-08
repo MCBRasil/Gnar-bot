@@ -1,16 +1,17 @@
-package xyz.gnarbot.gnar;
+package xyz.gnarbot.gnar.handlers.servers;
 
-import com.gmail.hexragon.gn4rBot.command.general.HelpCommand;
-import com.gmail.hexragon.gn4rBot.command.general.StartAdventureCommand;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.entities.Guild;
+import xyz.gnarbot.gnar.commands.fun.ASCIICommand;
+import xyz.gnarbot.gnar.commands.fun.CoinFlipCommand;
+import xyz.gnarbot.gnar.commands.fun.DialogCommand;
+import xyz.gnarbot.gnar.commands.games.GameLookupCommand;
+import xyz.gnarbot.gnar.commands.games.LeagueLookupCommand;
 import xyz.gnarbot.gnar.commands.games.OverwatchLookupCommand;
-import xyz.gnarbot.gnar.commands.general.GoogleCommand;
-import xyz.gnarbot.gnar.commands.general.InviteBotCommand;
-import xyz.gnarbot.gnar.commands.general.MathCommand;
-import xyz.gnarbot.gnar.commands.general.TestCommand;
+import xyz.gnarbot.gnar.commands.general.*;
 import xyz.gnarbot.gnar.handlers.commands.CommandDistributor;
 import xyz.gnarbot.gnar.textadventure.AdventureCommand;
+import xyz.gnarbot.gnar.textadventure.StartAdventureCommand;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -36,14 +37,26 @@ public class Shard
         
         jda.addEventListener(new ShardListener(this));
     
+        //distributor.registerAll("xyz.gnarbot.gnar.commands");
+        
         distributor.register(HelpCommand.class);
-        distributor.register(AdventureCommand.class);
-        distributor.register(StartAdventureCommand.class);
         distributor.register(InviteBotCommand.class);
         distributor.register(MathCommand.class);
         distributor.register(GoogleCommand.class);
+        distributor.register(BotInfoCommand.class);
+        
+        distributor.register(ASCIICommand.class);
+        distributor.register(CoinFlipCommand.class);
+        distributor.register(DialogCommand.class);
+        
         distributor.register(TestCommand.class);
+    
+        distributor.register(AdventureCommand.class);
+        distributor.register(StartAdventureCommand.class);
+        
         distributor.register(OverwatchLookupCommand.class);
+        distributor.register(LeagueLookupCommand.class);
+        distributor.register(GameLookupCommand.class);
     }
     
     /**

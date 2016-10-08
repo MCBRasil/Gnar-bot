@@ -3,9 +3,10 @@ package xyz.gnarbot.gnar
 import net.dv8tion.jda.JDABuilder
 import net.dv8tion.jda.entities.User
 import net.dv8tion.jda.utils.SimpleLog
+import xyz.gnarbot.gnar.handlers.servers.Shard
 import xyz.gnarbot.gnar.utils.readProperties
 import java.io.File
-import java.util.*
+import java.util.Date
 import java.util.concurrent.Executors
 import kotlin.jvm.JvmStatic as static
 
@@ -19,7 +20,10 @@ object Bot
     var initialized = false
         private set
     
+    /** Sharded JDA instances of the bot.*/
     val shards = mutableListOf<Shard>()
+    
+    /** Administrator users of the bot. */
     val admins = mutableSetOf<User>()
     
     @static val files = BotFiles()
@@ -27,7 +31,7 @@ object Bot
     val startTime = System.currentTimeMillis()
     val scheduler = Executors.newSingleThreadScheduledExecutor()
     
-    val authTokens = File(files.dataFolder, "tokens.properties").readProperties()
+    val authTokens = files.tokens.readProperties()
     
     fun initBot(token : String, num_shards : Int)
     {
@@ -58,7 +62,7 @@ object Bot
             shards += Shard(id, jda)
         }
         
-        LOG.info("Bot is now connected to discord.")
+        LOG.info("Bot is now connected to Discord.")
     }
     
     val uptime : String
@@ -80,10 +84,4 @@ object Bot
             val d = h / 24
             return "${d}d ${h % 24}h ${m % 60}m ${s % 60}s"
         }
-    
-    class BotFiles
-    {
-        val dataFolder = File("_data").apply { if (!exists()) mkdir() }
-        val hostsFolder = File(dataFolder, "hosts").apply { if (!exists()) mkdir() }
-    }
 }

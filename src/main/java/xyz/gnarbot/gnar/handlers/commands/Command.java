@@ -1,6 +1,6 @@
 package xyz.gnarbot.gnar.handlers.commands;
 
-import xyz.gnarbot.gnar.handlers.Clearance;
+import xyz.gnarbot.gnar.handlers.members.Clearance;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -32,7 +32,7 @@ public @interface Command
      * Returns the usage of this command.
      * @return The usage of this command.
      */
-    String usage() default "No usage provided";
+    String usage() default "";
     
     /**
      * Returns if the command is shown in _help.

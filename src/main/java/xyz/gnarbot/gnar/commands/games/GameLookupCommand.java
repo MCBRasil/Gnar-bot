@@ -37,7 +37,7 @@ public class GameLookupCommand extends CommandExecutor
             
             if (jsa.length() == 0)
             {
-                message.getChannel().sendMessage(String.format("%s ➜ No game found with that title.", message.getAuthor().getAsMention()));
+                message.reply("No game found with that title.");
                 return;
             }
             

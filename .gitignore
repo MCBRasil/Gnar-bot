@@ -1,5 +1,5 @@
 
-_data/.DS_Store
+data/.DS_Store
 
 *.json
 
@@ -23,7 +23,7 @@ _data/.DS_Store
 
 *.properties
 
-_data/administrators
+data/administrators
 *.jar
 target/classes/administrators
 *.jpg

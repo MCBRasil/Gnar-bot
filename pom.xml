@@ -124,6 +124,13 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- REFLECTIONS -->
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.9.10</version>
+		</dependency>
+
 		<!--JUNIT-->
 		<dependency>
 			<groupId>junit</groupId>

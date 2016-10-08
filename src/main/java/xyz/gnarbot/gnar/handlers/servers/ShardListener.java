@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar;
+package xyz.gnarbot.gnar.handlers.servers;
 
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;

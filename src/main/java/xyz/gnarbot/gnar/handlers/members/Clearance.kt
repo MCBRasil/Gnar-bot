@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar.handlers
+package xyz.gnarbot.gnar.handlers.members
 
 /**
  * Clearance levels for [Member] for use by the bot.

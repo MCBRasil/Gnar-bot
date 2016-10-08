@@ -1,8 +1,8 @@
 package xyz.gnarbot.gnar.handlers.commands;
 
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
-import xyz.gnarbot.gnar.Host;
-import xyz.gnarbot.gnar.handlers.Member;
+import xyz.gnarbot.gnar.handlers.servers.Host;
+import xyz.gnarbot.gnar.handlers.members.Member;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.Arrays;
@@ -28,8 +28,8 @@ public class CommandHandler extends CommandRegistry
      */
     public void recieveFrom(CommandDistributor distributor)
     {
-        distributor.getSingletonCommands().forEach(this::registerCommand);
         distributor.getManagedCommands().forEach(this::registerCommand);
+        distributor.getSingletonCommands().forEach(this::registerCommand);
     }
     
     /**

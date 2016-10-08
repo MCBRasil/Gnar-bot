@@ -61,7 +61,6 @@ public class GoogleCommand extends CommandExecutor
                 break;
             }
             
-            
             if (!links.isEmpty()) msg.updateMessage(joiner.toString());
             else msg.updateMessage(String.format("%s ➜ No results for `%s`.", note.getAuthor().getAsMention(), query));
         }

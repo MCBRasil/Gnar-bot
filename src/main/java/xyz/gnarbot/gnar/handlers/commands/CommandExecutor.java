@@ -1,6 +1,6 @@
 package xyz.gnarbot.gnar.handlers.commands;
 
-import xyz.gnarbot.gnar.handlers.Clearance;
+import xyz.gnarbot.gnar.handlers.members.Clearance;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.Arrays;

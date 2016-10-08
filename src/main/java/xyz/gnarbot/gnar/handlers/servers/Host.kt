@@ -1,17 +1,20 @@
-package xyz.gnarbot.gnar
+package xyz.gnarbot.gnar.handlers.servers
 
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import com.google.inject.Injector
+import net.dv8tion.jda.JDA
 import net.dv8tion.jda.entities.Guild
 import net.dv8tion.jda.entities.User
 import net.dv8tion.jda.events.message.MessageReceivedEvent
 import net.dv8tion.jda.exceptions.PermissionException
 import net.dv8tion.jda.managers.GuildManager
 import org.json.JSONObject
-import xyz.gnarbot.gnar.handlers.MemberHandler
+import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.handlers.commands.CommandHandler
+import xyz.gnarbot.gnar.handlers.members.MemberHandler
 import xyz.gnarbot.gnar.utils.NullableJSON
+import xyz.gnarbot.gnar.utils.child
 import java.io.File
 
 /**
@@ -49,7 +52,7 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     /** Load JSON instance from the Host's storage. */
     fun loadJSON()
     {
-        file = File(Bot.files.hostsFolder, "$id.json")
+        file = Bot.files.hosts.child("$id.json")
         file.createNewFile()
     
         val content = file.readText()
@@ -67,7 +70,7 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     
     /**
      * Attempt to ban the member from the guild.
-     * @return If the bot had permission to ban.
+     * @return If the bot had permission.
      */
     fun banUser(user : User) : Boolean
     {
@@ -82,6 +85,10 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
         }
     }
     
+    /**
+     * Attempt to unBan the member from the guild.
+     * @return If the bot had permission.
+     */
     fun unbanUser(user : User) : Boolean
     {
         try
@@ -95,6 +102,10 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
         }
     }
     
+    /**
+     * Attempt to kick the member from the guild.
+     * @return If the bot had permission.
+     */
     fun kickUser(user : User) : Boolean
     {
         try
@@ -108,6 +119,10 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
         }
     }
     
+    /**
+     * Attempt to mute the member from the guild.
+     * @return If the bot had permission.
+     */
     fun muteUser(user : User) : Boolean
     {
         try
@@ -121,6 +136,10 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
         }
     }
     
+    /**
+     * Attempt to unmute the member from the guild.
+     * @return If the bot had permission.
+     */
     fun unmuteUser(user : User) : Boolean
     {
         try
@@ -146,6 +165,7 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
             bind(MemberHandler::class.java).toInstance(memberHandler)
             bind(Host::class.java).toInstance(this@Host)
             bind(Shard::class.java).toInstance(shard)
+            bind(JDA::class.java).toInstance(jda)
         }
     }
 }

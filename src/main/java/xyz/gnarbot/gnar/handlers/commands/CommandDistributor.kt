@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.handlers.commands
 
 import com.google.inject.Inject
+import org.reflections.Reflections
 import java.lang.reflect.Field
 import java.util.*
 import kotlin.jvm.JvmStatic as static
@@ -23,6 +24,15 @@ class CommandDistributor
     
     val singletonCommands = mutableMapOf<String, CommandExecutor>()
     val managedCommands = mutableListOf<Class<out CommandExecutor>>()
+    
+    @Suppress("UNCHECKED_CAST")
+    fun registerAll(packages : String)
+    {
+        val reflections = Reflections(packages)
+    
+        reflections.getTypesAnnotatedWith(Command::class.java)
+                .forEach { register(it as Class<out CommandExecutor>) }
+    }
     
     /**
      * Register the command class and automatically
