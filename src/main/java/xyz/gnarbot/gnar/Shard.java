@@ -10,6 +10,7 @@ import xyz.gnarbot.gnar.commands.general.InviteBotCommand;
 import xyz.gnarbot.gnar.commands.general.MathCommand;
 import xyz.gnarbot.gnar.commands.general.TestCommand;
 import xyz.gnarbot.gnar.handlers.commands.CommandDistributor;
+import xyz.gnarbot.gnar.textadventure.AdventureCommand;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -36,6 +37,7 @@ public class Shard
         jda.addEventListener(new ShardListener(this));
     
         distributor.register(HelpCommand.class);
+        distributor.register(AdventureCommand.class);
         distributor.register(StartAdventureCommand.class);
         distributor.register(InviteBotCommand.class);
         distributor.register(MathCommand.class);
