@@ -60,6 +60,8 @@ public class Shard
      */
     public Host getHost(Guild guild)
     {
+        if (guild == null) return null;
+            
         Host host = hosts.get(guild);
         
         if (host == null)

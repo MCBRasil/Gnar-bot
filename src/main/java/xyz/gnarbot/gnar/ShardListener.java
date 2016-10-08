@@ -15,6 +15,8 @@ class ShardListener extends ListenerAdapter
     @Override
     public void onMessageReceived(MessageReceivedEvent event)
     {
-        shard.getHost(event.getGuild()).handleMessageEvent(event);
+        Host host = shard.getHost(event.getGuild());
+                
+        if (host != null) host.handleMessageEvent(event);
     }
 }
