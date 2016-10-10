@@ -5,6 +5,9 @@ import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 /**
  * Created by zacha on 10/8/2016.
  */
@@ -27,7 +30,30 @@ public class AdventureCommand extends CommandExecutor {
 				}
 			}
 			if (args[0].equalsIgnoreCase("actions")){
-				
+				if (adventure.getActionList().size() == 0){
+					adventure.sendInformativeMessage(msg, "I couldn't find anything... Sorry :no_mouth:");
+					return;
+				}
+				String r = "```XL\n";
+				int count = 10;
+				if (adventure.getActionList().size() < 10){
+					count = adventure.getActionList().size();
+				}
+				ArrayList<String> list = adventure.getActionList();
+				Collections.reverse(list);
+				for (String s : list){
+					if (count > 0) {
+						r += "#" + count + ": " + s + "\n";
+						count--;
+					}else{
+						r += "```";
+						adventure.sendInformativeMessage(msg, r);
+						return;
+					}
+				}
+				r += "```";
+				adventure.sendInformativeMessage(msg, r);
+				return;
 			}
 			if (args[0].equalsIgnoreCase("help")){
 				String reply =
