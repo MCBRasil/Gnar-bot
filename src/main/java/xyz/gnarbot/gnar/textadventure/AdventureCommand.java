@@ -26,6 +26,9 @@ public class AdventureCommand extends CommandExecutor {
 					return;
 				}
 			}
+			if (args[0].equalsIgnoreCase("actions")){
+				
+			}
 			if (args[0].equalsIgnoreCase("help")){
 				String reply =
 					"*Adventure Help!~*\n```XL\n"+

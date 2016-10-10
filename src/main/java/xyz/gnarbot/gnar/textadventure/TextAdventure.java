@@ -170,7 +170,28 @@ public class TextAdventure {
         }
 
         private void initate(){
+            if (prevDirect == DIRECTION.FIRSTMOVE){
+                setAreaNorth(new Area(DIRECTION.NORTH, this));
+                setAreaEast(new Area(DIRECTION.EAST, this));
+                setAreaSouth(new Area(DIRECTION.SOUTH, this));
+                setAreaWest(new Area(DIRECTION.WEST, this));
+            }
+        }
 
+        public boolean canMoveNorth(){
+            return getAreaNorth() != null;
+        }
+
+        public boolean canMoveEast(){
+            return getAreaEast() != null;
+        }
+
+        public boolean canMoveWest(){
+            return getAreaWest() != null;
+        }
+
+        public boolean canMoveSouth(){
+            return getAreaSouth() != null;
         }
 
         public LOCATION getType(){
@@ -232,28 +253,28 @@ public class TextAdventure {
         n.reply(extra + "\n" + lastMessage);
     }
 
-    private String getNewLocationText(boolean canMoveNorth, boolean canMoveSouth, boolean canMoveEast, boolean canMoveWest, LOCATION locationType, String action){
+    private String getNewLocationText(Area originArea, LOCATION locationType, String action){
 
         String r = String.format("*We find our hero, %s %s a %s*\n** Available Directions: **\n       <north>\n" +
                 "<west>      <east>\n" +
                 "       <south>" +
                 "\n :bulb: `Use the _adventure command to go a certain direction! Example: _adventure North`", this.heroName, action, locationType.getName());
-        if (canMoveNorth){
+        if (originArea.canMoveNorth()){
             r = r.replaceAll("<north>", ":arrow_up:");
         }else{
             r = r.replaceAll("<north>", ":negative_squared_cross_mark:");
         }
-        if (canMoveSouth){
+        if (originArea.canMoveSouth()){
             r = r.replaceAll("<south>", ":arrow_down:");
         }else{
             r = r.replaceAll("<south>", ":negative_squared_cross_mark:");
         }
-        if (canMoveEast){
+        if (originArea.canMoveEast()){
             r = r.replaceAll("<east>", ":arrow_right:");
         }else{
             r = r.replaceAll("<east>", ":negative_squared_cross_mark:");
         }
-        if (canMoveWest){
+        if (originArea.canMoveWest()){
             r = r.replaceAll("<west>", ":arrow_left:");
         }else{
             r = r.replaceAll("<west>", ":negative_squared_cross_mark:");
@@ -273,9 +294,9 @@ public class TextAdventure {
             stateRelation = "null";
             startArea = newArea(DIRECTION.FIRSTMOVE);
             currentArea = startArea;
-            sendMessage(n, getNewLocationText(true, true, true, true, startArea.getType(), actions[random.nextInt(actions.length)]));
+            sendMessage(n, getNewLocationText(currentArea, startArea.getType(), actions[random.nextInt(actions.length)])); // First Location allows for any direction of movement.
         }else{
-            sendInformativeMessage(n, "I'm unsure of what you meant by `"+ response+"`. Type `_adventure help` to bring up the Help Menu.");
+            sendInformativeMessage(n, "I'm unsure of what you meant by `"+ response+"`. Type `_adventure help` to bring up the Help Menu."); // Placeholder until I add the moving system.
         }
     }
 
@@ -285,6 +306,10 @@ public class TextAdventure {
 
     public String getHeroName() {
         return heroName;
+    }
+
+    public ArrayList<String> getActionList() {
+        return actionList;
     }
 
     private Area newArea(DIRECTION direction, Area currentLocation){
