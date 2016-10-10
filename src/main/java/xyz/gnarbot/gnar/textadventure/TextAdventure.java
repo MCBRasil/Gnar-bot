@@ -4,10 +4,8 @@ import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.User;
 import xyz.gnarbot.gnar.utils.Note;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class TextAdventure {
@@ -45,7 +43,25 @@ public class TextAdventure {
     }
 
     protected enum DIRECTION{
-        NORTH, SOUTH, EAST, WEST, FIRSTMOVE;
+        NORTH("north"), SOUTH("south"), EAST("east"), WEST("west"), FIRSTMOVE("firstmove");
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public static DIRECTION getFromString(String dir){
+            for (DIRECTION d : values()){
+                if (d.getName().equalsIgnoreCase(dir)){
+                    return d;
+                }
+            }
+            return null;
+        }
+
+        DIRECTION(String name){
+            this.name = name;
+        }
     }
 
     protected enum ENEMY{
@@ -57,11 +73,93 @@ public class TextAdventure {
         private int id;
         private boolean newLocation = true;
 
+        private Area areaNorth, areaSouth, areaEast, areaWest, connectedArea;
+
+        public Area getAreaNorth() {
+            return areaNorth;
+        }
+
+        public void setAreaNorth(Area areaNorth) {
+            this.areaNorth = areaNorth;
+        }
+
+        public Area getAreaSouth() {
+            return areaSouth;
+        }
+
+        public void setAreaSouth(Area areaSouth) {
+            this.areaSouth = areaSouth;
+        }
+
+        public Area getAreaEast() {
+            return areaEast;
+        }
+
+        public void setAreaEast(Area areaEast) {
+            this.areaEast = areaEast;
+        }
+
+        public Area getAreaWest() {
+            return areaWest;
+        }
+
+        public void setAreaWest(Area areaWest) {
+            this.areaWest = areaWest;
+        }
+
+        public Area getConnectedArea() {
+            return connectedArea;
+        }
+
+        public void setConnectedArea(Area connectedArea) {
+            this.connectedArea = connectedArea;
+        }
+
         private DIRECTION prevDirect;
 
         public Area(LOCATION location, DIRECTION prevDirection){
             this.locationType = location;
             this.prevDirect = prevDirection;
+            initate();
+        }
+
+        public Area(DIRECTION prevDirection, Area previousArea){
+            this.locationType = LOCATION.values()[random.nextInt(LOCATION.values().length)];
+            this.prevDirect = prevDirection;
+            this.connectedArea = previousArea;
+            if (prevDirection == DIRECTION.NORTH){
+                setAreaSouth(previousArea);
+            }
+            if (prevDirection == DIRECTION.SOUTH){
+                setAreaNorth(previousArea);
+            }
+            if (prevDirection == DIRECTION.EAST){
+                setAreaWest(previousArea);
+            }
+            if (prevDirection == DIRECTION.WEST){
+                setAreaEast(previousArea);
+            }
+
+            initate();
+        }
+
+        public Area(LOCATION locationType, DIRECTION prevDirection, Area previousArea){
+            this.locationType = locationType;
+            this.prevDirect = prevDirection;
+            this.connectedArea = previousArea;
+            if (prevDirection == DIRECTION.NORTH){
+                setAreaSouth(previousArea);
+            }
+            if (prevDirection == DIRECTION.SOUTH){
+                setAreaNorth(previousArea);
+            }
+            if (prevDirection == DIRECTION.EAST){
+                setAreaWest(previousArea);
+            }
+            if (prevDirection == DIRECTION.WEST){
+                setAreaEast(previousArea);
+            }
+
             initate();
         }
 
@@ -85,12 +183,17 @@ public class TextAdventure {
     private UUID gameID;
     private Long starttime;
     private ArrayList<Area> areas = new ArrayList<>();
+
+    private ArrayList<String> actionList = new ArrayList<>();
+
     private String heroName;
     private STATE state;
     private String stateRelation;
 
     private String lastMessage;
     private Message lastSentMessage;
+
+    private Area currentArea, startArea;
 
     public TextAdventure(User u, Note note){
         adventures.put(u, this);
@@ -101,6 +204,7 @@ public class TextAdventure {
         this.random.setSeed(this.starttime);
         state = STATE.WAITING_FOR_NAME;
         stateRelation = "waitname";
+        logAction("Started your adventure...");
         System.out.println("Started new Text Adventure for " + u.getUsername() + " (ID: " + gameID.toString() + ")");
         sendMessage(note, "***A new adventure begins... This is the story of... `_________`***\n" +
                 "\n" +
@@ -110,8 +214,17 @@ public class TextAdventure {
                 "\n ➜ *Example: `_adventure " + u.getUsername() + " the Great`*");
     }
 
-    private void sendMessage(Note n, String message){
+    public void logAction(String action){
+        actionList.add("[" +  new SimpleDateFormat("HH:mm:ss.SSS").format(new Date(System.currentTimeMillis())) + "] " + action);
+        System.out.println("[" +  new SimpleDateFormat("HH:mm:ss.SSS").format(new Date(System.currentTimeMillis())) + "] " + action);
+    }
+
+    public void sendMessage(Note n, String message){
         this.lastMessage = message;
+        lastSentMessage = n.reply("\n" + message);
+    }
+
+    public void sendInformativeMessage(Note n, String message){
         lastSentMessage = n.reply("\n" + message);
     }
 
@@ -119,19 +232,65 @@ public class TextAdventure {
         n.reply(extra + "\n" + lastMessage);
     }
 
+    private String getNewLocationText(boolean canMoveNorth, boolean canMoveSouth, boolean canMoveEast, boolean canMoveWest, LOCATION locationType, String action){
+
+        String r = String.format("*We find our hero, %s %s a %s*\n** Available Directions: **\n       <north>\n" +
+                "<west>      <east>\n" +
+                "       <south>" +
+                "\n :bulb: `Use the _adventure command to go a certain direction! Example: _adventure North`", this.heroName, action, locationType.getName());
+        if (canMoveNorth){
+            r = r.replaceAll("<north>", ":arrow_up:");
+        }else{
+            r = r.replaceAll("<north>", ":negative_squared_cross_mark:");
+        }
+        if (canMoveSouth){
+            r = r.replaceAll("<south>", ":arrow_down:");
+        }else{
+            r = r.replaceAll("<south>", ":negative_squared_cross_mark:");
+        }
+        if (canMoveEast){
+            r = r.replaceAll("<east>", ":arrow_right:");
+        }else{
+            r = r.replaceAll("<east>", ":negative_squared_cross_mark:");
+        }
+        if (canMoveWest){
+            r = r.replaceAll("<west>", ":arrow_left:");
+        }else{
+            r = r.replaceAll("<west>", ":negative_squared_cross_mark:");
+        }
+
+        return r;
+    }
+
     public void parseResponse(Note n, String response){
         System.out.println("Got response for " + user.getUsername() + "'s adventure: \n" + response);
         if (stateRelation.equalsIgnoreCase("waitname") && this.state == STATE.WAITING_FOR_NAME) {
-            this.heroName = response.replaceAll("`", "").replaceAll("_", "").replaceAll("\\*", "");
+            setHeroName(response);
             lastSentMessage.updateMessage("***A new adventure begins... This is the story of... `" + heroName + "`***");
             sendMessage(n, "*A new adventure begins! This is the story of...* ***`" + heroName + "`!***");
             String[] actions = new String[]{"walking into", "running towards", "swimming towards", "teleported to", "suddenly in"};
-            Area startArea = newArea(DIRECTION.FIRSTMOVE);
-            sendMessage(n, String.format("*We find our hero, %s %s a %s*\n** Available Directions: **\n       :arrow_up:\n" +
-                    ":arrow_left:      :arrow_right:\n" +
-                    "       :arrow_down:" +
-                    "\n :bulb: `Use the _adventure command to go a certain direction! Example: _adventure North`", this.heroName, actions[random.nextInt(actions.length)], startArea.getType().getName()));
+            state = STATE.WAITING;
+            stateRelation = "null";
+            startArea = newArea(DIRECTION.FIRSTMOVE);
+            currentArea = startArea;
+            sendMessage(n, getNewLocationText(true, true, true, true, startArea.getType(), actions[random.nextInt(actions.length)]));
+        }else{
+            sendInformativeMessage(n, "I'm unsure of what you meant by `"+ response+"`. Type `_adventure help` to bring up the Help Menu.");
         }
+    }
+
+    public void setHeroName(String heroName){
+        this.heroName = heroName.replaceAll("`", "").replaceAll("_", "").replaceAll("\\*", "");
+    }
+
+    public String getHeroName() {
+        return heroName;
+    }
+
+    private Area newArea(DIRECTION direction, Area currentLocation){
+        Area a = new Area(direction, currentLocation);
+        areas.add(a);
+        return a;
     }
 
     private Area newArea(DIRECTION direction){

@@ -14,12 +14,25 @@ public class AdventureCommand extends CommandExecutor {
 	public void execute(Note msg, String label, String[] args) {
 		TextAdventure adventure = TextAdventure.getAdventure(msg.getAuthor(), msg);
 		if (args.length > 0){
+			if (args[0].equalsIgnoreCase("setname")){
+				if (args.length > 1){
+					String oldname = adventure.getHeroName();
+					adventure.setHeroName(StringUtils.join(args, " ").replace("setname ", ""));
+					adventure.sendInformativeMessage(msg, ":bulb: The hero wishes to change their name? Very well then. I shall now refer to you as **" + adventure.getHeroName() + "**");
+					adventure.logAction("Changed Hero name to " + adventure.getHeroName() + " from " + oldname);
+					return;
+				}else{
+					adventure.sendInformativeMessage(msg, ":bulb: Hmm... I can't do that unless you tell me what to call you, Hero.");
+					return;
+				}
+			}
 			if (args[0].equalsIgnoreCase("help")){
 				String reply =
 					"*Adventure Help!~*\n```XL\n"+
-					" _adventure help - This list\n"+
-					" _adventure actions - List of previous actions\n"+
+					" _adventure help - This list.\n"+
+					" _adventure actions - List of previous actions.\n"+
 					" _adventure quit - Ends the adventure.\n"+
+					" _adventure setname {name} - Changes your Hero's name.\n"+
 					" _adventure {response} - Respond to a question, or do an action."+
 						"\n```";
 				msg.reply(reply);
