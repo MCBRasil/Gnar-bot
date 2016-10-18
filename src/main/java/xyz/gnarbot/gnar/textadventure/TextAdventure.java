@@ -1,6 +1,5 @@
 package xyz.gnarbot.gnar.textadventure;
 
-<<<<<<< Updated upstream
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.User;
 import xyz.gnarbot.gnar.utils.Note;
@@ -75,6 +74,59 @@ public class TextAdventure {
         private boolean newLocation = true;
 
         private Area areaNorth, areaSouth, areaEast, areaWest, connectedArea;
+        private boolean canMoveNorth = true, canMoveSouth = true, canMoveEast = true, canMoveWest = true;
+
+        public Area getAreaFromDir(DIRECTION dir){
+            if (dir == DIRECTION.NORTH){
+                return getAreaNorth();
+            }
+            if (dir == DIRECTION.SOUTH){
+                return getAreaSouth();
+            }
+            if (dir == DIRECTION.EAST){
+                return getAreaEast();
+            }
+            if (dir == DIRECTION.WEST){
+                return getAreaWest();
+            }
+            return null;
+        }
+
+        public boolean canMoveInDir(DIRECTION dir){
+            if (dir == DIRECTION.NORTH){
+                return canMoveNorth();
+            }
+            if (dir == DIRECTION.SOUTH){
+                return canMoveSouth();
+            }
+            if (dir == DIRECTION.EAST){
+                return canMoveEast();
+            }
+            if (dir == DIRECTION.WEST){
+                return canMoveWest();
+            }
+            return false;
+        }
+
+        public boolean setAreaInDir(DIRECTION dir, Area area){
+            if (dir == DIRECTION.NORTH){
+                setAreaNorth(area);
+                return true;
+            }
+            if (dir == DIRECTION.SOUTH){
+                setAreaSouth(area);
+                return true;
+            }
+            if (dir == DIRECTION.EAST){
+                setAreaEast(area);
+                return true;
+            }
+            if (dir == DIRECTION.WEST){
+                setAreaWest(area);
+                return true;
+            }
+            return false;
+        }
 
         public Area getAreaNorth() {
             return areaNorth;
@@ -177,22 +229,23 @@ public class TextAdventure {
                 setAreaSouth(new Area(DIRECTION.SOUTH, this));
                 setAreaWest(new Area(DIRECTION.WEST, this));
             }
+
         }
 
         public boolean canMoveNorth() {
-            return getAreaNorth() != null;
-        }
-
-        public boolean canMoveEast() {
-            return getAreaEast() != null;
-        }
-
-        public boolean canMoveWest() {
-            return getAreaWest() != null;
+            return canMoveNorth;
         }
 
         public boolean canMoveSouth() {
-            return getAreaSouth() != null;
+            return canMoveSouth;
+        }
+
+        public boolean canMoveEast() {
+            return canMoveEast;
+        }
+
+        public boolean canMoveWest() {
+            return canMoveWest;
         }
 
         public LOCATION getType() {
@@ -237,8 +290,8 @@ public class TextAdventure {
     }
 
     public void logAction(String action) {
-        actionList.add("[" + new SimpleDateFormat("HH:mm:ss.SSS").format(new Date(System.currentTimeMillis())) + "] " + action);
-        System.out.println("[" + new SimpleDateFormat("HH:mm:ss.SSS").format(new Date(System.currentTimeMillis())) + "] " + action);
+        actionList.add("(" + new SimpleDateFormat("HH:mm:ss.SSS").format(new Date(System.currentTimeMillis())) + ") " + action);
+        System.out.println("(" + new SimpleDateFormat("HH:mm:ss.SSS").format(new Date(System.currentTimeMillis())) + ") " + action);
     }
 
     public void sendMessage(Note n, String message) {
@@ -286,17 +339,32 @@ public class TextAdventure {
 
     public void parseResponse(Note n, String response) {
         System.out.println("Got response for " + user.getUsername() + "'s adventure: \n" + response);
+        String[] actions = new String[]{"walking into", "running towards", "swimming towards", "teleported to", "suddenly in"};
         if (stateRelation.equalsIgnoreCase("waitname") && this.state == STATE.WAITING_FOR_NAME) {
             setHeroName(response);
             lastSentMessage.updateMessage("***A new adventure begins... This is the story of... `" + heroName + "`***");
             sendMessage(n, "*A new adventure begins! This is the story of...* ***`" + heroName + "`!***");
-            String[] actions = new String[]{"walking into", "running towards", "swimming towards", "teleported to", "suddenly in"};
             state = STATE.WAITING;
-            stateRelation = "null";
+            stateRelation = "move";
             startArea = newArea(DIRECTION.FIRSTMOVE);
             currentArea = startArea;
+            logAction("Decided that you would call yourself '" + getHeroName() + "'");
             sendMessage(n, getNewLocationText(currentArea, startArea.getType(), actions[random.nextInt(actions.length)])); // First Location allows for any direction of movement.
         } else {
+            if (state == STATE.WAITING && stateRelation.equalsIgnoreCase("move")){
+                if (response.equalsIgnoreCase("north") || response.equalsIgnoreCase("south") || response.equalsIgnoreCase("east") || response.equalsIgnoreCase("west")){
+                    DIRECTION dir = DIRECTION.getFromString(response.toLowerCase());
+                    if (dir != null){
+                        if (currentArea.canMoveInDir(dir) && currentArea.getAreaFromDir(dir) == null){
+                            currentArea.setAreaInDir(dir, new Area(dir, currentArea));
+                        }
+                        currentArea = currentArea.getAreaFromDir(dir);
+                        logAction("Moved " + response + " into a " + currentArea.getType().getName());
+                        sendMessage(n, getNewLocationText(currentArea, currentArea.getType(), actions[random.nextInt(actions.length)])); // First Location allows for any direction of movement.
+                    }
+                    return;
+                }
+            }
             sendInformativeMessage(n, "I'm unsure of what you meant by `" + response + "`. Type `_adventure help` to bring up the Help Menu."); // Placeholder until I add the moving system.
         }
     }

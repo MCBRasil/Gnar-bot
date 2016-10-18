@@ -34,7 +34,7 @@ public class AdventureCommand extends CommandExecutor {
 					adventure.sendInformativeMessage(msg, "I couldn't find anything... Sorry :no_mouth:");
 					return;
 				}
-				String r = "```XL\n";
+				String r = "```Markdown\n";
 				int count = 10;
 				if (adventure.getActionList().size() < 10){
 					count = adventure.getActionList().size();
@@ -43,7 +43,7 @@ public class AdventureCommand extends CommandExecutor {
 				Collections.reverse(list);
 				for (String s : list){
 					if (count > 0) {
-						r += "#" + count + ": " + s + "\n";
+						r += "[#" + count + "]" + s + "\n";
 						count--;
 					}else{
 						r += "```";
