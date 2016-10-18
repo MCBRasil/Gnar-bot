@@ -353,28 +353,28 @@ public class TextAdventure {
     private String getNewLocationText(Area originArea, LOCATION locationType, String action) {
 
         String r = String.format("*We find our hero, %s %s a...*\n        **%s** \n** Available Directions: **\n       <north>\n" +
-                "<west>      <east>\n" +
+                "<west>       <east>\n" +
                 "       <south>" +
                 "\n :bulb: `Use the _adventure command to go a certain direction! Example: _adventure North`", this.heroName, action, locationType.getName());
         if (originArea.canMoveNorth()) {
             r = r.replaceAll("<north>", ":arrow_up:");
         } else {
-            r = r.replaceAll("<north>", ":negative_squared_cross_mark:");
+            r = r.replaceAll("<north>", ":no_pedestrians:");
         }
         if (originArea.canMoveSouth()) {
             r = r.replaceAll("<south>", ":arrow_down:");
         } else {
-            r = r.replaceAll("<south>", ":negative_squared_cross_mark:");
+            r = r.replaceAll("<south>", ":no_pedestrians:");
         }
         if (originArea.canMoveEast()) {
             r = r.replaceAll("<east>", ":arrow_right:");
         } else {
-            r = r.replaceAll("<east>", ":negative_squared_cross_mark:");
+            r = r.replaceAll("<east>", ":no_pedestrians:");
         }
         if (originArea.canMoveWest()) {
             r = r.replaceAll("<west>", ":arrow_left:");
         } else {
-            r = r.replaceAll("<west>", ":negative_squared_cross_mark:");
+            r = r.replaceAll("<west>", ":no_pedestrians:");
         }
 
         return r;
