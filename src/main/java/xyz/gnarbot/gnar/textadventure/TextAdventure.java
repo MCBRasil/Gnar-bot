@@ -29,7 +29,7 @@ public class TextAdventure {
 
     protected enum LOCATION {
         LAKE("Lake"), RIVER("River"), FOREST("Forest"), CLEARING("Clearing"), PLAINS("Plains"),
-        MOUNTAIN("Mountain"), HILL("Hill"), HOUSE("House"), EVIL_HOUSE("House"), BEACH("Beach"),
+        MOUNTAIN("Mountain"), HILL("Hill"), HOUSE("House"), EVIL_HOUSE("House?"), BEACH("Beach"),
         DESERT("Desert"), DEAD_END("Dead End");
         private String id;
 
@@ -74,7 +74,7 @@ public class TextAdventure {
         private boolean newLocation = true;
 
         private Area areaNorth, areaSouth, areaEast, areaWest, connectedArea;
-        private boolean canMoveNorth = true, canMoveSouth = true, canMoveEast = true, canMoveWest = true;
+        private boolean canMoveNorth = true, canMoveSouth = true, canMoveEast = true, canMoveWest = true, hasEvent = false, completedEvent = true;
 
         public Area getAreaFromDir(DIRECTION dir){
             if (dir == DIRECTION.NORTH){
@@ -128,7 +128,15 @@ public class TextAdventure {
             return false;
         }
 
-        public Area getAreaNorth() {
+	    public boolean hasEvent() {
+		    return hasEvent;
+	    }
+
+	    public boolean hasCompletedEvent() {
+		    return completedEvent;
+	    }
+
+	    public Area getAreaNorth() {
             return areaNorth;
         }
 
@@ -177,7 +185,11 @@ public class TextAdventure {
         }
 
         public Area(DIRECTION prevDirection, Area previousArea) {
-            this.locationType = LOCATION.values()[random.nextInt(LOCATION.values().length)];
+	        if (random.nextInt() * 100 > 90) {
+		        this.locationType = LOCATION.values()[random.nextInt(LOCATION.values().length)];
+	        }else{
+		        this.locationType = previousArea.locationType;
+	        }
             this.prevDirect = prevDirection;
             this.connectedArea = previousArea;
             if (prevDirection == DIRECTION.NORTH) {
@@ -228,8 +240,40 @@ public class TextAdventure {
                 setAreaEast(new Area(DIRECTION.EAST, this));
                 setAreaSouth(new Area(DIRECTION.SOUTH, this));
                 setAreaWest(new Area(DIRECTION.WEST, this));
-            }
+            }else{
+	            if (random.nextInt() * 100 > 90){
+		            canMoveNorth = false;
+	            }
+	            if (random.nextInt() * 100 > 90){
+		            canMoveEast = false;
+	            }
+	            if (random.nextInt() * 100 > 90){
+		            canMoveWest = false;
+	            }
+	            if (random.nextInt() * 100 > 90){
+		            canMoveSouth = false;
+	            }
 
+	            if (locationType == LOCATION.DEAD_END){
+		            canMoveSouth = false;
+		            canMoveNorth = false;
+		            canMoveEast = false;
+		            canMoveWest = false;
+	            }
+
+	            if (prevDirect == DIRECTION.NORTH){
+		            canMoveSouth = true;
+	            }
+	            if (prevDirect == DIRECTION.EAST){
+		            canMoveWest = true;
+	            }
+	            if (prevDirect == DIRECTION.WEST){
+		            canMoveEast = true;
+	            }
+	            if (prevDirect == DIRECTION.SOUTH){
+		            canMoveNorth = true;
+	            }
+            }
         }
 
         public boolean canMoveNorth() {
@@ -309,7 +353,7 @@ public class TextAdventure {
 
     private String getNewLocationText(Area originArea, LOCATION locationType, String action) {
 
-        String r = String.format("*We find our hero, %s %s a %s*\n** Available Directions: **\n       <north>\n" +
+        String r = String.format("*We find our hero, %s %s a...*\n        **%s** \n** Available Directions: **\n       <north>\n" +
                 "<west>      <east>\n" +
                 "       <south>" +
                 "\n :bulb: `Use the _adventure command to go a certain direction! Example: _adventure North`", this.heroName, action, locationType.getName());
@@ -339,9 +383,10 @@ public class TextAdventure {
 
     public void parseResponse(Note n, String response) {
         System.out.println("Got response for " + user.getUsername() + "'s adventure: \n" + response);
-        String[] actions = new String[]{"walking into", "running towards", "swimming towards", "teleported to", "suddenly in"};
+
         if (stateRelation.equalsIgnoreCase("waitname") && this.state == STATE.WAITING_FOR_NAME) {
             setHeroName(response);
+	        String[] actions = new String[]{"walking into", "running towards", "swimming towards", "teleported to", "suddenly in"};
             lastSentMessage.updateMessage("***A new adventure begins... This is the story of... `" + heroName + "`***");
             sendMessage(n, "*A new adventure begins! This is the story of...* ***`" + heroName + "`!***");
             state = STATE.WAITING;
@@ -354,13 +399,17 @@ public class TextAdventure {
             if (state == STATE.WAITING && stateRelation.equalsIgnoreCase("move")){
                 if (response.equalsIgnoreCase("north") || response.equalsIgnoreCase("south") || response.equalsIgnoreCase("east") || response.equalsIgnoreCase("west")){
                     DIRECTION dir = DIRECTION.getFromString(response.toLowerCase());
-                    if (dir != null){
-                        if (currentArea.canMoveInDir(dir) && currentArea.getAreaFromDir(dir) == null){
+                    if (dir != null && currentArea.canMoveInDir(dir)){
+                        if (currentArea.getAreaFromDir(dir) == null){
                             currentArea.setAreaInDir(dir, new Area(dir, currentArea));
                         }
                         currentArea = currentArea.getAreaFromDir(dir);
                         logAction("Moved " + response + " into a " + currentArea.getType().getName());
-                        sendMessage(n, getNewLocationText(currentArea, currentArea.getType(), actions[random.nextInt(actions.length)])); // First Location allows for any direction of movement.
+	                    if (!currentArea.hasEvent()) {
+		                    sendMessage(n, getNewLocationText(currentArea, currentArea.getType(), "walking `" + response.toUpperCase(Locale.ENGLISH) + "` to")); // First Location allows for any direction of movement.
+	                    }
+                    }else{
+	                    sendInformativeMessage(n, "You can't move in that direction! There's something blocking your path!");
                     }
                     return;
                 }

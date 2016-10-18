@@ -7,6 +7,7 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by zacha on 10/8/2016.
@@ -36,15 +37,15 @@ public class AdventureCommand extends CommandExecutor {
 				}
 				String r = "```Markdown\n";
 				int count = 10;
+				int done = 0;
 				if (adventure.getActionList().size() < 10){
 					count = adventure.getActionList().size();
 				}
-				ArrayList<String> list = adventure.getActionList();
-				Collections.reverse(list);
+				List<String> list = adventure.getActionList().subList(adventure.getActionList().size() - 10, adventure.getActionList().size());
 				for (String s : list){
-					if (count > 0) {
-						r += "[#" + count + "]" + s + "\n";
-						count--;
+					if (done < count) {
+						r += "[#" + done + "]" + s + "\n";
+						done++;
 					}else{
 						r += "```";
 						adventure.sendInformativeMessage(msg, r);
