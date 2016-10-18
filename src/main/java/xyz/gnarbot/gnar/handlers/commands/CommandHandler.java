@@ -1,8 +1,8 @@
 package xyz.gnarbot.gnar.handlers.commands;
 
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
-import xyz.gnarbot.gnar.handlers.servers.Host;
 import xyz.gnarbot.gnar.handlers.members.Member;
+import xyz.gnarbot.gnar.handlers.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.Arrays;

@@ -2,8 +2,8 @@ package xyz.gnarbot.gnar.utils
 
 import net.dv8tion.jda.entities.Message
 import net.dv8tion.jda.exceptions.PermissionException
-import xyz.gnarbot.gnar.handlers.servers.Host
 import xyz.gnarbot.gnar.handlers.members.Member
+import xyz.gnarbot.gnar.handlers.servers.Host
 
 /**
  * Gnar's wrapper class for JDA's [Message].

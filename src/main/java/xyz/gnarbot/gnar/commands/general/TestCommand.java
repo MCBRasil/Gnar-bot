@@ -2,9 +2,9 @@ package xyz.gnarbot.gnar.commands.general;
 
 import com.google.inject.Inject;
 import org.reflections.Reflections;
-import xyz.gnarbot.gnar.handlers.servers.Host;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
+import xyz.gnarbot.gnar.handlers.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.StringJoiner;

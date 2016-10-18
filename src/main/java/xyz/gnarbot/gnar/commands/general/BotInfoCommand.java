@@ -5,10 +5,10 @@ import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.User;
 import xyz.gnarbot.gnar.Bot;
-import xyz.gnarbot.gnar.handlers.servers.Shard;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.handlers.commands.CommandHandler;
+import xyz.gnarbot.gnar.handlers.servers.Shard;
 import xyz.gnarbot.gnar.utils.BotData;
 import xyz.gnarbot.gnar.utils.Note;
 
