@@ -44,24 +44,30 @@ public class TextAdventure {
     }
 
     protected enum DIRECTION {
-        NORTH("north"), SOUTH("south"), EAST("east"), WEST("west"), FIRSTMOVE("firstmove");
+        NORTH("north", "up"), SOUTH("south", "down"), EAST("east", "right"), WEST("west", "left"), FIRSTMOVE("firstmove", "firstmove");
         private String name;
+        private String alt;
 
         public String getName() {
             return name;
         }
 
+        public String getAlt() {
+            return alt;
+        }
+
         public static DIRECTION getFromString(String dir) {
             for (DIRECTION d : values()) {
-                if (d.getName().equalsIgnoreCase(dir)) {
+                if (d.getName().equalsIgnoreCase(dir) || d.getAlt().equalsIgnoreCase(dir)) {
                     return d;
                 }
             }
             return null;
         }
 
-        DIRECTION(String name) {
+        DIRECTION(String name, String alt) {
             this.name = name;
+            this.alt = alt;
         }
     }
 
@@ -455,7 +461,8 @@ public class TextAdventure {
         } else {
             if (state == STATE.WAITING && stateRelation.equalsIgnoreCase("move")){
                 lastResponse = response;
-                if (response.equalsIgnoreCase("north") || response.equalsIgnoreCase("south") || response.equalsIgnoreCase("east") || response.equalsIgnoreCase("west")){
+                if (response.equalsIgnoreCase("up") || response.equalsIgnoreCase("down") || response.equalsIgnoreCase("left") || response.equalsIgnoreCase("right") ||
+                        response.equalsIgnoreCase("north") || response.equalsIgnoreCase("south") || response.equalsIgnoreCase("east") || response.equalsIgnoreCase("west")){
                     DIRECTION dir = DIRECTION.getFromString(response.toLowerCase());
                     if (dir != null && currentArea.canMoveInDir(dir)){
                         if (currentArea.getAreaFromDir(dir) == null){

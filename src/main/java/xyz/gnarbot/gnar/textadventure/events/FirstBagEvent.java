@@ -10,7 +10,7 @@ import xyz.gnarbot.gnar.utils.Note;
 public class FirstBagEvent extends Event{
 
 	public FirstBagEvent() {
-		super("FirstBagm", "First Bag", "Get your first bag");
+		super("FirstBag", "First Bag", "Get your first bag");
 	}
 
 	@Override

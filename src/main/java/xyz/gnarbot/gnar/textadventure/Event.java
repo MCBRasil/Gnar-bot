@@ -51,4 +51,8 @@ public class Event {
 	public void setCompletedEvent(boolean completedEvent) {
 		this.completedEvent = completedEvent;
 	}
+
+	public String toString(){
+		return "Event: " + getEventName() + " EventID: " + getEventID() + " Description: " + getEventDescription();
+	}
 }

@@ -19,6 +19,11 @@ public class Inventory{
 		return inventorySize;
 	}
 
+	public Inventory setInventorySize(int inventorySize) {
+		this.inventorySize = inventorySize;
+		return this;
+	}
+
 	public int addItem(Item item){
 		for (int slot = 0; slot < getInventorySize(); slot++){
 			if (!storage.containsKey(slot)){
@@ -35,8 +40,9 @@ public class Inventory{
 		}return null;
 	}
 
-	public void setItem(int slot, Item item){
+	public Inventory setItem(int slot, Item item){
 		storage.put(slot, item);
+		return this;
 	}
 
 }

@@ -30,3 +30,4 @@ target/classes/administrators
 *.txt
 *.png
 _data/administrators
+_data.zip
