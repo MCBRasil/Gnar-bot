@@ -76,6 +76,19 @@ public class TextAdventure {
         private Area areaNorth, areaSouth, areaEast, areaWest, connectedArea;
         private boolean canMoveNorth = true, canMoveSouth = true, canMoveEast = true, canMoveWest = true, hasEvent = false, completedEvent = true;
 
+        public boolean isNewLocation() {
+            return newLocation;
+        }
+
+        public boolean moveToThis(){
+            if (this.newLocation) {
+                this.newLocation = false;
+                return true;
+            }else{
+                return false;
+            }
+        }
+
         public Area getAreaFromDir(DIRECTION dir){
             if (dir == DIRECTION.NORTH){
                 return getAreaNorth();
@@ -295,103 +308,9 @@ public class TextAdventure {
         public LOCATION getType() {
             return this.locationType;
         }
-
     }
 
-    private class Item{
-        private int id;
-        private String itemName, itemType, itemDescription;
-        private int amount = 0;
-        public Item(String itemName, String itemType, String itemDescription, int amount){
-            this.itemName = itemName;
-            this.itemType = itemType;
-            this.itemDescription = itemDescription;
-            this.id = lastID++;
-            this.amount = amount;
-        }
 
-        public void setAmount(int amount) {
-            this.amount = amount;
-        }
-
-        public void reduceAmount(){
-            this.amount--;
-        }
-
-        public void addAmount(){
-            this.amount++;
-        }
-
-        public void reduceAmount(int amount){
-            this.amount -= amount;
-            if (this.amount < 0){
-                this.amount = 0;
-            }
-        }
-
-        public void addAmount(int amount){
-            this.amount += amount;
-        }
-
-        public int getAmount() {
-            return amount;
-        }
-
-        public int getID() {
-            return id;
-        }
-
-        public String getItemName() {
-            return itemName;
-        }
-
-        public String getItemType() {
-            return itemType;
-        }
-
-        public String getItemDescription() {
-            return itemDescription;
-        }
-    }
-
-    private class Inventory{
-        private HashMap<Integer, Item> storage = new HashMap<>();
-
-        private int inventorySize = 9;
-
-        public Inventory(int size){
-            this.inventorySize = size;
-        }
-
-        public Inventory(){
-            this.inventorySize = 9;
-        }
-
-        public int getInventorySize() {
-            return inventorySize;
-        }
-
-        public int addItem(Item item){
-            for (int slot = 0; slot < getInventorySize(); slot++){
-                if (!storage.containsKey(slot)){
-                    storage.put(slot, item);
-                    return slot;
-                }
-            }
-            return -1;
-        }
-
-        public Item getItem(int slot){
-            if (storage.containsKey(slot)){
-                return storage.get(slot);
-            }return null;
-        }
-
-        public void setItem(int slot, Item item){
-            storage.put(slot, item);
-        }
-
-    }
 
     private User user;
     private UUID gameID;
@@ -410,6 +329,8 @@ public class TextAdventure {
     private Inventory inventory;
 
     private Area currentArea, startArea;
+
+    private int areasFound = 0;
 
     public TextAdventure(User u, Note note) {
         adventures.put(u, this);
@@ -490,8 +411,10 @@ public class TextAdventure {
             stateRelation = "move";
             startArea = newArea(DIRECTION.FIRSTMOVE);
             currentArea = startArea;
+            currentArea.moveToThis();
             logAction("Decided that you would call yourself '" + getHeroName() + "'");
             sendMessage(n, getNewLocationText(currentArea, startArea.getType(), actions[random.nextInt(actions.length)])); // First Location allows for any direction of movement.
+            areasFound++;
         } else {
             if (state == STATE.WAITING && stateRelation.equalsIgnoreCase("move")){
                 if (response.equalsIgnoreCase("north") || response.equalsIgnoreCase("south") || response.equalsIgnoreCase("east") || response.equalsIgnoreCase("west")){
@@ -501,7 +424,14 @@ public class TextAdventure {
                             currentArea.setAreaInDir(dir, new Area(dir, currentArea));
                         }
                         currentArea = currentArea.getAreaFromDir(dir);
-                        logAction("Moved " + response + " into a " + currentArea.getType().getName());
+                        if (currentArea.moveToThis()){
+                            areasFound++;
+                            logAction("Moved " + response + " into a new location! It's a " + currentArea.getType().getName());
+                        }else{
+                            logAction("Moved " + response + " back into a " + currentArea.getType().getName());
+                        }
+
+
 	                    if (!currentArea.hasEvent()) {
 		                    sendMessage(n, getNewLocationText(currentArea, currentArea.getType(), "walking `" + response.toUpperCase(Locale.ENGLISH) + "` to")); // First Location allows for any direction of movement.
 	                    }
@@ -526,6 +456,7 @@ public class TextAdventure {
     public ArrayList<String> getActionList() {
         return actionList;
     }
+
 
     private Area newArea(DIRECTION direction, Area currentLocation) {
         Area a = new Area(direction, currentLocation);
