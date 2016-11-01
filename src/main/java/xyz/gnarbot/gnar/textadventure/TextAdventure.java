@@ -10,6 +10,7 @@ import java.util.*;
 public class TextAdventure {
 
     private static HashMap<User, TextAdventure> adventures = new HashMap<User, TextAdventure>();
+    private static int lastID = 0;
 
     public static TextAdventure getAdventure(User u, Note n) {
         System.out.println(u.getUsername() + " requested a Text Adventure");
@@ -297,6 +298,101 @@ public class TextAdventure {
 
     }
 
+    private class Item{
+        private int id;
+        private String itemName, itemType, itemDescription;
+        private int amount = 0;
+        public Item(String itemName, String itemType, String itemDescription, int amount){
+            this.itemName = itemName;
+            this.itemType = itemType;
+            this.itemDescription = itemDescription;
+            this.id = lastID++;
+            this.amount = amount;
+        }
+
+        public void setAmount(int amount) {
+            this.amount = amount;
+        }
+
+        public void reduceAmount(){
+            this.amount--;
+        }
+
+        public void addAmount(){
+            this.amount++;
+        }
+
+        public void reduceAmount(int amount){
+            this.amount -= amount;
+            if (this.amount < 0){
+                this.amount = 0;
+            }
+        }
+
+        public void addAmount(int amount){
+            this.amount += amount;
+        }
+
+        public int getAmount() {
+            return amount;
+        }
+
+        public int getID() {
+            return id;
+        }
+
+        public String getItemName() {
+            return itemName;
+        }
+
+        public String getItemType() {
+            return itemType;
+        }
+
+        public String getItemDescription() {
+            return itemDescription;
+        }
+    }
+
+    private class Inventory{
+        private HashMap<Integer, Item> storage = new HashMap<>();
+
+        private int inventorySize = 9;
+
+        public Inventory(int size){
+            this.inventorySize = size;
+        }
+
+        public Inventory(){
+            this.inventorySize = 9;
+        }
+
+        public int getInventorySize() {
+            return inventorySize;
+        }
+
+        public int addItem(Item item){
+            for (int slot = 0; slot < getInventorySize(); slot++){
+                if (!storage.containsKey(slot)){
+                    storage.put(slot, item);
+                    return slot;
+                }
+            }
+            return -1;
+        }
+
+        public Item getItem(int slot){
+            if (storage.containsKey(slot)){
+                return storage.get(slot);
+            }return null;
+        }
+
+        public void setItem(int slot, Item item){
+            storage.put(slot, item);
+        }
+
+    }
+
     private User user;
     private UUID gameID;
     private Long starttime;
@@ -310,6 +406,8 @@ public class TextAdventure {
 
     private String lastMessage;
     private Message lastSentMessage;
+
+    private Inventory inventory;
 
     private Area currentArea, startArea;
 
