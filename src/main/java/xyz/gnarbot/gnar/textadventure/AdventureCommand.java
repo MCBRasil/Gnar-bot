@@ -39,7 +39,8 @@ public class AdventureCommand extends CommandExecutor {
 				if (adventure.getActionList().size() < 10){
 					count = adventure.getActionList().size();
 				}
-				List<String> list = adventure.getActionList().subList(adventure.getActionList().size() - 10, adventure.getActionList().size());
+				List<String> list = (adventure.getActionList().size() > 10) ? adventure.getActionList().subList(adventure.getActionList().size() - 10, adventure.getActionList().size()) :
+						adventure.getActionList();
 				for (String s : list){
 					if (done < count) {
 						r += "[#" + done + "]" + s + "\n";
@@ -66,7 +67,7 @@ public class AdventureCommand extends CommandExecutor {
 				msg.reply(reply);
 				return;
 			}
-			adventure.parseResponse(msg, StringUtils.join(args, " "));
+			adventure.parseResponse(msg, StringUtils.join(args, " "), false);
 		}else{
 			adventure.sendLastMessage(msg, "**No response given. Use `_adventure help` for a command list.**\nSending last message:");
 		}

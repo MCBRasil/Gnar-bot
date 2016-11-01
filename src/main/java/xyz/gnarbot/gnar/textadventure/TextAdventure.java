@@ -2,6 +2,7 @@ package xyz.gnarbot.gnar.textadventure;
 
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.User;
+import xyz.gnarbot.gnar.textadventure.events.FirstBagEvent;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.text.SimpleDateFormat;
@@ -68,13 +69,19 @@ public class TextAdventure {
         BOAR, PIG, CHICKEN, MONSTER, GHOST, GHOUL;
     }
 
-    protected class Area {
+    private class Area {
         private LOCATION locationType;
         private int id;
         private boolean newLocation = true;
 
         private Area areaNorth, areaSouth, areaEast, areaWest, connectedArea;
-        private boolean canMoveNorth = true, canMoveSouth = true, canMoveEast = true, canMoveWest = true, hasEvent = false, completedEvent = true;
+        private boolean canMoveNorth = true, canMoveSouth = true, canMoveEast = true, canMoveWest = true, hasEvent = false;
+
+        private Event relatedEvent;
+
+        public Event getRelatedEvent() {
+            return relatedEvent;
+        }
 
         public boolean isNewLocation() {
             return newLocation;
@@ -83,6 +90,12 @@ public class TextAdventure {
         public boolean moveToThis(){
             if (this.newLocation) {
                 this.newLocation = false;
+                System.out.println("New location. ID: " + areasFound);
+                if (areasFound == 4){
+                    hasEvent = true;
+                    relatedEvent = new FirstBagEvent();
+                    System.out.println("Created an Event!");
+                }
                 return true;
             }else{
                 return false;
@@ -146,7 +159,7 @@ public class TextAdventure {
 	    }
 
 	    public boolean hasCompletedEvent() {
-		    return completedEvent;
+		    return (relatedEvent != null) ? relatedEvent.hasCompletedEvent() : true;
 	    }
 
 	    public Area getAreaNorth() {
@@ -332,6 +345,8 @@ public class TextAdventure {
 
     private int areasFound = 0;
 
+    private Event currentEvent;
+
     public TextAdventure(User u, Note note) {
         adventures.put(u, this);
         this.user = u;
@@ -399,9 +414,31 @@ public class TextAdventure {
         return r;
     }
 
-    public void parseResponse(Note n, String response) {
-        System.out.println("Got response for " + user.getUsername() + "'s adventure: \n" + response);
+    private void runEvent(Note n, Area area, LOCATION locationType, String action) {
+        area.getRelatedEvent().runEvent(this, n);
+        this.state = STATE.WAITING;
+        this.stateRelation = "EVENTRESPONSE";
+        this.currentEvent = area.getRelatedEvent();
+    }
 
+    public void getResponseFromEvent(Event e, String response){
+        if (e instanceof FirstBagEvent && response.equalsIgnoreCase("completed")){
+            this.inventory = new Inventory(9);
+        }
+    }
+
+    private String lastResponse;
+
+    public void parseResponse(Note n, String response, boolean fromEvent) {
+        System.out.println("Got response for " + user.getUsername() + "'s adventure: \n" + response);
+        if (state == STATE.WAITING && stateRelation.equalsIgnoreCase("EVENTRESPONSE")){
+            this.currentEvent.parseResponse(this, n, response);
+            if (this.currentEvent.hasCompletedEvent()){
+                this.stateRelation = "move";
+                sendMessage(n, getNewLocationText(currentArea, currentArea.getType(), "walking `" + lastResponse.toUpperCase(Locale.ENGLISH) + "` to"));
+            }
+            return;
+        }
         if (stateRelation.equalsIgnoreCase("waitname") && this.state == STATE.WAITING_FOR_NAME) {
             setHeroName(response);
 	        String[] actions = new String[]{"walking into", "running towards", "swimming towards", "teleported to", "suddenly in"};
@@ -417,6 +454,7 @@ public class TextAdventure {
             areasFound++;
         } else {
             if (state == STATE.WAITING && stateRelation.equalsIgnoreCase("move")){
+                lastResponse = response;
                 if (response.equalsIgnoreCase("north") || response.equalsIgnoreCase("south") || response.equalsIgnoreCase("east") || response.equalsIgnoreCase("west")){
                     DIRECTION dir = DIRECTION.getFromString(response.toLowerCase());
                     if (dir != null && currentArea.canMoveInDir(dir)){
@@ -426,15 +464,21 @@ public class TextAdventure {
                         currentArea = currentArea.getAreaFromDir(dir);
                         if (currentArea.moveToThis()){
                             areasFound++;
-                            logAction("Moved " + response + " into a new location! It's a " + currentArea.getType().getName());
+                            if (!fromEvent) {
+                                logAction("Moved " + response + " into a new location! It's a " + currentArea.getType().getName());
+                            }
                         }else{
-                            logAction("Moved " + response + " back into a " + currentArea.getType().getName());
+                            if (!fromEvent) {
+                                logAction("Moved " + response + " back into a " + currentArea.getType().getName());
+                            }
                         }
-
-
-	                    if (!currentArea.hasEvent()) {
+	                    if (!currentArea.hasEvent() || currentArea.hasCompletedEvent() || fromEvent) {
 		                    sendMessage(n, getNewLocationText(currentArea, currentArea.getType(), "walking `" + response.toUpperCase(Locale.ENGLISH) + "` to")); // First Location allows for any direction of movement.
 	                    }
+	                    else{
+                            logAction("An event occurred!");
+                            runEvent(n, currentArea, currentArea.getType(), "walking `" + response.toUpperCase(Locale.ENGLISH) + "` to");
+                        }
                     }else{
 	                    sendInformativeMessage(n, "You can't move in that direction! There's something blocking your path!");
                     }
