@@ -2,6 +2,7 @@ package xyz.gnarbot.gnar.textadventure;
 
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.User;
+import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.textadventure.events.FirstBagEvent;
 import xyz.gnarbot.gnar.utils.Note;
 
@@ -427,7 +428,7 @@ public class TextAdventure {
         return r;
     }
 
-    private void runEvent(Note n, Area area, LOCATION locationType, String action) {
+    private void runEvent(Note n, Area area) {
         area.getRelatedEvent().runEvent(this, n);
         this.state = STATE.WAITING;
         this.stateRelation = "EVENTRESPONSE";
@@ -490,8 +491,7 @@ public class TextAdventure {
 		                    sendMessage(n, getNewLocationText(currentArea, currentArea.getType(), "walking `" + response.toUpperCase(Locale.ENGLISH) + "` to")); // First Location allows for any direction of movement.
 	                    }
 	                    else{
-                            logAction("An event occurred!");
-                            runEvent(n, currentArea, currentArea.getType(), "walking `" + response.toUpperCase(Locale.ENGLISH) + "` to");
+                            runEvent(n, currentArea);
                         }
                     }else{
 	                    sendInformativeMessage(n, "You can't move in that direction! There's something blocking your path!");

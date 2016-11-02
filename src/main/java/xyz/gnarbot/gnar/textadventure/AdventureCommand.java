@@ -55,26 +55,32 @@ public class AdventureCommand extends CommandExecutor {
 				adventure.sendInformativeMessage(msg, r);
 				return;
 			}
+			if (args[0].equalsIgnoreCase("last")){
+				adventure.sendLastMessage(msg, "Sending last message as per your request~");
+				return;
+			}
 			if (args[0].equalsIgnoreCase("help")){
 				if (adventure.getInventory() == null) {
 					String reply =
-							"*Adventure Help!~*\n```XL\n" +
-									" _adventure help - This list.\n" +
-									" _adventure actions - List of previous actions.\n" +
-									" _adventure quit - Ends the adventure.\n" +
-									" _adventure setname {name} - Changes your Hero's name.\n" +
-									" _adventure {response} - Respond to a question, or do an action." +
+							"*Adventure Help!~*\n```Markdown\n" +
+									"[_adventure help](This list.)\n" +
+									"[_adventure actions](List of previous actions.)\n" +
+									"[_adventure quit](Ends the adventure.)\n" +
+									"[_adventure setname {name}](Changes your name.)\n" +
+									"[_adventure {response}](Respond to a question, or do an action.)\n	" +
+									"[_adventure last](Sends the last sent message.)"+
 									"\n```";
 					msg.reply(reply);
 				}else{
 					String reply =
-							"*Adventure Help!~*\n```XL\n" +
-									" _adventure help - This list.\n" +
-									" _adventure actions - List of previous actions.\n" +
-									" _adventure quit - Ends the adventure.\n" +
-									" _adventure setname {name} - Changes your Hero's name.\n" +
-									" _adventure {response} - Respond to a question, or do an action." +
-									" _adventure inventory - Displays your inventory."+
+							"*Adventure Help!~*\n```Markdown\n" +
+									"[_adventure help](This list.)\n" +
+									"[_adventure actions](List of previous actions.)\n" +
+									"[_adventure quit](Ends the adventure.)\n" +
+									"[_adventure setname {name}](Changes your name.)\n" +
+									"[_adventure {response}](Respond to a question, or do an action.)\n" +
+									"[_adventure last](Sends the last sent message.)\n"+
+									"[_adventure inventory](Displays your inventory.)"+
 									"\n```";
 					msg.reply(reply);
 
