@@ -272,6 +272,9 @@ public class TextAdventure {
                 setAreaEast(new Area(DIRECTION.EAST, this));
                 setAreaSouth(new Area(DIRECTION.SOUTH, this));
                 setAreaWest(new Area(DIRECTION.WEST, this));
+                if (getType() == LOCATION.DEAD_END){
+                    this.locationType = LOCATION.CLEARING;
+                }
             }else{
 	            if (random.nextInt() * 100 > 90){
 		            canMoveNorth = false;
@@ -345,13 +348,17 @@ public class TextAdventure {
     private String lastMessage;
     private Message lastSentMessage;
 
-    private Inventory inventory;
+    private Inventory inventory = null;
 
     private Area currentArea, startArea;
 
     private int areasFound = 0;
 
     private Event currentEvent;
+
+    public Inventory getInventory() {
+        return inventory;
+    }
 
     public TextAdventure(User u, Note note) {
         adventures.put(u, this);

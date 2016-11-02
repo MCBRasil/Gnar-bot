@@ -56,15 +56,29 @@ public class AdventureCommand extends CommandExecutor {
 				return;
 			}
 			if (args[0].equalsIgnoreCase("help")){
-				String reply =
-					"*Adventure Help!~*\n```XL\n"+
-					" _adventure help - This list.\n"+
-					" _adventure actions - List of previous actions.\n"+
-					" _adventure quit - Ends the adventure.\n"+
-					" _adventure setname {name} - Changes your Hero's name.\n"+
-					" _adventure {response} - Respond to a question, or do an action."+
-						"\n```";
-				msg.reply(reply);
+				if (adventure.getInventory() == null) {
+					String reply =
+							"*Adventure Help!~*\n```XL\n" +
+									" _adventure help - This list.\n" +
+									" _adventure actions - List of previous actions.\n" +
+									" _adventure quit - Ends the adventure.\n" +
+									" _adventure setname {name} - Changes your Hero's name.\n" +
+									" _adventure {response} - Respond to a question, or do an action." +
+									"\n```";
+					msg.reply(reply);
+				}else{
+					String reply =
+							"*Adventure Help!~*\n```XL\n" +
+									" _adventure help - This list.\n" +
+									" _adventure actions - List of previous actions.\n" +
+									" _adventure quit - Ends the adventure.\n" +
+									" _adventure setname {name} - Changes your Hero's name.\n" +
+									" _adventure {response} - Respond to a question, or do an action." +
+									" _adventure inventory - Displays your inventory."+
+									"\n```";
+					msg.reply(reply);
+
+				}
 				return;
 			}
 			adventure.parseResponse(msg, StringUtils.join(args, " "), false);
