@@ -4,6 +4,8 @@ import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.User;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.textadventure.events.FirstBagEvent;
+import xyz.gnarbot.gnar.textadventure.events.FirstSwordEvent;
+import xyz.gnarbot.gnar.textadventure.events.FirstSwordLewdEvent;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.text.SimpleDateFormat;
@@ -102,6 +104,16 @@ public class TextAdventure {
                     hasEvent = true;
                     relatedEvent = new FirstBagEvent();
                     System.out.println("Created an Event!");
+                }
+                if (areasFound > 6){
+                    if (random.nextInt()*100 > 80){
+                        hasEvent = true;
+                        if (getHeroName().toLowerCase().contains("lewd") || getHeroName().toLowerCase().contains("mae")){
+                            relatedEvent = new FirstSwordLewdEvent();
+                        }else {
+                            relatedEvent = new FirstSwordEvent();
+                        }
+                    }
                 }
                 return true;
             }else{
