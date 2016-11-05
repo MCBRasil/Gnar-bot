@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar.commands.general;
+package xyz.gnarbot.gnar.commands;
 
 import com.google.inject.Inject;
 import org.reflections.Reflections;

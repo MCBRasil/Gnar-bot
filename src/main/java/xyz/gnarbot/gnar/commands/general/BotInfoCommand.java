@@ -1,6 +1,5 @@
 package xyz.gnarbot.gnar.commands.general;
 
-import com.google.inject.Inject;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.User;
@@ -21,12 +20,11 @@ import java.util.stream.Collectors;
 )
 public class BotInfoCommand extends CommandExecutor
 {
-    @Inject
-    private CommandHandler commandHandler;
-    
     @Override
     public void execute(Note note, String label, String[] args)
     {
+        CommandHandler commandHandler = note.getHost().getCommandHandler();
+        
         int channels;
         int textChannels = 0;
         int voiceChannels = 0;
@@ -38,7 +36,7 @@ public class BotInfoCommand extends CommandExecutor
         
         for (Shard shard : Bot.INSTANCE.getShards())
         {
-            JDA jda = shard.getJda();
+            JDA jda = shard.getJDA();
             
             servers += jda.getGuilds().size();
             for (Guild g : jda.getGuilds())

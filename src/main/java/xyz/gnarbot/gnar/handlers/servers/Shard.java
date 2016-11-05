@@ -1,10 +1,10 @@
 package xyz.gnarbot.gnar.handlers.servers;
 
+import xyz.gnarbot.gnar.commands.general.RemindMeCommand;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.entities.Guild;
-import xyz.gnarbot.gnar.commands.fun.ASCIICommand;
-import xyz.gnarbot.gnar.commands.fun.CoinFlipCommand;
-import xyz.gnarbot.gnar.commands.fun.DialogCommand;
+import xyz.gnarbot.gnar.commands.TestCommand;
+import xyz.gnarbot.gnar.commands.fun.*;
 import xyz.gnarbot.gnar.commands.games.GameLookupCommand;
 import xyz.gnarbot.gnar.commands.games.LeagueLookupCommand;
 import xyz.gnarbot.gnar.commands.games.OverwatchLookupCommand;
@@ -41,13 +41,31 @@ public class Shard
         
         distributor.register(HelpCommand.class);
         distributor.register(InviteBotCommand.class);
+        distributor.register(PingCommand.class);
         distributor.register(MathCommand.class);
+        distributor.register(RemindMeCommand.class);
         distributor.register(GoogleCommand.class);
+        distributor.register(YoutubeCommand.class);
+        distributor.register(UptimeCommand.class);
+        distributor.register(WhoIsCommand.class);
         distributor.register(BotInfoCommand.class);
         
         distributor.register(ASCIICommand.class);
         distributor.register(CoinFlipCommand.class);
         distributor.register(DialogCommand.class);
+        distributor.register(YodaTalkCommand.class);
+        distributor.register(RollCommand.class);
+        distributor.register(PoopCommand.class);
+        distributor.register(GoodShitCommand.class);
+        distributor.register(EightBallCommand.class);
+        distributor.register(LeetifyCommand.class);
+        distributor.register(MarvelComics.class);
+        distributor.register(ProgressionCommand.class);
+        distributor.register(Rule34Command.class);
+        distributor.register(ServersSharedCommand.class);
+        distributor.register(TextToSpeechCommand.class);
+        
+        distributor.register(GraphCommand.class);
         
         distributor.register(TestCommand.class);
     
@@ -103,7 +121,7 @@ public class Shard
      * Returns the JDA API of this shard.
      * @return The JDA API of this shard.
      */
-    public JDA getJda()
+    public JDA getJDA()
     {
         return jda;
     }

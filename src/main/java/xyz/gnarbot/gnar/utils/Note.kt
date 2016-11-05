@@ -4,7 +4,6 @@ import net.dv8tion.jda.entities.Message
 import net.dv8tion.jda.exceptions.PermissionException
 import xyz.gnarbot.gnar.handlers.members.Member
 import xyz.gnarbot.gnar.handlers.servers.Host
-import java.util.function.Consumer
 
 /**
  * Gnar's wrapper class for JDA's [Message].
@@ -25,7 +24,7 @@ class Note(val host : Host, private val message : Message) : Message by message
      *
      * @return Immutable list of mentioned [Member] instances.
      */
-    override fun getMentionedUsers() : List<Member> = message.mentionedUsers.map { host.memberHandler.asMember(it) }
+    override fun getMentionedUsers() : List<Member> = mentionedUsers.map { host.memberHandler.asMember(it) }
     
     /**
      * Stylized quick-reply to a message.
@@ -33,8 +32,7 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun reply(msg : String) = Note(host, message.channel.sendMessage("__**${message.author.username}**__ \u279c $msg"))
-
+    fun reply(msg : String) = Note(host, channel.sendMessage("__**${message.author.username}**__ \u279c $msg"))
     
     /**
      * Quick-reply to a message.
@@ -42,7 +40,7 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun replyRaw(msg : String) = Note(host, message.channel.sendMessage(msg))
+    fun replyRaw(msg : String) = Note(host, channel.sendMessage(msg))
     
     /**
      * Append content and update the message.

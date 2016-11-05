@@ -28,8 +28,8 @@ public class CommandHandler extends CommandRegistry
      */
     public void recieveFrom(CommandDistributor distributor)
     {
-        distributor.getManagedCommands().forEach(this::registerCommand);
         distributor.getSingletonCommands().forEach(this::registerCommand);
+        distributor.getManagedCommands().forEach(this::registerCommand);
     }
     
     /**
@@ -85,7 +85,7 @@ public class CommandHandler extends CommandRegistry
                     }
                     catch (RuntimeException e)
                     {
-                        note.reply("Error: `" + e.toString() + "` occurred.");
+                        note.reply("Error: `" + e.getMessage() + "` occurred.");
                         e.printStackTrace();
                     }
                     
