@@ -1,21 +1,21 @@
 package xyz.gnarbot.gnar.commands.general
 
 import com.google.inject.Inject
+import xyz.gnarbot.gnar.handlers.servers.Host
+import xyz.gnarbot.gnar.handlers.members.Clearance
 import xyz.gnarbot.gnar.handlers.commands.Command
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
-import xyz.gnarbot.gnar.handlers.members.Clearance
-import xyz.gnarbot.gnar.handlers.servers.Host
 import xyz.gnarbot.gnar.utils.BotData
 import xyz.gnarbot.gnar.utils.Note
-import java.util.*
+import java.util.StringJoiner
 
 @Command(aliases = arrayOf("help", "guide"), usage = "[command]", description = "Display GN4R's list of commands.")
 class HelpCommand : CommandExecutor()
 {
-    @Inject lateinit var host : Host
-    
     override fun execute(message : Note, label : String, args : Array<out String>)
     {
+        val host = message.host
+        
         if (args.size >= 1)
         {
             val cmd : CommandExecutor? = host.commandHandler.getCommand(args[0])

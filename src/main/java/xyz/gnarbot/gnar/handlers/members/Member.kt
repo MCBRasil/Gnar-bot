@@ -16,6 +16,13 @@ class Member(private val host : Host, private val user : User) : User by user
     
     var clearance = Clearance.USER
     
+    /**
+     * Returns all roles of the member.
+     * @return All roles of the member.
+     */
+    val roles : List<Role>
+        get() = host.getRolesForUser(user)
+    
     init
     {
         isBotMaster = Bot.admins.contains(user)
@@ -39,7 +46,7 @@ class Member(private val host : Host, private val user : User) : User by user
      */
     fun hasRole(name : String) : Boolean
     {
-        host.getRolesForUser(user)?.forEach {
+        roles.forEach {
             if (it.name == name)
             {
                 return true
@@ -56,7 +63,7 @@ class Member(private val host : Host, private val user : User) : User by user
      */
     fun hasRole(role : Role) : Boolean
     {
-        host.getRolesForUser(user)?.forEach {
+       roles.forEach {
             if (it == role)
             {
                 return true
