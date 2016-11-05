@@ -9,6 +9,7 @@ import xyz.gnarbot.gnar.commands.games.GameLookupCommand;
 import xyz.gnarbot.gnar.commands.games.LeagueLookupCommand;
 import xyz.gnarbot.gnar.commands.games.OverwatchLookupCommand;
 import xyz.gnarbot.gnar.commands.general.*;
+import xyz.gnarbot.gnar.commands.polls.PollCommand;
 import xyz.gnarbot.gnar.handlers.commands.CommandDistributor;
 import xyz.gnarbot.gnar.textadventure.AdventureCommand;
 import xyz.gnarbot.gnar.textadventure.StartAdventureCommand;
@@ -75,6 +76,8 @@ public class Shard
         distributor.register(OverwatchLookupCommand.class);
         distributor.register(LeagueLookupCommand.class);
         distributor.register(GameLookupCommand.class);
+
+        distributor.register(PollCommand.class);
     }
     
     /**
