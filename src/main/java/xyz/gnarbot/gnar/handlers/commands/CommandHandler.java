@@ -1,7 +1,7 @@
 package xyz.gnarbot.gnar.handlers.commands;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-import xyz.gnarbot.gnar.handlers.members.Member;
+import xyz.gnarbot.gnar.handlers.members.User;
 import xyz.gnarbot.gnar.handlers.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
@@ -64,7 +64,7 @@ public class CommandHandler extends CommandRegistry
             String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
             
             Note note = new Note(host, event.getMessage());
-            Member member = host.getMemberHandler().asMember(event.getAuthor());
+            User user = host.getUserHandler().asUser(event.getMember());
             
             for (String cmdLabel : getRegistry().keySet())
             {
@@ -72,7 +72,7 @@ public class CommandHandler extends CommandRegistry
                 {
                     CommandExecutor cmd = getRegistry().get(cmdLabel);
     
-                    if (cmd.getClearance().getValue() > member.getClearance().getValue())
+                    if (cmd.getClearance().getValue() > user.getClearance().getValue())
                     {
                         note.reply("Insufficient permission.");
                         return;

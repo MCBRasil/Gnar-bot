@@ -6,7 +6,6 @@ import com.google.inject.Injector
 import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.entities.ChannelType
 import net.dv8tion.jda.core.entities.Guild
-import net.dv8tion.jda.core.entities.User
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 import net.dv8tion.jda.core.exceptions.PermissionException
 import net.dv8tion.jda.core.managers.GuildManager
@@ -14,9 +13,11 @@ import org.json.JSONObject
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.handlers.commands.CommandHandler
 import xyz.gnarbot.gnar.handlers.members.MemberHandler
+import xyz.gnarbot.gnar.handlers.members.User
 import xyz.gnarbot.gnar.utils.NullableJSON
 import xyz.gnarbot.gnar.utils.child
 import java.io.File
+import net.dv8tion.jda.core.entities.User as JDAUser
 
 /**
  * Represents a bot on each [Guild].
@@ -28,7 +29,7 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     lateinit var jsonObject : JSONObject
         private set
     
-    val memberHandler = MemberHandler(this)
+    val userHandler = MemberHandler(this)
     val commandHandler = CommandHandler(this)
     
     /** Dependency injection instance from Guice. */
@@ -73,11 +74,11 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
      * Attempt to ban the member from the guild.
      * @return If the bot had permission.
      */
-    fun banUser(user : User) : Boolean
+    fun ban(user : User) : Boolean
     {
         try
         {
-            guild.controller.ban(user, 0)
+            guild.controller.ban(user as JDAUser, 0)
             return true
         }
         catch (e : PermissionException)
@@ -87,14 +88,14 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     }
     
     /**
-     * Attempt to unBan the member from the guild.
+     * Attempt to un-ban the member from the guild.
      * @return If the bot had permission.
      */
-    fun unbanUser(user : User) : Boolean
+    fun unban(user : User) : Boolean
     {
         try
         {
-            guild.controller.unban(user)
+            guild.controller.unban(user as JDAUser)
             return true
         }
         catch (e : PermissionException)
@@ -107,11 +108,45 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
      * Attempt to kick the member from the guild.
      * @return If the bot had permission.
      */
-    fun kickUser(user : User) : Boolean
+    fun kick(user : User) : Boolean
     {
         try
         {
-            guild.controller.kick(user.name)
+            guild.controller.kick(user)
+            return true
+        }
+        catch (e : PermissionException)
+        {
+            return false
+        }
+    }
+    
+    /**
+     * Attempt to mute the member in the guild.
+     * @return If the bot had permission.
+     */
+    fun mute(user : User) : Boolean
+    {
+        try
+        {
+            guild.controller.setMute(user, true)
+            return true
+        }
+        catch (e : PermissionException)
+        {
+            return false
+        }
+    }
+    
+    /**
+     * Attempt to unmute the member in the guild.
+     * @return If the bot had permission.
+     */
+    fun unmute(user : User) : Boolean
+    {
+        try
+        {
+            guild.controller.setMute(user, false)
             return true
         }
         catch (e : PermissionException)
@@ -129,7 +164,7 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
         {
             bind(Guild::class.java).toInstance(guild)
             bind(CommandHandler::class.java).toInstance(commandHandler)
-            bind(MemberHandler::class.java).toInstance(memberHandler)
+            bind(MemberHandler::class.java).toInstance(userHandler)
             bind(Host::class.java).toInstance(this@Host)
             bind(Shard::class.java).toInstance(shard)
             bind(JDA::class.java).toInstance(jda)

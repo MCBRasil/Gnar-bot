@@ -1,7 +1,8 @@
 package xyz.gnarbot.gnar.utils
 
 import net.dv8tion.jda.core.entities.Message
-import xyz.gnarbot.gnar.handlers.members.Member
+import net.dv8tion.jda.core.requests.RestAction
+import xyz.gnarbot.gnar.handlers.members.User
 import xyz.gnarbot.gnar.handlers.servers.Host
 
 /**
@@ -12,18 +13,18 @@ import xyz.gnarbot.gnar.handlers.servers.Host
 class Note(val host : Host, private val message : Message) : Message by message
 {
     /**
-     * The author of this Message as a [Member] instance.
+     * The author of this Message as a [User] instance.
      *
      * @return Message author as Member.
      */
-    override fun getAuthor() : Member = host.memberHandler.asMember(message.author)
+    override fun getAuthor() : User = host.userHandler.asUser(message.author)
     
     /**
-     * Get mentioned users of this Message as [Member] instances.
+     * Get mentioned users of this Message as [User] instances.
      *
-     * @return Immutable list of mentioned [Member] instances.
+     * @return Immutable list of mentioned [User] instances.
      */
-    override fun getMentionedUsers() : List<Member> = mentionedUsers.map { host.memberHandler.asMember(it) }
+    override fun getMentionedUsers() : List<User> = message.mentionedUsers.map { host.userHandler.asUser(it) }
     
     /**
      * Stylized quick-reply to a message.
@@ -40,6 +41,11 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @return The Message created by this function.
      */
     fun replyRaw(msg : String) = Note(host, channel.sendMessage(msg).block())
+    
+    override fun editMessage(newContent : Message?) : RestAction<Message>
+    {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
     
     /**
      * @return String representation of the note.

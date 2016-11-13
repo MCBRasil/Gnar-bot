@@ -1,27 +1,9 @@
+.idea/
 
-data/.DS_Store
+_data/
 
-*.json
+target/
 
 *.xml
 
-
-*.class
-
-*.iml
-
-*.kotlin_module
-
-
-.DS_Store
-
-.idea/.name
-
-*.properties
-
-data/administrators
-*.jar
-target/classes/administrators
-*.jpg
-*.txt
-*.png
+plot.png

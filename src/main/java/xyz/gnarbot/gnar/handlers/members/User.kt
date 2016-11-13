@@ -1,42 +1,50 @@
 package xyz.gnarbot.gnar.handlers.members
 
+import net.dv8tion.jda.core.entities.Member
 import net.dv8tion.jda.core.entities.Role
 import net.dv8tion.jda.core.entities.User
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.handlers.servers.Host
 
 /**
- * Bot's wrapper class for JDA's [User].
+ * Bot's wrapper class for JDA's [Member].
  *
- * @see User
+ * @see Member
  */
-class Member(private val host : Host, private val user : User) : User by user
+class User(private val host : Host, private val member : Member) : User by member.user, Member by member
 {
     val isBotMaster : Boolean
     
     var clearance = Clearance.USER
     
-    /**
-     * Returns all roles of the member.
-     * @return All roles of the member.
-     */
-    val roles : List<Role>
-        get() = host.getRolesByName(user.name, false)
-    
     init
     {
-        isBotMaster = Bot.admins.contains(user)
+        isBotMaster = Bot.admins.contains(member.user)
         
         // Automatically assign permission.
         clearance = when
         {
             isBot -> Clearance.BOT
             isBotMaster -> Clearance.BOT_MASTER
-            user == host.owner -> Clearance.SERVER_OWNER
+            member == host.owner -> Clearance.SERVER_OWNER
             hasRole("Bot Commander") -> Clearance.BOT_COMMANDER
             else -> Clearance.USER
         }
     }
+    
+    /**
+     * The JDA instance.
+     *
+     * @return The current JDA instance.
+     */
+    override fun getJDA() = member.jda
+    
+    /**
+     * Retrieve a Mention for this User.
+     *
+     * @return A resolvable mention.
+     */
+    override fun getAsMention() = member.asMention
     
     /**
      * Check if the member have a role named [name].
@@ -61,22 +69,13 @@ class Member(private val host : Host, private val user : User) : User by user
      * @param role Role.
      * @return If the member have the role [role].
      */
-    fun hasRole(role : Role) : Boolean
-    {
-       roles.forEach {
-            if (it == role)
-            {
-                return true
-            }
-        }
-        return false
-    }
+    fun hasRole(role : Role) : Boolean = roles.contains(role)
     
     /**
      * @return String representation of the member.
      */
     override fun toString() : String
     {
-        return "Member(id=${user.id}, name=\"${user.name}\", guild=\"${host.name}\", clearance=$clearance)"
+        return "Member(id=$id, name=\"$name\", guild=\"${host.name}\", clearance=$clearance)"
     }
 }

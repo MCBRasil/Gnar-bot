@@ -1,18 +1,18 @@
 package xyz.gnarbot.gnar.handlers.members;
 
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.Member;
 import xyz.gnarbot.gnar.handlers.servers.Host;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Handle {@link Member Member} instances.
+ * Handle {@link User Member} instances.
  */
 public class MemberHandler
 {
     private final Host host;
-    private final Map<User, Member> registry = new HashMap<>();
+    private final Map<Member, User> registry = new HashMap<>();
     
     public MemberHandler(Host host)
     {
@@ -23,7 +23,7 @@ public class MemberHandler
      * Returns the wrapper mapping registry.
      * @return The wrapper mapping registry.
      */
-    public Map<User, Member> getRegistry()
+    public Map<Member, User> getRegistry()
     {
         return registry;
     }
@@ -31,20 +31,36 @@ public class MemberHandler
     /**
      * Lazily wrap users in a Member instance.
      *
-     * @param user JDA user.
-     * @return Member instance.
+     * @param member JDA member.
+     * @return User instance.
      */
-    public Member asMember(User user)
+    public User asUser(Member member)
     {
-        if (user == null) return null;
+        if (member == null) return null;
         
-        Member member = getRegistry().get(user);
-        if (member == null)
+        User user = getRegistry().get(member);
+        if (user == null)
         {
-            member = new Member(host, user);
-            getRegistry().put(user, member);
+            user = new User(host, member);
+            getRegistry().put(member, user);
         }
         
-        return member;
+        return user;
+    }
+    
+    /**
+     * Lazily wrap users in a Member instance.
+     *
+     * @param user0 JDA user.
+     * @return User instance.
+     */
+    public User asUser(net.dv8tion.jda.core.entities.User user0)
+    {
+        if (user0 == null) return null;
+        
+        Member member = host.getMember(user0);
+    
+        return asUser(member);
     }
 }
+

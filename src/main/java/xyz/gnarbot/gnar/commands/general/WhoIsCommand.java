@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import net.dv8tion.jda.core.entities.Game;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
-import xyz.gnarbot.gnar.handlers.members.Member;
+import xyz.gnarbot.gnar.handlers.members.User;
 import xyz.gnarbot.gnar.handlers.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
@@ -30,7 +30,7 @@ public class WhoIsCommand extends CommandExecutor
             return;
         }
         
-        Member user = message.getMentionedUsers().get(0);
+        User user = message.getMentionedUsers().get(0);
         
         if (user == null)
         {

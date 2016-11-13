@@ -1,7 +1,7 @@
 package xyz.gnarbot.gnar.handlers.members
 
 /**
- * Clearance levels for [Member] for use by the bot.
+ * Clearance levels for [User] for use by the bot.
  */
 enum class Clearance(val value : Int)
 {

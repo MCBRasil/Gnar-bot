@@ -8,7 +8,7 @@ import net.dv8tion.jda.core.utils.SimpleLog
 import xyz.gnarbot.gnar.handlers.servers.Shard
 import xyz.gnarbot.gnar.utils.readProperties
 import java.io.File
-import java.util.*
+import java.util.Date
 import java.util.concurrent.Executors
 import kotlin.jvm.JvmStatic as static
 
@@ -48,7 +48,12 @@ object Bot
         
         for (id in 0 .. num_shards - 1)
         {
-            val jda = JDABuilder(AccountType.BOT).setToken(token).setGame(Game.of("_help | _invite")).useSharding(id, num_shards).buildBlocking()
+            val jda = JDABuilder(AccountType.BOT).run {
+                setToken(token)
+                setGame(Game.of("_help | _invite"))
+                if (num_shards > 1) useSharding(id, num_shards)
+                buildBlocking()
+            }
             
             adminIDs.map { jda.getUserById(it) }.forEach { admins += it }
             

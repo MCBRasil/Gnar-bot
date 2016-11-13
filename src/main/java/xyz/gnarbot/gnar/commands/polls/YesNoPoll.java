@@ -1,27 +1,16 @@
 package xyz.gnarbot.gnar.commands.polls;
 
-import net.dv8tion.jda.client.managers.EmoteManager;
-import net.dv8tion.jda.core.entities.Emote;
-import sun.nio.cs.UnicodeEncoder;
-import sun.text.normalizer.UnicodeMatcher;
 import xyz.gnarbot.gnar.Bot;
-import xyz.gnarbot.gnar.handlers.members.Member;
+import xyz.gnarbot.gnar.handlers.members.User;
 import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.Utils;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-
-/**
- * Created by zacha on 11/5/2016.
- */
 public class YesNoPoll extends Poll{
 
-	private Member startingUser;
+	private User startingUser;
 	private ScheduledFuture runTask;
 
 	private int pollid;
@@ -79,23 +68,20 @@ public class YesNoPoll extends Poll{
 				}
 			}
 		}, 1, 1, TimeUnit.SECONDS);
-		Bot.INSTANCE.getScheduler().schedule(new Runnable() {
-			@Override
-			public void run() {
-				repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingUser.getName() + "** `(Poll ID: " + getPollid() + ")`\n\n" +
-						":paperclip: Question:\n" +
-						"        ╚ " + question + "\n\n" +
-						":clock1: Time Left:\n" +
-						"        ╚ **Voting Over**\n\n" +
-						":gem: Votes:\n" +
-						"        ╠ ❌ - No  [0 Votes]\n" +
-						"        ╚ ✅ - Yes [0 Votes]").queue();
-				repliedMessage.replyRaw(":exclamation: Poll `#" + getPollid() +"` by " + startingUser.getName() + " has finished! Check above for the results!");
-				startingUser.getPrivateChannel().sendMessage(":exclamation: Your poll in <#" + n.getChannel().getId() + "> has ended! Go check it's results!");
-				runTask.cancel(true);
-				return;
-			}
-		}, minutes*60+5, TimeUnit.SECONDS);
+		Bot.INSTANCE.getScheduler().schedule(() ->
+		{
+            repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingUser.getName() + "** `(Poll ID: " + getPollid() + ")`\n\n" +
+                    ":paperclip: Question:\n" +
+                    "        ╚ " + question + "\n\n" +
+                    ":clock1: Time Left:\n" +
+                    "        ╚ **Voting Over**\n\n" +
+                    ":gem: Votes:\n" +
+                    "        ╠ ❌ - No  [0 Votes]\n" +
+                    "        ╚ ✅ - Yes [0 Votes]").queue();
+            repliedMessage.replyRaw(":exclamation: Poll `#" + getPollid() +"` by " + startingUser.getName() + " has finished! Check above for the results!");
+            startingUser.getPrivateChannel().sendMessage(":exclamation: Your poll in <#" + n.getChannel().getId() + "> has ended! Go check it's results!");
+            runTask.cancel(true);
+        }, minutes*60+5, TimeUnit.SECONDS);
 	}
 
 	public int getPollid() {
