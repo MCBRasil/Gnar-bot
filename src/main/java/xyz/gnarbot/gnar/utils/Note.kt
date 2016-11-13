@@ -1,7 +1,6 @@
 package xyz.gnarbot.gnar.utils
 
-import net.dv8tion.jda.entities.Message
-import net.dv8tion.jda.exceptions.PermissionException
+import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.handlers.members.Member
 import xyz.gnarbot.gnar.handlers.servers.Host
 
@@ -32,7 +31,7 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun reply(msg : String) = Note(host, channel.sendMessage("__**${message.author.username}**__ \u279c $msg"))
+    fun reply(msg : String) = Note(host, channel.sendMessage("__**${message.author.name}**__ \u279c $msg").block())
     
     /**
      * Quick-reply to a message.
@@ -40,30 +39,10 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun replyRaw(msg : String) = Note(host, channel.sendMessage(msg))
-    
-    /**
-     * Append content and update the message.
-     *
-     * @param append The text to append.
-     * @return The updated Message.
-     */
-    fun updateAppend(append : String) = Note(host, updateMessage(content + append))
-    
-    /**
-     * Quietly try to delete a message.
-     */
-    override fun deleteMessage()
-    {
-        try
-        {
-            message.deleteMessage()
-        }
-        catch (ignore : PermissionException) {}
-    }
+    fun replyRaw(msg : String) = Note(host, channel.sendMessage(msg).block())
     
     /**
      * @return String representation of the note.
      */
-    override fun toString() = "Note(id=$id, author=${author.username}, content=\"$content\")"
+    override fun toString() = "Note(id=$id, author=${author.name}, content=\"$content\")"
 }

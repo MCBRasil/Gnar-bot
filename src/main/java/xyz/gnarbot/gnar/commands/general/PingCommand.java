@@ -16,7 +16,7 @@ public class PingCommand extends CommandExecutor
     @Override
     public void execute(Note message, String label, String[] args)
     {
-        OffsetDateTime sentTime = message.getTime();
+        OffsetDateTime sentTime = message.getCreationTime();
         OffsetDateTime responseTime = OffsetDateTime.now();
         
         message.reply("Response time: `" + Math.abs(sentTime.until(responseTime, ChronoUnit.MILLIS)) + "ms`.");

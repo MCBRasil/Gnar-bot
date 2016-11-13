@@ -7,7 +7,7 @@ import xyz.gnarbot.gnar.handlers.commands.Command
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
 import xyz.gnarbot.gnar.handlers.members.Clearance
 import xyz.gnarbot.gnar.utils.Note
-import java.util.StringJoiner
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 @Command(aliases = arrayOf("progress"), clearance = Clearance.BOT_MASTER, showInHelp = false)
@@ -73,7 +73,7 @@ class ProgressionCommand : CommandExecutor()
     
             list.forEachIndexed { i, s ->
                 Bot.scheduler.schedule({
-                    msg.updateMessage(list[i])
+                    msg.editMessage(list[i]).queue()
                 }, i + 1L, TimeUnit.SECONDS)
             }
         }

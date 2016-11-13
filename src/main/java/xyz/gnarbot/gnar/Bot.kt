@@ -1,8 +1,10 @@
 package xyz.gnarbot.gnar
 
-import net.dv8tion.jda.JDABuilder
-import net.dv8tion.jda.entities.User
-import net.dv8tion.jda.utils.SimpleLog
+import net.dv8tion.jda.core.AccountType
+import net.dv8tion.jda.core.JDABuilder
+import net.dv8tion.jda.core.entities.Game
+import net.dv8tion.jda.core.entities.User
+import net.dv8tion.jda.core.utils.SimpleLog
 import xyz.gnarbot.gnar.handlers.servers.Shard
 import xyz.gnarbot.gnar.utils.readProperties
 import java.io.File
@@ -46,16 +48,7 @@ object Bot
         
         for (id in 0 .. num_shards - 1)
         {
-            val jda = JDABuilder().run {
-                if (num_shards > 1) useSharding(id, num_shards)
-                setBotToken(token)
-                setAutoReconnect(true)
-                buildBlocking()
-            }
-            
-            jda.accountManager.setUsername("GNAR")
-            jda.accountManager.setGame("_help | _invite")
-            jda.accountManager.update()
+            val jda = JDABuilder(AccountType.BOT).setToken(token).setGame(Game.of("_help | _invite")).useSharding(id, num_shards).buildBlocking()
             
             adminIDs.map { jda.getUserById(it) }.forEach { admins += it }
             

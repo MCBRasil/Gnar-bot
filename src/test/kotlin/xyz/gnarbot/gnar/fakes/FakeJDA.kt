@@ -1,9 +1,11 @@
-package xyz.gnarbot.gnar.fakes
+/*package xyz.gnarbot.gnar.fakes
 
-import net.dv8tion.jda.entities.TextChannel
-import net.dv8tion.jda.entities.impl.JDAImpl
+import net.dv8tion.jda.core.AccountType
+import net.dv8tion.jda.core.entities.TextChannel
+import net.dv8tion.jda.core.entities.impl.JDAImpl
 
-object FakeJDA : JDAImpl(false, false, false)
+
+object FakeJDA : JDAImpl(AccountType.BOT)
 {
     override fun getTextChannelById(id : String?) : TextChannel = FakeTextChannel
-}
+}*/

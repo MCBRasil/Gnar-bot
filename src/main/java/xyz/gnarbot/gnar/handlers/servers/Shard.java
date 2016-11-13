@@ -1,8 +1,7 @@
 package xyz.gnarbot.gnar.handlers.servers;
 
-import xyz.gnarbot.gnar.commands.general.RemindMeCommand;
-import net.dv8tion.jda.JDA;
-import net.dv8tion.jda.entities.Guild;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.Guild;
 import xyz.gnarbot.gnar.commands.TestCommand;
 import xyz.gnarbot.gnar.commands.fun.*;
 import xyz.gnarbot.gnar.commands.games.GameLookupCommand;

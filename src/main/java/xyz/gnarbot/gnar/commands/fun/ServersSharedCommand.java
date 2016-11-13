@@ -1,6 +1,6 @@
 package xyz.gnarbot.gnar.commands.fun;
 
-import net.dv8tion.jda.entities.Guild;
+import net.dv8tion.jda.core.entities.Guild;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
@@ -23,7 +23,7 @@ public class ServersSharedCommand extends CommandExecutor
         {
             for(Guild g : shard.getJDA().getGuilds())
             {
-                if(g.getUsers().contains(message.getAuthor()))
+                if(g.getMembers().contains(message.getAuthor()))
                 {
                     total++;
                     servers += "    **Server:** " + g.getName() + "\n";

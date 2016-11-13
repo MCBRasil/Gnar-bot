@@ -1,6 +1,6 @@
 package xyz.gnarbot.gnar.handlers.members;
 
-import net.dv8tion.jda.entities.User;
+import net.dv8tion.jda.core.entities.User;
 import xyz.gnarbot.gnar.handlers.servers.Host;
 
 import java.util.HashMap;

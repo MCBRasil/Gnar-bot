@@ -1,15 +1,8 @@
 package xyz.gnarbot.gnar.commands.games;
 
-import org.apache.commons.lang3.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
-import xyz.gnarbot.gnar.utils.Utils;
-
-import java.util.StringJoiner;
 
 @Command(
         aliases = {"league", "lol"},
@@ -21,6 +14,9 @@ public class LeagueLookupCommand extends CommandExecutor
     @Override
     public void execute(Note note, String label, String[] args)
     {
+        note.reply("This will be fixed once Maeyrl stops being a lazy shit.");
+
+        /*
         StringJoiner joiner = new StringJoiner("");
         try
         {
@@ -120,6 +116,6 @@ public class LeagueLookupCommand extends CommandExecutor
 //                message.getChannel().sendMessage(mb.build());
 //            }
 //            catch (Exception ignore) {}
-//        }
+//        }*/
     }
 }

@@ -1,6 +1,6 @@
 package xyz.gnarbot.gnar.commands.general;
 
-import net.dv8tion.jda.entities.Message;
+import net.dv8tion.jda.core.entities.Message;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -61,8 +61,8 @@ public class GoogleCommand extends CommandExecutor
                 break;
             }
             
-            if (!links.isEmpty()) msg.updateMessage(joiner.toString());
-            else msg.updateMessage(String.format("%s ➜ No results for `%s`.", note.getAuthor().getAsMention(), query));
+            if (!links.isEmpty()) msg.editMessage(joiner.toString());
+            else msg.editMessage(String.format("%s ➜ No results for `%s`.", note.getAuthor().getAsMention(), query));
         }
         catch (IOException e)
         {

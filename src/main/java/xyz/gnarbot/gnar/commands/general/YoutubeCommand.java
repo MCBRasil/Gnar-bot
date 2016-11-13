@@ -37,7 +37,7 @@ public class YoutubeCommand extends CommandExecutor
             JSONObject jsonObject = Utils.jsonFromUrl(url);
             
             String videoID = jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("id").getString("videoId");
-            message.getChannel().sendMessage("https://www.youtube.com/watch?v=" + videoID);
+            message.getChannel().sendMessage("https://www.youtube.com/watch?v=" + videoID).queue();
             msg.deleteMessage();
         }
         catch (JSONException | NullPointerException e)

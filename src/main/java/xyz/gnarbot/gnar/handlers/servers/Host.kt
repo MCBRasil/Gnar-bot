@@ -3,12 +3,13 @@ package xyz.gnarbot.gnar.handlers.servers
 import com.google.inject.AbstractModule
 import com.google.inject.Guice
 import com.google.inject.Injector
-import net.dv8tion.jda.JDA
-import net.dv8tion.jda.entities.Guild
-import net.dv8tion.jda.entities.User
-import net.dv8tion.jda.events.message.MessageReceivedEvent
-import net.dv8tion.jda.exceptions.PermissionException
-import net.dv8tion.jda.managers.GuildManager
+import net.dv8tion.jda.core.JDA
+import net.dv8tion.jda.core.entities.ChannelType
+import net.dv8tion.jda.core.entities.Guild
+import net.dv8tion.jda.core.entities.User
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent
+import net.dv8tion.jda.core.exceptions.PermissionException
+import net.dv8tion.jda.core.managers.GuildManager
 import org.json.JSONObject
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.handlers.commands.CommandHandler
@@ -45,7 +46,7 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     /** Hanldles incoming message events.*/
     fun handleMessageEvent(event : MessageReceivedEvent)
     {
-        if (event.isPrivate) return
+        if (event.isFromType(ChannelType.PRIVATE)) return
         commandHandler.callCommand(event)
     }
     
@@ -76,7 +77,7 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     {
         try
         {
-            ban(user, 0)
+            guild.controller.ban(user, 0)
             return true
         }
         catch (e : PermissionException)
@@ -93,7 +94,7 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     {
         try
         {
-            unBan(user)
+            guild.controller.unban(user)
             return true
         }
         catch (e : PermissionException)
@@ -110,41 +111,7 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     {
         try
         {
-            kick(user)
-            return true
-        }
-        catch (e : PermissionException)
-        {
-            return false
-        }
-    }
-    
-    /**
-     * Attempt to mute the member from the guild.
-     * @return If the bot had permission.
-     */
-    fun muteUser(user : User) : Boolean
-    {
-        try
-        {
-            mute(user)
-            return true
-        }
-        catch (e : PermissionException)
-        {
-            return false
-        }
-    }
-    
-    /**
-     * Attempt to unmute the member from the guild.
-     * @return If the bot had permission.
-     */
-    fun unmuteUser(user : User) : Boolean
-    {
-        try
-        {
-            unmute(user)
+            guild.controller.kick(user.name)
             return true
         }
         catch (e : PermissionException)

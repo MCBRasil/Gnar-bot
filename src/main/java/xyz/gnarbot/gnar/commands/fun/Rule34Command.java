@@ -24,6 +24,7 @@ public class Rule34Command extends CommandExecutor
     @Override
     public void execute(Note message, String label, String[] args)
     {
+
         if(message.getAuthor().hasRole("Fucking Teemo")) {
             String tag = "";
             try {

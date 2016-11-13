@@ -1,7 +1,7 @@
 package xyz.gnarbot.gnar.commands.general;
 
 import com.google.inject.Inject;
-import net.dv8tion.jda.entities.Game;
+import net.dv8tion.jda.core.entities.Game;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.handlers.members.Member;
@@ -41,13 +41,13 @@ public class WhoIsCommand extends CommandExecutor
         StringBuilder mainBuilder = new StringBuilder();
         
         
-        String nickname = host.getNicknameForUser(user);
-        Game game = user.getCurrentGame();
+        String nickname = message.getGuild().getMember(user).getNickname();
+        Game game = message.getGuild().getMember(user).getGame();
         String avatarID = user.getAvatarId();
         
         StringJoiner metaBuilder = new StringJoiner("\n");
         metaBuilder.add("\u258C ID _________ " + user.getId());
-        metaBuilder.add("\u258C Name _______ " + user.getUsername());
+        metaBuilder.add("\u258C Name _______ " + user.getName());
         metaBuilder.add("\u258C Nickname ___ " + (nickname != null ? nickname : "None"));
         metaBuilder.add("\u258C Game _______ " + (game != null ? game.getName() : "None"));
         metaBuilder.add("\u258C Avatar _____ " + (avatarID != null ? avatarID : "Error"));

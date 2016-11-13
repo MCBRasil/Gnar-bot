@@ -45,13 +45,13 @@ class MathCommand : CommandExecutor()
                     {
                         "-bool", "-boolean" ->
                         {
-                            _reply.updateAppend("as a `Boolean`.")
+                            //_reply.updateAppend("as a `Boolean`.")
                             reply("Final answer: `${if (result == 0.0) false else true}`")
                             return@apply
                         }
                         "-int", "-integer" ->
                         {
-                            _reply.updateAppend(" as an `Integer`.")
+                            //_reply.updateAppend(" as an `Integer`.")
                             reply("Final answer: `${result.toInt()}`")
                             return@apply
                         }

@@ -1,13 +1,11 @@
 package xyz.gnarbot.gnar.commands.polls;
 
-import net.dv8tion.jda.entities.Message;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.members.Member;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 
 /**
@@ -33,9 +31,9 @@ public class YesNoPoll extends Poll{
 	@Override
 	public void startPoll() {
 
-		System.out.println(n.getAuthor().getUsername() + " created a new poll");
+		System.out.println(n.getAuthor().getName() + " created a new poll");
 		startingUser = n.getAuthor();
-		final Note repliedMessage = n.replyRaw(":pushpin: *A new poll has been started by* **" + startingUser.getUsername() + "** `(Poll ID: " + getPollid() + ")`\n\n" +
+		final Note repliedMessage = n.replyRaw(":pushpin: *A new poll has been started by* **" + startingUser.getName() + "** `(Poll ID: " + getPollid() + ")`\n\n" +
 				":paperclip: Question:\n" +
 				"        ╚ " + question + "\n\n"+
 				":clock1: Time Left:\n" +
@@ -55,19 +53,14 @@ public class YesNoPoll extends Poll{
 						minutesInst--;
 					}
 					if (seconds == 0 || seconds == 15 || seconds == 30 || seconds == 45) {
-						repliedMessage.updateMessageAsync(":pushpin: *A new poll has been started by* **" + startingUser.getUsername() + "** `(Poll ID: " + getPollid() + ")`\n\n" +
+						repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingUser.getName() + "** `(Poll ID: " + getPollid() + ")`\n\n" +
 								":paperclip: Question:\n" +
 								"        ╚ " + question + "\n\n" +
 								":clock1: Time Left:\n" +
 								"        ╚ " + minutesInst + " minute(s) " + seconds + " second(s)\n\n" +
 								":gem: Options:\n" +
 								"        ╠ :x: - No\n" +
-								"        ╚ :white_check_mark: - Yes", new Consumer<Message>() {
-							@Override
-							public void accept(Message message) {
-
-							}
-						});
+								"        ╚ :white_check_mark: - Yes");
 					}
 				}
 			}
@@ -75,20 +68,16 @@ public class YesNoPoll extends Poll{
 		Bot.INSTANCE.getScheduler().schedule(new Runnable() {
 			@Override
 			public void run() {
-				repliedMessage.updateMessageAsync(":pushpin: *A new poll has been started by* **" + startingUser.getUsername() + "** `(Poll ID: " + getPollid() + ")`\n\n" +
+				repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingUser.getName() + "** `(Poll ID: " + getPollid() + ")`\n\n" +
 						":paperclip: Question:\n" +
 						"        ╚ " + question + "\n\n" +
 						":clock1: Time Left:\n" +
 						"        ╚ **Voting Over**\n\n" +
 						":gem: Options:\n" +
 						"        ╠ :x: - No\n" +
-						"        ╚ :white_check_mark: - Yes", new Consumer<Message>() {
-					@Override
-					public void accept(Message message) {
-					}
-				});
-				repliedMessage.replyRaw(":exclamation: Poll `#" + getPollid() +"` by " + startingUser.getUsername() + " has finished! Check above for the results!");
-				startingUser.getPrivateChannel().sendMessage(":exclamation: Your poll in <#" + n.getChannelId() + "> has ended! Go check it's results!");
+						"        ╚ :white_check_mark: - Yes");
+				repliedMessage.replyRaw(":exclamation: Poll `#" + getPollid() +"` by " + startingUser.getName() + " has finished! Check above for the results!");
+				startingUser.getPrivateChannel().sendMessage(":exclamation: Your poll in <#" + n.getChannel().getId() + "> has ended! Go check it's results!");
 				runTask.cancel(true);
 				return;
 			}

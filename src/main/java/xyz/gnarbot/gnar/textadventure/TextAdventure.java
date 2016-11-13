@@ -1,8 +1,7 @@
 package xyz.gnarbot.gnar.textadventure;
 
-import net.dv8tion.jda.entities.Message;
-import net.dv8tion.jda.entities.User;
-import xyz.gnarbot.gnar.Bot;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.User;
 import xyz.gnarbot.gnar.textadventure.events.FirstBagEvent;
 import xyz.gnarbot.gnar.textadventure.events.FirstSwordEvent;
 import xyz.gnarbot.gnar.textadventure.events.FirstSwordLewdEvent;
@@ -17,7 +16,7 @@ public class TextAdventure {
     private static int lastID = 0;
 
     public static TextAdventure getAdventure(User u, Note n) {
-        System.out.println(u.getUsername() + " requested a Text Adventure");
+        System.out.println(u.getName() + " requested a Text Adventure");
         if (adventures.containsKey(u)) {
             return adventures.get(u);
         } else {
@@ -383,13 +382,13 @@ public class TextAdventure {
         state = STATE.WAITING_FOR_NAME;
         stateRelation = "waitname";
         logAction("Started your adventure...");
-        System.out.println("Started new Text Adventure for " + u.getUsername() + " (ID: " + gameID.toString() + ")");
+        System.out.println("Started new Text Adventure for " + u.getName() + " (ID: " + gameID.toString() + ")");
         sendMessage(note, "***A new adventure begins... This is the story of... `_________`***\n" +
                 "\n" +
                 "\n                        :warning:      **Response Required!**      :warning:" +
                 "\n  :bulb: :bulb: :bulb:      **What is your name, hero?**      :bulb: :bulb: :bulb:   " +
                 "\n ➜ *To answer dialog options, use the `_adventure` command!*" +
-                "\n ➜ *Example: `_adventure " + u.getUsername() + " the Great`*");
+                "\n ➜ *Example: `_adventure " + u.getName() + " the Great`*");
     }
 
     public void logAction(String action) {
@@ -456,7 +455,7 @@ public class TextAdventure {
     private String lastResponse;
 
     public void parseResponse(Note n, String response, boolean fromEvent) {
-        System.out.println("Got response for " + user.getUsername() + "'s adventure: \n" + response);
+        System.out.println("Got response for " + user.getName() + "'s adventure: \n" + response);
         if (state == STATE.WAITING && stateRelation.equalsIgnoreCase("EVENTRESPONSE")){
             this.currentEvent.parseResponse(this, n, response);
             if (this.currentEvent.hasCompletedEvent()){
@@ -468,7 +467,7 @@ public class TextAdventure {
         if (stateRelation.equalsIgnoreCase("waitname") && this.state == STATE.WAITING_FOR_NAME) {
             setHeroName(response);
 	        String[] actions = new String[]{"walking into", "running towards", "swimming towards", "teleported to", "suddenly in"};
-            lastSentMessage.updateMessage("***A new adventure begins... This is the story of... `" + heroName + "`***");
+            lastSentMessage.editMessage("***A new adventure begins... This is the story of... `" + heroName + "`***");
             sendMessage(n, "*A new adventure begins! This is the story of...* ***`" + heroName + "`!***");
             state = STATE.WAITING;
             stateRelation = "move";

@@ -59,7 +59,7 @@ public class GameLookupCommand extends CommandExecutor
             joiner.add("Thumbnail: " + jso.getString("thumb"));
             joiner.add("Description: **" + jso.getString("short_description") + "**");
             
-            message.getChannel().sendMessage(joiner.toString());
+            message.getChannel().sendMessage(joiner.toString()).queue();
         }
         catch (Exception e)
         {

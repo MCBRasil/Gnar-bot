@@ -1,7 +1,7 @@
 package xyz.gnarbot.gnar.handlers.members
 
-import net.dv8tion.jda.entities.Role
-import net.dv8tion.jda.entities.User
+import net.dv8tion.jda.core.entities.Role
+import net.dv8tion.jda.core.entities.User
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.handlers.servers.Host
 
@@ -21,7 +21,7 @@ class Member(private val host : Host, private val user : User) : User by user
      * @return All roles of the member.
      */
     val roles : List<Role>
-        get() = host.getRolesForUser(user)
+        get() = host.getRolesByName(user.name, false)
     
     init
     {
@@ -77,6 +77,6 @@ class Member(private val host : Host, private val user : User) : User by user
      */
     override fun toString() : String
     {
-        return "Member(id=${user.id}, name=\"${user.username}\", guild=\"${host.name}\", clearance=$clearance)"
+        return "Member(id=${user.id}, name=\"${user.name}\", guild=\"${host.name}\", clearance=$clearance)"
     }
 }

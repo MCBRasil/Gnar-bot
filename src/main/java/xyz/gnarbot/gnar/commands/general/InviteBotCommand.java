@@ -1,6 +1,5 @@
 package xyz.gnarbot.gnar.commands.general;
 
-import net.dv8tion.jda.Permission;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.BotData;
@@ -15,6 +14,8 @@ public class InviteBotCommand extends CommandExecutor
     @Override
     public void execute(Note note, String label, String[] args)
     {
-        note.replyRaw("**" + BotData.randomQuote() + "** Want some Gnar on your server?!\n**0Auth Link:** " + note.getJDA().getSelfInfo().getAuthUrl(Permission.ADMINISTRATOR));
+        String tempLink = "https://discordapp.com/oauth2/authorize?client_id=201492375653056512&scope=bot&permissions=8";
+
+        note.replyRaw("**" + BotData.randomQuote() + "** Want some Gnar on your server?!\n**0Auth Link:** " + tempLink);
     }
 }

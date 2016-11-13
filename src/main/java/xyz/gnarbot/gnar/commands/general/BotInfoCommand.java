@@ -1,8 +1,8 @@
 package xyz.gnarbot.gnar.commands.general;
 
-import net.dv8tion.jda.JDA;
-import net.dv8tion.jda.entities.Guild;
-import net.dv8tion.jda.entities.User;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
@@ -33,6 +33,7 @@ public class BotInfoCommand extends CommandExecutor
         int offline = 0;
         int online = 0;
         int inactive = 0;
+        int dnd = 0;
         
         for (Shard shard : Bot.INSTANCE.getShards())
         {
@@ -41,7 +42,7 @@ public class BotInfoCommand extends CommandExecutor
             servers += jda.getGuilds().size();
             for (Guild g : jda.getGuilds())
             {
-                for (User u : g.getUsers())
+                for (Member u : g.getMembers())
                 {
                     switch (u.getOnlineStatus())
                     {
@@ -51,12 +52,15 @@ public class BotInfoCommand extends CommandExecutor
                         case OFFLINE:
                             offline++;
                             break;
-                        case AWAY:
+                        case IDLE:
                             inactive++;
+                            break;
+                        case DO_NOT_DISTURB:
+                            dnd++;
                             break;
                     }
                 }
-                users += g.getUsers().size();
+                users += g.getMembers().size();
                 textChannels += g.getTextChannels().size();
                 voiceChannels += g.getVoiceChannels().size();
             }
@@ -88,8 +92,10 @@ public class BotInfoCommand extends CommandExecutor
         joiner.add("\u258C  - Online ___ " + online);
         joiner.add("\u258C  - Offline __ " + offline);
         joiner.add("\u258C  - Inactive _ " + inactive);
+        joiner.add("\u258C  - DND _ " + dnd);
         joiner.add("\u258C");
         joiner.add("\u258C Creator _____ Avalon & Maeyrl");
+        joiner.add("\u258C Conributor __ Gatt");
         joiner.add("\u258C Website _____ gnarbot.xyz");
         joiner.add("\u258C Commands ____ " + commandSize);
         joiner.add("\u258C Library _____ JDA");
@@ -97,6 +103,6 @@ public class BotInfoCommand extends CommandExecutor
         
         note.reply("**" + BotData.randomQuote() + "** Here is all of my information!");
         
-        note.getChannel().sendMessage("```xl\n" + joiner.toString() + "```\n");
+        note.getChannel().sendMessage("```xl\n" + joiner.toString() + "```\n").queue();
     }
 }
