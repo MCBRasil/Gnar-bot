@@ -1,7 +1,7 @@
 package xyz.gnarbot.gnar.utils
 
 import net.dv8tion.jda.core.entities.Message
-import net.dv8tion.jda.core.requests.RestAction
+import net.dv8tion.jda.core.exceptions.PermissionException
 import xyz.gnarbot.gnar.handlers.members.User
 import xyz.gnarbot.gnar.handlers.servers.Host
 
@@ -15,9 +15,9 @@ class Note(val host : Host, private val message : Message) : Message by message
     /**
      * The author of this Message as a [User] instance.
      *
-     * @return Message author as Member.
+     * @return Message author as User.
      */
-    override fun getAuthor() : User = host.userHandler.asUser(message.author)
+    override fun getAuthor() : User? = host.userHandler.asUser(message.author)
     
     /**
      * Get mentioned users of this Message as [User] instances.
@@ -42,13 +42,22 @@ class Note(val host : Host, private val message : Message) : Message by message
      */
     fun replyRaw(msg : String) = Note(host, channel.sendMessage(msg).block())
     
-    override fun editMessage(newContent : Message?) : RestAction<Message>
+    fun delete() : Boolean
     {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        try
+        {
+            deleteMessage().block()
+            return true
+        }
+        catch(e : PermissionException)
+        {
+            return false
+        }
     }
+    
     
     /**
      * @return String representation of the note.
      */
-    override fun toString() = "Note(id=$id, author=${author.name}, content=\"$content\")"
+    override fun toString() = "Note(id=$id, author=${author?.name}, content=\"$content\")"
 }

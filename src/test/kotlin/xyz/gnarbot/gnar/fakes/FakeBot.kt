@@ -8,13 +8,11 @@ object FakeBot
     @JvmStatic val LOG = SimpleLog.getLog("Fake-Bot")!!
     @JvmStatic val PLOG = SimpleLog.getLog("Fake-Bot | Private")!!
     
-    private val shard = Shard(0, null)
-    private val host = shard.getHost(null)
+    private val shard = Shard(0, FakeJDA)
+    private val host = shard.getHost(FakeGuild)
     
     fun send(string : String)
     {
-        //host.handleMessageEvent(FakeMessage.createEvent(string))
+        host.handleMessageEvent(FakeMessage.createEvent(string))
     }
-    
-    
 }

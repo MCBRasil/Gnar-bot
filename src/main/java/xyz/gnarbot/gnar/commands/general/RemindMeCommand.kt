@@ -41,7 +41,7 @@ class RemindMeCommand : CommandExecutor()
                 message.reply("**${BotData.randomQuote()}** I'll be reminding you in __$time ${timeUnit.toString().toLowerCase()}__.")
                 
                 Bot.scheduler.schedule({
-                    message.author.privateChannel?.sendMessage("**REMINDER:** You requested to be reminded about this __$time ${timeUnit.toString().toLowerCase()}__ ago:\n```\n$string```")
+                    message.author?.privateChannel?.sendMessage("**REMINDER:** You requested to be reminded about this __$time ${timeUnit.toString().toLowerCase()}__ ago:\n```\n$string```")
                 }, time.toLong(), timeUnit)
                 
             }
