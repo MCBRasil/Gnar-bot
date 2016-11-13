@@ -14,6 +14,7 @@ import javax.net.ssl.X509TrustManager;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 
@@ -48,7 +49,15 @@ public class Utils
     public static void sendReaction(Message message, String encodedEmoji)
     {
         try{
-            Unirest.put("https://canary.discordapp.com/api/v6/channels/"+message.getChannel().getId()+"/messages/"+message.getId()+"/reactions/"+encodedEmoji+"/@me")
+            Unirest.put("https://discordapp.com/api/v6/channels/"+message.getChannel().getId()+"/messages/"+message.getId()+"/reactions/"+encodedEmoji+"/@me")
+                    .header("Authorization", message.getJDA().getToken())
+                    .asJsonAsync();
+        }catch(Exception e){}
+    }
+    public static void sendReactionAutoEncode(Message message, String encodedEmoji)
+    {
+        try{
+            Unirest.put("https://discordapp.com/api/v6/channels/"+message.getChannel().getId()+"/messages/"+message.getId()+"/reactions/"+ URLEncoder.encode(encodedEmoji, "UTF-8")+"/@me")
                     .header("Authorization", message.getJDA().getToken())
                     .asJsonAsync();
         }catch(Exception e){}
@@ -57,7 +66,7 @@ public class Utils
     public static void sendReaction(Message message, Emote emote)
     {
         try{
-            Unirest.put("https://canary.discordapp.com/api/v6/channels/"+message.getChannel().getId()+"/messages/"+message.getId()+"/reactions/"+emote.getName()+":"+emote.getId()+"/@me")
+            Unirest.put("https://discordapp.com/api/v6/channels/"+message.getChannel().getId()+"/messages/"+message.getId()+"/reactions/"+emote.getName()+":"+emote.getId()+"/@me")
                     .header("Authorization", message.getJDA().getToken())
                     .asJsonAsync();
         }catch(Exception e){}

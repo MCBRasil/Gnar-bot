@@ -1,9 +1,17 @@
 package xyz.gnarbot.gnar.commands.polls;
 
+import net.dv8tion.jda.client.managers.EmoteManager;
+import net.dv8tion.jda.core.entities.Emote;
+import sun.nio.cs.UnicodeEncoder;
+import sun.text.normalizer.UnicodeMatcher;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.members.Member;
 import xyz.gnarbot.gnar.utils.Note;
+import xyz.gnarbot.gnar.utils.Utils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -41,11 +49,18 @@ public class YesNoPoll extends Poll{
 				":gem: Options:\n" +
 				"        ╠ :x: - No\n" +
 				"        ╚ :white_check_mark: - Yes");
+		System.out.println(repliedMessage.getId());
+		Utils.sendReactionAutoEncode(repliedMessage, "❌");
 		runTask = Bot.INSTANCE.getScheduler().scheduleAtFixedRate(new Runnable() {
 			int minutesInst = minutes;
 			int seconds = 0;
+			int timetaken = 0;
 			@Override
 			public void run() {
+				timetaken++;
+				if (timetaken == 1){
+					Utils.sendReactionAutoEncode(repliedMessage, "✅");
+				}
 				if (minutesInst >= 0){
 					seconds--;
 					if (seconds <= 0){
