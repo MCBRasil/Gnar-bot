@@ -28,12 +28,12 @@ public class ReactToMessageCommand extends CommandExecutor
     {
         if (args.length < 2)
         {
-            message.reply("Well that sounds fantastic! I'll just react to th-... You didn't give me anything to work with. *(I need two arguments, the first being a Message's ID and the second being the emoji.)*");
+            message.reply("**" + BotData.randomQuote() + "** Well that sounds fantastic! I'll just react to th-... You didn't give me anything to work with. *(I need two arguments, the first being a Message's ID and the second being the emoji.)*");
             return;
         }
         String msgid = args[0];
         String reaction = args[1];
-        final Note msg = message.reply("Searching for Message with ID `" + msgid + "`.");
+        final Note msg = message.reply("**" + BotData.randomQuote() + "** Searching for Message with ID `" + msgid + "`.");
         try {
             Message m = msg.getChannel().getMessageById(msgid).block();
             if (message.getEmotes().size() > 0){
@@ -56,7 +56,7 @@ public class ReactToMessageCommand extends CommandExecutor
                         }
                     }, 10, TimeUnit.SECONDS);
                 } else {
-                    msg.editMessage("Oops. Something happened when I tried to react to that message. Maybe it wasn't a valid emoji? I'm not sure.").queue();
+                    msg.editMessage("**" + BotData.randomQuote() + "** Oops. Something happened when I tried to react to that message. Maybe it wasn't a valid emoji? I'm not sure.").queue();
                     Bot.INSTANCE.getScheduler().schedule(new Runnable() {
                         @Override
                         public void run() {
@@ -66,7 +66,7 @@ public class ReactToMessageCommand extends CommandExecutor
                 }
             }
         }catch (RateLimitedException e){
-            msg.editMessage("Oops. I couldn't find that message within this channel. You sure you got the right place?").queue();
+            msg.editMessage("**" + BotData.randomQuote() + "** Oops. I couldn't find that message within this channel. You sure you got the right place?").queue();
             Bot.INSTANCE.getScheduler().schedule(new Runnable() {
                 @Override
                 public void run() {
