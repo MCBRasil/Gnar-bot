@@ -47,20 +47,23 @@ public class Utils
     }
 
     public static void sendReaction(Message message, String encodedEmoji)
-    {
-        try{
-            Unirest.put("https://discordapp.com/api/v6/channels/"+message.getChannel().getId()+"/messages/"+message.getId()+"/reactions/"+encodedEmoji+"/@me")
-                    .header("Authorization", message.getJDA().getToken())
-                    .asJsonAsync();
-        }catch(Exception e){}
-    }
-    public static void sendReactionAutoEncode(Message message, String encodedEmoji)
+{
+    try{
+        Unirest.put("https://discordapp.com/api/v6/channels/"+message.getChannel().getId()+"/messages/"+message.getId()+"/reactions/"+encodedEmoji+"/@me")
+                .header("Authorization", message.getJDA().getToken())
+                .asJsonAsync();
+    }catch(Exception e){}
+}
+    public static boolean sendReactionAutoEncode(Message message, String encodedEmoji)
     {
         try{
             Unirest.put("https://discordapp.com/api/v6/channels/"+message.getChannel().getId()+"/messages/"+message.getId()+"/reactions/"+ URLEncoder.encode(encodedEmoji, "UTF-8")+"/@me")
                     .header("Authorization", message.getJDA().getToken())
                     .asJsonAsync();
-        }catch(Exception e){}
+            return true;
+        }catch(Exception e){
+            return false;
+        }
     }
 
     public static void sendReaction(Message message, Emote emote)

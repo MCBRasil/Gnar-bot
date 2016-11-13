@@ -46,9 +46,8 @@ public class YesNoPoll extends Poll{
 				"        ╚ " + question + "\n\n"+
 				":clock1: Time Left:\n" +
 				"        ╚ " + minutes + " minute(s) 0 second(s)\n\n" +
-				":gem: Options:\n" +
-				"        ╠ :x: - No\n" +
-				"        ╚ :white_check_mark: - Yes");
+				"        ╠ ❌ - No  [0 Votes]\n" +
+				"        ╚ ✅ - Yes [0 Votes]");
 		System.out.println(repliedMessage.getId());
 		Utils.sendReactionAutoEncode(repliedMessage, "❌");
 		runTask = Bot.INSTANCE.getScheduler().scheduleAtFixedRate(new Runnable() {
@@ -73,9 +72,9 @@ public class YesNoPoll extends Poll{
 								"        ╚ " + question + "\n\n" +
 								":clock1: Time Left:\n" +
 								"        ╚ " + minutesInst + " minute(s) " + seconds + " second(s)\n\n" +
-								":gem: Options:\n" +
-								"        ╠ :x: - No\n" +
-								"        ╚ :white_check_mark: - Yes").queue();
+								":gem: Votes:\n" +
+								"        ╠ ❌ - No  [0 Votes]\n" +
+								"        ╚ ✅ - Yes [0 Votes]").queue();
 					}
 				}
 			}
@@ -88,9 +87,9 @@ public class YesNoPoll extends Poll{
 						"        ╚ " + question + "\n\n" +
 						":clock1: Time Left:\n" +
 						"        ╚ **Voting Over**\n\n" +
-						":gem: Options:\n" +
-						"        ╠ :x: - No\n" +
-						"        ╚ :white_check_mark: - Yes").queue();;
+						":gem: Votes:\n" +
+						"        ╠ ❌ - No  [0 Votes]\n" +
+						"        ╚ ✅ - Yes [0 Votes]").queue();
 				repliedMessage.replyRaw(":exclamation: Poll `#" + getPollid() +"` by " + startingUser.getName() + " has finished! Check above for the results!");
 				startingUser.getPrivateChannel().sendMessage(":exclamation: Your poll in <#" + n.getChannel().getId() + "> has ended! Go check it's results!");
 				runTask.cancel(true);

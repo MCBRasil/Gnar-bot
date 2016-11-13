@@ -64,6 +64,7 @@ public class Shard
         distributor.register(Rule34Command.class);
         distributor.register(ServersSharedCommand.class);
         distributor.register(TextToSpeechCommand.class);
+        distributor.register(ReactToMessageCommand.class);
         
         distributor.register(GraphCommand.class);
         
