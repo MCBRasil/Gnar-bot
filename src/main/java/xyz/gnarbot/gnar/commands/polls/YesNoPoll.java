@@ -60,7 +60,7 @@ public class YesNoPoll extends Poll{
 								"        ╚ " + minutesInst + " minute(s) " + seconds + " second(s)\n\n" +
 								":gem: Options:\n" +
 								"        ╠ :x: - No\n" +
-								"        ╚ :white_check_mark: - Yes");
+								"        ╚ :white_check_mark: - Yes").queue();
 					}
 				}
 			}
@@ -75,7 +75,7 @@ public class YesNoPoll extends Poll{
 						"        ╚ **Voting Over**\n\n" +
 						":gem: Options:\n" +
 						"        ╠ :x: - No\n" +
-						"        ╚ :white_check_mark: - Yes");
+						"        ╚ :white_check_mark: - Yes").queue();;
 				repliedMessage.replyRaw(":exclamation: Poll `#" + getPollid() +"` by " + startingUser.getName() + " has finished! Check above for the results!");
 				startingUser.getPrivateChannel().sendMessage(":exclamation: Your poll in <#" + n.getChannel().getId() + "> has ended! Go check it's results!");
 				runTask.cancel(true);

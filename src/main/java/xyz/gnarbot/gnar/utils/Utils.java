@@ -1,5 +1,8 @@
 package xyz.gnarbot.gnar.utils;
 
+import com.mashape.unirest.http.Unirest;
+import net.dv8tion.jda.core.entities.Emote;
+import net.dv8tion.jda.core.entities.Message;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,6 +10,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -40,7 +44,25 @@ public class Utils
         }
         catch (Exception ignore) {}
     }
-    
+
+    public static void sendReaction(Message message, String encodedEmoji)
+    {
+        try{
+            Unirest.put("https://canary.discordapp.com/api/v6/channels/"+message.getChannel().getId()+"/messages/"+message.getId()+"/reactions/"+encodedEmoji+"/@me")
+                    .header("Authorization", message.getJDA().getToken())
+                    .asJsonAsync();
+        }catch(Exception e){}
+    }
+
+    public static void sendReaction(Message message, Emote emote)
+    {
+        try{
+            Unirest.put("https://canary.discordapp.com/api/v6/channels/"+message.getChannel().getId()+"/messages/"+message.getId()+"/reactions/"+emote.getName()+":"+emote.getId()+"/@me")
+                    .header("Authorization", message.getJDA().getToken())
+                    .asJsonAsync();
+        }catch(Exception e){}
+    }
+
     private static String readAll(Reader rd) throws IOException
     {
         StringBuilder sb = new StringBuilder();

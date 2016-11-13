@@ -17,9 +17,9 @@ public class PollCommand extends CommandExecutor {
 	public void execute(Note msg, String label, String[] args) {
 		if (args.length == 0 || (args.length > 0 && args[0].equalsIgnoreCase("help"))){
 			String reply =
-					"*Poll System Help!~*\n {} = Required Arguments  |  () = Optional Arguments```Markdown\n" +
-							"[_poll help](This list.)\n" +
-							"[_poll startyesno {time} {question}](Start a Yes/No Poll for \"time\" minutes.)" +
+					"Poll System Help!~\n {} = Required Arguments  |  () = Optional Arguments```ini\n" +
+							"[_poll help] This list\n" +
+							"[_poll startyesno {time} {question}] Start a Yes/No Poll for \"time\" minutes." +
 							"\n```";
 			msg.reply(reply);
 			return;

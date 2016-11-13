@@ -18,6 +18,12 @@ public class AdventureCommand extends CommandExecutor {
 	public void execute(Note msg, String label, String[] args) {
 		TextAdventure adventure = TextAdventure.getAdventure(msg.getAuthor(), msg);
 		if (args.length > 0){
+			if (args[0].equalsIgnoreCase("inventory")){
+				if (adventure.getInventory() != null) {
+					msg.reply("");
+					return;
+				}
+			}
 			if (args[0].equalsIgnoreCase("setname")){
 				if (args.length > 1){
 					String oldname = adventure.getHeroName();
@@ -64,25 +70,25 @@ public class AdventureCommand extends CommandExecutor {
 			if (args[0].equalsIgnoreCase("help")){
 				if (adventure.getInventory() == null) {
 					String reply =
-							"*Adventure Help!~*\n```Markdown\n" +
-									"[_adventure help](This list.)\n" +
-									"[_adventure actions](List of previous actions.)\n" +
-									"[_adventure quit](Ends the adventure.)\n" +
-									"[_adventure setname {name}](Changes your name.)\n" +
-									"[_adventure {response}](Respond to a question, or do an action.)\n	" +
-									"[_adventure last](Sends the last sent message.)"+
+							"*Adventure Help!~*\n```ini\n" +
+									"[_adventure help] This list.\n" +
+									"[_adventure actions] List of previous actions.\n" +
+									"[_adventure quit] Ends the adventure.\n" +
+									"[_adventure setname {name}] Changes your name.\n" +
+									"[_adventure {response}] Respond to a question, or do an action. \n" +
+									"[_adventure last] Sends the last sent message. "+
 									"\n```";
 					msg.reply(reply);
 				}else{
 					String reply =
-							"*Adventure Help!~*\n```Markdown\n" +
-									"[_adventure help](This list.)\n" +
-									"[_adventure actions](List of previous actions.)\n" +
-									"[_adventure quit](Ends the adventure.)\n" +
-									"[_adventure setname {name}](Changes your name.)\n" +
-									"[_adventure {response}](Respond to a question, or do an action.)\n" +
-									"[_adventure last](Sends the last sent message.)\n"+
-									"[_adventure inventory](Displays your inventory.)"+
+							"*Adventure Help!~*\n```ini\n" +
+									"[_adventure help] This list.\n" +
+									"[_adventure actions] List of previous actions.\n" +
+									"[_adventure quit] Ends the adventure.\n" +
+									"[_adventure setname {name}] Changes your name.\n" +
+									"[_adventure {response}] Respond to a question, or do an action.\n" +
+									"[_adventure last] Sends the last sent message.\n"+
+									"[_adventure inventory] Displays your inventory."+
 									"\n```";
 					msg.reply(reply);
 
