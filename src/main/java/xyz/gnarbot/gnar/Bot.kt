@@ -6,9 +6,10 @@ import net.dv8tion.jda.core.entities.Game
 import net.dv8tion.jda.core.entities.User
 import net.dv8tion.jda.core.utils.SimpleLog
 import xyz.gnarbot.gnar.handlers.servers.Shard
+import xyz.gnarbot.gnar.utils.Utils
 import xyz.gnarbot.gnar.utils.readProperties
 import java.io.File
-import java.util.Date
+import java.util.*
 import java.util.concurrent.Executors
 import kotlin.jvm.JvmStatic as static
 
@@ -64,6 +65,8 @@ object Bot
         }
         
         LOG.info("Bot is now connected to Discord.")
+        Utils.setLeagueInfo()
+
     }
     
     val uptime : String

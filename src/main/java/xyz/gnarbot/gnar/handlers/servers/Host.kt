@@ -6,6 +6,7 @@ import com.google.inject.Injector
 import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.entities.ChannelType
 import net.dv8tion.jda.core.entities.Guild
+import net.dv8tion.jda.core.entities.Member
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 import net.dv8tion.jda.core.exceptions.PermissionException
 import net.dv8tion.jda.core.managers.GuildManager
@@ -74,11 +75,11 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
      * Attempt to ban the member from the guild.
      * @return If the bot had permission.
      */
-    fun ban(user : User) : Boolean
+    fun ban(user : String) : Boolean
     {
         try
         {
-            guild.controller.ban(user as JDAUser, 0)
+            guild.controller.ban(user, 2).queue()
             return true
         }
         catch (e : PermissionException)
@@ -91,11 +92,11 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
      * Attempt to un-ban the member from the guild.
      * @return If the bot had permission.
      */
-    fun unban(user : User) : Boolean
+    fun unban(user : String) : Boolean
     {
         try
         {
-            guild.controller.unban(user as JDAUser)
+            guild.controller.unban(user).queue()
             return true
         }
         catch (e : PermissionException)
@@ -108,11 +109,11 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
      * Attempt to kick the member from the guild.
      * @return If the bot had permission.
      */
-    fun kick(user : User) : Boolean
+    fun kick(user : Member) : Boolean
     {
         try
         {
-            guild.controller.kick(user)
+            guild.controller.kick(user).queue()
             return true
         }
         catch (e : PermissionException)

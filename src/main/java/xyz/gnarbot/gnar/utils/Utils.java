@@ -20,6 +20,9 @@ import java.security.cert.X509Certificate;
 
 public class Utils
 {
+
+    public static JSONObject information;
+
     static
     {
         TrustManager[] trustAllCerts = new TrustManager[]
@@ -73,6 +76,21 @@ public class Utils
                     .header("Authorization", message.getJDA().getToken())
                     .asJsonAsync();
         }catch(Exception e){}
+    }
+
+    public static void setLeagueInfo() {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(new File("_DATA/league/League.txt")));
+
+            String info = "";
+
+            String line;
+            while((line=br.readLine())!=null) {
+                info += line;
+            }
+
+            information = new JSONObject(info);
+        } catch (Exception e) { }
     }
 
     private static String readAll(Reader rd) throws IOException

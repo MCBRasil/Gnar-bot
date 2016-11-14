@@ -8,6 +8,11 @@ import xyz.gnarbot.gnar.commands.games.GameLookupCommand;
 import xyz.gnarbot.gnar.commands.games.LeagueLookupCommand;
 import xyz.gnarbot.gnar.commands.games.OverwatchLookupCommand;
 import xyz.gnarbot.gnar.commands.general.*;
+import xyz.gnarbot.gnar.commands.media.*;
+import xyz.gnarbot.gnar.commands.mod.BanCommand;
+import xyz.gnarbot.gnar.commands.mod.DeleteMessagesCommand;
+import xyz.gnarbot.gnar.commands.mod.KickCommand;
+import xyz.gnarbot.gnar.commands.mod.UnbanCommand;
 import xyz.gnarbot.gnar.commands.polls.PollCommand;
 import xyz.gnarbot.gnar.handlers.commands.CommandDistributor;
 import xyz.gnarbot.gnar.textadventure.AdventureCommand;
@@ -38,7 +43,8 @@ public class Shard
         jda.addEventListener(new ShardListener(this));
     
         //distributor.registerAll("xyz.gnarbot.gnar.commands");
-        
+
+        //General Commands
         distributor.register(HelpCommand.class);
         distributor.register(InviteBotCommand.class);
         distributor.register(PingCommand.class);
@@ -49,7 +55,9 @@ public class Shard
         distributor.register(UptimeCommand.class);
         distributor.register(WhoIsCommand.class);
         distributor.register(BotInfoCommand.class);
-        
+        //End General Commands
+
+        //Fun Commands
         distributor.register(ASCIICommand.class);
         distributor.register(CoinFlipCommand.class);
         distributor.register(DialogCommand.class);
@@ -65,19 +73,46 @@ public class Shard
         distributor.register(ServersSharedCommand.class);
         distributor.register(TextToSpeechCommand.class);
         distributor.register(ReactToMessageCommand.class);
-        
+        distributor.register(ChampDataCommand.class);
+        distributor.register(DiscordBotsUserInfoCommand.class);
+        distributor.register(TriviaAnswerCommand.class);
+        distributor.register(TriviaCommand.class);
         distributor.register(GraphCommand.class);
-        
+        //End Fun Commands
+
+        //Mod Commands
+        distributor.register(BanCommand.class);
+        distributor.register(KickCommand.class);
+        distributor.register(UnbanCommand.class);
+        distributor.register(DeleteMessagesCommand.class);
+        //End Mod Commands
+
+        //Testing Commands
         distributor.register(TestCommand.class);
-    
+        //End Testing Commands
+
+        //Text Adventure Commands
         distributor.register(AdventureCommand.class);
         distributor.register(StartAdventureCommand.class);
-        
+        //End Text Adventure Commands
+
+        //Game Commands
         distributor.register(OverwatchLookupCommand.class);
         distributor.register(LeagueLookupCommand.class);
         distributor.register(GameLookupCommand.class);
+        //End Game Commands
 
+        //Poll Commands
         distributor.register(PollCommand.class);
+        //End Poll Commands
+
+        //Media Commands
+        distributor.register(CatsCommand.class);
+        distributor.register(ExplosmCommand.class);
+        distributor.register(ExplosmRCGCommand.class);
+        distributor.register(GarfieldCommand.class);
+        distributor.register(XKCDCommand.class);
+        //End Media Commands
     }
     
     /**
