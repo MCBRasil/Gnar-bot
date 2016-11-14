@@ -7,3 +7,5 @@ target/
 *.xml
 
 plot.png
+*.jar
+xyz.gnarbot.iml
