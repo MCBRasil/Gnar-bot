@@ -53,7 +53,9 @@ public abstract class CommandRegistry
             {
                 if (label.equals(command))
                 {
-                    throw new IllegalStateException("Command " + label + " is already registered.");
+                    // Removed until mae fucking fixes this shit
+                    return;
+                    //throw new IllegalStateException("Command " + label + " is already registered.");
                 }
             }
         }

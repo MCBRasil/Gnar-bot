@@ -45,8 +45,6 @@ object Bot
         LOG.info("Bot token is \"$token\".")
         LOG.info("Requesting $num_shards shards.")
         
-        val adminIDs = File("_DATA/administrators").readLines()
-        
         for (id in 0 .. num_shards - 1)
         {
             val jda = JDABuilder(AccountType.BOT).run {
@@ -58,8 +56,7 @@ object Bot
             }
     
             jda.selfUser.manager.setName("Gnar")
-            
-            adminIDs.map { jda.getUserById(it) }.forEach { admins += it }
+
             
             shards += Shard(id, jda)
         }
