@@ -45,4 +45,22 @@ public class Inventory{
 		return this;
 	}
 
+	@Override
+	public String toString(){
+		String inv = "**Inventory Contents:**\n```ini\n";
+		for (int slot = 0; slot < getInventorySize(); slot++){
+			inv += "[ Slot #" + (slot + 1) +"/" + getInventorySize()+" ] \n";
+			Item i = getItem(slot);
+			if (i != null){
+				inv += "  [Name: ] [" + i.getAmount() + "x] " + i.getItemName() +"\n";
+				inv += "  [Description: ] " + i.getItemDescription() +"\n";
+				inv += "  [Type: ] " + i.getItemType() +"\n";
+			}else{
+				inv += "  [???] No information\n";
+			}
+		}
+		inv+="```";
+		return inv;
+	}
+
 }

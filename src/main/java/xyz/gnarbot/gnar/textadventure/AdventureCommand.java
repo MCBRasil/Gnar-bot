@@ -20,7 +20,7 @@ public class AdventureCommand extends CommandExecutor {
 		if (args.length > 0){
 			if (args[0].equalsIgnoreCase("inventory")){
 				if (adventure.getInventory() != null) {
-					msg.reply("");
+					msg.reply(adventure.getInventory().toString());
 					return;
 				}
 			}

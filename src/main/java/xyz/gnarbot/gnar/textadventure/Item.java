@@ -14,6 +14,14 @@ public class Item{
 		this.amount = amount;
 	}
 
+	public Item(String itemName, String itemType, String itemDescription){
+		this.itemName = itemName;
+		this.itemType = itemType;
+		this.itemDescription = itemDescription;
+		this.id = lastID++;
+		this.amount = 1;
+	}
+
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
