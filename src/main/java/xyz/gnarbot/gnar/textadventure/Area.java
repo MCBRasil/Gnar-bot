@@ -17,9 +17,6 @@ public class Area {
 	private int id;
 	private boolean newLocation = true;
 
-	private Area areaNorth, areaSouth, areaEast, areaWest, connectedArea;
-	private boolean canMoveNorth = true, canMoveSouth = true, canMoveEast = true, canMoveWest = true, hasEvent = false;
-
 	private Event relatedEvent;
 
 	private Random random;
@@ -48,6 +45,7 @@ public class Area {
 		return relatedAdventure;
 	}
 
+	/*
 	public boolean moveToThis(){
 		if (this.newLocation) {
 			this.newLocation = false;
@@ -123,55 +121,12 @@ public class Area {
 			return true;
 		}
 		return false;
-	}
-
-	public boolean hasEvent() {
-		return hasEvent;
-	}
+	}*/
 
 	public boolean hasCompletedEvent() {
 		return (relatedEvent != null) ? relatedEvent.hasCompletedEvent() : true;
 	}
 
-	public Area getAreaNorth() {
-		return areaNorth;
-	}
-
-	public void setAreaNorth(Area areaNorth) {
-		this.areaNorth = areaNorth;
-	}
-
-	public Area getAreaSouth() {
-		return areaSouth;
-	}
-
-	public void setAreaSouth(Area areaSouth) {
-		this.areaSouth = areaSouth;
-	}
-
-	public Area getAreaEast() {
-		return areaEast;
-	}
-
-	public void setAreaEast(Area areaEast) {
-		this.areaEast = areaEast;
-	}
-
-	public Area getAreaWest() {
-		return areaWest;
-	}
-
-	public void setAreaWest(Area areaWest) {
-		this.areaWest = areaWest;
-	}
-
-	public Area getConnectedArea() {
-		return connectedArea;
-	}
-
-	public void setConnectedArea(Area connectedArea) {
-		this.connectedArea = connectedArea;
-	}
 
 	private DIRECTION prevDirect;
 
@@ -179,62 +134,6 @@ public class Area {
 		this.relatedAdventure = adventure;
 		this.locationType = location;
 		this.random = adventure.getRandom();
-		initate();
-	}
-
-	public Area(TextAdventure adventure, LOCATION location, DIRECTION prevDirection) {
-		this.relatedAdventure = adventure;
-		this.locationType = location;
-		this.prevDirect = prevDirection;
-		this.random = adventure.getRandom();
-		initate();
-	}
-
-	public Area(TextAdventure adventure, DIRECTION prevDirection, Area previousArea) {
-		this.random = adventure.getRandom();
-		this.relatedAdventure = adventure;
-		if (random.nextInt() * 100 > 90) {
-			this.locationType = LOCATION.values()[random.nextInt(LOCATION.values().length)];
-		}else{
-			this.locationType = previousArea.locationType;
-		}
-		this.prevDirect = prevDirection;
-		this.connectedArea = previousArea;
-		if (prevDirection == DIRECTION.NORTH) {
-			setAreaSouth(previousArea);
-		}
-		if (prevDirection == DIRECTION.SOUTH) {
-			setAreaNorth(previousArea);
-		}
-		if (prevDirection == DIRECTION.EAST) {
-			setAreaWest(previousArea);
-		}
-		if (prevDirection == DIRECTION.WEST) {
-			setAreaEast(previousArea);
-		}
-
-		initate();
-	}
-
-	public Area(TextAdventure adventure, LOCATION locationType, DIRECTION prevDirection, Area previousArea) {
-		this.relatedAdventure = adventure;
-		this.random = adventure.getRandom();
-		this.locationType = locationType;
-		this.prevDirect = prevDirection;
-		this.connectedArea = previousArea;
-		if (prevDirection == DIRECTION.NORTH) {
-			setAreaSouth(previousArea);
-		}
-		if (prevDirection == DIRECTION.SOUTH) {
-			setAreaNorth(previousArea);
-		}
-		if (prevDirection == DIRECTION.EAST) {
-			setAreaWest(previousArea);
-		}
-		if (prevDirection == DIRECTION.WEST) {
-			setAreaEast(previousArea);
-		}
-
 		initate();
 	}
 
@@ -299,22 +198,6 @@ public class Area {
 				canMoveNorth = true;
 			}
 		}*/
-	}
-
-	public boolean canMoveNorth() {
-		return canMoveNorth;
-	}
-
-	public boolean canMoveSouth() {
-		return canMoveSouth;
-	}
-
-	public boolean canMoveEast() {
-		return canMoveEast;
-	}
-
-	public boolean canMoveWest() {
-		return canMoveWest;
 	}
 
 	public LOCATION getType() {

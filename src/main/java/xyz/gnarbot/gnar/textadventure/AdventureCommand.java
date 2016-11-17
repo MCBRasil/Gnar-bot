@@ -1,11 +1,13 @@
 package xyz.gnarbot.gnar.textadventure;
 
 
+import net.dv8tion.jda.core.entities.Message;
 import org.apache.commons.lang3.StringUtils;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -19,7 +21,8 @@ public class AdventureCommand extends CommandExecutor {
 		TextAdventure adventure = TextAdventure.getAdventure(msg.getAuthor(), msg);
 		if (args.length > 0){
 			if (args[0].equalsIgnoreCase("map")){
-				msg.reply("Here's your map!\n" + adventure.getGrid().buildMap());
+				msg.reply("Preparing your map...");
+				adventure.getGrid().sendMap(msg);
 				return;
 			}
 			if (args[0].equalsIgnoreCase("inventory")){

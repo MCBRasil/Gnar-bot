@@ -32,8 +32,6 @@ public class TextAdventure {
         WORKING, WAITING, INTERACTING, RESPONSE_REQUIRED, WAITING_FOR_NAME;
     }
 
-
-
     private User user;
     private UUID gameID;
     private Long starttime;
@@ -60,6 +58,10 @@ public class TextAdventure {
 
     public AdventureGrid getGrid() {
         return grid;
+    }
+
+    public UUID getGameID() {
+        return gameID;
     }
 
     public Random getRandom() {
@@ -140,7 +142,7 @@ public class TextAdventure {
                 "<west>       <east>\n" +
                 "       <south>" +
                 "\n :bulb: `Use the _adventure command to go a certain direction! Example: _adventure North`", this.heroName, action, locationType.getName());
-        if (originArea.canMoveNorth()) {
+        /*if (originArea.canMoveNorth()) {
             r = r.replaceAll("<north>", ":arrow_up:");
         } else {
             r = r.replaceAll("<north>", ":no_pedestrians:");
@@ -159,7 +161,7 @@ public class TextAdventure {
             r = r.replaceAll("<west>", ":arrow_left:");
         } else {
             r = r.replaceAll("<west>", ":no_pedestrians:");
-        }
+        }*/
 
         return r;
     }
@@ -198,7 +200,7 @@ public class TextAdventure {
             stateRelation = "move";
             startArea = newArea(DIRECTION.FIRSTMOVE);
             currentArea = startArea;
-            currentArea.moveToThis();
+            currentArea.discover();
             logAction("Decided that you would call yourself '" + getHeroName() + "'");
             sendMessage(n, getNewLocationText(currentArea, startArea.getType(), actions[random.nextInt(actions.length)])); // First Location allows for any direction of movement.
             areasFound++;
@@ -207,7 +209,7 @@ public class TextAdventure {
                 lastResponse = response;
                 if (response.equalsIgnoreCase("up") || response.equalsIgnoreCase("down") || response.equalsIgnoreCase("left") || response.equalsIgnoreCase("right") ||
                         response.equalsIgnoreCase("north") || response.equalsIgnoreCase("south") || response.equalsIgnoreCase("east") || response.equalsIgnoreCase("west")){
-                    DIRECTION dir = DIRECTION.getFromString(response.toLowerCase());
+                    /*DIRECTION dir = DIRECTION.getFromString(response.toLowerCase());
                     if (dir != null && currentArea.canMoveInDir(dir)){
                         if (currentArea.getAreaFromDir(dir) == null){
                             currentArea.setAreaInDir(dir, new Area(this, dir, currentArea));
@@ -231,7 +233,7 @@ public class TextAdventure {
                         }
                     }else{
 	                    sendInformativeMessage(n, "You can't move in that direction! There's something blocking your path!");
-                    }
+                    }*/
                     return;
                 }
             }
@@ -249,13 +251,6 @@ public class TextAdventure {
 
     public ArrayList<String> getActionList() {
         return actionList;
-    }
-
-
-    private Area newArea(DIRECTION direction, Area currentLocation) {
-        Area a = new Area(this, direction, currentLocation);
-        areas.add(a);
-        return a;
     }
 
     private Area newArea(DIRECTION direction) {
