@@ -1,13 +1,5 @@
 package xyz.gnarbot.gnar.textadventure;
 
-import com.google.common.io.Files;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.VPos;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
-import javafx.scene.text.*;
 import net.dv8tion.jda.core.entities.Message;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.textadventure.enums.DIRECTION;
@@ -15,6 +7,8 @@ import xyz.gnarbot.gnar.textadventure.enums.LOCATION;
 import xyz.gnarbot.gnar.utils.Note;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -141,6 +135,15 @@ public class AdventureGrid {
 		}
 	}
 
+	public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
+		// Get the FontMetrics
+		FontMetrics metrics = g.getFontMetrics(font);
+		int x = (rect.width - metrics.stringWidth(text)) / 2;
+		int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
+		g.setFont(font);
+		g.drawString(text, x, y);
+		g.dispose();
+	}
 
 	public void sendMap(Note n){
 		/*String rtrn = "";
@@ -163,21 +166,25 @@ public class AdventureGrid {
 			graphics.
 			graphics.setColor(Color.BLACK);
 
-			graphics.drawString("Why tho", 128, 128);*/
+			graphics.drawString("Why tho", 128, 128);
 
-			Canvas canvas = new Canvas(getMaxSize() * 64, (getMaxSize() * 64) + 200);
+			Canvas canvas = new Canvas();
+			canvas.snapshot(null, new WritableImage(getMaxSize() * 64, (getMaxSize() * 64) + 200));
 			canvas.getGraphicsContext2D().fillRect(0, 0, canvas.getHeight(), canvas.getWidth());
-			canvas.getGraphicsContext2D().setFontSmoothingType(FontSmoothingType.GRAY);
+			canvas.getGraphicsContext2D().setFontSmoothingType(FontSmoothingType.GRAY);*/
 
-			GraphicsContext gc = canvas.getGraphicsContext2D();
-			gc.setTextAlign(TextAlignment.CENTER);
-			gc.setTextBaseline(VPos.CENTER);
-			gc.fillText(
-					getRelatedAdventure().getHeroName() + "'s Map",
-					Math.round(canvas.getWidth()  / 2),
-					Math.round(canvas.getHeight() / 2)
-			);
+			BufferedImage map = new BufferedImage(getMaxSize() * 64, (getMaxSize() * 64) + 200, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics = map.createGraphics();
+			graphics.setColor(Color.WHITE);
+			graphics.fillRect(0, 0, getMaxSize()* 64, getMaxSize()*64 + 200);
+			graphics.setFont(new Font(Font.DIALOG_INPUT, 25, 40));
+			graphics.setColor(Color.BLACK);
+			drawCenteredString(graphics, getRelatedAdventure().getHeroName() + "'s Map", new Rectangle(getMaxSize() * 64, 200), graphics.getFont());
 
+			graphics.setFont(new Font(Font.DIALOG_INPUT, 25, 40));
+			graphics.setColor(Color.BLACK);
+
+			graphics.drawString("Why tho", 128, 128);
 
 			int curX, curY;
 			int printX = 0, printY = 200;
@@ -185,32 +192,28 @@ public class AdventureGrid {
 				for (curX = 0; curX < getMaxSize(); curX++){
 					Area a = getAreaAtLocation(curX, curY);
 					if (curY == currentY && curX == currentX){
-						File posMark = new File("_data/adventureresources/locationicons/64/position-marker.png");
-						InputStream is = Files.asByteSource(posMark).openBufferedStream();
-						Image img = new Image(is);
-						canvas.getGraphicsContext2D().drawImage(img, printX, printY, 64, 64);
+						Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/position-marker.png"));
+						graphics.drawImage(img, printX, printY, 64, 64, null);
 						System.out.println("drew a position marker at " + printX + ", " + printY);
+						graphics.drawString("u", printX, printY);
 					}else{
 						if (a != null) {
 							if (a.isDiscovered()) {
-								File posMark = new File("_data/adventureresources/locationicons/64/" + a.getType().getFile() + ".png");
-								InputStream is = Files.asByteSource(posMark).openBufferedStream();
-								Image img = new Image(is);
+								Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/" + a.getType().getFile() + ".png"));
 								System.out.println("drew a " + a.getType().getFile() + " at " + printX + ", " + printY);
-								canvas.getGraphicsContext2D().drawImage(img, printX, printY, 64, 64);
+								graphics.drawImage(img, printX, printY, 64, 64, null);
+								graphics.drawString("d", printX, printY);
 							}else{
-								File posMark = new File("_data/adventureresources/locationicons/64/unknown.png");
-								InputStream is = Files.asByteSource(posMark).openBufferedStream();
-								Image img = new Image(is);
-								canvas.getGraphicsContext2D().drawImage(img, printX, printY, 64, 64);
+								Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/unknown.png"));
+								graphics.drawImage(img, printX, printY, 64, 64, null);
 								System.out.println("drew an unknown icon at " + printX + ", " + printY);
+								graphics.drawString("?", printX, printY);
 							}
 						}else{
-							File posMark = new File("_data/adventureresources/locationicons/64/unknown.png");
-							InputStream is = Files.asByteSource(posMark).openBufferedStream();
-							Image img = new Image(is);
-							canvas.getGraphicsContext2D().drawImage(img, printX, printY, 64, 64);
+							Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/unknown.png"));
+							graphics.drawImage(img, printX, printY, 64, 64, null);
 							System.out.println("drew an unknown icon at " + printX + ", " + printY);
+							graphics.drawString("?", printX, printY);
 						}
 					}
 					printX+=64;
@@ -218,17 +221,30 @@ public class AdventureGrid {
 				printX = 0;
 				printY+=64;
 			}
-			canvas.getGraphicsContext2D().save();
-			WritableImage image = canvas.snapshot(null, null);
-			BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
-			ImageIO.write(bImage, "png", mapFile);
-			try {
-				Message m = n.reply("Sending...");
-				n.getChannel().sendFile(mapFile, m).queue();
-				m.editMessage("Here's your map!").queue();
-			}catch (IOException e){
-				e.printStackTrace();
-			}
+			Bot.INSTANCE.getScheduler().schedule(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						ImageIO.write(map, "png", mapFile);
+						System.out.println("Wrote to file");
+					}catch (IOException e){
+						e.printStackTrace();
+					}
+				}
+			}, 3, TimeUnit.SECONDS);
+
+			Bot.INSTANCE.getScheduler().schedule(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						Message m = n.reply("Sending...");
+						n.getChannel().sendFile(mapFile, m).queue();
+						m.editMessage("Here's your map!").queue();
+					}catch (IOException e){
+						e.printStackTrace();
+					}
+				}
+			}, 4, TimeUnit.SECONDS);
 
 		}catch (Exception e){
 			e.printStackTrace();
