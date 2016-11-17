@@ -7,6 +7,7 @@ import xyz.gnarbot.gnar.textadventure.enums.LOCATION;
 import xyz.gnarbot.gnar.utils.Note;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
@@ -125,7 +126,7 @@ public class AdventureGrid {
 					xygrid[curX][curY] = a;
 				}else{
 					Area a = new Area(relatedAdventure);
-					if (getRelatedAdventure().getRandom().nextInt() * 100 < 6){
+					if (getRelatedAdventure().getHeroName().toLowerCase().contains("cheat")){
 						a.discover();
 					}
 					xygrid[curX][curY] = a;
@@ -142,7 +143,6 @@ public class AdventureGrid {
 		int y = ((rect.height - metrics.getHeight()) / 2) + metrics.getAscent();
 		g.setFont(font);
 		g.drawString(text, x, y);
-		g.dispose();
 	}
 
 	public void sendMap(Note n){
@@ -150,10 +150,7 @@ public class AdventureGrid {
 
 		return rtrn;*/
 		try {
-			final File mapFile = new File("_temp/adventures/maps/" + getRelatedAdventure().getGameID().toString() + "map.png");
-			if (!mapFile.exists()) {
-				mapFile.mkdirs();
-			}
+
 			/*
 			BufferedImage map = new BufferedImage(getMaxSize() * 64, (getMaxSize() * 64) + 200, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics = map.createGraphics();
@@ -173,65 +170,8 @@ public class AdventureGrid {
 			canvas.getGraphicsContext2D().fillRect(0, 0, canvas.getHeight(), canvas.getWidth());
 			canvas.getGraphicsContext2D().setFontSmoothingType(FontSmoothingType.GRAY);*/
 
-			BufferedImage map = new BufferedImage(getMaxSize() * 64, (getMaxSize() * 64) + 200, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D graphics = map.createGraphics();
-			graphics.setColor(Color.WHITE);
-			graphics.fillRect(0, 0, getMaxSize()* 64, getMaxSize()*64 + 200);
-			graphics.setFont(new Font(Font.DIALOG_INPUT, 25, 40));
-			graphics.setColor(Color.BLACK);
-			drawCenteredString(graphics, getRelatedAdventure().getHeroName() + "'s Map", new Rectangle(getMaxSize() * 64, 200), graphics.getFont());
-
-			graphics.setFont(new Font(Font.DIALOG_INPUT, 25, 40));
-			graphics.setColor(Color.BLACK);
-
-			graphics.drawString("Why tho", 128, 128);
-
-			int curX, curY;
-			int printX = 0, printY = 200;
-			for (curY = 0; curY < getMaxSize(); curY++) {
-				for (curX = 0; curX < getMaxSize(); curX++){
-					Area a = getAreaAtLocation(curX, curY);
-					if (curY == currentY && curX == currentX){
-						Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/position-marker.png"));
-						graphics.drawImage(img, printX, printY, Color.WHITE, null);
-						System.out.println("drew a position marker at " + printX + ", " + printY);
-						graphics.drawString("u", printX, printY);
-					}else{
-						if (a != null) {
-							if (a.isDiscovered()) {
-								Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/" + a.getType().getFile() + ".png"));
-								System.out.println("drew a " + a.getType().getFile() + " at " + printX + ", " + printY);
-								graphics.drawImage(img, printX, printY, Color.WHITE, null);
-								graphics.drawString("d", printX, printY);
-							}else{
-								Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/unknown.png"));
-								graphics.drawImage(img, printX, printY, Color.WHITE, null);
-								System.out.println("drew an unknown icon at " + printX + ", " + printY);
-								graphics.drawString("?", printX, printY);
-							}
-						}else{
-							Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/unknown.png"));
-							graphics.drawImage(img, printX, printY, Color.WHITE, null);
-							System.out.println("drew an unknown icon at " + printX + ", " + printY);
-							graphics.drawString("?", printX, printY);
-						}
-					}
-					printX+=64;
-				}
-				printX = 0;
-				printY+=64;
-			}
-			Bot.INSTANCE.getScheduler().schedule(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						ImageIO.write(map, "png", mapFile);
-						System.out.println("Wrote to file");
-					}catch (IOException e){
-						e.printStackTrace();
-					}
-				}
-			}, 3, TimeUnit.SECONDS);
+			ImageBuilder builder = new ImageBuilder();
+			File mapFile = builder.runBuilder();
 
 			Bot.INSTANCE.getScheduler().schedule(new Runnable() {
 				@Override
@@ -255,6 +195,105 @@ public class AdventureGrid {
 
 		}catch (Exception e){
 			e.printStackTrace();
+		}
+	}
+
+	public class ImageBuilder extends JComponent
+	{
+		private Image img;
+		private Integer x,y, resizeX, resizeY;
+
+		public ImageBuilder setImg(Image img) {
+			this.img = img;
+			return this;
+		}
+
+		public void setResizeX(Integer resizeX) {
+			this.resizeX = resizeX;
+		}
+
+		public void setResizeY(Integer resizeY) {
+			this.resizeY = resizeY;
+		}
+
+		public ImageBuilder setX(Integer x) {
+			this.x = x;
+			return this;
+		}
+
+		public ImageBuilder setY(Integer y) {
+			this.y = y;
+			return this;
+		}
+
+		public File runBuilder(){
+			final File mapFile = new File("_temp/adventures/maps/" + getRelatedAdventure().getGameID().toString() + "map.png");
+			if (!mapFile.exists()) {
+				mapFile.mkdirs();
+			}
+			try{
+				BufferedImage map = new BufferedImage(getMaxSize() * 64, (getMaxSize() * 64) + 200, BufferedImage.TYPE_INT_ARGB);
+				Graphics2D graphics = map.createGraphics();
+				graphics.setColor(Color.WHITE);
+				graphics.fillRect(0, 0, getMaxSize()* 64, getMaxSize()*64 + 200);
+				graphics.setFont(new Font(Font.DIALOG_INPUT, 25, 40));
+				graphics.setColor(Color.BLACK);
+				int curX, curY;
+				int printX = 0, printY = 200;
+				for (curY = 0; curY < getMaxSize(); curY++) {
+					for (curX = 0; curX < getMaxSize(); curX++){
+						Area a = getAreaAtLocation(curX, curY);
+						if (curY == currentY && curX == currentX){
+							Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/position-marker.png"));
+							setImg(img).setX(printX).setY(printY).paintComponent(graphics);
+							System.out.println("drew a position marker at " + printX + ", " + printY);
+						}else{
+							if (a != null) {
+								if (a.isDiscovered()) {
+									Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/" + a.getType().getFile() + ".png"));
+									setImg(img).setX(printX).setY(printY).paintComponent(graphics);
+									System.out.println("drew a " + a.getType().getFile() + " at " + printX + ", " + printY);
+								}else{
+									Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/unknown.png"));
+									setImg(img).setX(printX).setY(printY).paintComponent(graphics);
+									System.out.println("drew an unknown icon at " + printX + ", " + printY);
+								}
+							}else{
+								Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/unknown.png"));
+								setImg(img).setX(printX).setY(printY).paintComponent(graphics);
+								System.out.println("drew an unknown icon at " + printX + ", " + printY);
+							}
+						}
+						printX+=64;
+					}
+					printX = 0;
+					printY+=64;
+				}
+				Image img = ImageIO.read(new File("_data/adventureresources/locationicons/32/position-marker.png"));
+				setImg(img).setX(8).setY(8).paintComponent(graphics);
+				graphics.drawString(" This is you! Current area: " + getAreaAtLocation(getCurrentX(), getCurrentY()).getType().getName(), 16, 32);
+				Image img2 = ImageIO.read(new File("_data/adventureresources/locationicons/64/" + getAreaAtLocation(getCurrentX(), getCurrentY()).getType().getFile() + ".png"));
+				setImg(img2).setX(map.getWidth() - 32).setY(16).setResizeX(32);
+				setResizeY(32);
+				paintComponent(graphics);
+				drawCenteredString(graphics, getRelatedAdventure().getHeroName() + "'s Map", new Rectangle(getMaxSize() * 64, 200), graphics.getFont());
+				ImageIO.write(map, "png", mapFile);
+			}catch (IOException e){
+				e.printStackTrace();
+			}
+			return mapFile;
+		}
+
+		@Override
+		public void paintComponent(Graphics g)
+		{
+			super.paintComponent(g);
+			if (resizeX == null) {
+				g.drawImage(img, x, y, this); // draw background image
+			}else{
+				g.drawImage(img, x, y, resizeX, resizeY, this);
+
+			}
 		}
 	}
 }
