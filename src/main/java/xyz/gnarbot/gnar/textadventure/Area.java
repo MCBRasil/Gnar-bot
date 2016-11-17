@@ -26,6 +26,16 @@ public class Area {
 
 	private TextAdventure relatedAdventure;
 
+	private boolean discovered = false;
+
+	public boolean isDiscovered() {
+		return discovered;
+	}
+
+	public void discover(){
+		this.discovered = true;
+	}
+
 	public Event getRelatedEvent() {
 		return relatedEvent;
 	}
@@ -165,6 +175,13 @@ public class Area {
 
 	private DIRECTION prevDirect;
 
+	public Area(TextAdventure adventure, LOCATION location) {
+		this.relatedAdventure = adventure;
+		this.locationType = location;
+		this.random = adventure.getRandom();
+		initate();
+	}
+
 	public Area(TextAdventure adventure, LOCATION location, DIRECTION prevDirection) {
 		this.relatedAdventure = adventure;
 		this.locationType = location;
@@ -174,6 +191,7 @@ public class Area {
 	}
 
 	public Area(TextAdventure adventure, DIRECTION prevDirection, Area previousArea) {
+		this.random = adventure.getRandom();
 		this.relatedAdventure = adventure;
 		if (random.nextInt() * 100 > 90) {
 			this.locationType = LOCATION.values()[random.nextInt(LOCATION.values().length)];
@@ -198,7 +216,9 @@ public class Area {
 		initate();
 	}
 
-	public Area(LOCATION locationType, DIRECTION prevDirection, Area previousArea) {
+	public Area(TextAdventure adventure, LOCATION locationType, DIRECTION prevDirection, Area previousArea) {
+		this.relatedAdventure = adventure;
+		this.random = adventure.getRandom();
 		this.locationType = locationType;
 		this.prevDirect = prevDirection;
 		this.connectedArea = previousArea;
@@ -218,7 +238,16 @@ public class Area {
 		initate();
 	}
 
+	public Area(TextAdventure adventure) {
+		this.random = adventure.getRandom();
+		this.relatedAdventure = adventure;
+		this.locationType = LOCATION.values()[random.nextInt(LOCATION.values().length)];
+
+		initate();
+	}
+
 	public Area(TextAdventure adventure, DIRECTION prevDirection) {
+		this.random = adventure.getRandom();
 		this.relatedAdventure = adventure;
 		this.locationType = LOCATION.values()[random.nextInt(LOCATION.values().length)];
 		this.prevDirect = prevDirection;
@@ -227,6 +256,7 @@ public class Area {
 	}
 
 	private void initate() {
+		/*
 		if (prevDirect == DIRECTION.FIRSTMOVE) {
 			setAreaNorth(new Area(relatedAdventure, DIRECTION.NORTH, this));
 			setAreaEast(new Area(relatedAdventure, DIRECTION.EAST, this));
@@ -268,7 +298,7 @@ public class Area {
 			if (prevDirect == DIRECTION.SOUTH){
 				canMoveNorth = true;
 			}
-		}
+		}*/
 	}
 
 	public boolean canMoveNorth() {

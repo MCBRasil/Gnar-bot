@@ -18,6 +18,10 @@ public class AdventureCommand extends CommandExecutor {
 	public void execute(Note msg, String label, String[] args) {
 		TextAdventure adventure = TextAdventure.getAdventure(msg.getAuthor(), msg);
 		if (args.length > 0){
+			if (args[0].equalsIgnoreCase("map")){
+				msg.reply("Here's your map!\n" + adventure.getGrid().buildMap());
+				return;
+			}
 			if (args[0].equalsIgnoreCase("inventory")){
 				if (adventure.getInventory() != null) {
 					msg.reply(adventure.getInventory().toString());

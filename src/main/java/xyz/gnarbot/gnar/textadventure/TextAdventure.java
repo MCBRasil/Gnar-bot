@@ -56,6 +56,12 @@ public class TextAdventure {
 
     private Event currentEvent;
 
+    private AdventureGrid grid;
+
+    public AdventureGrid getGrid() {
+        return grid;
+    }
+
     public Random getRandom() {
         return random;
     }
@@ -89,12 +95,15 @@ public class TextAdventure {
     }
 
     public TextAdventure(User u, Note note) {
+
         adventures.put(u, this);
         this.user = u;
         this.starttime = System.currentTimeMillis();
         this.gameID = UUID.randomUUID();
         this.random = new Random();
         this.random.setSeed(this.starttime);
+        this.grid = new AdventureGrid(this);
+        this.grid.beginBuild();
         state = STATE.WAITING_FOR_NAME;
         stateRelation = "waitname";
         logAction("Started your adventure...");
