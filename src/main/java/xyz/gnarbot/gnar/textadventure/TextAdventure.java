@@ -105,7 +105,6 @@ public class TextAdventure {
         this.random = new Random();
         this.random.setSeed(this.starttime);
         this.grid = new AdventureGrid(this);
-        this.grid.beginBuild();
         state = STATE.WAITING_FOR_NAME;
         stateRelation = "waitname";
         logAction("Started your adventure...");
@@ -193,12 +192,13 @@ public class TextAdventure {
         }
         if (stateRelation.equalsIgnoreCase("waitname") && this.state == STATE.WAITING_FOR_NAME) {
             setHeroName(response);
+            this.grid.beginBuild();
 	        String[] actions = new String[]{"walking into", "running towards", "swimming towards", "teleported to", "suddenly in"};
             lastSentMessage.editMessage("***A new adventure begins... This is the story of... `" + heroName + "`***");
             sendMessage(n, "*A new adventure begins! This is the story of...* ***`" + heroName + "`!***");
             state = STATE.WAITING;
             stateRelation = "move";
-            startArea = newArea(DIRECTION.FIRSTMOVE);
+            startArea = this.grid.getAreaAtLocation(this.grid.getCurrentX(), this.grid.getCurrentY());
             currentArea = startArea;
             currentArea.discover();
             logAction("Decided that you would call yourself '" + getHeroName() + "'");
