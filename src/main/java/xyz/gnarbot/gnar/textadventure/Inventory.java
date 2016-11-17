@@ -51,6 +51,7 @@ public class Inventory{
 		for (int slot = 0; slot < getInventorySize(); slot++){
 			inv += "[ Slot #" + (slot + 1) +"/" + getInventorySize()+" ] \n";
 			Item i = getItem(slot);
+
 			if (i != null){
 				inv += "  [Name: ] [" + i.getAmount() + "x] " + i.getItemName() +"\n";
 				inv += "  [Description: ] " + i.getItemDescription() +"\n";
