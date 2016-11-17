@@ -150,7 +150,7 @@ public class AdventureGrid {
 
 		return rtrn;*/
 		try {
-			final File mapFile = new File("_temp/adventures/maps/" + getRelatedAdventure().getGameID().toString() + "/map.png");
+			final File mapFile = new File("_temp/adventures/maps/" + getRelatedAdventure().getGameID().toString() + "map.png");
 			if (!mapFile.exists()) {
 				mapFile.mkdirs();
 			}
@@ -193,7 +193,7 @@ public class AdventureGrid {
 					Area a = getAreaAtLocation(curX, curY);
 					if (curY == currentY && curX == currentX){
 						Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/position-marker.png"));
-						graphics.drawImage(img, printX, printY, 64, 64, null);
+						graphics.drawImage(img, printX, printY, Color.WHITE, null);
 						System.out.println("drew a position marker at " + printX + ", " + printY);
 						graphics.drawString("u", printX, printY);
 					}else{
@@ -201,17 +201,17 @@ public class AdventureGrid {
 							if (a.isDiscovered()) {
 								Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/" + a.getType().getFile() + ".png"));
 								System.out.println("drew a " + a.getType().getFile() + " at " + printX + ", " + printY);
-								graphics.drawImage(img, printX, printY, 64, 64, null);
+								graphics.drawImage(img, printX, printY, Color.WHITE, null);
 								graphics.drawString("d", printX, printY);
 							}else{
 								Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/unknown.png"));
-								graphics.drawImage(img, printX, printY, 64, 64, null);
+								graphics.drawImage(img, printX, printY, Color.WHITE, null);
 								System.out.println("drew an unknown icon at " + printX + ", " + printY);
 								graphics.drawString("?", printX, printY);
 							}
 						}else{
 							Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/unknown.png"));
-							graphics.drawImage(img, printX, printY, 64, 64, null);
+							graphics.drawImage(img, printX, printY, Color.WHITE, null);
 							System.out.println("drew an unknown icon at " + printX + ", " + printY);
 							graphics.drawString("?", printX, printY);
 						}
@@ -245,6 +245,13 @@ public class AdventureGrid {
 					}
 				}
 			}, 4, TimeUnit.SECONDS);
+			Bot.INSTANCE.getScheduler().schedule(new Runnable() {
+				@Override
+				public void run() {
+					mapFile.delete();
+					mapFile.deleteOnExit();
+				}
+			}, 10, TimeUnit.SECONDS);
 
 		}catch (Exception e){
 			e.printStackTrace();
