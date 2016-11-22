@@ -10,7 +10,7 @@ import xyz.gnarbot.gnar.utils.Utils;
 
 import java.util.Random;
 
-@Command(aliases = "wow")
+@Command(aliases = "xkcd")
 public class XKCDCommand extends CommandExecutor
 {
     @Inject

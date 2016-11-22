@@ -78,6 +78,7 @@ public class Shard
         distributor.register(TriviaAnswerCommand.class);
         distributor.register(TriviaCommand.class);
         distributor.register(GraphCommand.class);
+        distributor.register(UrbanDictionaryCommand.class);
         //End Fun Commands
 
         //Mod Commands

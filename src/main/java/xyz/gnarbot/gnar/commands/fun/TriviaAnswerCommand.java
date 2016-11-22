@@ -7,7 +7,7 @@ import xyz.gnarbot.gnar.handlers.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.TriviaQuestions;
 
-@Command(aliases = "wow")
+@Command(aliases = "answer")
 public class TriviaAnswerCommand extends CommandExecutor {
 
     @Inject

@@ -7,7 +7,7 @@ import xyz.gnarbot.gnar.handlers.servers.Host;
 import xyz.gnarbot.gnar.utils.DiscordBotUserInfo;
 import xyz.gnarbot.gnar.utils.Note;
 
-@Command(aliases = "wow")
+@Command(aliases = "dui")
 public class DiscordBotsUserInfoCommand extends CommandExecutor {
 
     @Inject
