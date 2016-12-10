@@ -45,6 +45,7 @@ public class YesNoPoll extends Poll{
 			int timetaken = 0;
 			@Override
 			public void run() {
+				System.out.println(timetaken);
 				timetaken++;
 				if (timetaken == 1){
 					Utils.sendReactionAutoEncode(repliedMessage, "✅");
@@ -55,29 +56,31 @@ public class YesNoPoll extends Poll{
 						seconds = 60;
 						minutesInst--;
 					}
-					if (seconds == 0 || seconds == 15 || seconds == 30 || seconds == 45) {
+					if (String.valueOf(seconds).contains("5") || String.valueOf(seconds).contains("0")) {
 						repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingUser.getName() + "** `(Poll ID: " + getPollid() + ")`\n\n" +
 								":paperclip: Question:\n" +
 								"        ╚ " + question + "\n\n" +
 								":clock1: Time Left:\n" +
 								"        ╚ " + minutesInst + " minute(s) " + seconds + " second(s)\n\n" +
 								":gem: Votes:\n" +
-								"        ╠ ❌ - No  [0 Votes]\n" +
-								"        ╚ ✅ - Yes [0 Votes]").queue();
+								"        ╠ ❌ - No  ["+ (repliedMessage.getReactions().get(0).getCount() - 1) +" Votes]\n" +
+								"        ╚ ✅ - Yes ["+ (repliedMessage.getReactions().get(0).getCount() - 1) +" Votes]").queue();
 					}
 				}
 			}
 		}, 1, 1, TimeUnit.SECONDS);
 		Bot.INSTANCE.getScheduler().schedule(() ->
 		{
+
+			System.out.println("lmao");
             repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingUser.getName() + "** `(Poll ID: " + getPollid() + ")`\n\n" +
                     ":paperclip: Question:\n" +
                     "        ╚ " + question + "\n\n" +
                     ":clock1: Time Left:\n" +
                     "        ╚ **Voting Over**\n\n" +
                     ":gem: Votes:\n" +
-                    "        ╠ ❌ - No  [0 Votes]\n" +
-                    "        ╚ ✅ - Yes [0 Votes]").queue();
+                    "        ╠ ❌ - No  [" + (repliedMessage.getReactions().get(0).getCount() - 1) +" Votes]\n" +
+                    "        ╚ ✅ - Yes [" + (repliedMessage.getReactions().get(0).getCount() - 1) +" Votes]").queue();
             repliedMessage.replyRaw(":exclamation: Poll `#" + getPollid() +"` by " + startingUser.getName() + " has finished! Check above for the results!");
             startingUser.getPrivateChannel().sendMessage(":exclamation: Your poll in <#" + n.getChannel().getId() + "> has ended! Go check it's results!");
             runTask.cancel(true);

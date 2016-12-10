@@ -14,6 +14,7 @@ import xyz.gnarbot.gnar.commands.mod.DeleteMessagesCommand;
 import xyz.gnarbot.gnar.commands.mod.KickCommand;
 import xyz.gnarbot.gnar.commands.mod.UnbanCommand;
 import xyz.gnarbot.gnar.commands.polls.PollCommand;
+import xyz.gnarbot.gnar.commands.polls.TestEmbedCommand;
 import xyz.gnarbot.gnar.handlers.commands.CommandDistributor;
 import xyz.gnarbot.gnar.textadventure.AdventureCommand;
 import xyz.gnarbot.gnar.textadventure.StartAdventureCommand;
@@ -114,6 +115,9 @@ public class Shard
         distributor.register(GarfieldCommand.class);
         distributor.register(XKCDCommand.class);
         //End Media Commands
+
+        // Test Commands
+        distributor.register(TestEmbedCommand.class);
     }
     
     /**
