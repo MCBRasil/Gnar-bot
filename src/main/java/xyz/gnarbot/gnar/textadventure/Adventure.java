@@ -5,6 +5,7 @@ import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
+import xyz.gnarbot.gnar.textadventure.enums.DIRECTION;
 import xyz.gnarbot.gnar.textadventure.events.FirstBagEvent;
 import xyz.gnarbot.gnar.utils.Note;
 
@@ -36,7 +37,7 @@ public class Adventure {
 				"\n                        :warning:      **Response Required!**      :warning:" +
 				"\n  :bulb: :bulb: :bulb:      **What is your name, hero?**      :bulb: :bulb: :bulb:   " +
 				"\n ➜ *To answer dialog options, use the `_adventure` command!*" +
-				"\n ➜ *Example: `_adventure " + u.getName() + " the Great`*");
+				"\n ➜ *Example: `_adventure " + u.getName() + " the Great`*", Color.WHITE);
 	}
 
 	public void logAction(String action) {
@@ -48,9 +49,9 @@ public class Adventure {
 		if (gender.equalsIgnoreCase("selecting")) {
 			return "http://i.imgur.com/HxWJti2.png";
 		}else{
-			if (gender.equalsIgnoreCase("male")){
+			if (gender.equalsIgnoreCase("boy")){
 				return "http://i.imgur.com/0Uh68PW.png";
-			}else if (gender.equalsIgnoreCase("female")){
+			}else if (gender.equalsIgnoreCase("girl")){
 				return "http://i.imgur.com/tgkBMjv.png";
 			}
 			return null;
@@ -61,10 +62,54 @@ public class Adventure {
 		this.lastMessage = message;
 		EmbedBuilder eb = new EmbedBuilder();
 		eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**").addBlankField(true).setDescription(message)
-				.setColor(new Color(39, 255, 9));
+				.setColor(getDefaultMessageColor());
 		if (getPlayerIcon() != null){
 			eb.setThumbnail(getPlayerIcon());
 		}
+		MessageEmbed embed = eb.build();
+		MessageBuilder mb = new MessageBuilder();
+		mb.setEmbed(embed);
+		Message m = mb.build();
+		n.getChannel().sendMessage(m).queue();
+		lastSentMessage = m;
+	}
+
+	public void sendMessage(Note n, String message, Color color) {
+		this.lastMessage = message;
+		EmbedBuilder eb = new EmbedBuilder();
+		eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**").addBlankField(true).setDescription(message)
+				.setColor(color);
+		if (getPlayerIcon() != null){
+			eb.setThumbnail(getPlayerIcon());
+		}
+		MessageEmbed embed = eb.build();
+		MessageBuilder mb = new MessageBuilder();
+		mb.setEmbed(embed);
+		Message m = mb.build();
+		n.getChannel().sendMessage(m).queue();
+		lastSentMessage = m;
+	}
+
+	public void sendMessage(Note n, String message, String url) {
+		this.lastMessage = message;
+		EmbedBuilder eb = new EmbedBuilder();
+		eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**").addBlankField(true).setDescription(message)
+				.setColor(getDefaultMessageColor());
+		eb.setThumbnail(url);
+		MessageEmbed embed = eb.build();
+		MessageBuilder mb = new MessageBuilder();
+		mb.setEmbed(embed);
+		Message m = mb.build();
+		n.getChannel().sendMessage(m).queue();
+		lastSentMessage = m;
+	}
+
+	public void sendMessage(Note n, String message, String url, Color color) {
+		this.lastMessage = message;
+		EmbedBuilder eb = new EmbedBuilder();
+		eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**").addBlankField(true).setDescription(message)
+				.setColor(color);
+			eb.setThumbnail(url);
 		MessageEmbed embed = eb.build();
 		MessageBuilder mb = new MessageBuilder();
 		mb.setEmbed(embed);
@@ -80,7 +125,6 @@ public class Adventure {
 	public void sendLastMessage(Note n, String extra) {
 
 		EmbedBuilder eb = new EmbedBuilder();
-		Random r = new Random();
 		eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**").addBlankField(true).setDescription(lastMessage).setThumbnail(getPlayerIcon())
 				.setColor(new Color(39, 255, 9));
 		MessageEmbed embed = eb.build();
@@ -97,7 +141,6 @@ public class Adventure {
 		}
 	}
 
-	private String lastResponse;
 
 	public void parseResponse(Note n, String response, boolean fromEvent) {
 		System.out.println("Got response for " + user.getName() + "'s adventure: \n" + response);
@@ -112,50 +155,45 @@ public class Adventure {
 			setHeroName(response);
 			this.grid.beginBuild();
 			gender = "selecting";
-			sendMessage(n, "*A new adventure begins! This is the story of...* ***`" + heroName + "`!***\n\nWait a moment... Are you a ");
+			sendMessage(n, "*A new adventure begins! This is the story of...* ***`" + heroName + "`!***\n\nWait a moment... Are you a **BOY** or a **GIRL**?", Color.WHITE);
 			state = STATE.WAITING;
 			stateRelation = "selectGender";
 			logAction("Decided that you would call yourself '" + getHeroName() + "'");
 			areasFound++;
 		} else if (stateRelation.equalsIgnoreCase("selectGender") && this.state == STATE.WAITING){
-			startArea = this.grid.getAreaAtLocation(this.grid.getCurrentX(), this.grid.getCurrentY());
-			currentArea = startArea;
-			currentArea.discover();
-			String[] actions = new String[]{"walking into", "running towards", "swimming towards", "teleported to", "suddenly in"};
+			if (response.equalsIgnoreCase("boy") || response.equalsIgnoreCase("girl")){
+				startArea = this.grid.getAreaAtLocation(this.grid.getCurrentX(), this.grid.getCurrentY());
+				setGender(response);
+				state = STATE.WAITING;
+				stateRelation = "move";
+				currentArea = startArea;
+				getGrid().getCurrentArea().discover();
+				sendMessage(n, "Ah! So you're a " + response + "! Fantastic! Let's get you started on your very own adventure!\nThe world is yours to claim! Go out and claim it!\n\n ➜ *To move, use the `_adventure` command!*\n Example: *`_adventure up`* will try to move you up\n ➜ *To view your map, use the `_adventure map` command!*");
+			}else{
+				sendMessage(n, "I'm unsure of what you meant by `" + response + "`. Type `_adventure help` to bring up the Help Menu.", Color.RED); // Placeholder until I add the moving system.
+			}
 		} else {
 			if (state == STATE.WAITING && stateRelation.equalsIgnoreCase("move")){
 				lastResponse = response;
 				if (response.equalsIgnoreCase("up") || response.equalsIgnoreCase("down") || response.equalsIgnoreCase("left") || response.equalsIgnoreCase("right") ||
-						response.equalsIgnoreCase("north") || response.equalsIgnoreCase("south") || response.equalsIgnoreCase("east") || response.equalsIgnoreCase("west")){
-                    /*DIRECTION dir = DIRECTION.getFromString(response.toLowerCase());
-                    if (dir != null && currentArea.canMoveInDir(dir)){
-                        if (currentArea.getAreaFromDir(dir) == null){
-                            currentArea.setAreaInDir(dir, new Area(this, dir, currentArea));
-                        }
-                        currentArea = currentArea.getAreaFromDir(dir);
-                        if (currentArea.moveToThis()){
-                            areasFound++;
-                            if (!fromEvent) {
-                                logAction("Moved " + response + " into a new location! It's a " + currentArea.getType().getName());
-                            }
-                        }else{
-                            if (!fromEvent) {
-                                logAction("Moved " + response + " back into a " + currentArea.getType().getName());
-                            }
-                        }
-	                    if (!currentArea.hasEvent() || currentArea.hasCompletedEvent() || fromEvent) {
-		                    sendMessage(n, getNewLocationText(currentArea, currentArea.getType(), "walking `" + response.toUpperCase(Locale.ENGLISH) + "` to")); // First Location allows for any direction of movement.
-	                    }
-	                    else{
-                            runEvent(n, currentArea);
-                        }
-                    }else{
-	                    sendInformativeMessage(n, "You can't move in that direction! There's something blocking your path!");
-                    }*/
+				response.equalsIgnoreCase("north") || response.equalsIgnoreCase("south") || response.equalsIgnoreCase("east") || response.equalsIgnoreCase("west")) {
+					if (!getGrid().moveInDirection(DIRECTION.getFromString(response))){
+						sendMessage(n, "Oops! There's something blocking your way!", "http://i.imgur.com/R9gfp56.png", Color.RED);
+					}else{
+						if (getGrid().getCurrentArea().isNewLocation()){
+							areasFound++;
+						}
+						getGrid().getCurrentArea().discover();
+						getGrid().getCurrentArea().moveToHere();
+						sendMessage(n, "You continue onwards, towards a " + getGrid().getCurrentArea().getType().getName(), getGrid().getCurrentArea().getType().getUrl(), Color.RED);
+						if (getGrid().getCurrentArea().getRelatedEvent() != null && !getGrid().getCurrentArea().hasCompletedEvent()){
+							getGrid().getCurrentArea().getRelatedEvent().runEvent(this, n);
+						}
+					}
 					return;
 				}
 			}
-			sendInformativeMessage(n, "I'm unsure of what you meant by `" + response + "`. Type `_adventure help` to bring up the Help Menu."); // Placeholder until I add the moving system.
+			sendMessage(n, "I'm unsure of what you meant by `" + response + "`. Type `_adventure help` to bring up the Help Menu.", Color.RED); // Placeholder until I add the moving system.
 		}
 	}
 
@@ -182,6 +220,8 @@ public class Adventure {
 
 	private User user;
 	private UUID gameID;
+	private Color defaultMessageColor = new Color(39, 255, 9);
+	private String lastResponse;
 	private Long starttime;
 	private ArrayList<Area> areas = new ArrayList<>();
 	private ArrayList<String> actionList = new ArrayList<>();
@@ -196,6 +236,14 @@ public class Adventure {
 	private Event currentEvent;
 	private AdventureGrid grid;
 	private String gender = "";
+
+	public Color getDefaultMessageColor() {
+		return defaultMessageColor;
+	}
+
+	public String getLastResponse() {
+		return lastResponse;
+	}
 
 	public static int getLastID() {
 		return lastID;

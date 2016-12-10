@@ -2,6 +2,9 @@ package xyz.gnarbot.gnar.textadventure;
 
 import xyz.gnarbot.gnar.textadventure.enums.DIRECTION;
 import xyz.gnarbot.gnar.textadventure.enums.LOCATION;
+import xyz.gnarbot.gnar.textadventure.events.FirstBagEvent;
+import xyz.gnarbot.gnar.textadventure.events.FirstSwordEvent;
+import xyz.gnarbot.gnar.textadventure.events.FirstSwordLewdEvent;
 
 import java.util.Random;
 
@@ -42,19 +45,16 @@ public class Area {
 		return relatedAdventure;
 	}
 
-	/*
-	public boolean moveToThis(){
+	public boolean moveToHere(){
 		if (this.newLocation) {
 			this.newLocation = false;
 			System.out.println("New location. ID: " + getRelatedAdventure().getAreasFound());
 			if (getRelatedAdventure().getAreasFound() == 4){
-				hasEvent = true;
 				relatedEvent = new FirstBagEvent();
 				System.out.println("Created an Event!");
 			}
 			if (getRelatedAdventure().getAreasFound() > 6){
 				if (random.nextInt()*100 > 80){
-					hasEvent = true;
 					if (getRelatedAdventure().getHeroName().toLowerCase().contains("lewd") || getRelatedAdventure().getHeroName().toLowerCase().contains("mae")){
 						relatedEvent = new FirstSwordLewdEvent();
 					}else {
@@ -67,59 +67,6 @@ public class Area {
 			return false;
 		}
 	}
-
-	public Area getAreaFromDir(DIRECTION dir){
-		if (dir == DIRECTION.NORTH){
-			return getAreaNorth();
-		}
-		if (dir == DIRECTION.SOUTH){
-			return getAreaSouth();
-		}
-		if (dir == DIRECTION.EAST){
-			return getAreaEast();
-		}
-		if (dir == DIRECTION.WEST){
-			return getAreaWest();
-		}
-		return null;
-	}
-
-	public boolean canMoveInDir(DIRECTION dir){
-		if (dir == DIRECTION.NORTH){
-			return canMoveNorth();
-		}
-		if (dir == DIRECTION.SOUTH){
-			return canMoveSouth();
-		}
-		if (dir == DIRECTION.EAST){
-			return canMoveEast();
-		}
-		if (dir == DIRECTION.WEST){
-			return canMoveWest();
-		}
-		return false;
-	}
-
-	public boolean setAreaInDir(DIRECTION dir, Area area){
-		if (dir == DIRECTION.NORTH){
-			setAreaNorth(area);
-			return true;
-		}
-		if (dir == DIRECTION.SOUTH){
-			setAreaSouth(area);
-			return true;
-		}
-		if (dir == DIRECTION.EAST){
-			setAreaEast(area);
-			return true;
-		}
-		if (dir == DIRECTION.WEST){
-			setAreaWest(area);
-			return true;
-		}
-		return false;
-	}*/
-
 	public boolean hasCompletedEvent() {
 		return (relatedEvent != null) ? relatedEvent.hasCompletedEvent() : true;
 	}

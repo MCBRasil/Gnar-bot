@@ -61,12 +61,16 @@ public class AdventureGrid {
 		this.currentY = currentY;
 	}
 
+	public Area getCurrentArea(){
+		return getAreaAtLocation(getCurrentX(), getCurrentY());
+	}
+
 	public Area getAreaInDirection(DIRECTION dir){
 		if (dir == DIRECTION.NORTH){
-			return getAreaAtLocation(getCurrentX(), getCurrentY() + 1);
+			return getAreaAtLocation(getCurrentX(), getCurrentY() - 1);
 		}
 		if (dir == DIRECTION.SOUTH){
-			return getAreaAtLocation(getCurrentX(), getCurrentY() - 1);
+			return getAreaAtLocation(getCurrentX(), getCurrentY() + 1);
 		}
 		if (dir == DIRECTION.EAST) {
 			return getAreaAtLocation(getCurrentX() + 1, getCurrentY());
@@ -79,33 +83,37 @@ public class AdventureGrid {
 
 	public boolean moveInDirection(DIRECTION dir){
 		if (dir == DIRECTION.NORTH){
-			if (getAreaAtLocation(getCurrentX(), getCurrentY() + 1).getType() != LOCATION.DEAD_END) {
-				setCurrentY(getCurrentY() + 1);
+			if (getAreaInDirection(dir).getType() != LOCATION.DEAD_END) {
+				setCurrentY(getCurrentY() - 1);
 			}else{
+				getAreaInDirection(dir).discover();
 				return false;
 			}
 			return true;
 		}
 		if (dir == DIRECTION.SOUTH){
-			if (getAreaAtLocation(getCurrentX(), getCurrentY() - 1).getType() != LOCATION.DEAD_END) {
-				setCurrentY(getCurrentY() - 1);
+			if (getAreaInDirection(dir).getType() != LOCATION.DEAD_END) {
+				setCurrentY(getCurrentY() + 1);
 			}else{
+				getAreaInDirection(dir).discover();
 				return false;
 			}
 			return true;
 		}
 		if (dir == DIRECTION.EAST){
-			if (getAreaAtLocation(getCurrentX() + 1, getCurrentY()).getType() != LOCATION.DEAD_END) {
+			if (getAreaInDirection(dir).getType() != LOCATION.DEAD_END) {
 				setCurrentX(getCurrentX() + 1);
 			}else{
+				getAreaInDirection(dir).discover();
 				return false;
 			}
 			return true;
 		}
 		if (dir == DIRECTION.WEST){
-			if (getAreaAtLocation(getCurrentX() - 1, getCurrentY()).getType() != LOCATION.DEAD_END) {
+			if (getAreaInDirection(dir).getType() != LOCATION.DEAD_END) {
 				setCurrentX(getCurrentX() - 1);
 			}else{
+				getAreaInDirection(dir).discover();
 				return false;
 			}
 			return true;
@@ -122,13 +130,17 @@ public class AdventureGrid {
 					a.discover();
 					xygrid[curX][curY] = a;
 				}else{
-					Area a = new Area(relatedAdventure);
+					Area a;
+					if (curX == currentX && curY == currentY) {
+						a = new Area(relatedAdventure, LOCATION.CLEARING);
+					}else{
+						a = new Area(relatedAdventure);
+					}
 					if (getRelatedAdventure().getHeroName().toLowerCase().contains("cheat")){
 						a.discover();
 					}
 					xygrid[curX][curY] = a;
 				}
-
 			}
 		}
 	}
@@ -181,7 +193,7 @@ public class AdventureGrid {
 						e.printStackTrace();
 					}
 				}
-			}, 4, TimeUnit.SECONDS);
+			}, 1, TimeUnit.SECONDS);
 			Bot.INSTANCE.getScheduler().schedule(new Runnable() {
 				@Override
 				public void run() {
