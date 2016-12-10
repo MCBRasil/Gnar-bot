@@ -10,7 +10,6 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;

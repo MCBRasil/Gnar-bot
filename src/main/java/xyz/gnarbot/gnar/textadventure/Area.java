@@ -2,9 +2,6 @@ package xyz.gnarbot.gnar.textadventure;
 
 import xyz.gnarbot.gnar.textadventure.enums.DIRECTION;
 import xyz.gnarbot.gnar.textadventure.enums.LOCATION;
-import xyz.gnarbot.gnar.textadventure.events.FirstBagEvent;
-import xyz.gnarbot.gnar.textadventure.events.FirstSwordEvent;
-import xyz.gnarbot.gnar.textadventure.events.FirstSwordLewdEvent;
 
 import java.util.Random;
 
@@ -21,7 +18,7 @@ public class Area {
 
 	private Random random;
 
-	private TextAdventure relatedAdventure;
+	private Adventure relatedAdventure;
 
 	private boolean discovered = false;
 
@@ -41,7 +38,7 @@ public class Area {
 		return newLocation;
 	}
 
-	public TextAdventure getRelatedAdventure() {
+	public Adventure getRelatedAdventure() {
 		return relatedAdventure;
 	}
 
@@ -130,14 +127,14 @@ public class Area {
 
 	private DIRECTION prevDirect;
 
-	public Area(TextAdventure adventure, LOCATION location) {
+	public Area(Adventure adventure, LOCATION location) {
 		this.relatedAdventure = adventure;
 		this.locationType = location;
 		this.random = adventure.getRandom();
 		initate();
 	}
 
-	public Area(TextAdventure adventure) {
+	public Area(Adventure adventure) {
 		this.random = adventure.getRandom();
 		this.relatedAdventure = adventure;
 		this.locationType = LOCATION.values()[random.nextInt(LOCATION.values().length)];
@@ -145,7 +142,7 @@ public class Area {
 		initate();
 	}
 
-	public Area(TextAdventure adventure, DIRECTION prevDirection) {
+	public Area(Adventure adventure, DIRECTION prevDirection) {
 		this.random = adventure.getRandom();
 		this.relatedAdventure = adventure;
 		this.locationType = LOCATION.values()[random.nextInt(LOCATION.values().length)];

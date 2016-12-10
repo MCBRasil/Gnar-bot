@@ -3,9 +3,6 @@ package xyz.gnarbot.gnar.commands.general;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import org.apache.commons.lang3.StringUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
@@ -13,7 +10,6 @@ import xyz.gnarbot.gnar.utils.BotData;
 import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.Utils;
 
-import java.net.URLEncoder;
 import java.util.concurrent.TimeUnit;
 
 @Command(

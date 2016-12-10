@@ -36,11 +36,11 @@ public class Event {
 		return completedEvent;
 	}
 
-	public void runEvent(TextAdventure adventure, Note n){
+	public void runEvent(Adventure adventure, Note n){
 
 	}
 
-	public void parseResponse(TextAdventure adventure, Note n, String response){
+	public void parseResponse(Adventure adventure, Note n, String response){
 
 	}
 

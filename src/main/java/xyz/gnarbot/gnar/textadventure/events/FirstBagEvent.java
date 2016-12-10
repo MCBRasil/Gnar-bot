@@ -1,7 +1,7 @@
 package xyz.gnarbot.gnar.textadventure.events;
 
+import xyz.gnarbot.gnar.textadventure.Adventure;
 import xyz.gnarbot.gnar.textadventure.Event;
-import xyz.gnarbot.gnar.textadventure.TextAdventure;
 import xyz.gnarbot.gnar.utils.Note;
 
 /**
@@ -34,12 +34,12 @@ public class FirstBagEvent extends Event{
 	}
 
 	@Override
-	public void runEvent(TextAdventure adventure, Note n) {
+	public void runEvent(Adventure adventure, Note n) {
 		super.sendMessage(n, ":bulb: While walking, you find a bag lying on the floor.\n   :warning: What would you like to do?\n  ➜ `Pick it up`\n  ➜ `Leave it`\n  ➜ `Examine it`\n \n :bulb: `Use the _adventure command to select a response! Example: _adventure Pick it up`");
 	}
 
 	@Override
-	public void parseResponse(TextAdventure adventure, Note n, String response) {
+	public void parseResponse(Adventure adventure, Note n, String response) {
 		System.out.println("Got event response");
 		if (!(response.equalsIgnoreCase("pick it up") || response.equalsIgnoreCase("leave it") || response.equalsIgnoreCase("examine it"))){
 			super.sendMessage(n, "I'm unsure of how to react to that response. Please try again!~");

@@ -1,8 +1,8 @@
 package xyz.gnarbot.gnar.textadventure.events;
 
+import xyz.gnarbot.gnar.textadventure.Adventure;
 import xyz.gnarbot.gnar.textadventure.Event;
 import xyz.gnarbot.gnar.textadventure.Item;
-import xyz.gnarbot.gnar.textadventure.TextAdventure;
 import xyz.gnarbot.gnar.utils.Note;
 
 /**
@@ -35,7 +35,7 @@ public class FirstSwordLewdEvent extends Event{
 	}
 
 	@Override
-	public void runEvent(TextAdventure adventure, Note n) {
+	public void runEvent(Adventure adventure, Note n) {
 		super.sendMessage(n, ":bulb: " +
 				"Resting, you suddenly notice a dildo on the ground.\n" +
 				"However, in these woods, there's no one around.\n" +
@@ -47,7 +47,7 @@ public class FirstSwordLewdEvent extends Event{
 	}
 
 	@Override
-	public void parseResponse(TextAdventure adventure, Note n, String response) {
+	public void parseResponse(Adventure adventure, Note n, String response) {
 		System.out.println("Got event response");
 		if (!(response.equalsIgnoreCase("pick it up") || response.equalsIgnoreCase("leave it") || response.equalsIgnoreCase("examine it") || response.equalsIgnoreCase("use it"))){
 			super.sendMessage(n, "I'm unsure of how to react to that response. Please try again!~");

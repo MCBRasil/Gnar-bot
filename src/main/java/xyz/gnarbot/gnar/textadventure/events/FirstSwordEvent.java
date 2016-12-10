@@ -1,8 +1,8 @@
 package xyz.gnarbot.gnar.textadventure.events;
 
+import xyz.gnarbot.gnar.textadventure.Adventure;
 import xyz.gnarbot.gnar.textadventure.Event;
 import xyz.gnarbot.gnar.textadventure.Item;
-import xyz.gnarbot.gnar.textadventure.TextAdventure;
 import xyz.gnarbot.gnar.utils.Note;
 
 /**
@@ -35,7 +35,7 @@ public class FirstSwordEvent extends Event{
 	}
 
 	@Override
-	public void runEvent(TextAdventure adventure, Note n) {
+	public void runEvent(Adventure adventure, Note n) {
 		super.sendMessage(n, ":bulb: *crash* Something lands in front of you." +
 				"\n As the dust settles you see a Sword stuck in the ground with it's hilt pointing upwards," +
 				" and you feel some force bringing you closer to it." +
@@ -45,7 +45,7 @@ public class FirstSwordEvent extends Event{
 	}
 
 	@Override
-	public void parseResponse(TextAdventure adventure, Note n, String response) {
+	public void parseResponse(Adventure adventure, Note n, String response) {
 		System.out.println("Got event response");
 		if (!(response.equalsIgnoreCase("pick it up") || response.equalsIgnoreCase("leave it") || response.equalsIgnoreCase("examine it"))){
 			super.sendMessage(n, "I'm unsure of how to react to that response. Please try again!~");

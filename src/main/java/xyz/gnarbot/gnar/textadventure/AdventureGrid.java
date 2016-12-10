@@ -9,12 +9,9 @@ import xyz.gnarbot.gnar.utils.Note;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Font;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -23,12 +20,12 @@ import java.util.concurrent.TimeUnit;
 public class AdventureGrid {
 
 	private Area[][] xygrid = new Area[15][15];
-	private TextAdventure relatedAdventure;
+	private Adventure relatedAdventure;
 	private int maxSize = 15; // Indicates the maximum and minimum x and y values (convert to negative for minimum)
 
 	private int currentX = 7, currentY = 7;
 
-	public AdventureGrid(TextAdventure relatedAdventure) {
+	public AdventureGrid(Adventure relatedAdventure) {
 		this.relatedAdventure = relatedAdventure;
 	}
 
@@ -36,7 +33,7 @@ public class AdventureGrid {
 		return maxSize;
 	}
 
-	public TextAdventure getRelatedAdventure() {
+	public Adventure getRelatedAdventure() {
 		return relatedAdventure;
 	}
 
