@@ -57,7 +57,7 @@ class Note(val host : Host, private val message : Message) : Message by message
     fun replyEmbed(title: String, msg : String, color: Color)
     {
         val eb = EmbedBuilder()
-        eb.setDescription(msg)
+        eb.setDescription("__**${message.author.name}**__ \u279c" + msg)
         eb.setTitle(title)
         eb.setColor(color)
         val embed = eb.build()
@@ -73,7 +73,7 @@ class Note(val host : Host, private val message : Message) : Message by message
     fun replyEmbed(title: String, msg : String, color: Color, thumbnail: String)
     {
         val eb = EmbedBuilder()
-        eb.setDescription(msg)
+        eb.setDescription("__**${message.author.name}**__ \u279c" + msg)
         eb.setTitle(title)
         eb.setColor(color)
         eb.setThumbnail(thumbnail)
@@ -90,7 +90,7 @@ class Note(val host : Host, private val message : Message) : Message by message
     fun replyEmbed(title: String, msg : String, color: Color, thumbnail: String, image: String)
     {
         val eb = EmbedBuilder()
-        eb.setDescription(msg)
+        eb.setDescription("__**${message.author.name}**__ \u279c" + msg)
         eb.setTitle(title)
         eb.setColor(color)
         if (thumbnail != null){
