@@ -119,14 +119,21 @@ public class Adventure {
 	}
 
 	public void sendInformativeMessage(Note n, String message) {
-		lastSentMessage = n.reply("\n" + message);
+		EmbedBuilder eb = new EmbedBuilder();
+		eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**").addBlankField(true).setDescription(message).setThumbnail(getPlayerIcon())
+				.setColor(new Color(0xFFDD15));
+		MessageEmbed embed = eb.build();
+		MessageBuilder mb = new MessageBuilder();
+		mb.setEmbed(embed);
+		Message m = mb.build();
+		n.getChannel().sendMessage(m).queue();
 	}
 
 	public void sendLastMessage(Note n, String extra) {
 
 		EmbedBuilder eb = new EmbedBuilder();
 		eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**").addBlankField(true).setDescription(lastMessage).setThumbnail(getPlayerIcon())
-				.setColor(new Color(39, 255, 9));
+				.setColor(getDefaultMessageColor());
 		MessageEmbed embed = eb.build();
 		MessageBuilder mb = new MessageBuilder();
 		mb.setEmbed(embed);
@@ -143,8 +150,7 @@ public class Adventure {
 
 
 	public void parseResponse(Note n, String response, boolean fromEvent) {
-		System.out.println("Got response for " + user.getName() + "'s adventure: \n" + response);
-		if (state == STATE.WAITING && stateRelation.equalsIgnoreCase("EVENTRESPONSE")){
+		if (state == STATE.RESPONSE_REQUIRED && stateRelation.equalsIgnoreCase("EVENTRESPONSE")){
 			this.currentEvent.parseResponse(this, n, response);
 			if (this.currentEvent.hasCompletedEvent()){
 				this.stateRelation = "move";
@@ -163,12 +169,12 @@ public class Adventure {
 		} else if (stateRelation.equalsIgnoreCase("selectGender") && this.state == STATE.WAITING){
 			if (response.equalsIgnoreCase("boy") || response.equalsIgnoreCase("girl")){
 				startArea = this.grid.getAreaAtLocation(this.grid.getCurrentX(), this.grid.getCurrentY());
-				setGender(response);
+				setGender(response.toLowerCase());
 				state = STATE.WAITING;
 				stateRelation = "move";
 				currentArea = startArea;
 				getGrid().getCurrentArea().discover();
-				sendMessage(n, "Ah! So you're a " + response + "! Fantastic! Let's get you started on your very own adventure!\nThe world is yours to claim! Go out and claim it!\n\n ➜ *To move, use the `_adventure` command!*\n Example: *`_adventure up`* will try to move you up\n ➜ *To view your map, use the `_adventure map` command!*");
+				sendMessage(n, "Ah! So you're a " + response.toLowerCase() + "! Fantastic! Let's get you started on your very own adventure!\nThe world is yours to claim! Go out and claim it!\n\n ➜ *To move, use the `_adventure` command!*\n Example: *`_adventure up`* will try to move you up\n ➜ *To view your map, use the `_adventure map` command!*");
 			}else{
 				sendMessage(n, "I'm unsure of what you meant by `" + response + "`. Type `_adventure help` to bring up the Help Menu.", Color.RED); // Placeholder until I add the moving system.
 			}
@@ -187,7 +193,9 @@ public class Adventure {
 						getGrid().getCurrentArea().moveToHere();
 						sendMessage(n, "You continue onwards, towards a " + getGrid().getCurrentArea().getType().getName(), getGrid().getCurrentArea().getType().getUrl(), Color.RED);
 						if (getGrid().getCurrentArea().getRelatedEvent() != null && !getGrid().getCurrentArea().hasCompletedEvent()){
-							getGrid().getCurrentArea().getRelatedEvent().runEvent(this, n);
+							currentEvent = getGrid().getCurrentArea().getRelatedEvent().runEvent(this, n);
+							state = STATE.RESPONSE_REQUIRED;
+							stateRelation = "EVENTRESPONSE";
 						}
 					}
 					return;

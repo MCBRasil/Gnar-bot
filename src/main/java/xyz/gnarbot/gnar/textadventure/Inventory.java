@@ -47,7 +47,7 @@ public class Inventory{
 
 	@Override
 	public String toString(){
-		String inv = "**Inventory Contents:**\n```ini\n";
+		String inv = "**Your Inventory Contents:**\n--------------------------------------------------------------------------------------------------\n```ini\n";
 		for (int slot = 0; slot < getInventorySize(); slot++){
 			inv += "[ Slot #" + (slot + 1) +"/" + getInventorySize()+" ] \n";
 			Item i = getItem(slot);

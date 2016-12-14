@@ -6,13 +6,14 @@ import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.awt.*;
 import java.util.List;
 
 
 /**
  * Created by zacha on 10/8/2016.
  */
-@Command(aliases = "adventure", usage = "(argument)", description = "Respond to Adventure things!")
+@Command(aliases = {"adventure", "adv", "pokemon"}, usage = "(argument)", description = "Respond to Adventure things!")
 public class AdventureCommand extends CommandExecutor {
 	@Override
 	public void execute(Note msg, String label, String[] args) {
@@ -25,7 +26,7 @@ public class AdventureCommand extends CommandExecutor {
 			}
 			if (args[0].equalsIgnoreCase("inventory")){
 				if (adventure.getInventory() != null) {
-					msg.reply(adventure.getInventory().toString());
+					adventure.sendInformativeMessage(msg, adventure.getInventory().toString());
 					return;
 				}
 			}

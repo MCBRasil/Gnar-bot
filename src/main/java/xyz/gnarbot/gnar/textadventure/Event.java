@@ -1,6 +1,12 @@
 package xyz.gnarbot.gnar.textadventure;
 
+import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.MessageBuilder;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import xyz.gnarbot.gnar.utils.Note;
+
+import java.awt.*;
 
 /**
  * Created by zacha on 11/1/2016.
@@ -36,8 +42,8 @@ public class Event {
 		return completedEvent;
 	}
 
-	public void runEvent(Adventure adventure, Note n){
-
+	public Event runEvent(Adventure adventure, Note n){
+		return this;
 	}
 
 	public void parseResponse(Adventure adventure, Note n, String response){
@@ -45,7 +51,26 @@ public class Event {
 	}
 
 	public void sendMessage(Note n, String message) {
-		n.reply("\n" + message);
+		EmbedBuilder eb = new EmbedBuilder();
+		eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**").addBlankField(true).setDescription(message)
+				.setColor(new Color(39, 255, 9));
+		MessageEmbed embed = eb.build();
+		MessageBuilder mb = new MessageBuilder();
+		mb.setEmbed(embed);
+		Message m = mb.build();
+		n.getChannel().sendMessage(m).queue();
+	}
+
+	public void sendMessage(Note n, String message, String imageurl) {
+		EmbedBuilder eb = new EmbedBuilder();
+		eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**").addBlankField(true).setDescription(message)
+				.setColor(new Color(39, 255, 9));
+		eb.setThumbnail(imageurl);
+		MessageEmbed embed = eb.build();
+		MessageBuilder mb = new MessageBuilder();
+		mb.setEmbed(embed);
+		Message m = mb.build();
+		n.getChannel().sendMessage(m).queue();
 	}
 
 	public void setCompletedEvent(boolean completedEvent) {

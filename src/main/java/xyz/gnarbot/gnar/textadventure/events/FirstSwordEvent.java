@@ -35,13 +35,14 @@ public class FirstSwordEvent extends Event{
 	}
 
 	@Override
-	public void runEvent(Adventure adventure, Note n) {
+	public Event runEvent(Adventure adventure, Note n) {
 		super.sendMessage(n, ":bulb: *crash* Something lands in front of you." +
 				"\n As the dust settles you see a Sword stuck in the ground with it's hilt pointing upwards," +
 				" and you feel some force bringing you closer to it." +
 				"\n   :warning: What would you like to do?\n  " +
 				"➜ `Pick it up`\n  ➜ `Leave it`\n  ➜ `Examine it`\n \n " +
 				":bulb: `Use the _adventure command to select a response! Example: _adventure Pick it up`");
+		return this;
 	}
 
 	@Override

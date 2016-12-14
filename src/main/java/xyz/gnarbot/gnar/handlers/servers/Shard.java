@@ -118,6 +118,7 @@ public class Shard
 
         // Test Commands
         distributor.register(TestEmbedCommand.class);
+        distributor.register(QuoteMessageCommand.class);
     }
     
     /**

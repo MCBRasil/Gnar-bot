@@ -34,8 +34,9 @@ public class FirstBagEvent extends Event{
 	}
 
 	@Override
-	public void runEvent(Adventure adventure, Note n) {
+	public Event runEvent(Adventure adventure, Note n) {
 		super.sendMessage(n, ":bulb: While walking, you find a bag lying on the floor.\n   :warning: What would you like to do?\n  ➜ `Pick it up`\n  ➜ `Leave it`\n  ➜ `Examine it`\n \n :bulb: `Use the _adventure command to select a response! Example: _adventure Pick it up`");
+		return this;
 	}
 
 	@Override
