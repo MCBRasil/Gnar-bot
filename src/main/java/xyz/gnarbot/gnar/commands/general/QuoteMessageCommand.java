@@ -73,13 +73,14 @@ public class QuoteMessageCommand extends CommandExecutor
                         eb.addField("**Quote from " + m.getAuthor().getName() + " (" + m.getCreationTime().format(DateTimeFormatter.ISO_DATE_TIME) + ")**", m.getContent(), false);
                     }
                 } catch (Exception e) {
-                    msg.editMessage("**" + BotData.randomQuote() + "** Oops. I couldn't find that message within this channel. You sure you got the right place?").queue();
-                    Bot.INSTANCE.getScheduler().schedule(new Runnable() {
-                        @Override
-                        public void run() {
-                            msg.deleteMessage().queue();
-                        }
-                    }, 10, TimeUnit.SECONDS);
+                    if (count == 1) {
+                        eb.setTitle("*Couldn't find this message*").addBlankField(true).setDescription("*Couldn't find message with ID " + msgid + "*")
+                                .setColor(Color.RED);
+                    }else{
+                        eb.addBlankField(true);
+                        eb.addField("*Couldn't find this message*", "*Couldn't find message with ID " + msgid + "*", false);
+                        eb.setColor(Color.RED);
+                    }
                 }
             }
             MessageEmbed embed = eb.build();
