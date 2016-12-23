@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.commands.fun;
 
 import net.dv8tion.jda.core.MessageBuilder;
+import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -19,8 +20,7 @@ public class TextToSpeechCommand extends CommandExecutor
         
         MessageBuilder builder = new MessageBuilder();
         builder.setTTS(true);
-        builder.append(message.getContent().replaceFirst(message.getHost().getCommandHandler().getToken() +
-                "tts ", ""));
+        builder.append(message.getContent().replaceFirst(Bot.getToken() + "tts ", ""));
         
         message.getChannel().sendMessage(builder.build()).queue();
     }

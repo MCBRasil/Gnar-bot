@@ -19,6 +19,10 @@ object Bot
 {
     @static val LOG = SimpleLog.getLog("Bot")!!
     
+    @static val token = "_" //default token
+    
+    @static val files = BotFiles()
+    
     var initialized = false
         private set
     
@@ -28,12 +32,12 @@ object Bot
     /** Administrator users of the bot. */
     val admins = mutableSetOf<User>()
     
-    @static val files = BotFiles()
-    
     val startTime = System.currentTimeMillis()
     val scheduler = Executors.newSingleThreadScheduledExecutor()
     
     val authTokens = files.tokens.readProperties()
+    
+    
     
     fun initBot(token : String, num_shards : Int)
     {

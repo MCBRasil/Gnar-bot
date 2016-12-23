@@ -1,5 +1,6 @@
 package xyz.gnarbot.gnar.commands.general
 
+import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.handlers.commands.Command
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
 import xyz.gnarbot.gnar.handlers.members.Clearance
@@ -31,7 +32,7 @@ class HelpCommand : CommandExecutor()
             val strings = listOf(
                     "```",
                     "\u258C Description __ ${cmd.description}",
-                    "\u258C Usage ________ ${host.commandHandler.token}${args[0].toLowerCase()} ${cmd.usage}",
+                    "\u258C Usage ________ ${Bot.token}${args[0].toLowerCase()} ${cmd.usage}",
                     "\u258C Aliases ______ [${aliases.joinToString(", ")}]",
                     "```"
             )
@@ -63,13 +64,13 @@ class HelpCommand : CommandExecutor()
             {
                 if (cmd.clearance != perm || !cmd.isShownInHelp) continue
                 
-                joiner.add("\u258C  [${host.commandHandler.token}$cmdLabel] ${cmd.usage}\n")
+                joiner.add("\u258C  [${Bot.token}$cmdLabel] ${cmd.usage}\n")
             }
             
             builder.append(joiner.toString())
         }
         
-        builder.append("To view a command's description, do `${host.commandHandler.token}help [command]`.\n\n")
+        builder.append("To view a command's description, do `${Bot.token}help [command]`.\n\n")
         //builder.append("You can also chat and execute commands with Gnar privately, try it!\n\n")
         
         builder.append("**Bot Commander** commands requires you to have a role named exactly __Bot Commander__.\n")
@@ -83,7 +84,12 @@ class HelpCommand : CommandExecutor()
         
         //message.reply(builder.toString())
         
-        message.author?.openPrivateChannel()?.block()?.sendMessage(builder.toString())?.block()
+        if (!message.author?.hasPrivateChannel()!!)
+        {
+            message.author?.openPrivateChannel()?.block()
+        }
+        message.author?.privateChannel?.sendMessage(builder.toString())?.block()
+        
         message.reply("**${BotData.randomQuote()}** My commands has been PM'ed to you.")
     }
 }
