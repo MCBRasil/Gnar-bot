@@ -2,8 +2,10 @@ package xyz.gnarbot.gnar;
 
 public class MainBot
 {
+    // DO NOT MODIFY THIS
+    // USE TESTBOT TO RU
     public static void main(String[] args)
     {
-        Bot.INSTANCE.initBot(Bot.INSTANCE.getAuthTokens().getProperty("beta-bot"), 2);
+        Bot.INSTANCE.initBot(Bot.INSTANCE.getAuthTokens().getProperty("main-bot"), 4);
     }
 }

@@ -1,74 +1,69 @@
 package xyz.gnarbot.gnar.utils;
 
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONObject;
 import xyz.gnarbot.gnar.Bot;
 
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 public class DiscordBotsInfo
 {
-
     public static void updateServerCount(int i)
+    {
+        updateAbalCount(i);
+        updateCarbonitexCount(i);
+    }
+    
+    public static void updateAbalCount(int i)
     {
         try
         {
-
-
-            String url = Bot.INSTANCE.getAuthTokens().getProperty("url");
-            URL object = new URL(url);
-
-            String authToken = Bot.INSTANCE.getAuthTokens().getProperty("authToken");
-
-            JSONObject serverCount = new JSONObject();
-
-            serverCount.put("server_count", i);
-
-            HttpURLConnection con = (HttpURLConnection) object.openConnection();
-            con.setDoInput(true);
-            con.setDoOutput(true);
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.24 Safari/537.36");
-            con.setRequestProperty("Authorization", authToken);
-            con.setRequestProperty("Content-Type", "application/json");
-            con.setRequestProperty("Accept", "application/json");
-            con.setRequestMethod("POST");
-
-            OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
-            wr.write(serverCount.toString());
-            wr.flush();
-
-            System.out.println("Successfully updated Abal server count to " + i + ", Response Code: " + con.getResponseCode());
-
-
-            JSONObject serverCount2 = new JSONObject();
-
-            String key = Bot.INSTANCE.getAuthTokens().getProperty("serverKey");
-
-            serverCount2.put("key", key);
-            serverCount2.put("servercount", i);
-
-            object = new URL("https://www.carbonitex.net/discord/data/botdata.php");
-
-            HttpURLConnection conn = (HttpURLConnection) object.openConnection();
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.24 Safari/537.36");
-            conn.setRequestProperty("Authorization", authToken);
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Accept", "application/json");
-            conn.setRequestMethod("POST");
-
-            OutputStreamWriter wre = new OutputStreamWriter(conn.getOutputStream());
-            wre.write(serverCount2.toString());
-            wre.flush();
-
-            System.out.println("Successfully updated Carbonitex server count to " + i + ", Response Code: " + conn.getResponseCode());
-
+            String auth = Bot.INSTANCE.getAuthTokens().getProperty("authToken");
+    
+            JSONObject json = new JSONObject().put("server_count", i);
+    
+            String response = Unirest.post(Bot.INSTANCE.getAuthTokens().getProperty("url"))
+                    .header("User-Agent", "Gnar Bot")
+                    .header("Authorization", auth)
+                    .header("Content-Type", "application/json")
+                    .header("Accept", "application/json")
+                    .body(json)
+                    .asString().getStatusText();
+    
+            Bot.getLOG().info("Successfully updated Abal server count to " + i + ".");
+            Bot.getLOG().info("Response code: " + response);
         }
-        catch (Exception e)
+        catch (UnirestException e)
         {
-            System.out.println("Error updating server count...");
+            Bot.getLOG().warn("Failed updating Abal server count to " + i + ".");
+            e.printStackTrace();
+        }
+    }
+    
+    public static void updateCarbonitexCount(int i)
+    {
+        try
+        {
+            String auth = Bot.INSTANCE.getAuthTokens().getProperty("authToken");
+            String key = Bot.INSTANCE.getAuthTokens().getProperty("serverKey");
+    
+            JSONObject json = new JSONObject()
+                    .put("key", key)
+                    .put("servercount", i);
+    
+            String response = Unirest.post("https://www.carbonitex.net/discord/data/botdata.php")
+                    .header("User-Agent", "Gnar Bot").header("Authorization", auth)
+                    .header("Content-Type", "application/json")
+                    .header("Accept", "application/json")
+                    .body(json)
+                    .asString()
+                    .getStatusText();
+            
+            Bot.getLOG().info("Successfully updated Carbonitex server count to " + i + ".");
+            Bot.getLOG().info("Response code: " + response);
+        }
+        catch (UnirestException e)
+        {
+            Bot.getLOG().warn("Failed updating Carbonitex server count to " + i + ".");
             e.printStackTrace();
         }
     }

@@ -1,6 +1,5 @@
 package xyz.gnarbot.gnar;
 
-import xyz.gnarbot.gnar.fakes.FakeBot;
 
 import java.util.Scanner;
 
@@ -25,7 +24,7 @@ public class FakeBotLoop
                     break;
             }
             
-            FakeBot.INSTANCE.send(query);
+            //FakeBot.INSTANCE.send(query);
         }
     }
 }

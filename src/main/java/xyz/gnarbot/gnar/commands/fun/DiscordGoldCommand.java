@@ -13,7 +13,7 @@ public class DiscordGoldCommand extends CommandExecutor
     @Override
     public void execute(Note message, String label, String[] args)
     {
-        message.deleteMessage();
+        message.delete();
         message.replyRaw("```xl\nDiscord Gold is required to view this message.\n```");
     }
 }

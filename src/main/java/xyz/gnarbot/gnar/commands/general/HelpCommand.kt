@@ -5,16 +5,16 @@ import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
 import xyz.gnarbot.gnar.handlers.members.Clearance
 import xyz.gnarbot.gnar.utils.BotData
 import xyz.gnarbot.gnar.utils.Note
-import java.util.*
+import java.util.StringJoiner
 
-@Command(aliases = arrayOf("help", "guide"), usage = "[command]", description = "Display GN4R's list of commands.")
+@Command(aliases = arrayOf("help", "guide"), usage = "~command", description = "Display GN4R's list of commands.")
 class HelpCommand : CommandExecutor()
 {
     override fun execute(message : Note, label : String, args : Array<out String>)
     {
         val host = message.host
         
-        if (args.size >= 1)
+        if (args.isNotEmpty())
         {
             val cmd : CommandExecutor? = host.commandHandler.getCommand(args[0])
             
@@ -51,7 +51,7 @@ class HelpCommand : CommandExecutor()
             val count = commandEntries.values.filter { it.clearance == perm && it.isShownInHelp }.count()
             if (count < 1) return@forEach
             
-            val joiner = StringJoiner("", "```xl\n", "```\n")
+            val joiner = StringJoiner("", "```ini\n", "```\n")
             
             val lineBuilder = StringBuilder()
             for (i in 0 .. 22 - perm.toString().length) lineBuilder.append('—')
@@ -62,7 +62,7 @@ class HelpCommand : CommandExecutor()
             {
                 if (cmd.clearance != perm || !cmd.isShownInHelp) continue
                 
-                joiner.add("\u258C  ${host.commandHandler.token}$cmdLabel ${cmd.usage}\n")
+                joiner.add("\u258C  [${host.commandHandler.token}$cmdLabel] ${cmd.usage}\n")
             }
             
             builder.append(joiner.toString())
@@ -73,11 +73,9 @@ class HelpCommand : CommandExecutor()
         
         builder.append("**Bot Commander** commands requires you to have a role named exactly __Bot Commander__.\n")
         builder.append("**Server Owner** commands requires you to be the __Server Owner__ to execute.\n\n")
-    
+        
         builder.append("**Latest News:**\n")
-        builder.append(" - Gnar is now sharded. Please report any bugs ASAP.\n")
-        builder.append(" - `_ascii` is broken right now.\n")
-        builder.append(" - Private messaging will be broken until JDA 3.x.\n\n")
+        builder.append(" - Gnar v2.0 is now running LIVE. Report any bugs you might find.\n")
         
         builder.append("**Website:** http://gnarbot.xyz\n")
         builder.append("**Discord Server:** http://discord.gg/NQRpmr2\n")

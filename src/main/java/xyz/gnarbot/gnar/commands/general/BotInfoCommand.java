@@ -78,31 +78,32 @@ public class BotInfoCommand extends CommandExecutor
                 .mapToInt(guild -> guild.getCommandHandler().getRequests())
                 .sum();
         
-        StringJoiner joiner = new StringJoiner("\n");
+        StringJoiner joiner = new StringJoiner("\n", "```ini\n", "```\n");
         
-        joiner.add("\u258C Requests ____ " + requests);
-        joiner.add("\u258C Servers _____ " + servers);
-        joiner.add("\u258C Shards ______ " + Bot.INSTANCE.getShards().size());
+        joiner.add("\u258C [Requests] ____ " + requests);
+        joiner.add("\u258C [Servers] _____ " + servers);
+        joiner.add("\u258C [Shards] ______ " + Bot.INSTANCE.getShards().size());
         joiner.add("\u258C");
-        joiner.add("\u258C Channels ____ " + channels);
-        joiner.add("\u258C  - Text _____ " + textChannels);
-        joiner.add("\u258C  - Voice ____ " + voiceChannels);
+        joiner.add("\u258C [Channels] ____ " + channels);
+        joiner.add("\u258C  - [Text] _____ " + textChannels);
+        joiner.add("\u258C  - [Voice] ____ " + voiceChannels);
         joiner.add("\u258C");
-        joiner.add("\u258C Users _______ " + users);
-        joiner.add("\u258C  - Online ___ " + online);
-        joiner.add("\u258C  - Offline __ " + offline);
-        joiner.add("\u258C  - Inactive _ " + inactive);
-        joiner.add("\u258C  - DND _ " + dnd);
+        joiner.add("\u258C [Users] _______ " + users);
+        joiner.add("\u258C  - [Online] ___ " + online);
+        joiner.add("\u258C  - [Offline] __ " + offline);
+        joiner.add("\u258C  - [Inactive] _ " + inactive);
+        joiner.add("\u258C  - [Busy] _____ " + dnd);
         joiner.add("\u258C");
-        joiner.add("\u258C Creator _____ Avalon & Maeyrl");
-        joiner.add("\u258C Conributor __ Gatt");
-        joiner.add("\u258C Website _____ gnarbot.xyz");
-        joiner.add("\u258C Commands ____ " + commandSize);
-        joiner.add("\u258C Library _____ JDA");
-        joiner.add("\u258C Uptime ______ " + Bot.INSTANCE.getSimpleUptime() + ".");
+        joiner.add("\u258C [Creator] _____ Avalon");
+        joiner.add("\u258C [Creator] _____ Avalon");
+        joiner.add("\u258C [Conributor] __ Gatt");
+        joiner.add("\u258C [Website] _____ gnarbot.xyz");
+        joiner.add("\u258C [Commands] ____ " + commandSize);
+        joiner.add("\u258C [Library] _____ JDA");
+        joiner.add("\u258C [Uptime] ______ " + Bot.INSTANCE.getSimpleUptime() + ".");
         
         note.reply("**" + BotData.randomQuote() + "** Here is all of my information!");
         
-        note.getChannel().sendMessage("```xl\n" + joiner.toString() + "```\n").queue();
+        note.getChannel().sendMessage(joiner.toString()).queue();
     }
 }
