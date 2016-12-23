@@ -33,8 +33,6 @@ public class ChampDataCommand extends CommandExecutor {
 
         JSONObject jso = (JSONObject) Utils.information.get(maybe);
 
-        System.out.println(jso.toString());
-
         JSONArray spells = jso.getJSONArray("spells");
 
 

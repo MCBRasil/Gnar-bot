@@ -41,7 +41,6 @@ object Bot
         initialized = true
         
         LOG.info("Initializing Bot.")
-        LOG.info("Bot token is \"$token\".")
         LOG.info("Requesting $num_shards shards.")
         
         for (id in 0 .. num_shards - 1)
@@ -50,7 +49,7 @@ object Bot
                 if (num_shards > 1) useSharding(id, num_shards)
                 setToken(token)
                 setAutoReconnect(true)
-                setGame(Game.of("_help | _invite"))
+                setGame(Game.of("Shard: " + id + " | _help"))
                 buildBlocking()
             }
     

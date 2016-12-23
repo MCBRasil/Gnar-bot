@@ -6,6 +6,6 @@ public class MainBot
     // USE TESTBOT TO RU
     public static void main(String[] args)
     {
-        Bot.INSTANCE.initBot(Bot.INSTANCE.getAuthTokens().getProperty("main-bot"), 4);
+        Bot.INSTANCE.initBot(Bot.INSTANCE.getAuthTokens().getProperty("main-bot"), 6);
     }
 }

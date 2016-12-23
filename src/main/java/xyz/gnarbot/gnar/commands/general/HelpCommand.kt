@@ -5,7 +5,7 @@ import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
 import xyz.gnarbot.gnar.handlers.members.Clearance
 import xyz.gnarbot.gnar.utils.BotData
 import xyz.gnarbot.gnar.utils.Note
-import java.util.StringJoiner
+import java.util.*
 
 @Command(aliases = arrayOf("help", "guide"), usage = "~command", description = "Display GN4R's list of commands.")
 class HelpCommand : CommandExecutor()

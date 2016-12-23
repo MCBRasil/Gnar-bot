@@ -13,6 +13,7 @@ class StartAdventureCommand : CommandExecutor()
     
     override fun execute(message : Note, label : String, args : Array<out String>)
     {
+        return;
         Adventure.getAdventure(message.author, message)
         message.deleteMessage()
     }

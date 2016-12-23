@@ -40,7 +40,7 @@ public class TriviaQuestions {
                         System.out.println(line);
                     }
                 }
-            } catch (Exception e) {}
+            } catch (Exception e) {e.printStackTrace();}
         }
     }
 

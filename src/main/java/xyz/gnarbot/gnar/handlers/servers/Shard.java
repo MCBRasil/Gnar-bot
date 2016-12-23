@@ -80,6 +80,9 @@ public class Shard
         distributor.register(TriviaCommand.class);
         distributor.register(GraphCommand.class);
         distributor.register(UrbanDictionaryCommand.class);
+        distributor.register(ChampQuoteCommand.class);
+        distributor.register(CleverBotCommand.class);
+        distributor.register(PandoraBotCommand.class);
         //End Fun Commands
 
         //Mod Commands

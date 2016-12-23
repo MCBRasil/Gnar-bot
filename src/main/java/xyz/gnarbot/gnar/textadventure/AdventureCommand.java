@@ -1,13 +1,9 @@
 package xyz.gnarbot.gnar.textadventure;
 
 
-import org.apache.commons.lang3.StringUtils;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
-
-import java.awt.*;
-import java.util.List;
 
 
 /**
@@ -15,9 +11,12 @@ import java.util.List;
  */
 @Command(aliases = {"adventure", "adv", "pokemon"}, usage = "(argument)", description = "Respond to Adventure things!")
 public class AdventureCommand extends CommandExecutor {
+	@SuppressWarnings("all")
 	@Override
 	public void execute(Note msg, String label, String[] args) {
-		Adventure adventure = Adventure.getAdventure(msg.getAuthor(), msg);
+		msg.reply("Disabled until Gatt fixes me.");
+		return;
+		/*Adventure adventure = Adventure.getAdventure(msg.getAuthor(), msg);
 		if (args.length > 0){
 			if (args[0].equalsIgnoreCase("map")){
 				msg.reply("Preparing your map...");
@@ -104,7 +103,7 @@ public class AdventureCommand extends CommandExecutor {
 			adventure.parseResponse(msg, StringUtils.join(args, " "), false);
 		}else{
 			adventure.sendLastMessage(msg, "**No response given. Use `_adventure help` for a command list.**\nSending last message:");
-		}
+		}*/
 
 
 	}
