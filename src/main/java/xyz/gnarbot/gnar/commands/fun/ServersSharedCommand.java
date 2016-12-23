@@ -7,10 +7,7 @@ import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.handlers.servers.Shard;
 import xyz.gnarbot.gnar.utils.Note;
 
-@Command(
-        aliases = {"shared", "serversshared"},
-        description = "Shows servers you share with the bot."
-)
+@Command(aliases = {"shared", "serversshared"}, description = "Shows servers you share with the bot.")
 public class ServersSharedCommand extends CommandExecutor
 {
     @Override
@@ -18,19 +15,19 @@ public class ServersSharedCommand extends CommandExecutor
     {
         int total = 0;
         String servers = "";
-
-        for(Shard shard : Bot.INSTANCE.getShards())
+        
+        for (Shard shard : Bot.INSTANCE.getShards())
         {
-            for(Guild g : shard.getJDA().getGuilds())
+            for (Guild g : shard.getJDA().getGuilds())
             {
-                if(g.getMembers().contains(message.getAuthor()))
+                if (g.getMembers().contains(message.getAuthor()))
                 {
                     total++;
                     servers += "    **Server:** " + g.getName() + "\n";
                 }
             }
         }
-
+        
         message.replyRaw("**Total Servers:** " + total + "\n**Servers:** \n" + servers);
     }
 }

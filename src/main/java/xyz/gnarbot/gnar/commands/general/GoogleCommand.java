@@ -15,11 +15,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.StringJoiner;
 
-@Command(
-        aliases = "google",
-        usage = "(query)",
-        description = "Who needs browsers!?"
-)
+@Command(aliases = "google", usage = "(query)", description = "Who needs browsers!?")
 public class GoogleCommand extends CommandExecutor
 {
     @Override
@@ -38,9 +34,8 @@ public class GoogleCommand extends CommandExecutor
             
             String userAgent = "GN4R-Bot";
             
-            Elements links = Jsoup.connect(
-                    String.format("http://www.google.com/search?q=%s", URLEncoder.encode(query, StandardCharsets.UTF_8.displayName())))
-                    .userAgent(userAgent).get().select(".g>.r>a");
+            Elements links = Jsoup.connect(String.format("http://www.google.com/search?q=%s", URLEncoder.encode
+                    (query, StandardCharsets.UTF_8.displayName()))).userAgent(userAgent).get().select(".g>.r>a");
             
             StringJoiner joiner = new StringJoiner("\n");
             
@@ -48,7 +43,8 @@ public class GoogleCommand extends CommandExecutor
             {
                 String title = link.text();
                 String url = link.absUrl("href");
-                url = URLDecoder.decode(url.substring(url.indexOf('=') + 1, url.indexOf('&')), StandardCharsets.UTF_8.displayName());
+                url = URLDecoder.decode(url.substring(url.indexOf('=') + 1, url.indexOf('&')), StandardCharsets
+                        .UTF_8.displayName());
                 
                 if (!url.startsWith("http"))
                 {

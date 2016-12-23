@@ -12,18 +12,20 @@ import xyz.gnarbot.gnar.handlers.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
 @Command(aliases = "pbot")
-public class PandoraBotCommand extends CommandExecutor {
-
-
-    private ChatterBotFactory factory = new ChatterBotFactory();
-    private ChatterBot bot = null;
-    private ChatterBotSession session = null;
-
+public class PandoraBotCommand extends CommandExecutor
+{
     @Inject
     public Host host;
-
+    
+    private ChatterBotFactory factory = new ChatterBotFactory();
+    
+    private ChatterBot bot = null;
+    
+    private ChatterBotSession session = null;
+    
     @Override
-    public void execute(Note msg, String label, String[] args) {
+    public void execute(Note msg, String label, String[] args)
+    {
         try
         {
             if (bot == null)
@@ -32,9 +34,9 @@ public class PandoraBotCommand extends CommandExecutor {
                 session = bot.createSession();
                 msg.reply("Pandora-Bot session created for the server.");
             }
-
+            
             String input = StringUtils.join(args, " ");
-
+            
             String output = session.think(input);
             msg.replyRaw("**[PandoraBot]** ─ `" + output + "`");
         }
@@ -44,5 +46,5 @@ public class PandoraBotCommand extends CommandExecutor {
             bot = null;
         }
     }
-
+    
 }

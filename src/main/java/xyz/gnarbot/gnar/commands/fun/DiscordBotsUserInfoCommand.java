@@ -12,7 +12,7 @@ public class DiscordBotsUserInfoCommand extends CommandExecutor
 {
     @Inject
     public Host host;
-
+    
     @Override
     public void execute(Note msg, String label, String[] args)
     {
@@ -34,5 +34,5 @@ public class DiscordBotsUserInfoCommand extends CommandExecutor
             msg.reply("You must supply a bot ID or mention.");
         }
     }
-
+    
 }

@@ -5,7 +5,7 @@ import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
 import xyz.gnarbot.gnar.handlers.members.Clearance
 import xyz.gnarbot.gnar.utils.BotData
 import xyz.gnarbot.gnar.utils.Note
-import java.util.*
+import java.util.StringJoiner
 
 @Command(aliases = arrayOf("help", "guide"), usage = "~command", description = "Display GN4R's list of commands.")
 class HelpCommand : CommandExecutor()
@@ -47,9 +47,10 @@ class HelpCommand : CommandExecutor()
         
         builder.append("\nThis is all of GN4R-Bot's currently registered commands on the __**${host.name}**__ guild.\n\n")
         
-        Clearance.values().forEach { perm ->
+        for (perm in Clearance.values())
+        {
             val count = commandEntries.values.filter { it.clearance == perm && it.isShownInHelp }.count()
-            if (count < 1) return@forEach
+            if (count < 1) continue
             
             val joiner = StringJoiner("", "```ini\n", "```\n")
             
@@ -82,7 +83,7 @@ class HelpCommand : CommandExecutor()
         
         //message.reply(builder.toString())
         
-        message.author?.privateChannel?.sendMessage(builder.toString())?.block()
+        message.author?.openPrivateChannel()?.block()?.sendMessage(builder.toString())?.block()
         message.reply("**${BotData.randomQuote()}** My commands has been PM'ed to you.")
     }
 }

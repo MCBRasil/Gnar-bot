@@ -23,11 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@Command(
-        aliases = {"eyes", "googleyeyes"},
-        usage = "(image url)",
-        description = "Put weird eyes on people!"
-)
+@Command(aliases = {"eyes", "googleyeyes"}, usage = "(image url)", description = "Put weird eyes on people!")
 public class GoogleyEyesCommand extends CommandExecutor
 {
     private static BufferedImage resize(BufferedImage img, int newW, int newH)
@@ -56,10 +52,9 @@ public class GoogleyEyesCommand extends CommandExecutor
             String urlStr = args[0];
             String encodedStr = URLEncoder.encode(urlStr, StandardCharsets.UTF_8.displayName());
             
-            HttpResponse<JsonNode> response = Unirest.get("https://apicloud-facerect.p.mashape.com/process-url.json?features=true&url=" + encodedStr)
-                    .header("X-Mashape-Key", Bot.INSTANCE.getAuthTokens().getProperty("mashape"))
-                    .header("Accept", "application/json")
-                    .asJson();
+            HttpResponse<JsonNode> response = Unirest.get("https://apicloud-facerect.p.mashape.com/process-url" +
+                    ".json?features=true&url=" + encodedStr).header("X-Mashape-Key", Bot.INSTANCE.getAuthTokens()
+                    .getProperty("mashape")).header("Accept", "application/json").asJson();
             
             
             JSONObject j = new JSONObject(response.getBody().toString());
@@ -93,7 +88,8 @@ public class GoogleyEyesCommand extends CommandExecutor
             
             //set connection header so access wont get forbidden'ed
             URLConnection uCon = new URL(urlStr).openConnection();
-            uCon.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+            uCon.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, " +
+                    "like Gecko) Chrome/23.0.1271.95 Safari/537.11");
             uCon.connect();
             
             BufferedImage targetImg = ImageIO.read(uCon.getInputStream());

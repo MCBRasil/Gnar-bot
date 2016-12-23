@@ -14,10 +14,7 @@ import xyz.gnarbot.gnar.utils.Note;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
-@Command(
-        aliases = {"info", "botinfo"},
-        description = "Show information about GN4R-BOT."
-)
+@Command(aliases = {"info", "botinfo"}, description = "Show information about GN4R-BOT.")
 public class BotInfoCommand extends CommandExecutor
 {
     @Override
@@ -68,15 +65,11 @@ public class BotInfoCommand extends CommandExecutor
         channels = textChannels + voiceChannels;
         
         
-        int commandSize = commandHandler.getUniqueRegistry().values().parallelStream()
-                .filter(CommandExecutor::isShownInHelp)
-                .collect(Collectors.toList())
-                .size();
+        int commandSize = commandHandler.getUniqueRegistry().values().parallelStream().filter
+                (CommandExecutor::isShownInHelp).collect(Collectors.toList()).size();
         
-        int requests = Bot.INSTANCE.getShards().stream()
-                .flatMap(shard -> shard.getHosts().stream())
-                .mapToInt(guild -> guild.getCommandHandler().getRequests())
-                .sum();
+        int requests = Bot.INSTANCE.getShards().stream().flatMap(shard -> shard.getHosts().stream()).mapToInt(guild
+                -> guild.getCommandHandler().getRequests()).sum();
         
         StringJoiner joiner = new StringJoiner("\n", "```ini\n", "```\n");
         

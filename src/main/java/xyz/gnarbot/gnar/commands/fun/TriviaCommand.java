@@ -9,22 +9,28 @@ import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.TriviaQuestions;
 
 @Command(aliases = "trivia")
-public class TriviaCommand extends CommandExecutor {
-
+public class TriviaCommand extends CommandExecutor
+{
+    
     @Inject
     public Host host;
-
+    
     @Override
-    public void execute(Note msg, String label, String[] args) {
-        if(!TriviaQuestions.isSetup()) {
+    public void execute(Note msg, String label, String[] args)
+    {
+        if (!TriviaQuestions.isSetup())
+        {
             TriviaQuestions.init();
         }
-
-        if(args.length > 0) {
+        
+        if (args.length > 0)
+        {
             msg.reply(TriviaQuestions.getRandomQuestion(StringUtils.join(args, " ")));
-        } else {
+        }
+        else
+        {
             msg.reply(TriviaQuestions.getRandomQuestion());
         }
     }
-
+    
 }

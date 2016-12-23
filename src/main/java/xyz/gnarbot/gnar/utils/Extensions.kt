@@ -3,7 +3,7 @@
 package xyz.gnarbot.gnar.utils
 
 import java.io.File
-import java.util.*
+import java.util.Properties
 
 fun File.readProperties() : Properties
 {

@@ -30,9 +30,11 @@ import java.util.Map;
 public class Shard
 {
     private final int id;
+    
     private final JDA jda;
     
     private final CommandDistributor distributor = new CommandDistributor();
+    
     // LinkedHashMap access is faster. Pre-allocate to waste less CPU cycles.
     private final Map<Guild, Host> hosts = new LinkedHashMap<>(1000);
     
@@ -42,9 +44,9 @@ public class Shard
         this.jda = jda;
         
         jda.addEventListener(new ShardListener(this));
-    
+        
         //distributor.registerAll("xyz.gnarbot.gnar.commands");
-
+        
         //General Commands
         distributor.register(HelpCommand.class);
         distributor.register(InviteBotCommand.class);
@@ -57,7 +59,7 @@ public class Shard
         distributor.register(WhoIsCommand.class);
         distributor.register(BotInfoCommand.class);
         //End General Commands
-
+        
         //Fun Commands
         distributor.register(ASCIICommand.class);
         distributor.register(CoinFlipCommand.class);
@@ -84,33 +86,33 @@ public class Shard
         distributor.register(CleverBotCommand.class);
         distributor.register(PandoraBotCommand.class);
         //End Fun Commands
-
+        
         //Mod Commands
         distributor.register(BanCommand.class);
         distributor.register(KickCommand.class);
         distributor.register(UnbanCommand.class);
         distributor.register(DeleteMessagesCommand.class);
         //End Mod Commands
-
+        
         //Testing Commands
         distributor.register(TestCommand.class);
         //End Testing Commands
-
+        
         //Text Adventure Commands
         distributor.register(AdventureCommand.class);
         distributor.register(StartAdventureCommand.class);
         //End Text Adventure Commands
-
+        
         //Game Commands
         distributor.register(OverwatchLookupCommand.class);
         distributor.register(LeagueLookupCommand.class);
         distributor.register(GameLookupCommand.class);
         //End Game Commands
-
+        
         //Poll Commands
         distributor.register(PollCommand.class);
         //End Poll Commands
-
+        
         //Media Commands
         distributor.register(CatsCommand.class);
         distributor.register(ExplosmCommand.class);
@@ -118,7 +120,7 @@ public class Shard
         distributor.register(GarfieldCommand.class);
         distributor.register(XKCDCommand.class);
         //End Media Commands
-
+        
         // Test Commands
         distributor.register(TestEmbedCommand.class);
         distributor.register(QuoteMessageCommand.class);
@@ -127,6 +129,7 @@ public class Shard
     
     /**
      * Returns ID of the shard.
+     *
      * @return ID of the shard.
      */
     public int getId()
@@ -137,27 +140,22 @@ public class Shard
     /**
      * Lazily get a Host instance from a Guild instance.
      *
-     * @see Host
      * @param guild JDA Guild.
+     *
      * @return Host instance of Guild.
+     *
+     * @see Host
      */
     public Host getHost(Guild guild)
     {
         if (guild == null) return null;
-            
-        Host host = hosts.get(guild);
-        
-        if (host == null)
-        {
-            host = new Host(this, guild);
-            hosts.put(guild, host);
-        }
-        
-        return host;
+    
+        return hosts.computeIfAbsent(guild, k -> new Host(this, guild));
     }
     
     /**
      * Returns the Hosts instances of this shard.
+     *
      * @return The Hosts instances of this shard.
      */
     public List<Host> getHosts()
@@ -167,6 +165,7 @@ public class Shard
     
     /**
      * Returns the JDA API of this shard.
+     *
      * @return The JDA API of this shard.
      */
     public JDA getJDA()
@@ -176,6 +175,7 @@ public class Shard
     
     /**
      * Returns the command distribution handler.
+     *
      * @return Command distribution handler.
      */
     public CommandDistributor getDistributor()
@@ -189,7 +189,7 @@ public class Shard
     @Override
     public String toString()
     {
-        return "Shard(id="+id+", guilds="+jda.getGuilds().size()+")";
+        return "Shard(id=" + id + ", guilds=" + jda.getGuilds().size() + ")";
     }
 }
 

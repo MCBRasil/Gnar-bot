@@ -3,7 +3,7 @@ package xyz.gnarbot.gnar.handlers.commands
 import com.google.inject.Inject
 import org.reflections.Reflections
 import java.lang.reflect.Field
-import java.util.*
+import java.util.ArrayList
 import kotlin.jvm.JvmStatic as static
 
 /**
@@ -29,7 +29,7 @@ class CommandDistributor
     fun registerAll(packages : String)
     {
         val reflections = Reflections(packages)
-    
+        
         reflections.getTypesAnnotatedWith(Command::class.java)
                 .forEach { register(it as Class<out CommandExecutor>) }
     }
@@ -49,8 +49,8 @@ class CommandDistributor
         
         when (classify(cls))
         {
-            CommandType.SINGLETON ->    registerAsSingleton(cls)
-            CommandType.MANAGED ->      registerAsManaged(cls)
+            CommandType.SINGLETON -> registerAsSingleton(cls)
+            CommandType.MANAGED -> registerAsManaged(cls)
         }
     }
     
@@ -62,7 +62,7 @@ class CommandDistributor
     fun registerAsSingleton(cls : Class<out CommandExecutor>)
     {
         val cmd = cls.newInstance()
-    
+        
         val meta = cls.getAnnotation(Command::class.java)
         
         cmd.setAliases(*meta.aliases)
@@ -70,7 +70,7 @@ class CommandDistributor
         cmd.clearance = meta.clearance
         cmd.isShownInHelp = meta.showInHelp
         cmd.usage = meta.usage
-    
+        
         for (alias in cmd.aliases)
         {
             singletonCommands[alias] = cmd
@@ -122,10 +122,10 @@ class CommandDistributor
             if (cls.isAnnotationPresent(Managed::class.java)) return CommandType.MANAGED
             
             val types = findInjectableFields(cls).map { it.type }
-        
+            
             return when
             {
-                types.size > 0 -> CommandType.MANAGED
+                types.isNotEmpty() -> CommandType.MANAGED
                 else -> CommandType.SINGLETON
             }
         }

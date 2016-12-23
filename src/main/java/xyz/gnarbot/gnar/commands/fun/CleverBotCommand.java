@@ -10,19 +10,24 @@ import xyz.gnarbot.gnar.handlers.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
 @Command(aliases = "cbot")
-public class CleverBotCommand extends CommandExecutor {
-
-    private ChatterBotFactory factory = new ChatterBotFactory();
-    private ChatterBot bot = null;
-    private ChatterBotSession session = null;
-
+public class CleverBotCommand extends CommandExecutor
+{
+    
     @Inject
     public Host host;
-
+    
+    private ChatterBotFactory factory = new ChatterBotFactory();
+    
+    private ChatterBot bot = null;
+    
+    private ChatterBotSession session = null;
+    
     @Override
-    public void execute(Note msg, String label, String[] args) {
+    public void execute(Note msg, String label, String[] args)
+    {
         msg.reply("Command is being worked on :)");
-        return;/*
+        
+        /*
         try
         {
             if (bot == null)
@@ -43,5 +48,5 @@ public class CleverBotCommand extends CommandExecutor {
             bot = null;
         }*/
     }
-
+    
 }

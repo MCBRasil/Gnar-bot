@@ -34,6 +34,7 @@ public class CommandHandler extends CommandRegistry
     
     /**
      * Returns the token of the handler.
+     *
      * @return The token of the handler.
      */
     public String getToken()
@@ -49,6 +50,7 @@ public class CommandHandler extends CommandRegistry
     
     /**
      * Call the command based on the message content.
+     *
      * @param event Message event.
      */
     public void callCommand(MessageReceivedEvent event)
@@ -71,7 +73,7 @@ public class CommandHandler extends CommandRegistry
                 if (label.equalsIgnoreCase(token + cmdLabel))
                 {
                     CommandExecutor cmd = getRegistry().get(cmdLabel);
-    
+                    
                     if (cmd.getClearance().getValue() > user.getClearance().getValue())
                     {
                         note.reply("Insufficient permission.");
@@ -97,6 +99,7 @@ public class CommandHandler extends CommandRegistry
     
     /**
      * Return the amount of successful requests on this command handler.
+     *
      * @return the amount of successful requests on this command handler.
      */
     public int getRequests()

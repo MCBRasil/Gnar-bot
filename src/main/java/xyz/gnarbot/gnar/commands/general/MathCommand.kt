@@ -19,10 +19,10 @@ class MathCommand : CommandExecutor()
             msg.reply("Please provide a math expression.")
             return
         }
-    
+        
         val exp = StringUtils.join(_args, " ")
         msg.reply("Evaluating expression: `$exp` ...")
-    
+        
         try
         {
             val results = ExpressionBuilder(exp)

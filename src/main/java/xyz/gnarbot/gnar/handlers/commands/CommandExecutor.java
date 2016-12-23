@@ -11,9 +11,13 @@ import java.util.Arrays;
 public abstract class CommandExecutor
 {
     private String[] aliases;
+    
     private String description = "No description provided.";
+    
     private String usage = "No usage provided.";
+    
     private Clearance clearance = Clearance.USER;
+    
     private boolean shownInHelp = true;
     
     /**
@@ -26,6 +30,7 @@ public abstract class CommandExecutor
     
     /**
      * Returns the aliases of the command.
+     *
      * @return The aliases of the command.
      */
     public String[] getAliases()
@@ -35,6 +40,7 @@ public abstract class CommandExecutor
     
     /**
      * Set the aliases of the command.
+     *
      * @param aliases Varargs list of aliases.
      */
     public void setAliases(String... aliases)
@@ -44,6 +50,7 @@ public abstract class CommandExecutor
     
     /**
      * Returns the description of the command.
+     *
      * @return The description of the command.
      */
     public String getDescription()
@@ -53,6 +60,7 @@ public abstract class CommandExecutor
     
     /**
      * Set the description of the command.
+     *
      * @param desc New description.
      */
     public void setDescription(String desc)
@@ -62,6 +70,7 @@ public abstract class CommandExecutor
     
     /**
      * Returns the permission required to execute the command.
+     *
      * @return The permission required to execute the command.
      */
     public Clearance getClearance()
@@ -71,6 +80,7 @@ public abstract class CommandExecutor
     
     /**
      * Set the permission required to execute the command.
+     *
      * @param perm New permission required.
      */
     public void setClearance(Clearance perm)
@@ -80,6 +90,7 @@ public abstract class CommandExecutor
     
     /**
      * Returns the usage message of the command.
+     *
      * @return The usage message of the command.
      */
     public String getUsage()
@@ -89,6 +100,7 @@ public abstract class CommandExecutor
     
     /**
      * Set the usage message of the command.
+     *
      * @param usage New usage message.
      */
     public void setUsage(String usage)
@@ -98,6 +110,7 @@ public abstract class CommandExecutor
     
     /**
      * Returns if the command is shown in _help.
+     *
      * @return Flag to show this command in help.
      */
     public boolean isShownInHelp()
@@ -107,6 +120,7 @@ public abstract class CommandExecutor
     
     /**
      * Set if the command is to be shown in _help.
+     *
      * @param bool Is the command going to be shown in help?
      */
     public void setShownInHelp(boolean bool)
@@ -120,6 +134,7 @@ public abstract class CommandExecutor
     @Override
     public String toString()
     {
-        return this.getClass().getSimpleName() + "(aliases=" + Arrays.toString(aliases) + ", desc=\"" + description + "\", usage=\"" + usage + "\", clearance=" + clearance + ", shownInHelp=" + shownInHelp + ")";
+        return this.getClass().getSimpleName() + "(aliases=" + Arrays.toString(aliases) + ", desc=\"" + description +
+                "\", usage=\"" + usage + "\", clearance=" + clearance + ", shownInHelp=" + shownInHelp + ")";
     }
 }

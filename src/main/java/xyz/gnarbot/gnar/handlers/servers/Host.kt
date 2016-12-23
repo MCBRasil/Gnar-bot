@@ -57,9 +57,9 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     {
         file = Bot.files.hosts.child("$id.json")
         file.createNewFile()
-    
+        
         val content = file.readText()
-        if (content.length == 0) jsonObject = NullableJSON()
+        if (content.isEmpty()) jsonObject = NullableJSON()
         else jsonObject = NullableJSON(content)
     }
     

@@ -14,25 +14,23 @@ public class ExplosmRCGCommand extends CommandExecutor
 {
     @Inject
     public Host host;
-
+    
     @Override
     public void execute(Note msg, String label, String[] args)
     {
         try
         {
             Document document;
-
+            
             document = Jsoup.connect("http://explosm.net/rcg").get();
-
+            
             Element element = document.getElementById("rcg-comic").getElementsByTag("img").get(0);
-
-            String builder =
-                    "Cyanide and Happiness" + "\n" +
-                            "**Random Comic Generator**\n" +
-                            "Link: " + element.absUrl("src");
-
+            
+            String builder = "Cyanide and Happiness" + "\n" + "**Random Comic Generator**\n" + "Link: " + element
+                    .absUrl("src");
+            
             msg.replyRaw(builder);
-
+            
         }
         catch (Exception e)
         {

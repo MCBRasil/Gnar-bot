@@ -15,31 +15,31 @@ public class ExplosmCommand extends CommandExecutor
 {
     @Inject
     public Host host;
-
+    
     @Override
     public void execute(Note msg, String label, String[] args)
     {
         try
         {
             Document document;
-
+            
             int min = 1500;
             int max = 4300;
-
+            
             String rand;
-
+            
             if (args.length >= 1)
             {
                 int input;
                 try
                 {
                     input = Integer.valueOf(args[0]);
-
+                    
                     if (input > max || input < 100)
                     {
                         msg.reply("Explosm does not have a comic for that number.");
                     }
-
+                    
                     rand = String.valueOf(input);
                 }
                 catch (NumberFormatException e)
@@ -59,14 +59,12 @@ public class ExplosmCommand extends CommandExecutor
             {
                 rand = String.valueOf(min + new Random().nextInt(max - min));
             }
-
+            
             document = Jsoup.connect(String.format("http://explosm.net/comics/%s/", rand)).get();
-
-            String builder =
-                    "Cyanide and Happiness" + "\n" +
-                            "No: **" + rand + "**\n" +
-                            "Link: " + document.getElementById("main-comic").absUrl("src");
-
+            
+            String builder = "Cyanide and Happiness" + "\n" + "No: **" + rand + "**\n" + "Link: " + document
+                    .getElementById("main-comic").absUrl("src");
+            
             msg.getChannel().sendMessage(builder).queue();
         }
         catch (Exception e)

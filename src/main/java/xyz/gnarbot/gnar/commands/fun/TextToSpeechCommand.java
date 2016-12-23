@@ -5,11 +5,7 @@ import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
-@Command(
-        aliases = {"tts"},
-        usage = "(string)",
-        description = "Text to speech fun."
-)
+@Command(aliases = {"tts"}, usage = "(string)", description = "Text to speech fun.")
 public class TextToSpeechCommand extends CommandExecutor
 {
     @Override
@@ -23,7 +19,8 @@ public class TextToSpeechCommand extends CommandExecutor
         
         MessageBuilder builder = new MessageBuilder();
         builder.setTTS(true);
-        builder.appendString(message.getContent().replaceFirst(message.getHost().getCommandHandler().getToken() + "tts ", ""));
+        builder.append(message.getContent().replaceFirst(message.getHost().getCommandHandler().getToken() +
+                "tts ", ""));
         
         message.getChannel().sendMessage(builder.build()).queue();
     }

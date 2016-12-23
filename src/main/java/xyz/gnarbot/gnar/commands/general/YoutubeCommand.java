@@ -9,11 +9,7 @@ import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.Utils;
 
-@Command(
-        aliases = "youtube",
-        usage = "(query)",
-        description = "Search and get a YouTube video."
-)
+@Command(aliases = "youtube", usage = "(query)", description = "Search and get a YouTube video.")
 public class YoutubeCommand extends CommandExecutor
 {
     @Override
@@ -32,7 +28,8 @@ public class YoutubeCommand extends CommandExecutor
             
             query = query.replace(" ", "+");
             
-            String url = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&type=video&q=" + query + "&key=" + Bot.INSTANCE.getAuthTokens().get("youtube");
+            String url = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&type=video&q=" +
+                    query + "&key=" + Bot.INSTANCE.getAuthTokens().get("youtube");
             
             JSONObject jsonObject = Utils.jsonFromUrl(url);
             

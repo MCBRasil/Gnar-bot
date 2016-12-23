@@ -10,11 +10,7 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.StringJoiner;
 
-@Command(
-        aliases = {"whois", "infoof", "infoon"},
-        usage = "(@user)",
-        description = "Get information on a user."
-)
+@Command(aliases = {"whois", "infoof", "infoon"}, usage = "(@user)", description = "Get information on a user.")
 public class WhoIsCommand extends CommandExecutor
 {
     @Inject
@@ -60,9 +56,8 @@ public class WhoIsCommand extends CommandExecutor
         
         mainBuilder.append("\u258C Roles ______ ").append(user.getRoles().size()).append('\n');
         
-        user.getRoles().stream()
-                .filter(role -> !mainBuilder.toString().contains(role.getId()))
-                .forEach(role -> mainBuilder.append("\u258C  - ").append(role.getName()).append('\n'));
+        user.getRoles().stream().filter(role -> !mainBuilder.toString().contains(role.getId())).forEach(role ->
+                mainBuilder.append("\u258C  - ").append(role.getName()).append('\n'));
         
         message.replyRaw("```xl\n" + mainBuilder.toString().replaceAll("null", "None") + "```");
     }

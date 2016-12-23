@@ -43,58 +43,50 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @return The Message created by this function.
      */
     fun replyRaw(msg : String) = Note(host, channel.sendMessage(msg).block())
-
+    
     /**
      * Send an embeded message..
      *
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun replyEmbed(title: String, msg : String, color: Color)
+    fun replyEmbed(title : String, msg : String, color : Color)
     {
-        val eb = EmbedBuilder()
-        eb.setDescription("__**${message.author.name}**__ \u279c" + msg)
-        eb.setTitle(title)
-        eb.setColor(color)
-        val embed = eb.build()
-        channel.sendMessage(embed).queue()
+        replyEmbed(title, msg, color, null)
     }
-
+    
     /**
      * Send an embeded message..
      *
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun replyEmbed(title: String, msg : String, color: Color, thumbnail: String)
+    fun replyEmbed(title : String, msg : String, color : Color, thumb : String?)
     {
-        val eb = EmbedBuilder()
-        eb.setDescription("__**${message.author.name}**__ \u279c" + msg)
-        eb.setTitle(title)
-        eb.setColor(color)
-        eb.setThumbnail(thumbnail)
-        val embed = eb.build()
-        channel.sendMessage(embed).queue()
+        replyEmbed(title, msg, color, thumb, null)
     }
-
+    
     /**
      * Send an embeded message..
      *
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun replyEmbed(title: String, msg : String, color: Color, thumbnail: String, image: String)
+    fun replyEmbed(title : String, msg : String, color : Color, thumb : String?, img : String?)
     {
-        val eb = EmbedBuilder()
-        eb.setDescription("__**${message.author.name}**__ \u279c" + msg)
-        eb.setTitle(title)
-        eb.setColor(color)
-        if (thumbnail != null)
-        {
-            eb.setThumbnail(thumbnail)
+        val embed = EmbedBuilder().run {
+            setDescription("__**${message.author.name}**__ \u279c" + msg)
+            setTitle(title)
+            setColor(color)
+            
+            if (!thumb.isNullOrBlank())
+                setThumbnail(thumb)
+            
+            if (!img.isNullOrBlank())
+                setImage(img)
+            
+            build()
         }
-        eb.setImage(image)
-        val embed = eb.build()
         channel.sendMessage(embed).queue()
     }
     

@@ -13,24 +13,22 @@ public class GarfieldCommand extends CommandExecutor
 {
     @Inject
     public Host host;
-
+    
     @Override
     public void execute(Note msg, String label, String[] args)
     {
         try
         {
             Document document;
-
+            
             document = Jsoup.connect("https://garfield.com/comic/random").followRedirects(true).get();
-
+            
             String link = document.getElementsByClass("img-responsive").get(0).absUrl("src");
-
-            String builder =
-                    "Garfield" + "\n" +
-                            "Date: **" + link.substring(link.lastIndexOf("/") + 1, link.lastIndexOf(".")) + "**\n" +
-                            "Link: " + link;
+            
+            String builder = "Garfield" + "\n" + "Date: **" + link.substring(link.lastIndexOf("/") + 1, link
+                    .lastIndexOf(".")) + "**\n" + "Link: " + link;
             msg.replyRaw(builder);
-
+            
         }
         catch (Exception e)
         {
