@@ -10,18 +10,9 @@ import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.Utils;
 
-<<<<<<< HEAD
 import java.awt.*;
 import java.util.Locale;
-
-@Command(
-        aliases = {"marvel"},
-        usage = "(hero/villain name)",
-        description = "Look up info on a Marvel character."
-)
-=======
 @Command(aliases = {"marvel"}, usage = "(hero/villain name)", description = "Look up info on a Marvel character.")
->>>>>>> origin/master
 public class MarvelComics extends CommandExecutor
 {
     @Override

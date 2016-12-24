@@ -5,13 +5,10 @@ import org.apache.commons.lang3.text.WordUtils
 import xyz.gnarbot.gnar.handlers.commands.Command
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
-<<<<<<< HEAD
 import java.awt.Color
 import java.util.*
-=======
 import java.util.Random
 import java.util.StringJoiner
->>>>>>> origin/master
 
 @Command(aliases = arrayOf("dialog"))
 class DialogCommand : CommandExecutor()

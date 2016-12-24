@@ -9,3 +9,4 @@ target/
 plot.png
 *.jar
 xyz.gnarbot.iml
+*.png
