@@ -8,13 +8,13 @@
 	<artifactId>xyz.gnarbot</artifactId>
 	<version>1.0</version>
 	<properties>
-		<kotlin.version>1.0.4</kotlin.version>
+		<kotlin.version>1.0.5</kotlin.version>
 		<jar.mainClass>xyz.gnarbot.gnar.MainBot</jar.mainClass>
 	</properties>
 	<packaging>jar</packaging>
 
 	<build>
-		<finalName>Gnar-Bot</finalName>
+		<finalName>MegaGnar-Bot</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -61,13 +61,6 @@
 				<groupId>org.jetbrains.kotlin</groupId>
 				<artifactId>kotlin-maven-plugin</artifactId>
 				<version>${kotlin.version}</version>
-
-				<configuration>
-					<jvmTarget>1.8</jvmTarget>
-					<args>
-						<arg>-Xallow-kotlin-package</arg>
-					</args>
-				</configuration>
 
 				<executions>
 					<execution>
@@ -142,7 +135,7 @@
 		<dependency>
 			<groupId>net.dv8tion</groupId>
 			<artifactId>JDA</artifactId>
-			<version>3.0.BETA_103</version>
+			<version>3.0.BETA2_111</version>
 		</dependency>
 
 		<!--CHATTERBOT-->
@@ -166,10 +159,18 @@
 			<version>4.1.0</version>
 		</dependency>
 
+		<!--JSON-->
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20140107</version>
+		</dependency>
+
+		<!--Math Stuff-->
+		<dependency>
+			<groupId>xyz.hexavalon</groupId>
+			<artifactId>AJE</artifactId>
+			<version>2.0</version>
 		</dependency>
 
 		<!--UNIREST-->

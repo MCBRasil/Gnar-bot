@@ -6,13 +6,18 @@ import xyz.gnarbot.gnar.handlers.commands.Command
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
 import xyz.gnarbot.gnar.handlers.servers.Host
 import xyz.gnarbot.gnar.utils.Note
-import java.awt.*
+import java.awt.AlphaComposite
+import java.awt.BasicStroke
+import java.awt.Color
+import java.awt.Font
+import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.IOException
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
+import java.util.ArrayList
+import java.util.Collections
 import javax.imageio.ImageIO
 
 @Command(aliases = arrayOf("gusers"), description = "Fancy server stats ya uuuuuurdd mi?", showInHelp = false)
@@ -37,7 +42,7 @@ class GraphCommand : CommandExecutor()
         
         val buffer = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE)
         val graphic = buffer.createGraphics()
-    
+        
         graphic.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
         graphic.composite = AlphaComposite.SrcOver
         
@@ -49,7 +54,7 @@ class GraphCommand : CommandExecutor()
         
         var lastX = 5
         var lastY = height
-    
+        
         for (i in joins.indices)
         {
             val x = ((joins[1].joinDate.toEpochSecond() - start) * width / (end - start)).toInt()
@@ -77,7 +82,7 @@ class GraphCommand : CommandExecutor()
         {
             println("[ERROR] An error occured drawing the plot.")
         }
-    
+        
         return f
     }
 }

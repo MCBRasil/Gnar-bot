@@ -8,13 +8,14 @@ import xyz.gnarbot.gnar.utils.DiscordBotUserInfo;
 import xyz.gnarbot.gnar.utils.Note;
 
 @Command(aliases = "dui")
-public class DiscordBotsUserInfoCommand extends CommandExecutor {
-
+public class DiscordBotsUserInfoCommand extends CommandExecutor
+{
     @Inject
     public Host host;
-
+    
     @Override
-    public void execute(Note msg, String label, String[] args) {
+    public void execute(Note msg, String label, String[] args)
+    {
         if (args.length > 0)
         {
             if (msg.getMentionedUsers().size() == 0)
@@ -26,7 +27,6 @@ public class DiscordBotsUserInfoCommand extends CommandExecutor {
             {
                 String data = DiscordBotUserInfo.getUserInfo(msg.getMentionedUsers().get(0).getId());
                 msg.reply(data);
-
             }
         }
         else
@@ -34,5 +34,5 @@ public class DiscordBotsUserInfoCommand extends CommandExecutor {
             msg.reply("You must supply a bot ID or mention.");
         }
     }
-
+    
 }

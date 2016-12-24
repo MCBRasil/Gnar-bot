@@ -8,98 +8,118 @@ import xyz.gnarbot.gnar.textadventure.events.FirstSwordLewdEvent;
 
 import java.util.Random;
 
-/**
- * Created by zacha on 11/17/2016.
- */
-public class Area {
-
-	private LOCATION locationType;
-	private int id;
-	private boolean newLocation = true;
-
-	private Event relatedEvent;
-
-	private Random random;
-
-	private Adventure relatedAdventure;
-
-	private boolean discovered = false;
-
-	public boolean isDiscovered() {
-		return discovered;
-	}
-
-	public void discover(){
-		this.discovered = true;
-	}
-
-	public Event getRelatedEvent() {
-		return relatedEvent;
-	}
-
-	public boolean isNewLocation() {
-		return newLocation;
-	}
-
-	public Adventure getRelatedAdventure() {
-		return relatedAdventure;
-	}
-
-	public boolean moveToHere(){
-		if (this.newLocation) {
-			this.newLocation = false;
-			System.out.println("New location. ID: " + getRelatedAdventure().getAreasFound());
-			if (getRelatedAdventure().getAreasFound() == 4){
-				relatedEvent = new FirstBagEvent();
-				System.out.println("Created an Event!");
-			}
-			if (getRelatedAdventure().getAreasFound() > 6){
-				if (random.nextInt()*100 > 80){
-					if (getRelatedAdventure().getHeroName().toLowerCase().contains("lewd") || getRelatedAdventure().getHeroName().toLowerCase().contains("mae")){
-						relatedEvent = new FirstSwordLewdEvent();
-					}else {
-						relatedEvent = new FirstSwordEvent();
-					}
-				}
-			}
-			return true;
-		}else{
-			return false;
-		}
-	}
-	public boolean hasCompletedEvent() {
-		return (relatedEvent != null) ? relatedEvent.hasCompletedEvent() : true;
-	}
-
-
-	private DIRECTION prevDirect;
-
-	public Area(Adventure adventure, LOCATION location) {
-		this.relatedAdventure = adventure;
-		this.locationType = location;
-		this.random = adventure.getRandom();
-		initate();
-	}
-
-	public Area(Adventure adventure) {
-		this.random = adventure.getRandom();
-		this.relatedAdventure = adventure;
-		this.locationType = LOCATION.values()[random.nextInt(LOCATION.values().length)];
-
-		initate();
-	}
-
-	public Area(Adventure adventure, DIRECTION prevDirection) {
-		this.random = adventure.getRandom();
-		this.relatedAdventure = adventure;
-		this.locationType = LOCATION.values()[random.nextInt(LOCATION.values().length)];
-		this.prevDirect = prevDirection;
-
-		initate();
-	}
-
-	private void initate() {
-		/*
+public class Area
+{
+    private LOCATION locationType;
+    
+    private int id;
+    
+    private boolean newLocation = true;
+    
+    private Event relatedEvent;
+    
+    private Random random;
+    
+    private Adventure relatedAdventure;
+    
+    private boolean discovered = false;
+    
+    private DIRECTION prevDirect;
+    
+    public Area(Adventure adventure, LOCATION location)
+    {
+        this.relatedAdventure = adventure;
+        this.locationType = location;
+        this.random = adventure.getRandom();
+        initate();
+    }
+    
+    public Area(Adventure adventure)
+    {
+        this.random = adventure.getRandom();
+        this.relatedAdventure = adventure;
+        this.locationType = LOCATION.values()[random.nextInt(LOCATION.values().length)];
+        
+        initate();
+    }
+    
+    public Area(Adventure adventure, DIRECTION prevDirection)
+    {
+        this.random = adventure.getRandom();
+        this.relatedAdventure = adventure;
+        this.locationType = LOCATION.values()[random.nextInt(LOCATION.values().length)];
+        this.prevDirect = prevDirection;
+        
+        initate();
+    }
+    
+    public boolean isDiscovered()
+    {
+        return discovered;
+    }
+    
+    public void discover()
+    {
+        this.discovered = true;
+    }
+    
+    public Event getRelatedEvent()
+    {
+        return relatedEvent;
+    }
+    
+    public boolean isNewLocation()
+    {
+        return newLocation;
+    }
+    
+    public Adventure getRelatedAdventure()
+    {
+        return relatedAdventure;
+    }
+    
+    public boolean moveToHere()
+    {
+        if (this.newLocation)
+        {
+            this.newLocation = false;
+            System.out.println("New location. ID: " + getRelatedAdventure().getAreasFound());
+            if (getRelatedAdventure().getAreasFound() == 4)
+            {
+                relatedEvent = new FirstBagEvent();
+                System.out.println("Created an Event!");
+            }
+            if (getRelatedAdventure().getAreasFound() > 6)
+            {
+                if (random.nextInt() * 100 > 80)
+                {
+                    if (getRelatedAdventure().getHeroName().toLowerCase().contains("lewd") || getRelatedAdventure()
+                            .getHeroName().toLowerCase().contains("mae"))
+                    {
+                        relatedEvent = new FirstSwordLewdEvent();
+                    }
+                    else
+                    {
+                        relatedEvent = new FirstSwordEvent();
+                    }
+                }
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    public boolean hasCompletedEvent()
+    {
+        return relatedEvent == null || relatedEvent.hasCompletedEvent();
+    }
+    
+    private void initate()
+    {
+        /*
 		if (prevDirect == DIRECTION.FIRSTMOVE) {
 			setAreaNorth(new Area(relatedAdventure, DIRECTION.NORTH, this));
 			setAreaEast(new Area(relatedAdventure, DIRECTION.EAST, this));
@@ -142,10 +162,11 @@ public class Area {
 				canMoveNorth = true;
 			}
 		}*/
-	}
-
-	public LOCATION getType() {
-		return this.locationType;
-	}
-	
+    }
+    
+    public LOCATION getType()
+    {
+        return this.locationType;
+    }
+    
 }

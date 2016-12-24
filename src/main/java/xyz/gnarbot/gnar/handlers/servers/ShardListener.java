@@ -3,6 +3,7 @@ package xyz.gnarbot.gnar.handlers.servers;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import xyz.gnarbot.gnar.handlers.commands.CommandDistributor;
 
 class ShardListener extends ListenerAdapter
 {
@@ -16,8 +17,12 @@ class ShardListener extends ListenerAdapter
     @Override
     public void onMessageReceived(MessageReceivedEvent event)
     {
-        Host host = shard.getHost(event.getGuild());
-                
-        if (host != null) host.handleMessageEvent(event);
+        if (!event.getAuthor().isBot()
+                && CommandDistributor.INSTANCE.checkValid(event.getMessage().getContent()))
+        {
+            Host host = shard.getHost(event.getGuild());
+    
+            if (host != null) host.handleMessageEvent(event);
+        }
     }
 }

@@ -16,17 +16,18 @@ public class CatsCommand extends CommandExecutor
 {
     @Inject
     public Host host;
-
+    
     @Override
     public void execute(Note msg, String label, String[] args)
     {
-        try {
+        try
+        {
             String apiKey = "MTAyODkw";
-
+            
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc;
-
+            
             if (args.length >= 1 && args[0] != null)
             {
                 switch (args[0])
@@ -34,20 +35,24 @@ public class CatsCommand extends CommandExecutor
                     case "png":
                     case "jpg":
                     case "gif":
-                        doc = db.parse(new URL(String.format("http://thecatapi.com/api/images/get?format=xml&type=%s&api_key=%s&results_per_page=1", args[0], apiKey)).openStream());
+                        doc = db.parse(new URL(String.format("http://thecatapi" +
+                                ".com/api/images/get?format=xml&type=%s&api_key=%s&results_per_page=1", args[0],
+                                apiKey)).openStream());
                         break;
                     default:
-                        msg.getChannel().sendMessage(String.format("%s ➜ Not a valid picture type. `[png, jpg, gif]`", msg.getAuthor().getAsMention())).queue();
+                        msg.getChannel().sendMessage(String.format("%s ➜ Not a valid picture type. `[png, jpg, " +
+                                "gif]`", msg.getAuthor().getAsMention())).queue();
                         return;
                 }
             }
             else
             {
-                doc = db.parse(new URL(String.format("http://thecatapi.com/api/images/get?format=xml&api_key=%s&results_per_page=1", apiKey)).openStream());
+                doc = db.parse(new URL(String.format("http://thecatapi" +
+                        ".com/api/images/get?format=xml&api_key=%s&results_per_page=1", apiKey)).openStream());
             }
-
+            
             String catURL = doc.getElementsByTagName("url").item(0).getTextContent();
-
+            
             msg.replyRaw("Random Cat Pictures\nLink: " + catURL);
         }
         catch (Exception e)

@@ -8,7 +8,7 @@ import net.dv8tion.jda.core.utils.SimpleLog
 import xyz.gnarbot.gnar.handlers.servers.Shard
 import xyz.gnarbot.gnar.utils.Utils
 import xyz.gnarbot.gnar.utils.readProperties
-import java.util.*
+import java.util.Date
 import java.util.concurrent.Executors
 import kotlin.jvm.JvmStatic as static
 
@@ -19,6 +19,10 @@ object Bot
 {
     @static val LOG = SimpleLog.getLog("Bot")!!
     
+    @static val token = "_" //default token
+    
+    @static val files = BotFiles()
+    
     var initialized = false
         private set
     
@@ -28,12 +32,12 @@ object Bot
     /** Administrator users of the bot. */
     val admins = mutableSetOf<User>()
     
-    @static val files = BotFiles()
-    
     val startTime = System.currentTimeMillis()
     val scheduler = Executors.newSingleThreadScheduledExecutor()
     
     val authTokens = files.tokens.readProperties()
+    
+    
     
     fun initBot(token : String, num_shards : Int)
     {
@@ -41,28 +45,26 @@ object Bot
         initialized = true
         
         LOG.info("Initializing Bot.")
-        LOG.info("Bot token is \"$token\".")
         LOG.info("Requesting $num_shards shards.")
         
         for (id in 0 .. num_shards - 1)
         {
-            val jda = JDABuilder(AccountType.BOT).run{
+            val jda = JDABuilder(AccountType.BOT).run {
                 if (num_shards > 1) useSharding(id, num_shards)
                 setToken(token)
                 setAutoReconnect(true)
-                setGame(Game.of("_help | _invite"))
+                setGame(Game.of("Shard: $id | _help"))
                 buildBlocking()
             }
-    
+            
             jda.selfUser.manager.setName("Gnar")
-
             
             shards += Shard(id, jda)
         }
         
         LOG.info("Bot is now connected to Discord.")
         Utils.setLeagueInfo()
-
+        
     }
     
     val uptime : String

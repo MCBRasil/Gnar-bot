@@ -11,13 +11,14 @@ public abstract class CommandRegistry
     
     /**
      * Register and instantiate the class.
+     *
      * @param cls CommandExecutor class.
      */
     public void registerCommand(Class<? extends CommandExecutor> cls)
     {
         if (!cls.isAnnotationPresent(Command.class))
         {
-            throw new IllegalStateException("@Command annotation not found for class: "+cls.getName());
+            throw new IllegalStateException("@Command annotation not found for class: " + cls.getName());
         }
         
         try
@@ -42,8 +43,9 @@ public abstract class CommandRegistry
     
     /**
      * Register the CommandExecutor instance into the registry.
+     *
      * @param label Invoking key.
-     * @param cmd CommandExecutor instance.
+     * @param cmd   CommandExecutor instance.
      */
     public void registerCommand(String label, CommandExecutor cmd)
     {
@@ -65,21 +67,21 @@ public abstract class CommandRegistry
     
     /**
      * Unregisters a CommandExecutor.
+     *
      * @param label Invoking key.
      */
     public void unregisterCommand(String label) //throws IllegalStateException
     {
         if (!registry.isEmpty())
         {
-            registry.keySet().stream()
-                    .filter(label::equals)
-                    .forEach(command -> registry.remove(label));
+            registry.keySet().stream().filter(label::equals).forEach(command -> registry.remove(label));
         }
         //throw new IllegalStateException("Command " + label + " isn't registered.");
     }
     
     /**
      * Returns the command registry.
+     *
      * @return The command registry.
      */
     public Map<String, CommandExecutor> getRegistry()
@@ -92,20 +94,20 @@ public abstract class CommandRegistry
         Set<CommandExecutor> blacklist = new HashSet<>();
         Map<String, CommandExecutor> uniqueMap = new LinkedHashMap<>();
         
-        registry.entrySet().stream()
-                .filter(entry -> !blacklist.contains(entry.getValue()))
-                .forEach(entry ->
-                {
-                    uniqueMap.put(entry.getKey(), entry.getValue());
-                    blacklist.add(entry.getValue());
-                });
+        registry.entrySet().stream().filter(entry -> !blacklist.contains(entry.getValue())).forEach(entry ->
+        {
+            uniqueMap.put(entry.getKey(), entry.getValue());
+            blacklist.add(entry.getValue());
+        });
         
         return uniqueMap;
     }
     
     /**
      * Get the command based on the key.
+     *
      * @param key Invoking key.
+     *
      * @return CommandExecutor instance.
      */
     public CommandExecutor getCommand(String key)
@@ -115,14 +117,15 @@ public abstract class CommandRegistry
     
     /**
      * Returns the CommandExecutor based on the class.
+     *
      * @param cls CommandExecutor class.
+     *
      * @return CommandExecutor instance.
      */
     public CommandExecutor getCommand(Class<? extends CommandExecutor> cls)
     {
-        Optional<CommandExecutor> cmd = registry.values().stream()
-                .filter(commandExecutor -> commandExecutor.getClass() == cls)
-                .findFirst();
+        Optional<CommandExecutor> cmd = registry.values().stream().filter(commandExecutor -> commandExecutor.getClass
+                () == cls).findFirst();
         
         return cmd.isPresent() ? cmd.get() : null;
     }

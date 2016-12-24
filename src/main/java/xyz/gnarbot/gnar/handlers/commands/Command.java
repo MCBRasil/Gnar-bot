@@ -18,30 +18,35 @@ public @interface Command
 {
     /**
      * Returns the aliases of this command.
+     *
      * @return The aliases of this command.
      */
     String[] aliases();
     
     /**
      * Returns the description of this command.
+     *
      * @return The description of this command.
      */
     String description() default "No description provided.";
     
     /**
      * Returns the usage of this command.
+     *
      * @return The usage of this command.
      */
     String usage() default "";
     
     /**
      * Returns if the command is shown in _help.
+     *
      * @return Flag to show this command in help.
      */
     boolean showInHelp() default true;
     
     /**
      * Returns the permission required for this command.
+     *
      * @return The permission required for this command.
      */
     Clearance clearance() default Clearance.USER;

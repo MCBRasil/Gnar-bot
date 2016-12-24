@@ -12,6 +12,7 @@ import net.dv8tion.jda.core.exceptions.PermissionException
 import net.dv8tion.jda.core.managers.GuildManager
 import org.json.JSONObject
 import xyz.gnarbot.gnar.Bot
+import xyz.gnarbot.gnar.handlers.commands.CommandDistributor
 import xyz.gnarbot.gnar.handlers.commands.CommandHandler
 import xyz.gnarbot.gnar.handlers.members.MemberHandler
 import xyz.gnarbot.gnar.handlers.members.User
@@ -38,10 +39,10 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     
     init
     {
-        loadJSON()
-        saveJSON()
+//        loadJSON()
+//        saveJSON()
         
-        commandHandler.recieveFrom(shard.distributor)
+        commandHandler.recieveFrom(CommandDistributor)
         commandHandler.registry.values.forEach { injector.injectMembers(it) }
     }
     
@@ -57,9 +58,9 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     {
         file = Bot.files.hosts.child("$id.json")
         file.createNewFile()
-    
+        
         val content = file.readText()
-        if (content.length == 0) jsonObject = NullableJSON()
+        if (content.isEmpty()) jsonObject = NullableJSON()
         else jsonObject = NullableJSON(content)
     }
     

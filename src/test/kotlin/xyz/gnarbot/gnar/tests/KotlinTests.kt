@@ -2,7 +2,6 @@ package xyz.gnarbot.gnar.tests
 
 import org.junit.Test
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.fakes.FakeBot
 
 class KotlinTests
 {
@@ -17,23 +16,5 @@ class KotlinTests
     {
         //assertEquals(FakeUser.id, "000000000000000000")
         //FakeMessage.create("?").channel.sendMessage("Hey there.")
-    }
-    
-    @Test
-    fun `TestCommand test`()
-    {
-        FakeBot.send("_wow")
-    }
-    
-    @Test
-    fun `HelpCommand test`()
-    {
-        FakeBot.send("_help")
-    }
-    
-    @Test
-    fun `OverwatchLookupCommand test`()
-    {
-        FakeBot.send("_ow Avalon#11557")
     }
 }

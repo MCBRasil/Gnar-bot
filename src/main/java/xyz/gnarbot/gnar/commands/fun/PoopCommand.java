@@ -7,11 +7,7 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.StringJoiner;
 
-@Command(
-        aliases = {"poop"},
-        usage = "[string]",
-        description = "Shit your heart out."
-)
+@Command(aliases = {"poop"}, usage = "[string]", description = "Shit your heart out.")
 public class PoopCommand extends CommandExecutor
 {
     @Override

@@ -5,10 +5,7 @@ import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
-@Command(
-        aliases = "uptime",
-        description = "Show the bot's uptime."
-)
+@Command(aliases = "uptime", description = "Show the bot's uptime.")
 public class UptimeCommand extends CommandExecutor
 {
     @Override

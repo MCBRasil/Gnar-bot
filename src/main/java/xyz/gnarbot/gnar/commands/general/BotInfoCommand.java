@@ -14,10 +14,7 @@ import xyz.gnarbot.gnar.utils.Note;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
-@Command(
-        aliases = {"info", "botinfo"},
-        description = "Show information about GN4R-BOT."
-)
+@Command(aliases = {"info", "botinfo"}, description = "Show information about GN4R-BOT.")
 public class BotInfoCommand extends CommandExecutor
 {
     @Override
@@ -68,41 +65,38 @@ public class BotInfoCommand extends CommandExecutor
         channels = textChannels + voiceChannels;
         
         
-        int commandSize = commandHandler.getUniqueRegistry().values().parallelStream()
-                .filter(CommandExecutor::isShownInHelp)
-                .collect(Collectors.toList())
-                .size();
+        int commandSize = commandHandler.getUniqueRegistry().values().parallelStream().filter
+                (CommandExecutor::isShownInHelp).collect(Collectors.toList()).size();
         
-        int requests = Bot.INSTANCE.getShards().stream()
-                .flatMap(shard -> shard.getHosts().stream())
-                .mapToInt(guild -> guild.getCommandHandler().getRequests())
-                .sum();
+        int requests = Bot.INSTANCE.getShards().stream().flatMap(shard -> shard.getHosts().stream()).mapToInt(guild
+                -> guild.getCommandHandler().getRequests()).sum();
         
-        StringJoiner joiner = new StringJoiner("\n");
+        StringJoiner joiner = new StringJoiner("\n", "```ini\n", "```\n");
         
-        joiner.add("\u258C Requests ____ " + requests);
-        joiner.add("\u258C Servers _____ " + servers);
-        joiner.add("\u258C Shards ______ " + Bot.INSTANCE.getShards().size());
+        joiner.add("\u258C [Requests] ____ " + requests);
+        joiner.add("\u258C [Servers] _____ " + servers);
+        joiner.add("\u258C [Shards] ______ " + Bot.INSTANCE.getShards().size());
         joiner.add("\u258C");
-        joiner.add("\u258C Channels ____ " + channels);
-        joiner.add("\u258C  - Text _____ " + textChannels);
-        joiner.add("\u258C  - Voice ____ " + voiceChannels);
+        joiner.add("\u258C [Channels] ____ " + channels);
+        joiner.add("\u258C  - [Text] _____ " + textChannels);
+        joiner.add("\u258C  - [Voice] ____ " + voiceChannels);
         joiner.add("\u258C");
-        joiner.add("\u258C Users _______ " + users);
-        joiner.add("\u258C  - Online ___ " + online);
-        joiner.add("\u258C  - Offline __ " + offline);
-        joiner.add("\u258C  - Inactive _ " + inactive);
-        joiner.add("\u258C  - DND _ " + dnd);
+        joiner.add("\u258C [Users] _______ " + users);
+        joiner.add("\u258C  - [Online] ___ " + online);
+        joiner.add("\u258C  - [Offline] __ " + offline);
+        joiner.add("\u258C  - [Inactive] _ " + inactive);
+        joiner.add("\u258C  - [DND] ______ " + dnd);
         joiner.add("\u258C");
-        joiner.add("\u258C Creator _____ Avalon & Maeyrl");
-        joiner.add("\u258C Conributor __ Gatt");
-        joiner.add("\u258C Website _____ gnarbot.xyz");
-        joiner.add("\u258C Commands ____ " + commandSize);
-        joiner.add("\u258C Library _____ JDA");
-        joiner.add("\u258C Uptime ______ " + Bot.INSTANCE.getSimpleUptime() + ".");
+        joiner.add("\u258C [Creator] _____ Avalon");
+        joiner.add("\u258C [Creator] _____ Maeyrl");
+        joiner.add("\u258C [Conributor] __ Gatt");
+        joiner.add("\u258C [Website] _____ gnarbot.xyz");
+        joiner.add("\u258C [Commands] ____ " + commandSize);
+        joiner.add("\u258C [Library] _____ JDA 3");
+        joiner.add("\u258C [Uptime] ______ " + Bot.INSTANCE.getSimpleUptime() + ".");
         
         note.reply("**" + BotData.randomQuote() + "** Here is all of my information!");
         
-        note.getChannel().sendMessage("```xl\n" + joiner.toString() + "```\n").queue();
+        note.getChannel().sendMessage(joiner.toString()).queue();
     }
 }

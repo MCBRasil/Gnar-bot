@@ -8,23 +8,29 @@ import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.TriviaQuestions;
 
 @Command(aliases = "answer")
-public class TriviaAnswerCommand extends CommandExecutor {
-
+public class TriviaAnswerCommand extends CommandExecutor
+{
+    
     @Inject
     public Host host;
-
+    
     @Override
-    public void execute(Note msg, String label, String[] args) {
-        if(!TriviaQuestions.isSetup()) {
+    public void execute(Note msg, String label, String[] args)
+    {
+        if (!TriviaQuestions.isSetup())
+        {
             TriviaQuestions.init();
         }
-
-        try {
+        
+        try
+        {
             int key = Integer.valueOf(args[0]);
             msg.reply(TriviaQuestions.getAnswer(key));
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             msg.reply("Please enter a number.");
         }
     }
-
+    
 }

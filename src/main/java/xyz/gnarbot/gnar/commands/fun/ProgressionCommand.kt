@@ -7,7 +7,7 @@ import xyz.gnarbot.gnar.handlers.commands.Command
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
 import xyz.gnarbot.gnar.handlers.members.Clearance
 import xyz.gnarbot.gnar.utils.Note
-import java.util.*
+import java.util.StringJoiner
 import java.util.concurrent.TimeUnit
 
 @Command(aliases = arrayOf("progress"), clearance = Clearance.BOT_MASTER, showInHelp = false)
@@ -21,7 +21,7 @@ class ProgressionCommand : CommandExecutor()
         joiner.add("|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|")
         
         val lines = WordUtils
-                .wrap(StringUtils.join(args, ' ').replace("```",""), 25)
+                .wrap(StringUtils.join(args, ' ').replace("```", ""), 25)
                 .split("\n")
         
         lines.forEach {
@@ -38,7 +38,7 @@ class ProgressionCommand : CommandExecutor()
             
             joiner.add("| $str$builder |")
         }
-
+        
         
         joiner.add("| ____________________      |")
         joiner.add("||var-A| var-B |")
@@ -47,11 +47,11 @@ class ProgressionCommand : CommandExecutor()
         
         val list = arrayListOf<String>()
         
-        for (i in 0..20)
+        for (i in 0 .. 20)
         {
             val builder = StringBuilder()
             repeat(20) {
-                if (it < i+1) builder.append('█')
+                if (it < i + 1) builder.append('█')
                 else builder.append(' ')
             }
             
@@ -66,11 +66,11 @@ class ProgressionCommand : CommandExecutor()
                     .replace("var-A", builder.toString())
                     .replace("var-B", percent))
         }
-    
+        
         try
         {
             val msg = message.replyRaw(list[0])
-    
+            
             list.forEachIndexed { i, s ->
                 Bot.scheduler.schedule({
                     msg.editMessage(list[i]).queue()

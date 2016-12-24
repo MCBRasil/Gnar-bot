@@ -12,7 +12,8 @@ public class BotData
 {
     private static final Random random = new Random();
     
-    private static final List<String> botQuotes = FilesKt.readLines(new File(Bot.getFiles().getData(), "quotes/Gnar.txt"), StandardCharsets.UTF_8);
+    private static final List<String> botQuotes = FilesKt.readLines(new File(Bot.getFiles().getData(), "quotes/bot" +
+            ".txt"), StandardCharsets.UTF_8);
     
     public static String randomQuote()
     {

@@ -10,6 +10,7 @@ import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.Utils;
 
+<<<<<<< HEAD
 import java.awt.*;
 import java.util.Locale;
 
@@ -18,6 +19,9 @@ import java.util.Locale;
         usage = "(hero/villain name)",
         description = "Look up info on a Marvel character."
 )
+=======
+@Command(aliases = {"marvel"}, usage = "(hero/villain name)", description = "Look up info on a Marvel character.")
+>>>>>>> origin/master
 public class MarvelComics extends CommandExecutor
 {
     @Override
@@ -40,7 +44,8 @@ public class MarvelComics extends CommandExecutor
             
             String s = StringUtils.join(args, "+");
             
-            JSONObject jso = Utils.jsonFromUrl("http://gateway.marvel.com:80/v1/public/characters?apikey=" + apiKeyPu + "&hash=" + hash + "&name=" + s + "&ts=" + ts);
+            JSONObject jso = Utils.jsonFromUrl("http://gateway.marvel.com:80/v1/public/characters?apikey=" + apiKeyPu
+                    + "&hash=" + hash + "&name=" + s + "&ts=" + ts);
             JSONObject je = jso.getJSONObject("data");
             JSONArray j2 = je.getJSONArray("results");
             JSONObject j = j2.getJSONObject(0);

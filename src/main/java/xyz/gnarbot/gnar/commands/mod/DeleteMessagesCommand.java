@@ -23,45 +23,47 @@ public class DeleteMessagesCommand extends CommandExecutor
 {
     @Inject
     public Host host;
-
+    
     @Override
     public void execute(Note msg, String label, String[] args)
     {
         try
         {
-            if(!msg.getAuthor().hasPermission(msg.getTextChannel(), Permission.MESSAGE_MANAGE)) {
+            if (!msg.getAuthor().hasPermission(msg.getTextChannel(), Permission.MESSAGE_MANAGE))
+            {
                 msg.reply("You do not have permission to delete messages");
                 return;
             }
-
+            
             if (args.length == 0)
             {
                 msg.reply("Insufficient amount of arguments.");
                 return;
             }
-
+            
             MessageHistory messageHistory = msg.getChannel().getHistory();
-
+            
             int amount = (int) Math.round(Double.parseDouble(args[0]));
             amount = Math.min(amount, 100);
-
+            
             if (amount < 2)
             {
                 msg.reply("You need to delete 2 or more messages to use this command.");
                 return;
             }
-
+            
             List<Message> messages = messageHistory.retrievePast(amount).block();
-
+            
             msg.reply(amount + " " + messages.size());
-
+            
             if (args.length == 2)
             {
                 if (args[1].contains("-content:"))
                 {
                     String targetWord = args[1].replaceFirst("-content:", "");
-                    Set<Message> removeSet = messages.stream().filter(mesg -> mesg.getContent().toLowerCase().contains(targetWord.toLowerCase())).collect(Collectors.toSet());
-
+                    Set<Message> removeSet = messages.stream().filter(mesg -> mesg.getContent().toLowerCase()
+                            .contains(targetWord.toLowerCase())).collect(Collectors.toSet());
+                    
                     try
                     {
                         ((TextChannel) msg.getChannel()).deleteMessages(removeSet).queue();
@@ -70,14 +72,16 @@ public class DeleteMessagesCommand extends CommandExecutor
                     {
                         msg.reply("GN4R does not have sufficient permission to delete messages.");
                     }
-                    msg.reply("Attempted to delete `" + removeSet.size() + "` messages with the word `" + targetWord + "`.");
+                    msg.reply("Attempted to delete `" + removeSet.size() + "` messages with the word `" + targetWord
+                            + "`.");
                     return;
                 }
             }
-
+            
             ((TextChannel) msg.getChannel()).deleteMessages(messages).queue();
-            Message mesg = msg.getChannel().sendMessage(msg.getAuthor().getAsMention() + " ➜ Attempted to delete `" + messages.size() + "` messages.").block();
-
+            Message mesg = msg.getChannel().sendMessage(msg.getAuthor().getAsMention() + " ➜ Attempted to delete `" +
+                    messages.size() + "` messages.").block();
+            
             Bot.INSTANCE.getScheduler().schedule(mesg::deleteMessage, 5, TimeUnit.SECONDS);
         }
         catch (Exception e)

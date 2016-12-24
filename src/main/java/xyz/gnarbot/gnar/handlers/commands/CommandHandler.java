@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.handlers.commands;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.members.User;
 import xyz.gnarbot.gnar.handlers.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
@@ -12,8 +13,6 @@ public class CommandHandler extends CommandRegistry
     private final Host host;
     
     private int requests = 0;
-    
-    private String token = "_"; //default token
     
     public CommandHandler(Host host)
     {
@@ -33,29 +32,15 @@ public class CommandHandler extends CommandRegistry
     }
     
     /**
-     * Returns the token of the handler.
-     * @return The token of the handler.
-     */
-    public String getToken()
-    {
-        return token;
-    }
-    
-    @Deprecated
-    public void setToken(String token)
-    {
-        this.token = token;
-    }
-    
-    /**
      * Call the command based on the message content.
+     *
      * @param event Message event.
      */
     public void callCommand(MessageReceivedEvent event)
     {
         String messageContent = event.getMessage().getContent();
         
-        if (messageContent.startsWith(token))
+        if (messageContent.startsWith(Bot.getToken()))
         {
             // Tokenize the message.
             String[] tokens = messageContent.split(" ");
@@ -68,10 +53,10 @@ public class CommandHandler extends CommandRegistry
             
             for (String cmdLabel : getRegistry().keySet())
             {
-                if (label.equalsIgnoreCase(token + cmdLabel))
+                if (label.equalsIgnoreCase(Bot.getToken() + cmdLabel))
                 {
                     CommandExecutor cmd = getRegistry().get(cmdLabel);
-    
+                    
                     if (cmd.getClearance().getValue() > user.getClearance().getValue())
                     {
                         note.reply("Insufficient permission.");
@@ -97,6 +82,7 @@ public class CommandHandler extends CommandRegistry
     
     /**
      * Return the amount of successful requests on this command handler.
+     *
      * @return the amount of successful requests on this command handler.
      */
     public int getRequests()

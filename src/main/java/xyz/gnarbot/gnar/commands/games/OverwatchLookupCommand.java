@@ -10,11 +10,8 @@ import java.util.StringJoiner;
 
 import static xyz.gnarbot.gnar.utils.Utils.jsonFromUrl;
 
-@Command(
-        aliases = {"overwatch", "ow"},
-        usage = "(Battle Tag)",
-        description = "Look up Overwatch information about a player."
-)
+@Command(aliases = {"overwatch", "ow"}, usage = "(Battle Tag)", description = "Look up Overwatch information about a " +
+        "player.")
 public class OverwatchLookupCommand extends CommandExecutor
 {
     public void execute(Note message, String label, String[] args)
@@ -35,7 +32,8 @@ public class OverwatchLookupCommand extends CommandExecutor
         {
             StringJoiner joiner = new StringJoiner("\n");
             
-            JSONObject jso = jsonFromUrl("https://owapi.net/api/v2/u/" + args[0].replaceAll("#", "-") + "/stats/general");
+            JSONObject jso = jsonFromUrl("https://owapi.net/api/v2/u/" + args[0].replaceAll("#", "-") +
+                    "/stats/general");
             
             if (jso == null)
             {
@@ -63,7 +61,7 @@ public class OverwatchLookupCommand extends CommandExecutor
             joiner.add("Cards: **" + (int) gameStats.getDouble("cards") + "**");
             
             message.replyRaw(joiner.toString());
-    
+            
         }
         catch (Exception e)
         {

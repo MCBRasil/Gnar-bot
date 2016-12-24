@@ -8,11 +8,7 @@ import xyz.gnarbot.gnar.utils.Note;
 import java.util.HashMap;
 import java.util.Map;
 
-@Command(
-        aliases = {"leet"},
-        usage = "(string)",
-        description = "Leet it!"
-)
+@Command(aliases = {"leet"}, usage = "(string)", description = "Leet it!")
 public class LeetifyCommand extends CommandExecutor
 {
     private static final Map<String, String> substitutions = new HashMap<String, String>()

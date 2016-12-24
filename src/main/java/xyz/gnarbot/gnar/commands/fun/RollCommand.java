@@ -6,11 +6,7 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.Random;
 
-@Command(
-        aliases = {"roll"},
-        usage = "(integer)",
-        description = "Roll a random number from 0 to argument."
-)
+@Command(aliases = {"roll"}, usage = "(integer)", description = "Roll a random number from 0 to argument.")
 public class RollCommand extends CommandExecutor
 {
     @Override
@@ -24,7 +20,8 @@ public class RollCommand extends CommandExecutor
                 
                 return;
             }
-            message.reply(String.format("You rolled `%d` from range `0 to %s`.", new Random().nextInt(Integer.valueOf(args[0])), args[0]));
+            message.reply(String.format("You rolled `%d` from range `0 to %s`.", new Random().nextInt(Integer.valueOf
+                    (args[0])), args[0]));
         }
         else
         {

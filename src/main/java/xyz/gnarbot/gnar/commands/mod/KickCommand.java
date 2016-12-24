@@ -15,34 +15,49 @@ public class KickCommand extends CommandExecutor
 {
     @Inject
     public Host host;
-
+    
     @Override
     public void execute(Note msg, String label, String[] args)
     {
         Member author = msg.getAuthor();
-        Member target = null;
-
-        try { //Checks if they mentioned someone
+        Member target;
+        
+        try
+        { //Checks if they mentioned someone
             target = msg.getMentionedUsers().get(0);
-        } catch (Exception e) { //No mention user, maybe checks if they supplied a username?
+        }
+        catch (Exception e)
+        { //No mention user, maybe checks if they supplied a username?
             target = msg.getGuild().getMembersByName(args[0], true).get(0);
         }
-
-        if(target != null) {
-            if (PermissionUtil.checkPermission(msg.getTextChannel(), author, Permission.KICK_MEMBERS)) {
-                if (PermissionUtil.canInteract(author, target)) {
-                    if(host.kick(target)) {
+        
+        if (target != null)
+        {
+            if (PermissionUtil.checkPermission(msg.getTextChannel(), author, Permission.KICK_MEMBERS))
+            {
+                if (PermissionUtil.canInteract(author, target))
+                {
+                    if (host.kick(target))
+                    {
                         msg.reply(target.getEffectiveName() + " has been kickerino'd");
-                    } else {
+                    }
+                    else
+                    {
                         msg.reply("GNAR does not have permission to kick");
                     }
-                } else {
+                }
+                else
+                {
                     msg.reply("Sorry, you can not kick that user as he is above you.");
                 }
-            } else {
+            }
+            else
+            {
                 msg.reply("You do not have permission to kick");
             }
-        } else {
+        }
+        else
+        {
             msg.reply("Could not find user, maybe you made a typo?");
         }
     }
