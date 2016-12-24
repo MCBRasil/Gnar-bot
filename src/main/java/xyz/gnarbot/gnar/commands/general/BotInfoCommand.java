@@ -11,6 +11,7 @@ import xyz.gnarbot.gnar.handlers.servers.Shard;
 import xyz.gnarbot.gnar.utils.BotData;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.awt.*;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
@@ -89,14 +90,12 @@ public class BotInfoCommand extends CommandExecutor
         joiner.add("\u258C");
         joiner.add("\u258C [Creator] _____ Avalon");
         joiner.add("\u258C [Creator] _____ Maeyrl");
-        joiner.add("\u258C [Conributor] __ Gatt");
+        joiner.add("\u258C [Contributor] __ Gatt");
         joiner.add("\u258C [Website] _____ gnarbot.xyz");
         joiner.add("\u258C [Commands] ____ " + commandSize);
         joiner.add("\u258C [Library] _____ JDA 3");
         joiner.add("\u258C [Uptime] ______ " + Bot.INSTANCE.getSimpleUptime() + ".");
         
-        note.reply("**" + BotData.randomQuote() + "** Here is all of my information!");
-        
-        note.getChannel().sendMessage(joiner.toString()).queue();
+        note.replyEmbed("**" + BotData.randomQuote() + "** Here is all of my information!", joiner.toString(), new Color(249, 169, 7));
     }
 }

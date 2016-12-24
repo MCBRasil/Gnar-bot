@@ -78,6 +78,7 @@ class HelpCommand : CommandExecutor()
         
         builder.append("**Latest News:**\n")
         builder.append(" - Gnar v2.0 is now running LIVE. Report any bugs you might find.\n")
+        builder.append(" - Text Adventures are fixed! Use `_startadventure`!\n")
         
         builder.append("**Website:** http://gnarbot.xyz\n")
         builder.append("**Discord Server:** http://discord.gg/NQRpmr2\n")
