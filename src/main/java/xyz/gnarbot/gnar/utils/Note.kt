@@ -75,7 +75,8 @@ class Note(val host : Host, private val message : Message) : Message by message
     fun replyEmbed(title : String, msg : String, color : Color, thumb : String?, img : String?)
     {
         val embed = EmbedBuilder().run {
-            setDescription("__**${message.author.name}**__ \u279c" + msg)
+            //setDescription("${message.author.name}" + msg)
+            setDescription(msg)
             setTitle(title)
             setColor(color)
             

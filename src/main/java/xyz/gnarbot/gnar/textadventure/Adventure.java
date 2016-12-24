@@ -5,6 +5,7 @@ import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
+import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.textadventure.enums.DIRECTION;
 import xyz.gnarbot.gnar.textadventure.events.FirstBagEvent;
 import xyz.gnarbot.gnar.utils.Note;
@@ -78,7 +79,7 @@ public class Adventure
                 "                 :warning:      **Response Required!**      :warning:" + "\n  :bulb: :bulb: :bulb:  " +
                 "    **What is your name, hero?**      :bulb: :bulb: :bulb:   " + "\n ➜ *To answer dialog options, " +
                 "use the `_adventure` command!*" + "\n ➜ *Example: `_adventure " + u.getName() + " the Great`*",
-                Color.WHITE);
+                Bot.getColor());
     }
     
     public static Adventure getAdventure(User u, Note n)
@@ -243,7 +244,7 @@ public class Adventure
             this.grid.beginBuild();
             gender = "selecting";
             sendMessage(n, "*A new adventure begins! This is the story of...* ***`" + heroName + "`!***\n\nWait a " +
-                    "moment... Are you a **BOY** or a **GIRL**?", Color.WHITE);
+                    "moment... Are you a **BOY** or a **GIRL**?", Bot.getColor());
             state = STATE.WAITING;
             stateRelation = "selectGender";
             logAction("Decided that you would call yourself '" + getHeroName() + "'");
@@ -267,7 +268,7 @@ public class Adventure
             else
             {
                 sendMessage(n, "I'm unsure of what you meant by `" + response + "`. Type `_adventure help` to bring " +
-                        "up the Help Menu.", Color.RED); // Placeholder until I add the moving system.
+                        "up the Help Menu.", Bot.getColor()); // Placeholder until I add the moving system.
             }
         }
         else
@@ -283,7 +284,7 @@ public class Adventure
                     if (!getGrid().moveInDirection(DIRECTION.getFromString(response)))
                     {
                         sendMessage(n, "Oops! There's something blocking your way!", "http://i.imgur" +
-                                ".com/R9gfp56.png", Color.RED);
+                                ".com/R9gfp56.png", Bot.getColor());
                     }
                     else
                     {
@@ -294,7 +295,7 @@ public class Adventure
                         getGrid().getCurrentArea().discover();
                         getGrid().getCurrentArea().moveToHere();
                         sendMessage(n, "You continue onwards, towards a " + getGrid().getCurrentArea().getType()
-                                .getName(), getGrid().getCurrentArea().getType().getUrl(), Color.RED);
+                                .getName(), getGrid().getCurrentArea().getType().getUrl(), Bot.getColor());
                         if (getGrid().getCurrentArea().getRelatedEvent() != null && !getGrid().getCurrentArea()
                                 .hasCompletedEvent())
                         {
@@ -307,7 +308,7 @@ public class Adventure
                 }
             }
             sendMessage(n, "I'm unsure of what you meant by `" + response + "`. Type `_adventure help` to bring up " +
-                    "the Help Menu.", Color.RED); // Placeholder until I add the moving system.
+                    "the Help Menu.", Bot.getColor()); // Placeholder until I add the moving system.
         }
     }
     

@@ -11,7 +11,6 @@ import xyz.gnarbot.gnar.handlers.servers.Shard;
 import xyz.gnarbot.gnar.utils.BotData;
 import xyz.gnarbot.gnar.utils.Note;
 
-import java.awt.*;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
@@ -96,6 +95,6 @@ public class BotInfoCommand extends CommandExecutor
         joiner.add("\u258C [Library] _____ JDA 3");
         joiner.add("\u258C [Uptime] ______ " + Bot.INSTANCE.getSimpleUptime() + ".");
         
-        note.replyEmbed("**" + BotData.randomQuote() + "** Here is all of my information!", joiner.toString(), new Color(249, 169, 7));
+        note.replyEmbed("**" + BotData.randomQuote() + "** Here is all of my information!", joiner.toString(), Bot.getColor());
     }
 }
