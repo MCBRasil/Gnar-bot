@@ -10,6 +10,9 @@ import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.Utils;
 
+import java.awt.*;
+import java.util.Locale;
+
 @Command(
         aliases = {"marvel"},
         usage = "(hero/villain name)",
@@ -44,11 +47,11 @@ public class MarvelComics extends CommandExecutor
             
             JSONObject thumb = (JSONObject) j.get("thumbnail");
             
-            message.reply("Thumbnail: " + thumb.get("path") + "." + thumb.get("extension"));
+            message.replyEmbedRaw("", " Here's your Marvel Character: " + StringUtils.capitalize(s.toLowerCase().replaceAll("\\+", " ")), Color.RED, thumb.get("path") + "." + thumb.get("extension"), true);
         }
         catch (Exception e)
         {
-            message.reply("Character not found.");
+            message.replyEmbed("", "*Couldn't find that character*", Color.RED);
         }
     }
 }

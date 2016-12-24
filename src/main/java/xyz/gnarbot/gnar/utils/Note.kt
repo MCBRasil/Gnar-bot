@@ -100,7 +100,90 @@ class Note(val host : Host, private val message : Message) : Message by message
         val embed = eb.build()
         channel.sendMessage(embed).queue()
     }
-    
+
+    fun replyEmbed(title: String, msg : String, color: Color, image: String, imageNotThumb: Boolean)
+    {
+        val eb = EmbedBuilder()
+        eb.setDescription("__**${message.author.name}**__ \u279c" + msg)
+        eb.setTitle(title)
+        eb.setColor(color)
+        if (imageNotThumb) {
+            eb.setImage(image)
+        }else{
+            eb.setThumbnail(image)
+        }
+        val embed = eb.build()
+        channel.sendMessage(embed).queue()
+    }
+
+    /**
+     * Send an embeded message..
+     *
+     * @param msg The text to send.
+     * @return The Message created by this function.
+     */
+    fun replyEmbedRaw(title: String, msg : String, color: Color)
+    {
+        val eb = EmbedBuilder()
+        eb.setDescription(msg)
+        eb.setTitle(title)
+        eb.setColor(color)
+        val embed = eb.build()
+        channel.sendMessage(embed).queue()
+    }
+
+    /**
+     * Send an embeded message..
+     *
+     * @param msg The text to send.
+     * @return The Message created by this function.
+     */
+    fun replyEmbedRaw(title: String, msg : String, color: Color, thumbnail: String)
+    {
+        val eb = EmbedBuilder()
+        eb.setDescription(msg)
+        eb.setTitle(title)
+        eb.setColor(color)
+        eb.setThumbnail(thumbnail)
+        val embed = eb.build()
+        channel.sendMessage(embed).queue()
+    }
+
+    /**
+     * Send an embeded message..
+     *
+     * @param msg The text to send.
+     * @return The Message created by this function.
+     */
+    fun replyEmbedRaw(title: String, msg : String, color: Color, thumbnail: String, image: String)
+    {
+        val eb = EmbedBuilder()
+        eb.setDescription( msg)
+        eb.setTitle(title)
+        eb.setColor(color)
+        if (thumbnail != null){
+            eb.setThumbnail(thumbnail)
+        }
+        eb.setImage(image)
+        val embed = eb.build()
+        channel.sendMessage(embed).queue()
+    }
+
+    fun replyEmbedRaw(title: String, msg : String, color: Color, image: String, imageNotThumb: Boolean)
+    {
+        val eb = EmbedBuilder()
+        eb.setDescription(msg)
+        eb.setTitle(title)
+        eb.setColor(color)
+        if (imageNotThumb) {
+            eb.setImage(image)
+        }else{
+            eb.setThumbnail(image)
+        }
+        val embed = eb.build()
+        channel.sendMessage(embed).queue()
+    }
+
     fun delete() : Boolean
     {
         try

@@ -5,6 +5,7 @@ import org.apache.commons.lang3.text.WordUtils
 import xyz.gnarbot.gnar.handlers.commands.Command
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
+import java.awt.Color
 import java.util.*
 
 @Command(aliases = arrayOf("dialog"))
@@ -74,7 +75,7 @@ class DialogCommand : CommandExecutor()
         
         try
         {
-            message.replyRaw(joiner.toString())
+            message.replyEmbedRaw("", joiner.toString(), Color.YELLOW)
         }
         catch (e : UnsupportedOperationException)
         {
