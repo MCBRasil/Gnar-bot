@@ -78,7 +78,7 @@ public class OverwatchLookupCommand extends CommandExecutor
             joiner.add("\n**__Competitive                           __**");
 
             int rank = compOverallStats.getInt("comprank");
-            joiner.add("Win Rate: **" + (compOverallStats.getInt("games") / compOverallStats.getInt("wins")) + "%**");
+            joiner.add("Win Rate: **" + (compOverallStats.getInt("wins") / compOverallStats.getInt("games")) + "%**");
             joiner.add("Win Count: **" + (compOverallStats.getInt("wins")) + "/" + (compOverallStats.getInt("games")) +" Games**");
             joiner.add("Losses: **" + (compOverallStats.getInt("losses")) + "/" + (compOverallStats.getInt("games")) +" Games**");
             Color sideColor = Color.ORANGE;
