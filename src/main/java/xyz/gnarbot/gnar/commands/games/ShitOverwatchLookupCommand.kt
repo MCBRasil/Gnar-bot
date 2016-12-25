@@ -7,6 +7,7 @@ import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
 import java.util.StringJoiner
 
+@Command(aliases = arrayOf("avaoverwatch", "avaow"), usage = "(us/eu/kr) (Battle Tag)", description = "Look up Overwatch information about a player.")
 class ShitOverwatchLookupCommand : CommandExecutor()
 {
     override fun execute(message : Note, label : String, args : Array<String>)
