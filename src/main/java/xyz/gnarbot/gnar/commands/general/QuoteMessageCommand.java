@@ -83,14 +83,14 @@ public class QuoteMessageCommand extends CommandExecutor
                     if (count == 1)
                     {
                         eb.setTitle("*Couldn't find this message*").addBlankField(true).setDescription("*Couldn't " +
-                                "find message with ID " + msgid + "*").setColor(Color.RED);
+                                "find message with ID " + msgid + "*").setColor(Bot.getColor());
                     }
                     else
                     {
                         eb.addBlankField(true);
                         eb.addField("*Couldn't find this message*", "*Couldn't find message with ID " + msgid + "*",
                                 false);
-                        eb.setColor(Color.RED);
+                        eb.setColor(Bot.getColor());
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar.commands.polls;
+package xyz.gnarbot.gnar.commands.general;
 
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;

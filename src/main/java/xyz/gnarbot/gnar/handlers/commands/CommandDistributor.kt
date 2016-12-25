@@ -28,9 +28,11 @@ import xyz.gnarbot.gnar.commands.`fun`.TriviaAnswerCommand
 import xyz.gnarbot.gnar.commands.`fun`.TriviaCommand
 import xyz.gnarbot.gnar.commands.`fun`.UrbanDictionaryCommand
 import xyz.gnarbot.gnar.commands.`fun`.YodaTalkCommand
+import xyz.gnarbot.gnar.commands.admin.DiagnosticsCommand
 import xyz.gnarbot.gnar.commands.games.GameLookupCommand
 import xyz.gnarbot.gnar.commands.games.LeagueLookupCommand
 import xyz.gnarbot.gnar.commands.games.OverwatchLookupCommand
+import xyz.gnarbot.gnar.commands.games.ShitOverwatchLookupCommand
 import xyz.gnarbot.gnar.commands.general.BotInfoCommand
 import xyz.gnarbot.gnar.commands.general.GoogleCommand
 import xyz.gnarbot.gnar.commands.general.HelpCommand
@@ -40,6 +42,7 @@ import xyz.gnarbot.gnar.commands.general.PingCommand
 import xyz.gnarbot.gnar.commands.general.QuoteMessageCommand
 import xyz.gnarbot.gnar.commands.general.ReactToMessageCommand
 import xyz.gnarbot.gnar.commands.general.RemindMeCommand
+import xyz.gnarbot.gnar.commands.general.TestEmbedCommand
 import xyz.gnarbot.gnar.commands.general.UptimeCommand
 import xyz.gnarbot.gnar.commands.general.WhoIsCommand
 import xyz.gnarbot.gnar.commands.general.YoutubeCommand
@@ -53,7 +56,6 @@ import xyz.gnarbot.gnar.commands.mod.DeleteMessagesCommand
 import xyz.gnarbot.gnar.commands.mod.KickCommand
 import xyz.gnarbot.gnar.commands.mod.UnbanCommand
 import xyz.gnarbot.gnar.commands.polls.PollCommand
-import xyz.gnarbot.gnar.commands.polls.TestEmbedCommand
 import xyz.gnarbot.gnar.textadventure.AdventureCommand
 import xyz.gnarbot.gnar.textadventure.StartAdventureCommand
 import java.lang.reflect.Field
@@ -71,6 +73,8 @@ object CommandDistributor
     
     init
     {
+        register(DiagnosticsCommand::class.java)
+        
         //General Commands
         register(HelpCommand::class.java)
         register(InviteBotCommand::class.java)
@@ -128,6 +132,7 @@ object CommandDistributor
         //End Text Adventure Commands
     
         //Game Commands
+        register(ShitOverwatchLookupCommand::class.java)
         register(OverwatchLookupCommand::class.java)
         register(LeagueLookupCommand::class.java)
         register(GameLookupCommand::class.java)
