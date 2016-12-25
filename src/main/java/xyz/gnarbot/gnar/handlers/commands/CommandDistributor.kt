@@ -32,7 +32,6 @@ import xyz.gnarbot.gnar.commands.admin.DiagnosticsCommand
 import xyz.gnarbot.gnar.commands.games.GameLookupCommand
 import xyz.gnarbot.gnar.commands.games.LeagueLookupCommand
 import xyz.gnarbot.gnar.commands.games.OverwatchLookupCommand
-import xyz.gnarbot.gnar.commands.games.ShitOverwatchLookupCommand
 import xyz.gnarbot.gnar.commands.general.BotInfoCommand
 import xyz.gnarbot.gnar.commands.general.GoogleCommand
 import xyz.gnarbot.gnar.commands.general.HelpCommand
@@ -132,7 +131,6 @@ object CommandDistributor
         //End Text Adventure Commands
     
         //Game Commands
-        register(ShitOverwatchLookupCommand::class.java)
         register(OverwatchLookupCommand::class.java)
         register(LeagueLookupCommand::class.java)
         register(GameLookupCommand::class.java)

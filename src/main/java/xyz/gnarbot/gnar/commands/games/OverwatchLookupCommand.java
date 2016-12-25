@@ -66,51 +66,67 @@ public class OverwatchLookupCommand extends CommandExecutor
             JSONObject compStats = new NullableJSON(overallStats.getJSONObject("competitive").toString());
             JSONObject compOverallStats = new NullableJSON(compStats.getJSONObject("overall_stats").toString());
             JSONObject compGameStats = new NullableJSON(compStats.getJSONObject("game_stats").toString());
+            JSONObject compAvgStats = new NullableJSON(compStats.getJSONObject("average_stats").toString());
             JSONObject quickPStats = new NullableJSON(overallStats.getJSONObject("quickplay").toString());
             JSONObject quickPOverallStats = new NullableJSON(quickPStats.getJSONObject("overall_stats").toString());
             JSONObject quickPGameStats = new NullableJSON(quickPStats.getJSONObject("game_stats").toString());
+            JSONObject quickPAvgStats = new NullableJSON(quickPStats.getJSONObject("average_stats").toString());
             
             joiner.add("\n**__General                                    __**");
-            joiner.add("Level: **[" + (quickPOverallStats.getInt("prestige") * 100 + quickPOverallStats.getInt("level")) + "]()**");
+            joiner.add("  Level: **[" + (quickPOverallStats.getInt("prestige") * 100 + quickPOverallStats.getInt("level")) + "]()**");
             joiner.add("\n**__Quick Play                              __**");
-            joiner.add("Win Rate: **[" + quickPOverallStats.getInt("win_rate") + "%]()**");
-            joiner.add("Win Count: **[" + (quickPOverallStats.getInt("wins")) +" Games]()**");
+            joiner.add("  Avg. Elims: **[" + quickPAvgStats.getDouble("eliminations_avg") + "]()**");
+            joiner.add("  Avg. Deaths: **[" + quickPAvgStats.getDouble("deaths_avg") + "]()**");
+            joiner.add("  Avg. Final Blows: **[" + quickPAvgStats.getDouble("final_blows_avg") + "]()**");
+            joiner.add("  Wins: **[" + (quickPOverallStats.getInt("wins")) +"]()**");
+            joiner.add("  K/D Ratio: **[" + (quickPGameStats.getDouble("kpd")) +"]()**");
+            joiner.add("  Played for: **[" + (quickPGameStats.getInt("time_played")) +" hours]()**");
+
             joiner.add("\n**__Competitive                           __**");
 
             int rank = compOverallStats.getInt("comprank");
-            joiner.add("Win Rate: **" + (compOverallStats.getInt("wins") / compOverallStats.getInt("games")) + "%**");
-            joiner.add("Win Count: **" + (compOverallStats.getInt("wins")) + "/" + (compOverallStats.getInt("games")) +" Games**");
-            joiner.add("Losses: **" + (compOverallStats.getInt("losses")) + "/" + (compOverallStats.getInt("games")) +" Games**");
+            joiner.add("  Avg. Elims: **[" + compAvgStats.getDouble("eliminations_avg")+"]()**");
+            joiner.add("  Avg. Deaths: **[" +compAvgStats.getDouble("deaths_avg") +"]()**");
+//            joiner.add("  Damage Done: **${comp_avg.getDouble("damage_done_avg")}**")
+//            joiner.add("  Healing Done: **${comp_avg.getDouble("healing_done_avg")}**")
+//            joiner.add("  Objective Kills: **${comp_avg.getDouble("objective_kills_avg")}**")
+            joiner.add("  Wins/Draws/Loses: **[" + compGameStats.getInt("games_won") +"]()** | **[" +compGameStats.getInt("games_tied") +"]()** | **[" +compGameStats.getInt("games_lost") +"]()**");
+            joiner.add("  K/D Ratio: **[" + compGameStats.getDouble("kpd") + "]()**");
+//            joiner.add("  Medals: **${comp_game.getInt("medals")}**")
+//            joiner.add("  Cards: **${comp_game.getInt("cards")}**")
+            joiner.add("  Played for: **[" + compGameStats.getInt("time_played") + " hours]()**");
             Color sideColor = Color.ORANGE;
-            joiner.add("Draws: **" + (compOverallStats.getInt("games") - (compOverallStats.getInt("losses") + compOverallStats.getInt("wins"))) +" Games**");
+            String rankName = "Unknown";
             if (rank < 1500) {
-                joiner.add("Comp. Rank: **:coffin: " + rank + "**"); // Bronze
                 sideColor = new Color(150, 90, 56);
+                rankName = "Bronze";
             }else if (rank >= 1500 && rank < 2000){
-                joiner.add("Comp. Rank: **:cd: " + rank + "**"); // Silver
                 sideColor = new Color(168, 168, 168);
+                rankName = "Silver";
             }else if (rank >= 2000 && rank < 2500){
-                joiner.add("Comp. Rank: **:dvd: " + rank + "**"); // Gold
                 sideColor = new Color(201, 137, 16);
+                rankName = "Gold";
             }else if (rank >= 2500 && rank < 3000){
-                joiner.add("Comp. Rank: **:crossed_swords:" + rank + "**"); // Platinum
                 sideColor = new Color(229, 228, 226);
+                rankName = "Platinum";
             }else if (rank >= 3000 && rank < 3500){
-                joiner.add("Comp. Rank: **:gem: " + rank + "**"); // Diamond
                 sideColor = new Color(185,242,255);
+                rankName = "Diamond";
             }else if (rank >= 3500 && rank < 4000){
-                joiner.add("Comp. Rank: **:yellow_heart: " + rank + "**"); // Master
                 sideColor = new Color(255, 184, 12);
+                rankName = "Master";
             }else if (rank >= 4000){
-                joiner.add("Comp. Rank: **:trident: " + rank + "**"); // Grand Master
                 sideColor = new Color(238, 180, 255);
+                rankName = "Grand Master";
             }
+
+            joiner.add("  Comp. Rank: **[:beginner: " + rank + "]() (" + rankName + ")**");
             
             joiner.add("\n**__Overall                                    __**");
-            joiner.add("Eliminations: **" + (int) (quickPGameStats.getDouble("eliminations") + compGameStats.getDouble("eliminations")) + "**");
-            joiner.add("Medals: **" + (int) (quickPGameStats.getDouble("medals") + compGameStats.getDouble("medals")) + "**");
-            joiner.add("Total Damage: **" + (int) (quickPGameStats.getDouble("damage_done") + compGameStats.getDouble("damage_done")) + "**");
-            joiner.add("Cards: **" + (int) (quickPGameStats.getDouble("cards") + compGameStats.getDouble("cards")) + "**");
+            joiner.add("  Eliminations: **[" + (int) (quickPGameStats.getDouble("eliminations") + compGameStats.getDouble("eliminations")) + "]()**");
+            joiner.add("  Medals: **[" + (int) (quickPGameStats.getDouble("medals") + compGameStats.getDouble("medals")) + "]()**");
+            joiner.add("  Total Damage: **[" + (int) (quickPGameStats.getDouble("damage_done") + compGameStats.getDouble("damage_done")) + "]()**");
+            joiner.add("  Cards: **[" + (int) (quickPGameStats.getDouble("cards") + compGameStats.getDouble("cards")) + "]()**");
             m.deleteMessage().queue();
             message.replyEmbedRaw("**Overwatch Stats for " + tag + "**", joiner.toString(), sideColor, quickPOverallStats.getString("avatar"));
             
