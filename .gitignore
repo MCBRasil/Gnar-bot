@@ -4,7 +4,7 @@ _data/
 
 target/
 
-*.xml
+dependency-reduced-pom.xml
 
 plot.png
 *.jar

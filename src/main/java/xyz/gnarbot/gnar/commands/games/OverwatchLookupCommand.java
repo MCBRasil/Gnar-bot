@@ -13,7 +13,7 @@ import java.util.StringJoiner;
 
 import static xyz.gnarbot.gnar.utils.Utils.jsonFromUrl;
 
-@Command(aliases = {"overwatch", "ow"}, usage = "(Battle Tag)", description = "Look up Overwatch information about a " +
+@Command(aliases = {"overwatch", "ow"}, usage = "(Battle Tag) [Region]", description = "Look up Overwatch information about a " +
         "player.")
 public class OverwatchLookupCommand extends CommandExecutor
 {

@@ -2,6 +2,7 @@ package xyz.gnarbot.gnar.commands.`fun`
 
 import com.google.inject.Inject
 import net.dv8tion.jda.core.utils.MiscUtil
+import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.handlers.commands.Command
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
 import xyz.gnarbot.gnar.handlers.servers.Host
@@ -49,7 +50,7 @@ class GraphCommand : CommandExecutor()
         graphic.color = Color.decode("#202020")
         graphic.fillRect(0, 0, width, height)
         
-        graphic.color = Color.RED
+        graphic.color = Bot.color
         graphic.stroke = BasicStroke(3f)
         
         var lastX = 5
