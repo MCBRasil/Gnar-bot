@@ -47,14 +47,12 @@ public class GameLookupCommand extends CommandExecutor
             };
             
             StringJoiner joiner = new StringJoiner("\n");
+
+            joiner.add("Publisher: **[" + jso.getString("publisher") + "]()**");
+            joiner.add("Score: **[" + jso.getString("score") + "]()**");
+            joiner.add("Description: **[" + jso.getString("short_description") + "]()**");
             
-            joiner.add("Title: **" + jso.getString("title") + "**");
-            joiner.add("Publisher: **" + jso.getString("publisher") + "**");
-            joiner.add("Score: **" + jso.getString("score") + "**");
-            joiner.add("Thumbnail: " + jso.getString("thumb"));
-            joiner.add("Description: **" + jso.getString("short_description") + "**");
-            
-            message.getChannel().sendMessage(joiner.toString()).queue();
+            message.replyEmbedRaw("**" + jso.getString("title") + "**", joiner.toString(), Bot.getColor(), jso.getString("thumb"), true);
         }
         catch (Exception e)
         {

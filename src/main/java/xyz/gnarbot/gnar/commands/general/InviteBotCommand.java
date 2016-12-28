@@ -16,6 +16,6 @@ public class InviteBotCommand extends CommandExecutor
         String tempLink = "https://discordapp.com/oauth2/authorize?client_id=201492375653056512&scope=bot&permissions" +
                 "=8";
         
-        note.replyEmbed("**" + BotData.randomQuote() + "** Want some Gnar on your server?!", "**[Click here to invite Gnar to your server](" + tempLink + ")", Color.BLUE);
+        note.replyEmbedRaw("Want some Gnar on your server?!", "**[Click here to invite Gnar to your server](" + tempLink + ")**", Color.BLUE);
     }
 }
