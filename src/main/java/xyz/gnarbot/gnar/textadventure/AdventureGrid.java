@@ -228,6 +228,10 @@ public class AdventureGrid
             
             ImageBuilder builder = new ImageBuilder();
             File mapFile = builder.runBuilder();
+            if (mapFile == null){
+                n.replyEmbedRaw("**Error**", "Couldn't create map file. Notify @Gatt#9711 please.", Color.RED);
+                return;
+            }
             
             Bot.INSTANCE.getScheduler().schedule(() ->
             {
@@ -316,9 +320,8 @@ public class AdventureGrid
                         Area a = getAreaAtLocation(curX, curY);
                         if (curY == currentY && curX == currentX)
                         {
-                            Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/position-marker.png"));
+                            Image img = ImageIO.read(new File("_DATA/adventureresources/locationicons/64/position-marker.png"));
                             setImg(img).setX(printX).setY(printY).paintComponent(graphics);
-                            System.out.println("drew a position marker at " + printX + ", " + printY);
                         }
                         else
                         {
@@ -326,22 +329,19 @@ public class AdventureGrid
                             {
                                 if (a.isDiscovered())
                                 {
-                                    Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/" + a.getType().getFile() + ".png"));
+                                    Image img = ImageIO.read(new File("_DATA/adventureresources/locationicons/64/" + a.getType().getFile() + ".png"));
                                     setImg(img).setX(printX).setY(printY).paintComponent(graphics);
-                                    System.out.println("drew a " + a.getType().getFile() + " at " + printX + ", " + printY);
                                 }
                                 else
                                 {
-                                    Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/unknown.png"));
+                                    Image img = ImageIO.read(new File("_DATA/adventureresources/locationicons/64/unknown.png"));
                                     setImg(img).setX(printX).setY(printY).paintComponent(graphics);
-                                    System.out.println("drew an unknown icon at " + printX + ", " + printY);
                                 }
                             }
                             else
                             {
-                                Image img = ImageIO.read(new File("_data/adventureresources/locationicons/64/unknown.png"));
+                                Image img = ImageIO.read(new File("_DATA/adventureresources/locationicons/64/unknown.png"));
                                 setImg(img).setX(printX).setY(printY).paintComponent(graphics);
-                                System.out.println("drew an unknown icon at " + printX + ", " + printY);
                             }
                         }
                         printX += 64;
@@ -349,10 +349,10 @@ public class AdventureGrid
                     printX = 0;
                     printY += 64;
                 }
-                Image img = ImageIO.read(new File("_data/adventureresources/locationicons/32/position-marker.png"));
+                Image img = ImageIO.read(new File("_DATA/adventureresources/locationicons/32/position-marker.png"));
                 setImg(img).setX(8).setY(8).paintComponent(graphics);
                 graphics.drawString(" This is you! Current area: " + getAreaAtLocation(getCurrentX(), getCurrentY()).getType().getName(), 16, 32);
-                Image img2 = ImageIO.read(new File("_data/adventureresources/locationicons/64/" + getAreaAtLocation(getCurrentX(), getCurrentY()).getType().getFile() + ".png"));
+                Image img2 = ImageIO.read(new File("_DATA/adventureresources/locationicons/64/" + getAreaAtLocation(getCurrentX(), getCurrentY()).getType().getFile() + ".png"));
                 setImg(img2).setX(map.getWidth() - 32).setY(16).setResizeX(32);
                 setResizeY(32);
                 paintComponent(graphics);
@@ -362,6 +362,7 @@ public class AdventureGrid
             catch (IOException e)
             {
                 e.printStackTrace();
+                return null;
             }
             return mapFile;
         }
