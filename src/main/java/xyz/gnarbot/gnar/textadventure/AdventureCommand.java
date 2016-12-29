@@ -14,7 +14,12 @@ public class AdventureCommand extends CommandExecutor
     @Override
     public void execute(Note msg, String label, String[] args)
     {
+	    if (!Adventure.hasAdventure(msg.getAuthor())){
+		    msg.reply("Use `_startadventure` to begin your adventure!");
+		    return;
+	    }
         Adventure adventure = Adventure.getAdventure(msg.getAuthor(), msg);
+
 		if (args.length > 0){
 			if (args[0].equalsIgnoreCase("map")){
 				msg.reply("Preparing your map...");

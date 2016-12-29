@@ -81,10 +81,14 @@ public class Adventure
                 "use the `_adventure` command!*" + "\n ➜ *Example: `_adventure " + u.getName() + " the Great`*",
                 Bot.getColor());
     }
-    
+
+    public static boolean hasAdventure(User u){
+        return adventures.containsKey(u);
+    }
+
     public static Adventure getAdventure(User u, Note n)
     {
-        System.out.println(u.getName() + " requested a Text Adventure");
+
         if (adventures.containsKey(u))
         {
             return adventures.get(u);
@@ -210,7 +214,7 @@ public class Adventure
     {
         
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**").addBlankField(true).setDescription
+        eb.setTitle("*Sending last sent message...*").addBlankField(true).setDescription
                 (lastMessage).setThumbnail(getPlayerIcon()).setColor(getDefaultMessageColor());
         MessageEmbed embed = eb.build();
         MessageBuilder mb = new MessageBuilder();
@@ -235,6 +239,7 @@ public class Adventure
             if (this.currentEvent.hasCompletedEvent())
             {
                 this.stateRelation = "move";
+                state = STATE.WAITING;
             }
             return;
         }
