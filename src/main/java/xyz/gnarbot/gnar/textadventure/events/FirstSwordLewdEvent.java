@@ -78,9 +78,9 @@ public class FirstSwordLewdEvent extends Event
                         "before lunging towards it, inserting it's long, cold but pleasing shaft into you.\n" + " " +
                         ":alarm_clock: *Time passes* You finally faint from the exhaustion of using it over and over " +
                         "again...");
-                super.sendMessage(n, ":bulb: " + "Resting from using the dildo, you suddenly it shine.\n" + "However," +
-                        " in these woods, there's still no one around.\n" + "Yet, your heart throbs, the urge to do " +
-                        "so is profound.\n" + "Will your pride be once again renowned?" + "\n   :warning: What would " +
+                super.sendMessage(n, ":bulb: " + "Resting from using the dildo, you suddenly see it shine.\n" + "Still," +
+                        " in these woods, there's no one around.\n" + "Yet, your heart throbs, the urge to do " +
+                        "is so profound.\n" + "Will your pride be once again renowned?" + "\n   :warning: What would " +
                         "you like to do?\n  " + "➜ `Pick it up`\n  ➜ `Leave it`\n  ➜ `Examine it`\n  ➜ `Use it`\n \n " +
                         "" + ":bulb: `Use the _adventure command to select a response! Example: _adventure Pick it " +
                         "up`");
