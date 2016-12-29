@@ -307,10 +307,11 @@ public class AdventureGrid
                 BufferedImage map = new BufferedImage(getMaxSize() * 64, (getMaxSize() * 64) + 200, BufferedImage
                         .TYPE_INT_ARGB);
                 Graphics2D graphics = map.createGraphics();
-                graphics.setColor(Bot.getColor());
+                graphics.setColor(Color.WHITE);
                 graphics.fillRect(0, 0, getMaxSize() * 64, getMaxSize() * 64 + 200);
                 graphics.setFont(new Font(Font.DIALOG_INPUT, 25, 40));
-                graphics.setColor(Bot.getColor());
+                graphics.setColor(Color.BLACK
+                );
                 int curX, curY;
                 int printX = 0, printY = 200;
                 for (curY = 0; curY < getMaxSize(); curY++)
