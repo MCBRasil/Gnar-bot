@@ -18,7 +18,7 @@ class RemindMeCommand : CommandExecutor()
             
             val time = try
             {
-                args[0].toInt()
+                args[0].trim().toInt()
             }
             catch (e : NumberFormatException)
             {
@@ -28,7 +28,7 @@ class RemindMeCommand : CommandExecutor()
             
             val timeUnit = try
             {
-                TimeUnit.valueOf(args[1].toUpperCase())
+                TimeUnit.valueOf(args[1].trim().toUpperCase())
             }
             catch (e : IllegalArgumentException)
             {
