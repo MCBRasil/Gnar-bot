@@ -51,7 +51,7 @@ public class DiscordBotUserInfo
         }
         catch (Exception e)
         {
-            return "Error, bot not found.";
+            return "Error, either user specified is not a bot or they are not on Discord.pw";
         }
     }
     
