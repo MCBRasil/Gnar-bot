@@ -25,7 +25,7 @@ public class CleverBotCommand extends CommandExecutor
     @Override
     public void execute(Note msg, String label, String[] args)
     {
-        msg.reply("Command is being worked on :)");
+        msg.reply("Command is being worked on :), use _pbot for a bit");
         
         /*
         try

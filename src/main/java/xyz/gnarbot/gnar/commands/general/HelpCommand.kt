@@ -6,7 +6,7 @@ import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
 import xyz.gnarbot.gnar.handlers.members.Clearance
 import xyz.gnarbot.gnar.utils.BotData
 import xyz.gnarbot.gnar.utils.Note
-import java.util.StringJoiner
+import java.util.*
 
 @Command(aliases = arrayOf("help", "guide"), usage = "~command", description = "Display GN4R's list of commands.")
 class HelpCommand : CommandExecutor()
@@ -84,13 +84,9 @@ class HelpCommand : CommandExecutor()
         builder.append("**Discord Server:** http://discord.gg/NQRpmr2\n")
         
         //message.reply(builder.toString())
-        
-        if (!message.author?.hasPrivateChannel()!!)
-        {
-            message.author?.openPrivateChannel()?.block()
-        }
-        message.author?.privateChannel?.sendMessage(builder.toString())?.block()
-        
+
+        message.author?.openPrivateChannel()?.queue({chan -> chan.sendMessage(builder.toString()).queue()})
+
         message.reply("**${BotData.randomQuote()}** My commands has been PM'ed to you.")
     }
 }

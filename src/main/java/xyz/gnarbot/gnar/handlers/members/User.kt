@@ -19,7 +19,7 @@ class User(private val host : Host, private val member : Member) : User by membe
     
     init
     {
-        isBotMaster = Bot.admins.contains(member.user)
+        isBotMaster = Bot.admins.contains(member.user.id)
         
         // Automatically assign permission.
         clearance = when

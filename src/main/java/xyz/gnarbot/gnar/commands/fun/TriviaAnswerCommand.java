@@ -24,8 +24,7 @@ public class TriviaAnswerCommand extends CommandExecutor
         
         try
         {
-            int key = Integer.valueOf(args[0]);
-            msg.reply(TriviaQuestions.getAnswer(key));
+            msg.reply(TriviaQuestions.getAnswer(Integer.valueOf(args[0])));
         }
         catch (Exception e)
         {
