@@ -1,16 +1,8 @@
 package xyz.gnarbot.gnar.commands.games;
 
-import net.dv8tion.jda.core.MessageBuilder;
-import org.apache.commons.lang3.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
-import xyz.gnarbot.gnar.utils.Utils;
-
-import java.util.StringJoiner;
 
 @Command(aliases = {"league", "lol"}, usage = "(LOL Username)", description = "Look up Leauge of Legends statistics " +
         "of a player.")
@@ -19,7 +11,11 @@ public class LeagueLookupCommand extends CommandExecutor
     @Override
     public void execute(Note note, String label, String[] args)
     {
-        
+
+        note.reply("This is being worked on right now, spam Maeyrl to fix me.");
+        return;
+
+        /*
         StringJoiner joiner = new StringJoiner("");
         try
         {
@@ -117,6 +113,6 @@ public class LeagueLookupCommand extends CommandExecutor
                 note.getChannel().sendMessage(mb.build()).queue();
             }
             catch (Exception ignore) {}
-        }
+        }*/
     }
 }
