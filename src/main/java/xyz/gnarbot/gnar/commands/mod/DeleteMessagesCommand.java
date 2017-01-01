@@ -52,7 +52,7 @@ public class DeleteMessagesCommand extends CommandExecutor
                 return;
             }
             
-            List<Message> messages = messageHistory.retrievePast(amount).block();
+            List<Message> messages = messageHistory.retrievePast(amount).complete();
             
             msg.reply(amount + " " + messages.size());
             
@@ -80,7 +80,7 @@ public class DeleteMessagesCommand extends CommandExecutor
             
             ((TextChannel) msg.getChannel()).deleteMessages(messages).queue();
             Message mesg = msg.getChannel().sendMessage(msg.getAuthor().getAsMention() + " ➜ Attempted to delete `" +
-                    messages.size() + "` messages.").block();
+                    messages.size() + "` messages.").complete();
             
             Bot.INSTANCE.getScheduler().schedule(mesg::deleteMessage, 5, TimeUnit.SECONDS);
         }

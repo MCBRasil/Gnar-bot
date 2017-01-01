@@ -34,7 +34,7 @@ public class QuoteMessageCommand extends CommandExecutor
                     msgid + "`.");
             try
             {
-                Message m = msg.getChannel().getMessageById(msgid).block();
+                Message m = msg.getChannel().getMessageById(msgid).complete();
                 EmbedBuilder eb = new EmbedBuilder();
                 eb.setTitle("**Quote from " + m.getAuthor().getName() + "**").addBlankField(true).setDescription(m
                         .getContent()).setThumbnail(m.getAuthor().getAvatarUrl()).setColor(new Color(0xFFDD15));
@@ -64,7 +64,7 @@ public class QuoteMessageCommand extends CommandExecutor
                 try
                 {
                     count++;
-                    Message m = msg.getChannel().getMessageById(msgid).block();
+                    Message m = msg.getChannel().getMessageById(msgid).complete();
                     if (count == 1)
                     {
                         eb.setTitle("**Quote from " + m.getAuthor().getName() + " (" + m.getCreationTime().format

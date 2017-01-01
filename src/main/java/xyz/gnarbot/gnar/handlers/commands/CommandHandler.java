@@ -65,8 +65,8 @@ public class CommandHandler extends CommandRegistry
                     
                     try
                     {
-                        cmd.execute(note, label, args);
                         requests++;
+                        cmd.execute(note, label, args);
                     }
                     catch (RuntimeException e)
                     {

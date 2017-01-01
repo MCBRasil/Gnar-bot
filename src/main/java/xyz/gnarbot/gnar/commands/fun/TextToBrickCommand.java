@@ -33,6 +33,6 @@ public class TextToBrickCommand extends CommandExecutor
                 sb.append(a);
             }
         }
-        message.replyEmbed("Text to Brick", sb.toString(), Bot.getColor());
+        message.replyEmbedRaw("Text to Brick", sb.toString(), Bot.getColor());
     }
 }

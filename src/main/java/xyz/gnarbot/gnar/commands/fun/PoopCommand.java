@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.commands.fun;
 
 import org.apache.commons.lang3.StringUtils;
+import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -48,6 +49,6 @@ public class PoopCommand extends CommandExecutor
         joiner.add(poopArt);
         joiner.add("░░░░░░░░░░░░░░░░░░░░░░░");
         
-        message.replyRaw(joiner.toString());
+        message.replyEmbedRaw("Pooping Memes", joiner.toString(), Bot.getColor());
     }
 }

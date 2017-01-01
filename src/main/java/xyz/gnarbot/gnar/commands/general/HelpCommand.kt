@@ -6,7 +6,8 @@ import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
 import xyz.gnarbot.gnar.handlers.members.Clearance
 import xyz.gnarbot.gnar.utils.BotData
 import xyz.gnarbot.gnar.utils.Note
-import java.util.*
+import xyz.gnarbot.gnar.utils.makeEmbed
+import java.util.StringJoiner
 
 @Command(aliases = arrayOf("help", "guide"), usage = "~command", description = "Display GN4R's list of commands.")
 class HelpCommand : CommandExecutor()
@@ -73,20 +74,29 @@ class HelpCommand : CommandExecutor()
         builder.append("To view a command's description, do `${Bot.token}help [command]`.\n\n")
         //builder.append("You can also chat and execute commands with Gnar privately, try it!\n\n")
         
-        builder.append("**Bot Commander** commands requires you to have a role named exactly __Bot Commander__.\n")
-        builder.append("**Server Owner** commands requires you to be the __Server Owner__ to execute.\n\n")
+        builder.append("**Bot Commander** commands requires a role named exactly __Bot Commander__.\n")
+        builder.append("**Server Owner** commands requires you to be the __server owner__ to execute.\n")
+    
+        builder.append("\n")
         
         builder.append("**Latest News:**\n")
         builder.append(" - Gnar v2.0 is now running LIVE. Report any bugs you might find.\n")
+        builder.append(" - Dropping a new look/style to Gnar's responses! Check them out!\n")
         builder.append(" - Text Adventures are fixed! Use `_startadventure`!\n")
+        
+        builder.append("\n")
         
         builder.append("**Website:** http://gnarbot.xyz\n")
         builder.append("**Discord Server:** http://discord.gg/NQRpmr2\n")
         
         //message.reply(builder.toString())
-
-        message.author?.openPrivateChannel()?.queue({chan -> chan.sendMessage(builder.toString()).queue()})
-
+    
+        if (!message.author?.hasPrivateChannel()!!)
+        {
+            message.author?.openPrivateChannel()?.complete()
+        }
+        message.author?.privateChannel?.sendMessage(makeEmbed("Help", builder.toString(), Bot.color))?.complete()
+        
         message.reply("**${BotData.randomQuote()}** My commands has been PM'ed to you.")
     }
 }

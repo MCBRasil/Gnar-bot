@@ -29,7 +29,7 @@ public class UnbanCommand extends CommandExecutor
         
         try
         { //Checks if they mentioned someone
-            List<User> banned = msg.getGuild().getController().getBans().block();
+            List<User> banned = msg.getGuild().getController().getBans().complete();
             ArrayList<User> confirmed = new ArrayList<>();
             banned.stream().filter(user -> user.getName().contains(args[0])).forEach(confirmed::add);
             target = confirmed.get(0);
@@ -40,7 +40,7 @@ public class UnbanCommand extends CommandExecutor
         {
             try
             {
-                List<User> banned = msg.getGuild().getController().getBans().block();
+                List<User> banned = msg.getGuild().getController().getBans().complete();
                 ArrayList<User> confirmed = new ArrayList<>();
                 banned.stream().filter(user -> user.getId().equals(args[0])).forEach(confirmed::add);
                 target = confirmed.get(0);

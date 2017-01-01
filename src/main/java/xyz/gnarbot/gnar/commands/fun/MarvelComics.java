@@ -11,7 +11,6 @@ import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.Utils;
 
 import java.awt.*;
-import java.util.Locale;
 @Command(aliases = {"marvel"}, usage = "(hero/villain name)", description = "Look up info on a Marvel character.")
 public class MarvelComics extends CommandExecutor
 {
@@ -47,7 +46,7 @@ public class MarvelComics extends CommandExecutor
         }
         catch (Exception e)
         {
-            message.replyEmbed("", "*Couldn't find that character*", Color.RED);
+            message.replyEmbedRaw("", "*Couldn't find that character*", Color.RED);
         }
     }
 }

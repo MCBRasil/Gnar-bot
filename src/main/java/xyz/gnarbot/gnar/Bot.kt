@@ -8,7 +8,7 @@ import xyz.gnarbot.gnar.handlers.servers.Shard
 import xyz.gnarbot.gnar.utils.Utils
 import xyz.gnarbot.gnar.utils.readProperties
 import java.awt.Color
-import java.util.*
+import java.util.Date
 import java.util.concurrent.Executors
 import kotlin.jvm.JvmStatic as static
 
@@ -32,7 +32,7 @@ object Bot
     val shards = mutableListOf<Shard>()
     
     /** Administrator users of the bot. */
-    val admins = mutableSetOf<String>()
+    val admins = hashSetOf<String>()
     
     val startTime = System.currentTimeMillis()
     val scheduler = Executors.newSingleThreadScheduledExecutor()
@@ -66,7 +66,6 @@ object Bot
         
         LOG.info("Bot is now connected to Discord.")
         Utils.setLeagueInfo()
-        
     }
     
     val uptime : String

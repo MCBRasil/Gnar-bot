@@ -34,7 +34,7 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun reply(msg : String) = Note(host, channel.sendMessage("__**${message.author.name}**__ \u279c $msg").block())
+    fun reply(msg : String) = Note(host, channel.sendMessage("__**${message.author.name}**__ \u279c $msg").complete())
     
     /**
      * Quick-reply to a message.
@@ -42,7 +42,7 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun replyRaw(msg : String) = Note(host, channel.sendMessage(msg).block())
+    fun replyRaw(msg : String) = Note(host, channel.sendMessage(msg).complete())
     
     /**
      * Send an embeded message..
@@ -50,6 +50,7 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @param msg The text to send.
      * @return The Message created by this function.
      */
+    @Deprecated("Use replyEmbedRaw - embeds don't need stylized pointers")
     fun replyEmbed(title : String, msg : String, color : Color)
     {
         replyEmbed(title, msg, color, null)
@@ -61,6 +62,7 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @param msg The text to send.
      * @return The Message created by this function.
      */
+    @Deprecated("Use replyEmbedRaw - embeds don't need stylized pointers")
     fun replyEmbed(title : String, msg : String, color : Color, thumb : String?)
     {
         replyEmbed(title, msg, color, thumb, null)
@@ -72,11 +74,11 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @param msg The text to send.
      * @return The Message created by this function.
      */
+    @Deprecated("Use replyEmbedRaw - embeds don't need stylized pointers")
     fun replyEmbed(title : String, msg : String, color : Color, thumb : String?, img : String?)
     {
         val embed = EmbedBuilder().run {
-            setDescription("${message.author.name}" + msg)
-            //setDescription(msg) This is what replyEmbedRaw is for you fuckwhit.
+            setDescription("${message.author.name} \u279c" + msg)
             setTitle(title)
             setColor(color)
             
@@ -90,95 +92,69 @@ class Note(val host : Host, private val message : Message) : Message by message
         }
         channel.sendMessage(embed).queue()
     }
-
-    fun replyEmbed(title: String, msg : String, color: Color, image: String, imageNotThumb: Boolean)
+    
+    @Deprecated("Use replyEmbedRaw - embeds don't need stylized pointers")
+    fun replyEmbed(title : String, msg : String, color : Color, image : String, imageNotThumb : Boolean)
     {
         val eb = EmbedBuilder()
         eb.setDescription("__**${message.author.name}**__ \u279c" + msg)
         eb.setTitle(title)
         eb.setColor(color)
-        if (imageNotThumb) {
+        if (imageNotThumb)
+        {
             eb.setImage(image)
-        }else{
+        }
+        else
+        {
             eb.setThumbnail(image)
         }
         val embed = eb.build()
         channel.sendMessage(embed).queue()
     }
-
+    
     /**
      * Send an embeded message..
      *
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun replyEmbedRaw(title: String, msg : String, color: Color)
+    fun replyEmbedRaw(title : String, msg : String, color : Color)
     {
-        val eb = EmbedBuilder()
-        eb.setDescription(msg)
-        eb.setTitle(title)
-        eb.setColor(color)
-        val embed = eb.build()
-        channel.sendMessage(embed).queue()
+        replyEmbedRaw(title, msg, color, null)
     }
-
+    
     /**
      * Send an embeded message..
      *
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun replyEmbedRaw(title: String, msg : String, color: Color, thumbnail: String)
+    fun replyEmbedRaw(title : String, msg : String, color : Color, thumb : String?)
     {
-        val eb = EmbedBuilder()
-        eb.setDescription(msg)
-        eb.setTitle(title)
-        eb.setColor(color)
-        eb.setThumbnail(thumbnail)
-        val embed = eb.build()
-        channel.sendMessage(embed).queue()
+        replyEmbedRaw(title, msg, color, thumb, null)
     }
-
+    
     /**
      * Send an embeded message..
      *
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun replyEmbedRaw(title: String, msg : String, color: Color, thumbnail: String, image: String)
+    fun replyEmbedRaw(title : String, msg : String, color : Color, thumb : String?, img : String?)
     {
-        val eb = EmbedBuilder()
-        eb.setDescription( msg)
-        eb.setTitle(title)
-        eb.setColor(color)
-        if (thumbnail != null){
-            eb.setThumbnail(thumbnail)
-        }
-        eb.setImage(image)
-        val embed = eb.build()
-        channel.sendMessage(embed).queue()
+        channel.sendMessage(makeEmbed(title, msg, color, thumb, img)).queue()
     }
-
-    fun replyEmbedRaw(title: String, msg : String, color: Color, image: String, imageNotThumb: Boolean)
+    
+    fun replyEmbedRaw(title : String, msg : String, color : Color, image : String, imageNotThumb : Boolean)
     {
-        val eb = EmbedBuilder()
-        eb.setDescription(msg)
-        eb.setTitle(title)
-        eb.setColor(color)
-        if (imageNotThumb) {
-            eb.setImage(image)
-        }else{
-            eb.setThumbnail(image)
-        }
-        val embed = eb.build()
-        channel.sendMessage(embed).queue()
+        channel.sendMessage(makeEmbed(title, msg, color, image, imageNotThumb)).queue()
     }
-
+    
     fun delete() : Boolean
     {
         try
         {
-            deleteMessage().block()
+            deleteMessage().complete()
             return true
         }
         catch(e : PermissionException)

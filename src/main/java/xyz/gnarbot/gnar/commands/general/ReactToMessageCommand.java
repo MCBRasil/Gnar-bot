@@ -2,7 +2,6 @@ package xyz.gnarbot.gnar.commands.general;
 
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
@@ -30,42 +29,31 @@ public class ReactToMessageCommand extends CommandExecutor
         String reaction = args[1];
         final Note msg = message.reply("**" + BotData.randomQuote() + "** Searching for Message with ID `" + msgid +
                 "`.");
-        try
+
+            Message m = msg.getChannel().getMessageById(msgid).complete();
+        if (message.getEmotes().size() > 0)
         {
-            Message m = msg.getChannel().getMessageById(msgid).block();
-            if (message.getEmotes().size() > 0)
+            Emote em = message.getEmotes().get(0);
+            Utils.sendReaction(m, em);
+            msg.editMessage("**" + BotData.randomQuote() + "** Oh wow! That's pretty cool").queue();
+            Bot.INSTANCE.getScheduler().schedule(() -> msg.deleteMessage().queue(), 10, TimeUnit.SECONDS);
+        }
+        else
+        {
+            if (Utils.sendReactionAutoEncode(m, reaction))
             {
-                Emote em = message.getEmotes().get(0);
-                Utils.sendReaction(m, em);
                 msg.editMessage("**" + BotData.randomQuote() + "** Oh wow! That's pretty cool").queue();
                 Bot.INSTANCE.getScheduler().schedule(() -> msg.deleteMessage().queue(), 10, TimeUnit.SECONDS);
             }
             else
             {
-                if (Utils.sendReactionAutoEncode(m, reaction))
-                {
-                    msg.editMessage("**" + BotData.randomQuote() + "** Oh wow! That's pretty cool").queue();
-                    Bot.INSTANCE.getScheduler().schedule(() -> msg.deleteMessage().queue(), 10, TimeUnit.SECONDS);
-                }
-                else
-                {
-                    msg.editMessage("**" + BotData.randomQuote() + "** Oops. Something happened when I tried to react" +
-                            " to that message. Maybe it wasn't a valid emoji? I'm not sure.").queue();
-                    Bot.INSTANCE.getScheduler().schedule(() -> msg.deleteMessage().queue(), 10, TimeUnit.SECONDS);
-                }
+                msg.editMessage("**" + BotData.randomQuote() + "** Oops. Something happened when I tried to react" +
+                        " to that message. Maybe it wasn't a valid emoji? I'm not sure.").queue();
+                Bot.INSTANCE.getScheduler().schedule(() -> msg.deleteMessage().queue(), 10, TimeUnit.SECONDS);
             }
         }
-        catch (RateLimitedException e)
-        {
-            msg.editMessage("**" + BotData.randomQuote() + "** Oops. I couldn't find that message within this channel" +
-                    ". You sure you got the right place?").queue();
-            Bot.INSTANCE.getScheduler().schedule(() -> msg.deleteMessage().queue(), 10, TimeUnit.SECONDS);
-        }
-        try
-        {
-            message.deleteMessage().queue();
-        }
-        catch (Exception ignore) {}
+        
+        message.delete();
     }
 }
 

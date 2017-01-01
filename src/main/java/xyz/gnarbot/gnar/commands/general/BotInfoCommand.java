@@ -8,7 +8,6 @@ import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.handlers.commands.CommandHandler;
 import xyz.gnarbot.gnar.handlers.servers.Shard;
-import xyz.gnarbot.gnar.utils.BotData;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.StringJoiner;
@@ -22,7 +21,6 @@ public class BotInfoCommand extends CommandExecutor
     {
         CommandHandler commandHandler = note.getHost().getCommandHandler();
         
-        int channels;
         int textChannels = 0;
         int voiceChannels = 0;
         int servers = 0;
@@ -62,8 +60,6 @@ public class BotInfoCommand extends CommandExecutor
                 voiceChannels += g.getVoiceChannels().size();
             }
         }
-        channels = textChannels + voiceChannels;
-        
         
         int commandSize = commandHandler.getUniqueRegistry().values().parallelStream().filter
                 (CommandExecutor::isShownInHelp).collect(Collectors.toList()).size();
@@ -71,30 +67,33 @@ public class BotInfoCommand extends CommandExecutor
         int requests = Bot.INSTANCE.getShards().stream().flatMap(shard -> shard.getHosts().stream()).mapToInt(guild
                 -> guild.getCommandHandler().getRequests()).sum();
         
-        StringJoiner joiner = new StringJoiner("\n", "```ini\n", "```\n");
+        StringJoiner joiner = new StringJoiner("\n");
         
-        joiner.add("\u258C [Requests] ____ " + requests);
-        joiner.add("\u258C [Servers] _____ " + servers);
-        joiner.add("\u258C [Shards] ______ " + Bot.INSTANCE.getShards().size());
-        joiner.add("\u258C");
-        joiner.add("\u258C [Channels] ____ " + channels);
-        joiner.add("\u258C  - [Text] _____ " + textChannels);
-        joiner.add("\u258C  - [Voice] ____ " + voiceChannels);
-        joiner.add("\u258C");
-        joiner.add("\u258C [Users] _______ " + users);
-        joiner.add("\u258C  - [Online] ___ " + online);
-        joiner.add("\u258C  - [Offline] __ " + offline);
-        joiner.add("\u258C  - [Inactive] _ " + inactive);
-        joiner.add("\u258C  - [DND] ______ " + dnd);
-        joiner.add("\u258C");
-        joiner.add("\u258C [Creator] _____ Avalon");
-        joiner.add("\u258C [Creator] _____ Maeyrl");
-        joiner.add("\u258C [Contributor] __ Gatt");
-        joiner.add("\u258C [Website] _____ gnarbot.xyz");
-        joiner.add("\u258C [Commands] ____ " + commandSize);
-        joiner.add("\u258C [Library] _____ JDA 3");
-        joiner.add("\u258C [Uptime] ______ " + Bot.INSTANCE.getSimpleUptime() + ".");
+        //         "__**General**                                                      __"
         
-        note.replyEmbed("**" + BotData.randomQuote() + "** Here is all of my information!", joiner.toString(), Bot.getColor());
+        joiner.add("Requests: **[" + requests + "]()**");
+        joiner.add("Servers: **[" + servers + "]()**");
+        joiner.add("Shards: **[" + Bot.INSTANCE.getShards().size() + "]()**");
+        joiner.add("");
+        joiner.add("__**Channels**                                                     __");
+        joiner.add("  Text: **[" + textChannels + "]()**");
+        joiner.add("  Voice: **[" + voiceChannels + "]()**");
+        joiner.add("");
+        joiner.add("__**Users**                                                          __");
+        joiner.add("  Total: **[" + users + "]()**");
+        joiner.add("  Online: **[" + online + "]()**");
+        joiner.add("  Offline: **[" + offline + "]()**");
+        joiner.add("  Inactive: **[" + inactive + "]()**");
+        joiner.add("  DND: **[" + dnd + "]()**");
+        joiner.add("");
+        joiner.add("__**Others**                                                         __");
+        joiner.add("  Creators: **[Avarel](https://github.com/Avarel)** and **[Maeyrl](https://github.com/maeyrl)**");
+        joiner.add("  Contributor: **[Gatt](https://github.com/RealGatt)**");
+        joiner.add("  Website: **[gnarbot.xyz](http://gnarbot.xyz)**");
+        joiner.add("  Commands: **[" + commandSize + "]()**");
+        joiner.add("  Library: **[JDA 3" + "](https://github.com/DV8FromTheWorld/JDA)**");
+        joiner.add("  Uptime: **[" + Bot.INSTANCE.getSimpleUptime() + "]()**");
+        
+        note.replyEmbedRaw("Bot Information", joiner.toString(), Bot.getColor(), note.getJDA().getSelfUser().getAvatarUrl());
     }
 }
