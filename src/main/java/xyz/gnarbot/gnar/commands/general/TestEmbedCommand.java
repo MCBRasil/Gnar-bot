@@ -21,9 +21,21 @@ public class TestEmbedCommand extends CommandExecutor
         EmbedBuilder eb = new EmbedBuilder();
         String s = StringUtils.join(args, " ");
         Random r = new Random();
-        eb.setTitle("**Message from " + msg.getAuthor().getName() + "**").addBlankField(true).setDescription(s)
-                .setThumbnail(msg.getAuthor().getAvatarUrl()).setColor(new Color(r.nextInt(255), r.nextInt(255), r
-                .nextInt(255)));
+        String[] parts = s.split(":newsection:");
+        eb.setTitle("**Message from " + msg.getAuthor().getName() + "**");
+        eb.setDescription(parts[0]);
+        parts[0] = "";
+        if (parts.length > 1){
+            int id = 0;
+            for (String p : parts){
+                if (p != "") {
+                    id++;
+                    eb.addField("Section " + id, p, false);
+                }
+            }
+        }
+        eb.setThumbnail(msg.getAuthor().getAvatarUrl()).setColor(new Color(r.nextInt(255), r.nextInt(255), r
+                    .nextInt(255)));
         MessageEmbed embed = eb.build();
         MessageBuilder mb = new MessageBuilder();
         mb.setEmbed(embed);
