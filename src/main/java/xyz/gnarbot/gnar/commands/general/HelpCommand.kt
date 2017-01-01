@@ -1,5 +1,9 @@
 package xyz.gnarbot.gnar.commands.general
 
+import net.dv8tion.jda.core.EmbedBuilder
+import net.dv8tion.jda.core.MessageBuilder
+import net.dv8tion.jda.core.entities.MessageEmbed
+import org.apache.commons.lang3.ArrayUtils
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.handlers.commands.Command
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
@@ -31,51 +35,67 @@ class HelpCommand : CommandExecutor()
                     .map { it.key }
             
             val strings = listOf(
-                    "```",
-                    "\u258C Description __ ${cmd.description}",
-                    "\u258C Usage ________ ${Bot.token}${args[0].toLowerCase()} ${cmd.usage}",
-                    "\u258C Aliases ______ [${aliases.joinToString(", ")}]",
-                    "```"
+                    "Description __ ${cmd.description}",
+                    "Usage ________ ${Bot.token}${args[0].toLowerCase()} ${cmd.usage}",
+                    "Aliases ______ [${aliases.joinToString(", ")}]"
             )
             
-            message.replyRaw(strings.joinToString("\n"))
+            message.replyEmbedRaw("", strings.joinToString("\n"), Bot.color)
             
             return
         }
         
         val commandEntries = host.commandHandler.uniqueRegistry
-        
-        val builder = StringBuilder()
-        
-        builder.append("\nThis is all of GN4R-Bot's currently registered commands on the __**${host.name}**__ guild.\n\n")
-        
+
+        val eb = EmbedBuilder()
+        eb.setTitle("GNAR Help")
+        eb.setDescription("This is all of GN4R-Bot's currently registered commands on the __**${host.name}**__ guild.\n\n")
+        eb.setColor(Bot.color)
+
         for (perm in Clearance.values())
         {
             val count = commandEntries.values.filter { it.clearance == perm && it.isShownInHelp }.count()
             if (count < 1) continue
-            
-            val joiner = StringJoiner("", "```ini\n", "```\n")
-            
+
             val lineBuilder = StringBuilder()
-            for (i in 0 .. 22 - perm.toString().length) lineBuilder.append('—')
-            
-            joiner.add("\u258c ${perm.toString().replace("_", " ")} $lineBuilder $count\n")
-            
-            for ((cmdLabel, cmd) in commandEntries)
-            {
-                if (cmd.clearance != perm || !cmd.isShownInHelp) continue
-                
-                joiner.add("\u258C  [${Bot.token}$cmdLabel] ${cmd.usage}\n")
+            for (i in 0..22 - perm.toString().length) lineBuilder.append('—')
+
+            if (count < 10) {
+                var builder = StringJoiner("\n")
+                builder.add("__**${perm.toString().replace("_", " ")}**  $count __\n")
+                for ((cmdLabel, cmd) in commandEntries) {
+                    if (cmd.clearance != perm || !cmd.isShownInHelp) continue
+
+                    builder.add("**[${Bot.token}$cmdLabel]()** ${cmd.usage}")
+                }
+
+                eb.addField("", builder.toString(), false)
+            }else{
+                eb.addField("", "__**${perm.toString().replace("_", " ")}**  $count __", false)
+                var builder = StringJoiner("\n")
+                var cmdID = 0
+                var embedCount = 0
+                for ((cmdLabel, cmd) in commandEntries) {
+                    if (cmd.clearance != perm || !cmd.isShownInHelp) continue
+                    cmdID++
+                    builder.add("**[${Bot.token}$cmdLabel]()**")
+                    if (cmdID == 14){
+                        eb.addField("", builder.toString(), true)
+                        embedCount++
+                        builder = StringJoiner("\n")
+                        cmdID = 0
+                    }
+                }
             }
-            
-            builder.append(joiner.toString())
         }
-        
+
+        val builder = StringBuilder()
+
         builder.append("To view a command's description, do `${Bot.token}help [command]`.\n\n")
         //builder.append("You can also chat and execute commands with Gnar privately, try it!\n\n")
         
-        builder.append("**Bot Commander** commands requires a role named exactly __Bot Commander__.\n")
-        builder.append("**Server Owner** commands requires you to be the __server owner__ to execute.\n")
+        builder.append("**Bot Commander** commands requires a role named exactly __[Bot Commander]()__.\n")
+        builder.append("**Server Owner** commands requires you to be the __[server owner]()__ to execute.\n")
     
         builder.append("\n")
         
@@ -86,16 +106,22 @@ class HelpCommand : CommandExecutor()
         
         builder.append("\n")
         
-        builder.append("**Website:** http://gnarbot.xyz\n")
-        builder.append("**Discord Server:** http://discord.gg/NQRpmr2\n")
-        
+        builder.append("**[Website](http://gnarbot.xyz)**\n")
+        builder.append("**[Discord Server](http://discord.gg/NQRpmr2)** \n")
+
+        eb.addField("", builder.toString(), false)
+
         //message.reply(builder.toString())
     
         if (!message.author?.hasPrivateChannel()!!)
         {
             message.author?.openPrivateChannel()?.complete()
         }
-        message.author?.privateChannel?.sendMessage(makeEmbed("Help", builder.toString(), Bot.color))?.complete()
+        val embed = eb.build()
+        val mb = MessageBuilder()
+        mb.setEmbed(embed)
+        val m = mb.build()
+        message.author?.privateChannel?.sendMessage(m)?.complete(true)
         
         message.reply("**${BotData.randomQuote()}** My commands has been PM'ed to you.")
     }
