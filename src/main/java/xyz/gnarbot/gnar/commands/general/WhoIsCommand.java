@@ -76,7 +76,7 @@ public class WhoIsCommand extends CommandExecutor
         mainBuilder.append("__**Roles**                                                           __").append('\n');
         
         user.getRoles().stream().filter(role -> !mainBuilder.toString().contains(role.getId())).forEach(role ->
-                mainBuilder.append("  - **[").append(role.getName() + "]()**").append(" (" + role.getPermissionsRaw() + ")").append('\n'));
+                mainBuilder.append("  - **[").append(role.getName() + "]()**").append('\n'));
         
         message.replyEmbedRaw("Who is " + user.getName() + "?", mainBuilder.toString().replaceAll("null", "None"), Bot.getColor(), user.getAvatarUrl());
     }
