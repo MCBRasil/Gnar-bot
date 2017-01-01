@@ -29,7 +29,7 @@ public class DeleteMessagesCommand extends CommandExecutor
     {
         try
         {
-            if (!msg.getAuthor().hasPermission(msg.getTextChannel(), Permission.MESSAGE_MANAGE))
+            if (!msg.getAuthor().hasPermission(Permission.MESSAGE_MANAGE))
             {
                 msg.reply("You do not have permission to delete messages");
                 return;

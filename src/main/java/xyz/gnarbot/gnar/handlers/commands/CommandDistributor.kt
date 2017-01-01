@@ -31,19 +31,7 @@ import xyz.gnarbot.gnar.commands.`fun`.YodaTalkCommand
 import xyz.gnarbot.gnar.commands.games.GameLookupCommand
 import xyz.gnarbot.gnar.commands.games.LeagueLookupCommand
 import xyz.gnarbot.gnar.commands.games.OverwatchLookupCommand
-import xyz.gnarbot.gnar.commands.general.BotInfoCommand
-import xyz.gnarbot.gnar.commands.general.GoogleCommand
-import xyz.gnarbot.gnar.commands.general.HelpCommand
-import xyz.gnarbot.gnar.commands.general.InviteBotCommand
-import xyz.gnarbot.gnar.commands.general.MathCommand
-import xyz.gnarbot.gnar.commands.general.PingCommand
-import xyz.gnarbot.gnar.commands.general.QuoteMessageCommand
-import xyz.gnarbot.gnar.commands.general.ReactToMessageCommand
-import xyz.gnarbot.gnar.commands.general.RemindMeCommand
-import xyz.gnarbot.gnar.commands.general.TestEmbedCommand
-import xyz.gnarbot.gnar.commands.general.UptimeCommand
-import xyz.gnarbot.gnar.commands.general.WhoIsCommand
-import xyz.gnarbot.gnar.commands.general.YoutubeCommand
+import xyz.gnarbot.gnar.commands.general.*
 import xyz.gnarbot.gnar.commands.media.CatsCommand
 import xyz.gnarbot.gnar.commands.media.ExplosmCommand
 import xyz.gnarbot.gnar.commands.media.ExplosmRCGCommand
@@ -149,6 +137,7 @@ object CommandDistributor
         register(TestEmbedCommand::class.java)
         register(QuoteMessageCommand::class.java)
         register(TextToBrickCommand::class.java)
+        register(DeleteMessageCommand::class.java)
     }
     
     fun checkValid(str : String) : Boolean

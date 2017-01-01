@@ -72,9 +72,9 @@ public class OverwatchLookupCommand extends CommandExecutor
             JSONObject quickPGameStats = new NullableJSON(quickPStats.getJSONObject("game_stats").toString());
             JSONObject quickPAvgStats = new NullableJSON(quickPStats.getJSONObject("average_stats").toString());
             
-            joiner.add("\n**__General                                    __**");
+            joiner.add("\n**__General                                                      __**");
             joiner.add("  Level: **[" + (quickPOverallStats.getInt("prestige") * 100 + quickPOverallStats.getInt("level")) + "]()**");
-            joiner.add("\n**__Quick Play                              __**");
+            joiner.add("\n**__Quick Play                                                 __**");
             joiner.add("  Avg. Elims: **[" + quickPAvgStats.getDouble("eliminations_avg") + "]()**");
             joiner.add("  Avg. Deaths: **[" + quickPAvgStats.getDouble("deaths_avg") + "]()**");
             joiner.add("  Avg. Final Blows: **[" + quickPAvgStats.getDouble("final_blows_avg") + "]()**");
@@ -82,7 +82,7 @@ public class OverwatchLookupCommand extends CommandExecutor
             joiner.add("  K/D Ratio: **[" + (quickPGameStats.getDouble("kpd")) +"]()**");
             joiner.add("  Played for: **[" + (quickPGameStats.getInt("time_played")) +" hours]()**");
 
-            joiner.add("\n**__Competitive                           __**");
+            joiner.add("\n**__Competitive                                              __**");
 
             int rank = compOverallStats.getInt("comprank");
             joiner.add("  Avg. Elims: **[" + compAvgStats.getDouble("eliminations_avg")+"]()**");
@@ -122,7 +122,7 @@ public class OverwatchLookupCommand extends CommandExecutor
 
             joiner.add("  Comp. Rank: **[:beginner: " + rank + "]() (" + rankName + ")**");
             
-            joiner.add("\n**__Overall                                    __**");
+            joiner.add("\n**__Overall                                                        __**");
             joiner.add("  Eliminations: **[" + (int) (quickPGameStats.getDouble("eliminations") + compGameStats.getDouble("eliminations")) + "]()**");
             joiner.add("  Medals: **[" + (int) (quickPGameStats.getDouble("medals") + compGameStats.getDouble("medals")) + "]()**");
             joiner.add("  Total Damage: **[" + (int) (quickPGameStats.getDouble("damage_done") + compGameStats.getDouble("damage_done")) + "]()**");
