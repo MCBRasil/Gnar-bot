@@ -1,5 +1,6 @@
 package xyz.gnarbot.gnar.commands.general;
 
+import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -16,6 +17,8 @@ public class PingCommand extends CommandExecutor
         OffsetDateTime sentTime = message.getCreationTime();
         OffsetDateTime responseTime = OffsetDateTime.now();
         
-        message.reply("Response time: `" + Math.abs(sentTime.until(responseTime, ChronoUnit.MILLIS)) + "ms`.");
+        message.replyEmbedRaw("Response Time",
+                Math.abs(sentTime.until(responseTime, ChronoUnit.MILLIS)) + "ms",
+                Bot.getColor());
     }
 }

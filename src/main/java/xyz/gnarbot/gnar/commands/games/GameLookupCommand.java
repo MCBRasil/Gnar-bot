@@ -24,9 +24,9 @@ public class GameLookupCommand extends CommandExecutor
         {
             String query = StringUtils.join(args, "+");
             
-            HttpResponse<JsonNode> response = Unirest.get("https://videogamesrating.p.mashape.com/get" +
-                    ".php?count=5&game=" + query).header("X-Mashape-Key", Bot.INSTANCE.getAuthTokens().getProperty
-                    ("mashape")).header("Accept", "application/json").asJson();
+            HttpResponse<JsonNode> response = Unirest.get("https://videogamesrating.p.mashape.com/get.php?count=5&game=" + query)
+                    .header("X-Mashape-Key", Bot.INSTANCE.getAuthTokens().getProperty("mashape"))
+                    .header("Accept", "application/json").asJson();
             
             JSONArray jsa = response.getBody().getArray();
             

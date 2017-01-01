@@ -10,7 +10,6 @@ import xyz.gnarbot.gnar.utils.TriviaQuestions;
 @Command(aliases = "answer")
 public class TriviaAnswerCommand extends CommandExecutor
 {
-    
     @Inject
     public Host host;
     

@@ -1,10 +1,12 @@
 package xyz.gnarbot.gnar.commands.general
 
 import org.apache.commons.lang3.StringUtils
+import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.handlers.commands.Command
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
 import xyz.hexav.aje.ExpressionBuilder
+import java.awt.Color
 import java.util.Arrays
 
 @Command(aliases = arrayOf("math"), usage = "(expression)", description = "Calculate fancy math expressions.")
@@ -16,12 +18,12 @@ class MathCommand : CommandExecutor()
         
         if (args.isEmpty())
         {
-            msg.reply("Please provide a math expression.")
+            msg.replyEmbedRaw("Error", "Please provide a math expression.", Color.RED)
             return
         }
         
         val exp = StringUtils.join(_args, " ")
-        msg.reply("Evaluating expression: `$exp` ...")
+        msg.replyEmbedRaw("Expression", exp, Bot.color)
         
         try
         {
@@ -29,11 +31,11 @@ class MathCommand : CommandExecutor()
                     .build()
                     .evalList()
             
-            msg.reply("Result: `${Arrays.toString(results)}`.")
+            msg.replyEmbedRaw("Result", Arrays.toString(results), Bot.color)
         }
         catch (e : RuntimeException)
         {
-            msg.reply("Encountered error: **${e.message}**.")
+            msg.replyEmbedRaw("Error", e.message!!, Color.RED)
         }
     }
 }

@@ -28,7 +28,6 @@ import xyz.gnarbot.gnar.commands.`fun`.TriviaAnswerCommand
 import xyz.gnarbot.gnar.commands.`fun`.TriviaCommand
 import xyz.gnarbot.gnar.commands.`fun`.UrbanDictionaryCommand
 import xyz.gnarbot.gnar.commands.`fun`.YodaTalkCommand
-import xyz.gnarbot.gnar.commands.admin.DiagnosticsCommand
 import xyz.gnarbot.gnar.commands.games.GameLookupCommand
 import xyz.gnarbot.gnar.commands.games.LeagueLookupCommand
 import xyz.gnarbot.gnar.commands.games.OverwatchLookupCommand
@@ -72,8 +71,6 @@ object CommandDistributor
     
     init
     {
-        register(DiagnosticsCommand::class.java)
-        
         //General Commands
         register(HelpCommand::class.java)
         register(InviteBotCommand::class.java)
