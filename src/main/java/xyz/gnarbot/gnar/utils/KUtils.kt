@@ -4,6 +4,7 @@ package xyz.gnarbot.gnar.utils
 
 import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.entities.MessageEmbed
+import xyz.gnarbot.gnar.Bot
 import java.awt.Color
 import java.io.File
 import java.util.Properties
@@ -15,17 +16,8 @@ fun File.readProperties() : Properties
 
 fun File.child(path : String) = File(this, path)
 
-fun makeEmbed(title : String, msg : String, color : Color) : MessageEmbed
-{
-    return makeEmbed(title, msg, color, null)
-}
-
-fun makeEmbed(title : String, msg : String, color : Color, thumb : String?) : MessageEmbed
-{
-    return makeEmbed(title, msg, color, thumb, null)
-}
-
-fun makeEmbed(title : String, msg : String, color : Color, thumb : String?, img : String?) : MessageEmbed
+@JvmOverloads
+fun makeEmbed(title : String, msg : String, color : Color = Bot.color, thumb : String? = null, img : String? = null) : MessageEmbed
 {
     return EmbedBuilder().run {
         setDescription(msg)

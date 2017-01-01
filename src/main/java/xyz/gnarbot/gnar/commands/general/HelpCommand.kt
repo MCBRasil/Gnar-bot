@@ -2,15 +2,12 @@ package xyz.gnarbot.gnar.commands.general
 
 import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.MessageBuilder
-import net.dv8tion.jda.core.entities.MessageEmbed
-import org.apache.commons.lang3.ArrayUtils
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.handlers.commands.Command
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
 import xyz.gnarbot.gnar.handlers.members.Clearance
 import xyz.gnarbot.gnar.utils.BotData
 import xyz.gnarbot.gnar.utils.Note
-import xyz.gnarbot.gnar.utils.makeEmbed
 import java.util.StringJoiner
 
 @Command(aliases = arrayOf("help", "guide"), usage = "~command", description = "Display GN4R's list of commands.")
@@ -46,40 +43,46 @@ class HelpCommand : CommandExecutor()
         }
         
         val commandEntries = host.commandHandler.uniqueRegistry
-
+        
         val eb = EmbedBuilder()
         eb.setTitle("GNAR Help")
         eb.setDescription("This is all of GN4R-Bot's currently registered commands on the __**${host.name}**__ guild.\n\n")
         eb.setColor(Bot.color)
-
+        
         for (perm in Clearance.values())
         {
             val count = commandEntries.values.filter { it.clearance == perm && it.isShownInHelp }.count()
             if (count < 1) continue
-
+            
             val lineBuilder = StringBuilder()
-            for (i in 0..22 - perm.toString().length) lineBuilder.append('—')
-
-            if (count < 10) {
-                var builder = StringJoiner("\n")
+            for (i in 0 .. 22 - perm.toString().length) lineBuilder.append('—')
+            
+            if (count < 10)
+            {
+                val builder = StringJoiner("\n")
                 builder.add("__**${perm.toString().replace("_", " ")}**  $count __\n")
-                for ((cmdLabel, cmd) in commandEntries) {
+                for ((cmdLabel, cmd) in commandEntries)
+                {
                     if (cmd.clearance != perm || !cmd.isShownInHelp) continue
-
+                    
                     builder.add("**[${Bot.token}$cmdLabel]()** ${cmd.usage}")
                 }
-
+                
                 eb.addField("", builder.toString(), false)
-            }else{
+            }
+            else
+            {
                 eb.addField("", "__**${perm.toString().replace("_", " ")}**  $count __", false)
                 var builder = StringJoiner("\n")
                 var cmdID = 0
                 var embedCount = 0
-                for ((cmdLabel, cmd) in commandEntries) {
+                for ((cmdLabel, cmd) in commandEntries)
+                {
                     if (cmd.clearance != perm || !cmd.isShownInHelp) continue
                     cmdID++
                     builder.add("**[${Bot.token}$cmdLabel]()**")
-                    if (cmdID == 14){
+                    if (cmdID == 14)
+                    {
                         eb.addField("", builder.toString(), true)
                         embedCount++
                         builder = StringJoiner("\n")
@@ -88,15 +91,15 @@ class HelpCommand : CommandExecutor()
                 }
             }
         }
-
+        
         val builder = StringBuilder()
-
+        
         builder.append("To view a command's description, do `${Bot.token}help [command]`.\n\n")
         //builder.append("You can also chat and execute commands with Gnar privately, try it!\n\n")
         
         builder.append("**Bot Commander** commands requires a role named exactly __[Bot Commander]()__.\n")
         builder.append("**Server Owner** commands requires you to be the __[server owner]()__ to execute.\n")
-    
+        
         builder.append("\n")
         
         builder.append("**Latest News:**\n")
@@ -108,11 +111,11 @@ class HelpCommand : CommandExecutor()
         
         builder.append("**[Website](http://gnarbot.xyz)**\n")
         builder.append("**[Discord Server](http://discord.gg/NQRpmr2)** \n")
-
+        
         eb.addField("", builder.toString(), false)
-
+        
         //message.reply(builder.toString())
-    
+        
         if (!message.author?.hasPrivateChannel()!!)
         {
             message.author?.openPrivateChannel()?.complete()

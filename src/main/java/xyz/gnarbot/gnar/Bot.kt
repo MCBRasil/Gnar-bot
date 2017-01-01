@@ -17,7 +17,7 @@ import kotlin.jvm.JvmStatic as static
  */
 object Bot
 {
-    @static val color = Color(0, 75, 175)
+    @static val color = Color(0, 80, 175)
     
     @static val LOG = SimpleLog.getLog("Bot")!!
     

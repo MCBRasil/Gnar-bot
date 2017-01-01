@@ -3,6 +3,7 @@ package xyz.gnarbot.gnar.utils
 import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.entities.Message
 import net.dv8tion.jda.core.exceptions.PermissionException
+import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.handlers.members.User
 import xyz.gnarbot.gnar.handlers.servers.Host
 import java.awt.Color
@@ -51,31 +52,8 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @return The Message created by this function.
      */
     @Deprecated("Use replyEmbedRaw - embeds don't need stylized pointers")
-    fun replyEmbed(title : String, msg : String, color : Color)
-    {
-        replyEmbed(title, msg, color, null)
-    }
-    
-    /**
-     * Send an embeded message..
-     *
-     * @param msg The text to send.
-     * @return The Message created by this function.
-     */
-    @Deprecated("Use replyEmbedRaw - embeds don't need stylized pointers")
-    fun replyEmbed(title : String, msg : String, color : Color, thumb : String?)
-    {
-        replyEmbed(title, msg, color, thumb, null)
-    }
-    
-    /**
-     * Send an embeded message..
-     *
-     * @param msg The text to send.
-     * @return The Message created by this function.
-     */
-    @Deprecated("Use replyEmbedRaw - embeds don't need stylized pointers")
-    fun replyEmbed(title : String, msg : String, color : Color, thumb : String?, img : String?)
+    @JvmOverloads
+    fun replyEmbed(title : String, msg : String, color : Color = Bot.color, thumb : String? = null, img : String? = null)
     {
         val embed = EmbedBuilder().run {
             setDescription("${message.author.name} \u279c" + msg)
@@ -113,34 +91,13 @@ class Note(val host : Host, private val message : Message) : Message by message
     }
     
     /**
-     * Send an embeded message..
+     * Send an embeded message.
      *
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun replyEmbedRaw(title : String, msg : String, color : Color)
-    {
-        replyEmbedRaw(title, msg, color, null)
-    }
-    
-    /**
-     * Send an embeded message..
-     *
-     * @param msg The text to send.
-     * @return The Message created by this function.
-     */
-    fun replyEmbedRaw(title : String, msg : String, color : Color, thumb : String?)
-    {
-        replyEmbedRaw(title, msg, color, thumb, null)
-    }
-    
-    /**
-     * Send an embeded message..
-     *
-     * @param msg The text to send.
-     * @return The Message created by this function.
-     */
-    fun replyEmbedRaw(title : String, msg : String, color : Color, thumb : String?, img : String?)
+    @JvmOverloads
+    fun replyEmbedRaw(title : String, msg : String, color : Color = Bot.color, thumb : String? = null, img : String? = null)
     {
         channel.sendMessage(makeEmbed(title, msg, color, thumb, img)).queue()
     }
