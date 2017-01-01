@@ -35,6 +35,10 @@ public class YoutubeCommand extends CommandExecutor
             
             String videoID = jsonObject.getJSONArray("items").getJSONObject(0).getJSONObject("id").getString("videoId");
             message.getChannel().sendMessage("https://www.youtube.com/watch?v=" + videoID).queue();
+            
+            //TODO embed shit
+            message.replyEmbedRaw("Youtube", "INSERT LINK HERE", Bot.getColor());
+            
             msg.deleteMessage();
         }
         catch (JSONException | NullPointerException e)

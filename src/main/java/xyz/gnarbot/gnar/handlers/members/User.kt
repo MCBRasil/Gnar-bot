@@ -13,16 +13,10 @@ import xyz.gnarbot.gnar.handlers.servers.Host
  */
 class User(private val host : Host, private val member : Member) : User by member.user, Member by member
 {
-    val isBotMaster : Boolean
+    val isBotMaster : Boolean = Bot.admins.contains(member.user.id)
     
-    var clearance = Clearance.USER
-    
-    init
-    {
-        isBotMaster = Bot.admins.contains(member.user.id)
-        
-        // Automatically assign permission.
-        clearance = when
+    val clearance : Clearance
+        get() = when
         {
             isBot -> Clearance.BOT
             isBotMaster -> Clearance.BOT_MASTER
@@ -30,7 +24,6 @@ class User(private val host : Host, private val member : Member) : User by membe
             hasRole("Bot Commander") -> Clearance.BOT_COMMANDER
             else -> Clearance.USER
         }
-    }
     
     /**
      * The JDA instance.
