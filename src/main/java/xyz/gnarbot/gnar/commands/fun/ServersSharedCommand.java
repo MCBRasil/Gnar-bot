@@ -11,7 +11,7 @@ import xyz.gnarbot.gnar.utils.Note;
 public class ServersSharedCommand extends CommandExecutor
 {
     @Override
-    public void execute(Note message, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         int total = 0;
         String servers = "";
@@ -20,7 +20,7 @@ public class ServersSharedCommand extends CommandExecutor
         {
             for (Guild g : shard.getJDA().getGuilds())
             {
-                if (g.getMembers().contains(message.getAuthor()))
+                if (g.getMembers().contains(note.getAuthor()))
                 {
                     total++;
                     servers += "    **Server:** " + g.getName() + "\n";
@@ -28,6 +28,6 @@ public class ServersSharedCommand extends CommandExecutor
             }
         }
         
-        message.replyRaw("**Total Servers:** " + total + "\n**Servers:** \n" + servers);
+        note.replyRaw("**Total Servers:** " + total + "\n**Servers:** \n" + servers);
     }
 }

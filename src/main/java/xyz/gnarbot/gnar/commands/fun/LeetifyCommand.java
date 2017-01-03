@@ -28,7 +28,7 @@ public class LeetifyCommand extends CommandExecutor
     }};
     
     @Override
-    public void execute(Note message, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         String s = StringUtils.join(args, " ");
         
@@ -37,6 +37,6 @@ public class LeetifyCommand extends CommandExecutor
             s = s.replaceAll(entry.getKey(), entry.getValue());
         }
         
-        message.replyEmbedRaw("Leetify", s);
+        note.replyEmbedRaw("Leet It", s);
     }
 }

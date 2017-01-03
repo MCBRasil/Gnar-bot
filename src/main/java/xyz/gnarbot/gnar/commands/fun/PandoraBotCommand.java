@@ -24,7 +24,7 @@ public class PandoraBotCommand extends CommandExecutor
     private ChatterBotSession session = null;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         try
         {
@@ -32,17 +32,17 @@ public class PandoraBotCommand extends CommandExecutor
             {
                 bot = factory.create(ChatterBotType.PANDORABOTS, "b0dafd24ee35a477");
                 session = bot.createSession();
-                msg.reply("Pandora-Bot session created for the server.");
+                note.reply("Pandora-Bot session created for the server.");
             }
             
             String input = StringUtils.join(args, " ");
             
             String output = session.think(input);
-            msg.replyRaw("**[PandoraBot]** ─ `" + output + "`");
+            note.replyRaw("**[PandoraBot]** ─ `" + output + "`");
         }
         catch (Exception e)
         {
-            msg.reply("PandoraBot has encountered an exception. Resetting PandoraBot.");
+            note.reply("PandoraBot has encountered an exception. Resetting PandoraBot.");
             bot = null;
         }
     }

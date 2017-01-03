@@ -16,7 +16,7 @@ public class ExplosmRCGCommand extends CommandExecutor
     public Host host;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         try
         {
@@ -29,12 +29,12 @@ public class ExplosmRCGCommand extends CommandExecutor
             String builder = "Cyanide and Happiness" + "\n" + "**Random Comic Generator**\n" + "Link: " + element
                     .absUrl("src");
             
-            msg.replyRaw(builder);
+            note.replyRaw(builder);
             
         }
         catch (Exception e)
         {
-            msg.reply("Unable to grab random Cyanide and Happiness comic.");
+            note.reply("Unable to grab random Cyanide and Happiness comic.");
             e.printStackTrace();
         }
     }

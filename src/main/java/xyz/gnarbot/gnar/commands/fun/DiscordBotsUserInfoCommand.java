@@ -14,24 +14,24 @@ public class DiscordBotsUserInfoCommand extends CommandExecutor
     public Host host;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         if (args.length > 0)
         {
-            if (msg.getMentionedUsers().size() == 0)
+            if (note.getMentionedUsers().size() == 0)
             {
                 String data = DiscordBotUserInfo.getUserInfo(args[0]);
-                msg.reply(data);
+                note.reply(data);
             }
             else
             {
-                String data = DiscordBotUserInfo.getUserInfo(msg.getMentionedUsers().get(0).getId());
-                msg.reply(data);
+                String data = DiscordBotUserInfo.getUserInfo(note.getMentionedUsers().get(0).getId());
+                note.reply(data);
             }
         }
         else
         {
-            msg.reply("You must supply a bot ID or mention.");
+            note.reply("You must supply a bot ID or mention.");
         }
     }
     

@@ -7,15 +7,16 @@ import org.jsoup.nodes.TextNode
 import xyz.gnarbot.gnar.handlers.commands.Command
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
+import java.util.StringJoiner
 
 @Command(aliases = arrayOf("ascii"), usage = "(string)", description = "ASCII text art!", showInHelp = false)
 class ASCIICommand : CommandExecutor()
 {
-    override fun execute(message : Note, label : String, args : Array<out String>)
+    override fun execute(note : Note, label : String, args : Array<out String>)
     {
-        if (args.size == 0)
+        if (args.isEmpty())
         {
-            message.reply("Please provide a query.")
+            note.replyError("Please provide a query.")
             return
         }
         
@@ -25,7 +26,7 @@ class ASCIICommand : CommandExecutor()
             
             if (query.length > 15)
             {
-                message.reply("The query has too many characters. `15 at most.`")
+                note.reply("The query has too many characters. `15 at most.`")
                 return
             }
             
@@ -35,11 +36,11 @@ class ASCIICommand : CommandExecutor()
             
             val builder = "```\n${getText(element)}```"
             
-            message.replyRaw(builder)
+            note.replyEmbedRaw("ASCII Text", builder)
         }
         catch (e : Exception)
         {
-            message.reply("Unable to generate ASCII art. `Developer Note: Our ASCII API is down for the moment.`")
+            note.replyError("Unable to generate ASCII art.")
             e.printStackTrace()
         }
         
@@ -61,6 +62,16 @@ class ASCIICommand : CommandExecutor()
         {
             text = cell.text()
         }
+        
+        text?.split("\n")?.let {
+            val b = StringJoiner("\n")
+    
+            it.filterNot(String::isNullOrBlank)
+                    .forEach { b.add(it) }
+            
+            text = b.toString()
+        }
+        
         return text
     }
 }

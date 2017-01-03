@@ -8,14 +8,14 @@ import xyz.gnarbot.gnar.utils.Note;
 public class PollCommand extends CommandExecutor
 {
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         if (args.length == 0 || (args.length > 0 && args[0].equalsIgnoreCase("help")))
         {
             String reply = "Poll System Help!~\n {} = Required Arguments  |  () = Optional Arguments```ini\n" +
                     "[_poll help] This list\n" + "[_poll startyesno {time} {question}] Start a Yes/No Poll for " +
                     "\"time\" minutes." + "\n```";
-            msg.reply(reply);
+            note.reply(reply);
         }
         else if (args.length > 0)
         {
@@ -40,7 +40,7 @@ public class PollCommand extends CommandExecutor
                     }
                 }
                 q = q.trim();
-                PollManager.registerPoll(new YesNoPoll(msg, q, time));
+                PollManager.registerPoll(new YesNoPoll(note, q, time));
             }
         }
     }

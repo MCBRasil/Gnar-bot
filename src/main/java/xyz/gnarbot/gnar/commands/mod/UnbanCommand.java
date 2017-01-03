@@ -21,15 +21,15 @@ public class UnbanCommand extends CommandExecutor
     public Host host;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         
-        Member author = msg.getAuthor();
+        Member author = note.getAuthor();
         User target = null;
         
         try
         { //Checks if they mentioned someone
-            List<User> banned = msg.getGuild().getController().getBans().complete();
+            List<User> banned = note.getGuild().getController().getBans().complete();
             ArrayList<User> confirmed = new ArrayList<>();
             banned.stream().filter(user -> user.getName().contains(args[0])).forEach(confirmed::add);
             target = confirmed.get(0);
@@ -40,7 +40,7 @@ public class UnbanCommand extends CommandExecutor
         {
             try
             {
-                List<User> banned = msg.getGuild().getController().getBans().complete();
+                List<User> banned = note.getGuild().getController().getBans().complete();
                 ArrayList<User> confirmed = new ArrayList<>();
                 banned.stream().filter(user -> user.getId().equals(args[0])).forEach(confirmed::add);
                 target = confirmed.get(0);
@@ -50,25 +50,25 @@ public class UnbanCommand extends CommandExecutor
         
         if (target != null)
         {
-            if (PermissionUtil.checkPermission(msg.getTextChannel(), author, Permission.BAN_MEMBERS))
+            if (PermissionUtil.checkPermission(note.getTextChannel(), author, Permission.BAN_MEMBERS))
             {
                 if (host.unban(target.getId()))
                 {
-                    msg.reply(target.getName() + " has been un-bannerino'd");
+                    note.reply(target.getName() + " has been un-bannerino'd");
                 }
                 else
                 {
-                    msg.reply("GNAR does not have permission to unban");
+                    note.reply("GNAR does not have permission to unban");
                 }
             }
             else
             {
-                msg.reply("You do not have permission to unban");
+                note.reply("You do not have permission to unban");
             }
         }
         else
         {
-            msg.reply("Could not find user, maybe you made a typo?");
+            note.reply("Could not find user, maybe you made a typo?");
         }
     }
 }

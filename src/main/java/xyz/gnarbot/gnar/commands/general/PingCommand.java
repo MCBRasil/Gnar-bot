@@ -12,12 +12,12 @@ import java.time.temporal.ChronoUnit;
 public class PingCommand extends CommandExecutor
 {
     @Override
-    public void execute(Note message, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
-        OffsetDateTime sentTime = message.getCreationTime();
+        OffsetDateTime sentTime = note.getCreationTime();
         OffsetDateTime responseTime = OffsetDateTime.now();
         
-        message.replyEmbedRaw("Response Time",
+        note.replyEmbedRaw("Response Time",
                 Math.abs(sentTime.until(responseTime, ChronoUnit.MILLIS)) + "ms",
                 Bot.getColor());
     }

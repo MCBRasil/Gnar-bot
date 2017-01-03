@@ -11,7 +11,6 @@ public class LeagueLookupCommand extends CommandExecutor
     @Override
     public void execute(Note note, String label, String[] args)
     {
-
         note.reply("This is being worked on right now, spam Maeyrl to fix me.");
         return;
 

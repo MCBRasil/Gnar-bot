@@ -18,7 +18,7 @@ import java.util.StringJoiner;
 public class GameLookupCommand extends CommandExecutor
 {
     @Override
-    public void execute(Note message, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         try
         {
@@ -32,7 +32,7 @@ public class GameLookupCommand extends CommandExecutor
             
             if (jsa.length() == 0)
             {
-                message.reply("No game found with that title.");
+                note.reply("No game found with that title.");
                 return;
             }
             
@@ -52,7 +52,7 @@ public class GameLookupCommand extends CommandExecutor
             joiner.add("Score: **[" + jso.getString("score") + "]()**");
             joiner.add("Description: **[" + jso.getString("short_description") + "]()**");
             
-            message.replyEmbedRaw("**" + jso.getString("title") + "**", joiner.toString(), Bot.getColor(), jso.getString("thumb"), true);
+            note.replyEmbedRaw("**" + jso.getString("title") + "**", joiner.toString(), Bot.getColor(), jso.getString("thumb"));
         }
         catch (Exception e)
         {

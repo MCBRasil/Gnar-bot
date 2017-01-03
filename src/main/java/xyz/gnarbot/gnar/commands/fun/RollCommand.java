@@ -10,22 +10,23 @@ import java.util.Random;
 public class RollCommand extends CommandExecutor
 {
     @Override
-    public void execute(Note message, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         if (args.length >= 1)
         {
             if (!(Integer.valueOf(args[0]) > 0))
             {
-                message.reply("Number need to be > 0.");
+                note.replyError("Number need to be > 0.");
                 
                 return;
             }
-            message.reply(String.format("You rolled `%d` from range `0 to %s`.", new Random().nextInt(Integer.valueOf
-                    (args[0])), args[0]));
+            note.replyEmbedRaw("Roll a Number", "You rolled __**["
+                    + new Random().nextInt(Integer.valueOf(args[0]))
+                    + "]()**__ from range **[0 to " + args[0] + "]()**.");
         }
         else
         {
-            message.reply("Insufficient amount of arguments.");
+            note.replyError("Insufficient amount of arguments.");
         }
     }
 }

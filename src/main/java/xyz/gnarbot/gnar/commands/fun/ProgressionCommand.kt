@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 @Command(aliases = arrayOf("progress"), clearance = Clearance.BOT_MASTER, showInHelp = false)
 class ProgressionCommand : CommandExecutor()
 {
-    override fun execute(message : Note, label : String, args : Array<out String>)
+    override fun execute(note : Note, label : String, args : Array<out String>)
     {
         val joiner = StringJoiner("\n", "```", "```")
         joiner.add("﻿ ___________________________ ")
@@ -69,7 +69,7 @@ class ProgressionCommand : CommandExecutor()
         
         try
         {
-            val msg = message.replyRaw(list[0])
+            val msg = note.replyRaw(list[0])
             
             list.forEachIndexed { i, s ->
                 Bot.scheduler.schedule({
@@ -79,7 +79,7 @@ class ProgressionCommand : CommandExecutor()
         }
         catch (e : UnsupportedOperationException)
         {
-            message.reply("Message was too long or something... no memes for you.")
+            note.reply("Message was too long or something... no memes for you.")
         }
     }
 }

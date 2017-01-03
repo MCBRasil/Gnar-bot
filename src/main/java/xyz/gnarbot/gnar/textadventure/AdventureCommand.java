@@ -12,23 +12,23 @@ public class AdventureCommand extends CommandExecutor
 {
     @SuppressWarnings("all")
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
-	    if (!Adventure.hasAdventure(msg.getAuthor())){
-		    msg.reply("Use `_startadventure` to begin your adventure!");
+	    if (!Adventure.hasAdventure(note.getAuthor())){
+		    note.reply("Use `_startadventure` to begin your adventure!");
 		    return;
 	    }
-        Adventure adventure = Adventure.getAdventure(msg.getAuthor(), msg);
+        Adventure adventure = Adventure.getAdventure(note.getAuthor(), note);
 
 		if (args.length > 0){
 			if (args[0].equalsIgnoreCase("map")){
-				msg.reply("Preparing your map...");
-				adventure.getGrid().sendMap(msg);
+				note.reply("Preparing your map...");
+				adventure.getGrid().sendMap(note);
 				return;
 			}
 			if (args[0].equalsIgnoreCase("inventory")){
 				if (adventure.getInventory() != null) {
-					adventure.sendInformativeMessage(msg, adventure.getInventory().toString());
+					adventure.sendInformativeMessage(note, adventure.getInventory().toString());
 					return;
 				}
 			}
@@ -36,17 +36,17 @@ public class AdventureCommand extends CommandExecutor
 				if (args.length > 1){
 					String oldname = adventure.getHeroName();
 					adventure.setHeroName(StringUtils.join(args, " ").replace("setname ", ""));
-					adventure.sendInformativeMessage(msg, ":bulb: The hero wishes to change their name? Very well then . I shall now refer to you as **" + adventure.getHeroName() + "**");
+					adventure.sendInformativeMessage(note, ":bulb: The hero wishes to change their name? Very well then . I shall now refer to you as **" + adventure.getHeroName() + "**");
 					adventure.logAction("Changed Hero name to " + adventure.getHeroName() + " from " + oldname);
 					return;
 				}else{
-					adventure.sendInformativeMessage(msg, ":bulb: Hmm... I can't do that unless you tell me what to call you, Hero.");
+					adventure.sendInformativeMessage(note, ":bulb: Hmm... I can't do that unless you tell me what to call you, Hero.");
 					return;
 				}
 			}
 			if (args[0].equalsIgnoreCase("actions")){
 				if (adventure.getActionList().size() == 0){
-					adventure.sendInformativeMessage(msg, "I couldn't find anything... Sorry :no_mouth:");
+					adventure.sendInformativeMessage(note, "I couldn't find anything... Sorry :no_mouth:");
 					return;
 				}
 				String r = "```Markdown\n";
@@ -64,16 +64,16 @@ public class AdventureCommand extends CommandExecutor
 						done++;
 					}else{
 						r += "```";
-						adventure.sendInformativeMessage(msg, r);
+						adventure.sendInformativeMessage(note, r);
 						return;
 					}
 				}
 				r += "```";
-				adventure.sendInformativeMessage(msg, r);
+				adventure.sendInformativeMessage(note, r);
 				return;
 			}
 			if (args[0].equalsIgnoreCase("last")){
-				adventure.sendLastMessage(msg, "Sending last message as per your request~");
+				adventure.sendLastMessage(note, "Sending last message as per your request~");
 				return;
 			}
 			if (args[0].equalsIgnoreCase("help")){
@@ -87,7 +87,7 @@ public class AdventureCommand extends CommandExecutor
 									"[_adventure {response}] Respond to a question, or do an action. \n" +
 									"[_adventure last] Sends the last sent message. "+
 									"\n```";
-					msg.reply(reply);
+					note.reply(reply);
 				}else{
 					String reply =
 							"*Adventure Help!~*\n```ini\n" +
@@ -99,14 +99,14 @@ public class AdventureCommand extends CommandExecutor
 									"[_adventure last] Sends the last sent message.\n"+
 									"[_adventure inventory] Displays your inventory."+
 									"\n```";
-					msg.reply(reply);
+					note.reply(reply);
 
 				}
 				return;
 			}
-			adventure.parseResponse(msg, StringUtils.join(args, " "), false);
+			adventure.parseResponse(note, StringUtils.join(args, " "), false);
 		}else{
-			adventure.sendLastMessage(msg, "**No response given. Use `_adventure help` for a command list.**\nSending last message:");
+			adventure.sendLastMessage(note, "**No response given. Use `_adventure help` for a command list.**\nSending last message:");
 		}
         
         

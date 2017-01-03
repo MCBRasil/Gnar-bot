@@ -14,7 +14,7 @@ public class TriviaAnswerCommand extends CommandExecutor
     public Host host;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         if (!TriviaQuestions.isSetup())
         {
@@ -23,11 +23,11 @@ public class TriviaAnswerCommand extends CommandExecutor
         
         try
         {
-            msg.reply(TriviaQuestions.getAnswer(Integer.valueOf(args[0])));
+            note.reply(TriviaQuestions.getAnswer(Integer.valueOf(args[0])));
         }
         catch (Exception e)
         {
-            msg.reply("Please enter a number.");
+            note.reply("Please enter a number.");
         }
     }
     

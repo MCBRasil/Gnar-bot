@@ -10,11 +10,11 @@ import xyz.gnarbot.gnar.utils.Note;
 public class TextToBrickCommand extends CommandExecutor
 {
     @Override
-    public void execute(Note message, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         if (args.length == 0)
         {
-            message.reply("Please provide a query.");
+            note.replyError("Please provide a query.");
             return;
         }
         StringBuilder sb = new StringBuilder();
@@ -33,6 +33,6 @@ public class TextToBrickCommand extends CommandExecutor
                 sb.append(a);
             }
         }
-        message.replyEmbedRaw("Text to Brick", sb.toString(), Bot.getColor());
+        note.replyEmbedRaw("Text to Brick", sb.toString(), Bot.getColor());
     }
 }

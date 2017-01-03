@@ -3,14 +3,15 @@ package xyz.gnarbot.gnar.commands.general
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.handlers.commands.Command
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
-import xyz.gnarbot.gnar.utils.BotData
 import xyz.gnarbot.gnar.utils.Note
+import xyz.gnarbot.gnar.utils.makeEmbed
+import java.util.Arrays
 import java.util.concurrent.TimeUnit
 
 @Command(aliases = arrayOf("remindme", "remind"), usage = "(#) (unit) (msg)")
 class RemindMeCommand : CommandExecutor()
 {
-    override fun execute(message : Note, label : String, args : Array<String>)
+    override fun execute(note : Note, label : String, args : Array<String>)
     {
         if (args.size >= 3)
         {
@@ -22,7 +23,7 @@ class RemindMeCommand : CommandExecutor()
             }
             catch (e : NumberFormatException)
             {
-                message.reply("The time number was not an integer.")
+                note.replyError("The time number was not an integer.")
                 return
             }
             
@@ -32,27 +33,29 @@ class RemindMeCommand : CommandExecutor()
             }
             catch (e : IllegalArgumentException)
             {
-                message.reply("The specified time unit was invalid.")
+                note.replyError("The specified time unit was invalid. \n`${Arrays.toString(TimeUnit.values())}`")
                 return
             }
             
             if (time > 0)
             {
-                message.reply("**${BotData.randomQuote()}** I'll be reminding you in __$time ${timeUnit.toString().toLowerCase()}__.")
+                note.replyEmbedRaw("Reminder Scheduled", "I'll be reminding you in __$time ${timeUnit.toString().toLowerCase()}__.")
                 
                 Bot.scheduler.schedule({
-                    message.author?.privateChannel?.sendMessage("**REMINDER:** You requested to be reminded about this __$time ${timeUnit.toString().toLowerCase()}__ ago:\n```\n$string```")
+                    note.author?.requestPrivateChannel()?.sendMessage(
+                            makeEmbed("Reminder from $time ${timeUnit.toString().toLowerCase()} ago.", string))
+                            ?.queue()
                 }, time.toLong(), timeUnit)
                 
             }
             else
             {
-                message.reply("Number must be more than 0.")
+                note.replyError("Number must be more than 0.")
             }
         }
         else
         {
-            message.reply("Insufficient amount of arguments.")
+            note.replyError("Insufficient amount of arguments. `(#) (unit) (msg)`")
         }
     }
 }

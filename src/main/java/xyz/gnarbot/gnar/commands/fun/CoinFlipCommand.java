@@ -10,15 +10,15 @@ import java.util.Random;
 public class CoinFlipCommand extends CommandExecutor
 {
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         if (new Random().nextInt(2) == 0)
         {
-            msg.reply("`Heads`!");
+            note.replyEmbedRaw("Coin Flip","**[Heads!]()**");
         }
         else
         {
-            msg.reply("`Tails`!");
+            note.replyEmbedRaw("Coin Flip","**[Tails!]()**");
         }
     }
 }

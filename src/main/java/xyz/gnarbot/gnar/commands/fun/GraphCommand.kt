@@ -27,9 +27,9 @@ class GraphCommand : CommandExecutor()
     @Inject
     lateinit var guild : Host
     
-    override fun execute(message : Note, label : String, args : Array<out String>)
+    override fun execute(note : Note, label : String, args : Array<out String>)
     {
-        message.channel.sendFile(drawPlot(message.creationTime as OffsetDateTime), null)
+        note.channel.sendFile(drawPlot(note.creationTime as OffsetDateTime), null)
     }
     
     fun drawPlot(now : OffsetDateTime) : File

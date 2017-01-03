@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.utils;
 
 import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import net.dv8tion.jda.core.entities.Emote;
 import net.dv8tion.jda.core.entities.Message;
 import org.json.JSONException;
@@ -11,9 +12,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
 
@@ -155,6 +154,18 @@ public class Utils
         //        }
     }
     
-    
-    
+    public String getTinyURL(String link)
+    {
+        try
+        {
+            return Unirest.get("http://tinyurl.com/api-create.php?url=" + link)
+                    .asString()
+                    .getBody();
+        }
+        catch (UnirestException e)
+        {
+            e.printStackTrace();
+            return "https://www.google.com/";
+        }
+    }
 }

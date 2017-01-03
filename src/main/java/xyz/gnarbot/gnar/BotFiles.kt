@@ -18,4 +18,8 @@ class BotFiles
     val tokens = data
             .child("tokens.properties")
             .apply { if (!exists()) throw IllegalStateException("`$path` do not exist.") }
+    
+    val admins = data
+            .child("administrators")
+            .apply { if (!exists()) throw IllegalStateException("`$path` do not exist.") }
 }

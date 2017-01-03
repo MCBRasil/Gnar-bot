@@ -13,14 +13,18 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.Random;
 
-@Command(aliases = {"rule", "rule34"}, usage = "[query]", description = "Pulls a random rule 34 article from your " +
-        "keywords", showInHelp = false)
+@Command(
+        aliases = {"rule", "rule34"},
+        usage = "[query]",
+        description = "Pulls a random rule 34 article from your keywords",
+        showInHelp = false
+)
 public class Rule34Command extends CommandExecutor
 {
     @Override
-    public void execute(Note message, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
-        if (message.getAuthor().hasRole("Fucking Teemo"))
+        if (note.getAuthor().hasRole("Fucking Teemo"))
         {
             String tag = "";
             try
@@ -63,16 +67,16 @@ public class Rule34Command extends CommandExecutor
                 
                 url = att2.getValue();
                 
-                message.reply("http:" + url);
+                note.reply("http:" + url);
             }
             catch (Exception e)
             {
-                message.reply("Please refer to rule 35.");
+                note.reply("Please refer to rule 35.");
             }
         }
         else
         {
-            message.reply("Sorry, you must have the role `Fucking Teemo` to use this command!");
+            note.reply("Sorry, you must have the role `Fucking Teemo` to use this command!");
         }
         
     }

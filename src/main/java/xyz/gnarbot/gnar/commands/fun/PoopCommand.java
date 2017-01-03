@@ -11,7 +11,7 @@ import java.util.StringJoiner;
 public class PoopCommand extends CommandExecutor
 {
     @Override
-    public void execute(Note message, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         String poop = StringUtils.join(args, " ");
         
@@ -40,7 +40,7 @@ public class PoopCommand extends CommandExecutor
             }
             catch (IndexOutOfBoundsException e)
             {
-                message.reply("Poop is too big. Constipation occurred.");
+                note.reply("Poop is too big. Constipation occurred.");
                 return;
             }
         }
@@ -48,6 +48,6 @@ public class PoopCommand extends CommandExecutor
         joiner.add(poopArt);
         joiner.add("░░░░░░░░░░░░░░░░░░░░░░░");
         
-        message.replyEmbedRaw("Pooping Memes", joiner.toString());
+        note.replyEmbedRaw("Pooping Memes", joiner.toString());
     }
 }

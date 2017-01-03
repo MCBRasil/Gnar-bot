@@ -20,7 +20,7 @@ public class UrbanDictionaryCommand extends CommandExecutor
     public Host host;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         try
         {
@@ -32,10 +32,16 @@ public class UrbanDictionaryCommand extends CommandExecutor
             
             JSONArray words = json.getJSONArray("list");
             
-            msg.reply("\n\n**Definition:** " + words.getJSONObject(0).get("definition") + "\n\n**Example:** " + words
-                    .getJSONObject(0).get("example"));
+            JSONObject word = words.getJSONObject(0);
+            
+            note.replyEmbedRaw("Urban Dictionary",
+                    "Word: **[" + word.get("word") + "](" + word.get("permalink") + ")**\n\n"
+                    +"Definition: \n**[" + word.get("definition") + "]()**\n\n"
+                    + "Example: \n**[" + word.get("example") + "]()**",
+                    
+                    Bot.getColor(), "https://s3.amazonaws.com/mashape-production-logos/apis/53aa4f67e4b0a9b1348da532_medium");
         }
-        catch (Exception e) { msg.reply("Could not find that word, rip u"); }
+        catch (Exception e) { note.replyError("Could not find that word, rip u"); }
     }
     
 }

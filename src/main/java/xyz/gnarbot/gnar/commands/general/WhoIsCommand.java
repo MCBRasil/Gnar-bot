@@ -14,44 +14,43 @@ import java.util.StringJoiner;
 @Command(aliases = {"whois", "infoof", "infoon", "user"}, usage = "(@user)", description = "Get information on a user.")
 public class WhoIsCommand extends CommandExecutor
 {
-    
     @Override
-    public void execute(Note message, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         if (args.length == 0)
         {
-            message.reply("You did not mention a user.");
+            note.reply("You did not mention a user.");
             return;
         }
         
         // SEARCH USERS
         User user = null;
-        if (message.getMentionedUsers().size() > 0)
+        if (note.getMentionedUsers().size() > 0)
         {
-            user = message.getMentionedUsers().get(0);
+            user = note.getMentionedUsers().get(0);
         }
         else
         { // Real Name > Nick Name > Contains
             String query = StringUtils.join(args, " ");
             
-            for (Member m : message.getGuild().getMembersByName(query, true))
+            for (Member m : note.getGuild().getMembersByName(query, true))
             {
-                user = new User(message.getHost(), m);
+                user = new User(note.getHost(), m);
             }
             if (user == null)
             {
-                for (Member m : message.getGuild().getMembersByNickname(query, true))
+                for (Member m : note.getGuild().getMembersByNickname(query, true))
                 {
-                    user = new User(message.getHost(), m);
+                    user = new User(note.getHost(), m);
                 }
             }
             if (user == null)
             { // JUST IN CASE
-                for (Member m : message.getGuild().getMembers())
+                for (Member m : note.getGuild().getMembers())
                 {
                     if (m.getUser().getName().toLowerCase().contains(query.toLowerCase()))
                     {
-                        user = new User(message.getHost(), m);
+                        user = new User(note.getHost(), m);
                     }
                 }
             }
@@ -59,15 +58,15 @@ public class WhoIsCommand extends CommandExecutor
         
         if (user == null)
         {
-            message.reply("You did not mention a valid user.");
+            note.reply("You did not mention a valid user.");
             return;
         }
         
         StringBuilder mainBuilder = new StringBuilder();
         
         
-        String nickname = message.getGuild().getMember(user).getNickname();
-        Game game = message.getGuild().getMember(user).getGame();
+        String nickname = note.getGuild().getMember(user).getNickname();
+        Game game = note.getGuild().getMember(user).getGame();
         
         StringJoiner metaBuilder = new StringJoiner("\n");
         metaBuilder.add("Name: **[" + user.getName() + "#" + user.getDiscriminator() + "]()**");
@@ -87,7 +86,7 @@ public class WhoIsCommand extends CommandExecutor
         user.getRoles().stream().filter(role -> !mainBuilder.toString().contains(role.getId())).forEach(role ->
                 mainBuilder.append("  - **[").append(role.getName()).append("]()**").append('\n'));
         
-        message.replyEmbedRaw("Who is " + user.getName() + "?", mainBuilder.toString().replaceAll("null", "None"),
+        note.replyEmbedRaw("Who is " + user.getName() + "?", mainBuilder.toString().replaceAll("null", "None"),
                 Bot.getColor(), user.getAvatarUrl());
     }
 }

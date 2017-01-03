@@ -11,7 +11,7 @@ import java.util.StringJoiner
 @Command(aliases = arrayOf("dialog"))
 class DialogCommand : CommandExecutor()
 {
-    override fun execute(message : Note, label : String, args : Array<out String>)
+    override fun execute(note : Note, label : String, args : Array<out String>)
     {
         val joiner = StringJoiner("\n", "```", "```")
         joiner.add("﻿ ___________________________ ")
@@ -75,11 +75,11 @@ class DialogCommand : CommandExecutor()
         
         try
         {
-            message.replyEmbedRaw("", joiner.toString())
+            note.replyEmbedRaw(null, joiner.toString())
         }
         catch (e : UnsupportedOperationException)
         {
-            message.reply("Message was too long or something... no memes for you.")
+            note.reply("Message was too long or something... no memes for you.")
         }
     }
 }

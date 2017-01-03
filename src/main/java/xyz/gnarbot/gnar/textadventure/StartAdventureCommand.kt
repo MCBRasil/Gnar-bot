@@ -11,9 +11,9 @@ class StartAdventureCommand : CommandExecutor()
 {
     @Inject lateinit var host : Host
     
-    override fun execute(message : Note, label : String, args : Array<out String>)
+    override fun execute(note : Note, label : String, args : Array<out String>)
     {
-        Adventure.getAdventure(message.author, message)
-        message.deleteMessage()
+        Adventure.getAdventure(note.author, note)
+        note.deleteMessage()
     }
 }

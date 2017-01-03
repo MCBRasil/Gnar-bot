@@ -17,7 +17,7 @@ public class ExplosmCommand extends CommandExecutor
     public Host host;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         try
         {
@@ -37,7 +37,7 @@ public class ExplosmCommand extends CommandExecutor
                     
                     if (input > max || input < 100)
                     {
-                        msg.reply("Explosm does not have a comic for that number.");
+                        note.reply("Explosm does not have a comic for that number.");
                     }
                     
                     rand = String.valueOf(input);
@@ -50,7 +50,7 @@ public class ExplosmCommand extends CommandExecutor
                     }
                     else
                     {
-                        msg.reply("You didn't enter a proper number.");
+                        note.reply("You didn't enter a proper number.");
                         return;
                     }
                 }
@@ -65,11 +65,11 @@ public class ExplosmCommand extends CommandExecutor
             String builder = "Cyanide and Happiness" + "\n" + "No: **" + rand + "**\n" + "Link: " + document
                     .getElementById("main-comic").absUrl("src");
             
-            msg.getChannel().sendMessage(builder).queue();
+            note.getChannel().sendMessage(builder).queue();
         }
         catch (Exception e)
         {
-            msg.reply("Unable to grab Cyanide and Happiness comic.");
+            note.reply("Unable to grab Cyanide and Happiness comic.");
             e.printStackTrace();
         }
     }

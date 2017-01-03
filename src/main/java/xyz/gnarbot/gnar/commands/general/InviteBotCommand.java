@@ -13,6 +13,6 @@ public class InviteBotCommand extends CommandExecutor
     {
         String tempLink = "https://discordapp.com/oauth2/authorize?client_id=201492375653056512&scope=bot&permissions=8";
         
-        note.replyEmbedRaw("Want some Gnar on your server?!", "**[Invite __Gnar__ to your server.](" + tempLink + ")**", Bot.getColor());
+        note.replyEmbedRaw("Want some Gnar?!", "__**[Click to invite Gnar to your server.](" + tempLink + ")**__", Bot.getColor());
     }
 }

@@ -23,9 +23,9 @@ public class CleverBotCommand extends CommandExecutor
     private ChatterBotSession session = null;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
-        msg.reply("Command is being worked on :), use _pbot for a bit");
+        note.reply("Command is being worked on :), use _pbot for a bit");
         
         /*
         try

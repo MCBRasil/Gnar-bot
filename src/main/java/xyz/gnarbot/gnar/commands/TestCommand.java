@@ -10,14 +10,14 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.StringJoiner;
 
-@Command(aliases = "wow", clearance = Clearance.BOT_MASTER)
+@Command(aliases = "wow", clearance = Clearance.BOT_MASTER, showInHelp = false)
 public class TestCommand extends CommandExecutor
 {
     @Inject
     public Host host;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         //        msg.reply(host.getShard().toString());
         //        msg.reply(host.toString());
@@ -33,6 +33,6 @@ public class TestCommand extends CommandExecutor
         reflections.getTypesAnnotatedWith(Command.class).parallelStream().forEach(cls -> joiner.add(cls
                 .toGenericString()));
         
-        msg.replyRaw(joiner.toString());
+        note.replyRaw(joiner.toString());
     }
 }

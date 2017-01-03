@@ -15,7 +15,7 @@ public class GarfieldCommand extends CommandExecutor
     public Host host;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         try
         {
@@ -27,12 +27,12 @@ public class GarfieldCommand extends CommandExecutor
             
             String builder = "Garfield" + "\n" + "Date: **" + link.substring(link.lastIndexOf("/") + 1, link
                     .lastIndexOf(".")) + "**\n" + "Link: " + link;
-            msg.replyRaw(builder);
+            note.replyRaw(builder);
             
         }
         catch (Exception e)
         {
-            msg.reply("Unable to grab Garfield comic.");
+            note.reply("Unable to grab Garfield comic.");
             e.printStackTrace();
         }
     }

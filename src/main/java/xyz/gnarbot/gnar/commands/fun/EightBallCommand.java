@@ -18,15 +18,14 @@ public class EightBallCommand extends CommandExecutor
             " doubtful"};
     
     @Override
-    public void execute(Note message, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         if (args.length == 0)
         {
-            message.getChannel().sendMessage(String.format("%s ➜ At ask 8-ball something. `=[`", message.getAuthor()
-                    .getAsMention()));
+            note.replyError("Ask the 8-ball something.");
             return;
         }
         
-        message.reply("`" + responses[random.nextInt(responses.length)] + "`.");
+        note.replyEmbedRaw("8-Ball","**[" + responses[random.nextInt(responses.length)] + ".]()**");
     }
 }

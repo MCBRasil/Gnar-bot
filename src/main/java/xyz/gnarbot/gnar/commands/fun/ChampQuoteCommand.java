@@ -36,7 +36,7 @@ public class ChampQuoteCommand extends CommandExecutor
     public Host host;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         try
         {
@@ -48,7 +48,7 @@ public class ChampQuoteCommand extends CommandExecutor
                 stringArray[0] = Character.toUpperCase(stringArray[0]);
                 champ = new String(stringArray);
             }
-            catch (Exception e) {}
+            catch (Exception ignore) {}
             
             //Champions List
             if (champ.equalsIgnoreCase("list"))
@@ -58,7 +58,7 @@ public class ChampQuoteCommand extends CommandExecutor
                 {
                     championsList += ", " + s;
                 }
-                msg.replyRaw(championsList.replaceFirst(", ", ""));
+                note.replyRaw(championsList.replaceFirst(", ", ""));
                 return;
             }
             
@@ -91,7 +91,7 @@ public class ChampQuoteCommand extends CommandExecutor
                 
                 br = new BufferedReader(new FileReader(new File("_DATA/quotes/" + maybe + ".txt")));
                 
-                msg.reply("I think you meant **" + maybe + "**? Here's a quote from them!");
+                note.reply("I think you meant **" + maybe + "**? Here's a quote from them!");
                 champ = maybe;
             }
             
@@ -103,12 +103,12 @@ public class ChampQuoteCommand extends CommandExecutor
             }
             
             //Pull a random quote and send
-            msg.replyRaw("`" + quotes.get(new Random().nextInt(quotes.size())) + "` - **" + champ + "**");
+            note.replyRaw("`" + quotes.get(new Random().nextInt(quotes.size())) + "` - **" + champ + "**");
             
         }
         catch (Exception e)
         {
-            msg.replyRaw("Odd, you should have never got here. For getting here and some how butchering that champions name so bad, here's a cookie :cookie:");
+            note.replyRaw("Odd, you should have never got here. For getting here and some how butchering that champions name so bad, here's a cookie :cookie:");
             e.printStackTrace();
         }
     }

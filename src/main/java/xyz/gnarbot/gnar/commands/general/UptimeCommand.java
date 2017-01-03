@@ -9,8 +9,8 @@ import xyz.gnarbot.gnar.utils.Note;
 public class UptimeCommand extends CommandExecutor
 {
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
-        msg.reply("I've been up and awake for `" + Bot.INSTANCE.getUptime() + "`.");
+        note.replyEmbedRaw("Bot Uptime", Bot.INSTANCE.getUptime());
     }
 }

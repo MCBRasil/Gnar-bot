@@ -17,48 +17,48 @@ public class KickCommand extends CommandExecutor
     public Host host;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
-        Member author = msg.getAuthor();
+        Member author = note.getAuthor();
         Member target;
         
         try
         { //Checks if they mentioned someone
-            target = msg.getMentionedUsers().get(0);
+            target = note.getMentionedUsers().get(0);
         }
         catch (Exception e)
         { //No mention user, maybe checks if they supplied a username?
-            target = msg.getGuild().getMembersByName(args[0], true).get(0);
+            target = note.getGuild().getMembersByName(args[0], true).get(0);
         }
         
         if (target != null)
         {
-            if (PermissionUtil.checkPermission(msg.getTextChannel(), author, Permission.KICK_MEMBERS))
+            if (PermissionUtil.checkPermission(note.getTextChannel(), author, Permission.KICK_MEMBERS))
             {
                 if (PermissionUtil.canInteract(author, target))
                 {
                     if (host.kick(target))
                     {
-                        msg.reply(target.getEffectiveName() + " has been kickerino'd");
+                        note.reply(target.getEffectiveName() + " has been kickerino'd");
                     }
                     else
                     {
-                        msg.reply("GNAR does not have permission to kick");
+                        note.reply("GNAR does not have permission to kick");
                     }
                 }
                 else
                 {
-                    msg.reply("Sorry, you can not kick that user as he is above you.");
+                    note.reply("Sorry, you can not kick that user as he is above you.");
                 }
             }
             else
             {
-                msg.reply("You do not have permission to kick");
+                note.reply("You do not have permission to kick");
             }
         }
         else
         {
-            msg.reply("Could not find user, maybe you made a typo?");
+            note.reply("Could not find user, maybe you made a typo?");
         }
     }
 }

@@ -16,30 +16,30 @@ import java.util.Random;
 public class TestEmbedCommand extends CommandExecutor
 {
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         EmbedBuilder eb = new EmbedBuilder();
         String s = StringUtils.join(args, " ");
         Random r = new Random();
         String[] parts = s.split(":newsection:");
-        eb.setTitle("**Message from " + msg.getAuthor().getName() + "**");
+        eb.setTitle("**Message from " + note.getAuthor().getName() + "**");
         eb.setDescription(parts[0]);
         parts[0] = "";
         if (parts.length > 1){
             int id = 0;
             for (String p : parts){
-                if (p != "") {
+                if (p.equals("")) {
                     id++;
                     eb.addField("Section " + id, p, false);
                 }
             }
         }
-        eb.setThumbnail(msg.getAuthor().getAvatarUrl()).setColor(new Color(r.nextInt(255), r.nextInt(255), r
+        eb.setThumbnail(note.getAuthor().getAvatarUrl()).setColor(new Color(r.nextInt(255), r.nextInt(255), r
                     .nextInt(255)));
         MessageEmbed embed = eb.build();
         MessageBuilder mb = new MessageBuilder();
         mb.setEmbed(embed);
         Message m = mb.build();
-        msg.getChannel().sendMessage(m).queue();
+        note.getChannel().sendMessage(m).queue();
     }
 }

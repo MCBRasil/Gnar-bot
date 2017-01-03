@@ -16,7 +16,7 @@ public class TriviaCommand extends CommandExecutor
     public Host host;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         if (!TriviaQuestions.isSetup())
         {
@@ -25,11 +25,11 @@ public class TriviaCommand extends CommandExecutor
         
         if (args.length > 0)
         {
-            msg.reply(TriviaQuestions.getRandomQuestion(StringUtils.join(args, " ")));
+            note.reply(TriviaQuestions.getRandomQuestion(StringUtils.join(args, " ")));
         }
         else
         {
-            msg.reply(TriviaQuestions.getRandomQuestion());
+            note.reply(TriviaQuestions.getRandomQuestion());
         }
     }
     

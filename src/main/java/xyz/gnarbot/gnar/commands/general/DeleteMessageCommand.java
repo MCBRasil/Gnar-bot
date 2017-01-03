@@ -12,38 +12,37 @@ import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.utils.BotData;
 import xyz.gnarbot.gnar.utils.Note;
 
-import java.awt.*;
-import java.time.format.DateTimeFormatter;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Command(aliases = "deletemsg", usage = "(messageid)", description = "Delete those messages..")
 public class DeleteMessageCommand extends CommandExecutor
 {
     @Override
-    public void execute(Note message, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
-        if (!message.getAuthor().hasPermission(Permission.MESSAGE_MANAGE)){
-            message.replyEmbedRaw("No Permission", "You do not have the MESSAGE_MANAGE permission!", Color.RED);
+        if (!note.getAuthor().hasPermission(Permission.MESSAGE_MANAGE)){
+            note.replyError("Gnar don't have the MESSAGE_MANAGE permission!");
             return;
         }
         if (args.length < 1)
         {
-            message.reply("**" + BotData.randomQuote() + "** Well that sounds fantastic! I'll just delete th-... You " +
+            note.replyError("**" + BotData.randomQuote() + "** Well that sounds fantastic! I'll just delete th-... You " +
                     "didn't give me anything to work with. *(I need the message ID)*");
             return;
         }
+        
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Deleting messages");
         eb.setColor(Bot.getColor());
+        
         if (args.length == 1)
         {
             String msgid = args[0];
-            final Note msg = message.reply("**" + BotData.randomQuote() + "** Searching for Message with ID `" +
+            final Note msg = note.reply("**" + BotData.randomQuote() + "** Searching for Message with ID `" +
                     msgid + "`.");
             try
             {
-                Message m = msg.getChannel().getMessageById(msgid).complete(true);
+                Message m = msg.getChannel().getMessageById(msgid).complete();
                 try {
                     m.deleteMessage().queue();
                     eb.setDescription("Deleted message " + msgid);
@@ -67,7 +66,7 @@ public class DeleteMessageCommand extends CommandExecutor
         else
         {
             String combined = StringUtils.join(args, ", ");
-            final Note msg = message.reply("**" + BotData.randomQuote() + "** Searching for Messages with IDs `" +
+            final Note msg = note.reply("**" + BotData.randomQuote() + "** Searching for Messages with IDs `" +
                     combined + "`.");
             int count = 0;
             for (String msgid : args)
@@ -112,7 +111,7 @@ public class DeleteMessageCommand extends CommandExecutor
             MessageBuilder mb = new MessageBuilder();
             mb.setEmbed(embed);
             Message embedMsg = mb.build();
-            message.getChannel().sendMessage(embedMsg).queue();
+            note.getChannel().sendMessage(embedMsg).queue();
             msg.deleteMessage().queue();
         }
     }

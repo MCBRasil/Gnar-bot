@@ -15,11 +15,11 @@ import java.awt.*;
 public class MarvelComics extends CommandExecutor
 {
     @Override
-    public void execute(Note message, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         if (args.length == 0)
         {
-            message.reply("Please provide a name.");
+            note.replyError("Please provide a name.");
             return;
         }
         
@@ -42,11 +42,11 @@ public class MarvelComics extends CommandExecutor
             
             JSONObject thumb = (JSONObject) j.get("thumbnail");
             
-            message.replyEmbedRaw("", " Here's your Marvel Character: " + StringUtils.capitalize(s.toLowerCase().replaceAll("\\+", " ")), Color.RED, thumb.get("path") + "." + thumb.get("extension"), true);
+            note.replyEmbedRaw("", " Here's your Marvel Character: " + StringUtils.capitalize(s.toLowerCase().replaceAll("\\+", " ")), Color.RED, null,thumb.get("path") + "." + thumb.get("extension"));
         }
         catch (Exception e)
         {
-            message.replyEmbedRaw("", "*Couldn't find that character*", Color.RED);
+            note.replyEmbedRaw("", "*Couldn't find that character*", Color.RED);
         }
     }
 }

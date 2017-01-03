@@ -32,7 +32,7 @@ public class ChampDataCommand extends CommandExecutor
     public Host host;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         int maybeDistance = 20;
         String maybe = "";
@@ -93,7 +93,7 @@ public class ChampDataCommand extends CommandExecutor
             spellInfo += "\n    **" + fuckTits + "**: " + j.get("name");
         }
         
-        msg.replyRaw(spellInfo);
+        note.replyRaw(spellInfo);
     }
     
 }

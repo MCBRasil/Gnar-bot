@@ -32,10 +32,12 @@ object Bot
     val shards = mutableListOf<Shard>()
     
     /** Administrator users of the bot. */
-    val admins = hashSetOf<String>()
+    val admins = hashSetOf<String>().apply {
+        addAll(files.admins.readLines())
+    }
     
     val startTime = System.currentTimeMillis()
-    val scheduler = Executors.newSingleThreadScheduledExecutor()
+    val scheduler = Executors.newSingleThreadScheduledExecutor()!!
     
     val authTokens = files.tokens.readProperties()
     
@@ -48,6 +50,8 @@ object Bot
         
         LOG.info("Initializing Bot.")
         LOG.info("Requesting $num_shards shards.")
+        
+        LOG.info("There are ${admins.size} administrators registered for the bot.")
         
         for (id in 0 .. num_shards - 1)
         {

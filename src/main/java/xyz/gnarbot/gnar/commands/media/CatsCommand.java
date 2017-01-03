@@ -18,7 +18,7 @@ public class CatsCommand extends CommandExecutor
     public Host host;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         try
         {
@@ -40,8 +40,8 @@ public class CatsCommand extends CommandExecutor
                                 apiKey)).openStream());
                         break;
                     default:
-                        msg.getChannel().sendMessage(String.format("%s ➜ Not a valid picture type. `[png, jpg, " +
-                                "gif]`", msg.getAuthor().getAsMention())).queue();
+                        note.getChannel().sendMessage(String.format("%s ➜ Not a valid picture type. `[png, jpg, " +
+                                "gif]`", note.getAuthor().getAsMention())).queue();
                         return;
                 }
             }
@@ -53,11 +53,11 @@ public class CatsCommand extends CommandExecutor
             
             String catURL = doc.getElementsByTagName("url").item(0).getTextContent();
             
-            msg.replyRaw("Random Cat Pictures\nLink: " + catURL);
+            note.replyRaw("Random Cat Pictures\nLink: " + catURL);
         }
         catch (Exception e)
         {
-            msg.reply("Unable to find cats to sooth the darkness of your soul.");
+            note.reply("Unable to find cats to sooth the darkness of your soul.");
             e.printStackTrace();
         }
     }

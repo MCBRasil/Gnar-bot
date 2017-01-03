@@ -10,18 +10,18 @@ import xyz.gnarbot.gnar.utils.Note;
 public class TextToSpeechCommand extends CommandExecutor
 {
     @Override
-    public void execute(Note message, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         if (args.length == 0)
         {
-            message.reply("Please provide a query.");
+            note.replyError("Please provide a query.");
             return;
         }
         
         MessageBuilder builder = new MessageBuilder();
         builder.setTTS(true);
-        builder.append(message.getContent().replaceFirst(Bot.getToken() + "tts ", ""));
+        builder.append(note.getContent().replaceFirst(Bot.getToken() + "tts ", ""));
         
-        message.getChannel().sendMessage(builder.build()).queue();
+        note.getChannel().sendMessage(builder.build()).queue();
     }
 }

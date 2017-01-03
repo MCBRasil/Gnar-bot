@@ -23,10 +23,10 @@ public abstract class CommandExecutor
     /**
      * Abstract method to be executed when the command is called.
      *
-     * @param msg  Message object passed into the execution.
+     * @param note  Message object passed into the execution.
      * @param args Arguments passed into the execution.
      */
-    public abstract void execute(Note msg, String label, String[] args);
+    public abstract void execute(Note note, String label, String[] args);
     
     /**
      * Returns the aliases of the command.

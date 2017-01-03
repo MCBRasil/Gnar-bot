@@ -25,36 +25,36 @@ public class DeleteMessagesCommand extends CommandExecutor
     public Host host;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         try
         {
-            if (!msg.getAuthor().hasPermission(Permission.MESSAGE_MANAGE))
+            if (!note.getAuthor().hasPermission(Permission.MESSAGE_MANAGE))
             {
-                msg.reply("You do not have permission to delete messages");
+                note.reply("You do not have permission to delete messages");
                 return;
             }
             
             if (args.length == 0)
             {
-                msg.reply("Insufficient amount of arguments.");
+                note.reply("Insufficient amount of arguments.");
                 return;
             }
             
-            MessageHistory messageHistory = msg.getChannel().getHistory();
+            MessageHistory messageHistory = note.getChannel().getHistory();
             
             int amount = (int) Math.round(Double.parseDouble(args[0]));
             amount = Math.min(amount, 100);
             
             if (amount < 2)
             {
-                msg.reply("You need to delete 2 or more messages to use this command.");
+                note.reply("You need to delete 2 or more messages to use this command.");
                 return;
             }
             
             List<Message> messages = messageHistory.retrievePast(amount).complete();
             
-            msg.reply(amount + " " + messages.size());
+            note.reply(amount + " " + messages.size());
             
             if (args.length == 2)
             {
@@ -66,27 +66,27 @@ public class DeleteMessagesCommand extends CommandExecutor
                     
                     try
                     {
-                        ((TextChannel) msg.getChannel()).deleteMessages(removeSet).queue();
+                        ((TextChannel) note.getChannel()).deleteMessages(removeSet).queue();
                     }
                     catch (PermissionException e)
                     {
-                        msg.reply("GN4R does not have sufficient permission to delete messages.");
+                        note.reply("GN4R does not have sufficient permission to delete messages.");
                     }
-                    msg.reply("Attempted to delete `" + removeSet.size() + "` messages with the word `" + targetWord
+                    note.reply("Attempted to delete `" + removeSet.size() + "` messages with the word `" + targetWord
                             + "`.");
                     return;
                 }
             }
             
-            ((TextChannel) msg.getChannel()).deleteMessages(messages).queue();
-            Message mesg = msg.getChannel().sendMessage(msg.getAuthor().getAsMention() + " ➜ Attempted to delete `" +
+            ((TextChannel) note.getChannel()).deleteMessages(messages).queue();
+            Message mesg = note.getChannel().sendMessage(note.getAuthor().getAsMention() + " ➜ Attempted to delete `" +
                     messages.size() + "` messages.").complete();
             
             Bot.INSTANCE.getScheduler().schedule(mesg::deleteMessage, 5, TimeUnit.SECONDS);
         }
         catch (Exception e)
         {
-            msg.reply("Improper arguments supplies, must be a number.");
+            note.reply("Improper arguments supplies, must be a number.");
         }
     }
 }

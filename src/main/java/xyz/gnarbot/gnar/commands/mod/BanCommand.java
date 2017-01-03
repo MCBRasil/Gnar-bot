@@ -17,56 +17,56 @@ public class BanCommand extends CommandExecutor
     public Host host;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
-        Member author = msg.getAuthor();
+        Member author = note.getAuthor();
         Member target;
         
         try
         {
             try
             { //Checks if they mentioned someone
-                target = msg.getMentionedUsers().get(0);
+                target = note.getMentionedUsers().get(0);
             }
             catch (Exception e)
             { //No mention user, maybe checks if they supplied a username?
-                target = msg.getGuild().getMembersByName(args[0], true).get(0);
+                target = note.getGuild().getMembersByName(args[0], true).get(0);
             }
         }
         catch (Exception e)
         {
-            msg.reply("User is not on this server");
+            note.reply("User is not on this server");
             return;
         }
         
         if (target != null)
         {
-            if (PermissionUtil.checkPermission(msg.getTextChannel(), author, Permission.BAN_MEMBERS))
+            if (PermissionUtil.checkPermission(note.getTextChannel(), author, Permission.BAN_MEMBERS))
             {
                 if (PermissionUtil.canInteract(author, target))
                 {
                     if (host.ban(target.getUser().getId()))
                     {
-                        msg.reply(target.getEffectiveName() + " has been bannerino'd");
+                        note.reply(target.getEffectiveName() + " has been bannerino'd");
                     }
                     else
                     {
-                        msg.reply("GNAR does not have permission to ban");
+                        note.reply("GNAR does not have permission to ban");
                     }
                 }
                 else
                 {
-                    msg.reply("Sorry, you can not ban that user as he is above you.");
+                    note.reply("Sorry, you can not ban that user as he is above you.");
                 }
             }
             else
             {
-                msg.reply("You do not have permission to ban");
+                note.reply("You do not have permission to ban");
             }
         }
         else
         {
-            msg.reply("Could not find user, maybe you made a typo?");
+            note.reply("Could not find user, maybe you made a typo?");
         }
     }
 }

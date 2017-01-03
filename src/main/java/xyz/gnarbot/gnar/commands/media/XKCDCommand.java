@@ -17,7 +17,7 @@ public class XKCDCommand extends CommandExecutor
     public Host host;
     
     @Override
-    public void execute(Note msg, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         try
         {
@@ -38,7 +38,7 @@ public class XKCDCommand extends CommandExecutor
                         
                         if (input > max || input < 1)
                         {
-                            msg.reply("xkcd does not have a comic for that number.");
+                            note.reply("xkcd does not have a comic for that number.");
                         }
                         
                         rand = input;
@@ -51,7 +51,7 @@ public class XKCDCommand extends CommandExecutor
                         }
                         else
                         {
-                            msg.reply("You didn't enter a proper number.");
+                            note.reply("You didn't enter a proper number.");
                             return;
                         }
                     }
@@ -68,13 +68,13 @@ public class XKCDCommand extends CommandExecutor
                     String builder = "XKCD **" + randJSON.getString("title") + "**\n" + "No: **" + randJSON.getInt
                             ("num") + "**\n" + "Link: " + randJSON.getString("img").replaceAll("\\\\/", "/");
                     
-                    msg.replyRaw(builder);
+                    note.replyRaw(builder);
                     
                     return;
                 }
             }
             
-            msg.reply("Unable to grab xkcd comic.");
+            note.reply("Unable to grab xkcd comic.");
         }
         catch (Exception e)
         {

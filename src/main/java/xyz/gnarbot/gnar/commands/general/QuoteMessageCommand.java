@@ -19,18 +19,18 @@ import java.util.concurrent.TimeUnit;
 public class QuoteMessageCommand extends CommandExecutor
 {
     @Override
-    public void execute(Note message, String label, String[] args)
+    public void execute(Note note, String label, String[] args)
     {
         if (args.length < 1)
         {
-            message.reply("**" + BotData.randomQuote() + "** Well that sounds fantastic! I'll just quote th-... You " +
+            note.reply("**" + BotData.randomQuote() + "** Well that sounds fantastic! I'll just quote th-... You " +
                     "didn't give me anything to work with. *(I need the message ID)*");
             return;
         }
         if (args.length == 1)
         {
             String msgid = args[0];
-            final Note msg = message.reply("**" + BotData.randomQuote() + "** Searching for Message with ID `" +
+            final Note msg = note.reply("**" + BotData.randomQuote() + "** Searching for Message with ID `" +
                     msgid + "`.");
             try
             {
@@ -42,7 +42,7 @@ public class QuoteMessageCommand extends CommandExecutor
                 MessageBuilder mb = new MessageBuilder();
                 mb.setEmbed(embed);
                 Message embedMsg = mb.build();
-                message.getChannel().sendMessage(embedMsg).queue();
+                note.getChannel().sendMessage(embedMsg).queue();
                 msg.deleteMessage().queue();
             }
             catch (Exception e)
@@ -55,7 +55,7 @@ public class QuoteMessageCommand extends CommandExecutor
         else
         {
             String combined = StringUtils.join(args, ", ");
-            final Note msg = message.reply("**" + BotData.randomQuote() + "** Searching for Messages with IDs `" +
+            final Note msg = note.reply("**" + BotData.randomQuote() + "** Searching for Messages with IDs `" +
                     combined + "`.");
             EmbedBuilder eb = new EmbedBuilder();
             int count = 0;
@@ -98,7 +98,7 @@ public class QuoteMessageCommand extends CommandExecutor
             MessageBuilder mb = new MessageBuilder();
             mb.setEmbed(embed);
             Message embedMsg = mb.build();
-            message.getChannel().sendMessage(embedMsg).queue();
+            note.getChannel().sendMessage(embedMsg).queue();
             msg.deleteMessage().queue();
         }
     }

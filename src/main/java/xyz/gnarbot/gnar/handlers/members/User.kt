@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.handlers.members
 
 import net.dv8tion.jda.core.entities.Member
+import net.dv8tion.jda.core.entities.PrivateChannel
 import net.dv8tion.jda.core.entities.Role
 import net.dv8tion.jda.core.entities.User
 import xyz.gnarbot.gnar.Bot
@@ -18,26 +19,35 @@ class User(private val host : Host, private val member : Member) : User by membe
     val clearance : Clearance
         get() = when
         {
-            isBot -> Clearance.BOT
             isBotMaster -> Clearance.BOT_MASTER
+            isBot -> Clearance.BOT
             member == host.owner -> Clearance.SERVER_OWNER
             hasRole("Bot Commander") -> Clearance.BOT_COMMANDER
             else -> Clearance.USER
         }
+    
+    fun requestPrivateChannel() : PrivateChannel
+    {
+        if (!hasPrivateChannel())
+        {
+            openPrivateChannel()?.complete()
+        }
+        return privateChannel
+    }
     
     /**
      * The JDA instance.
      *
      * @return The current JDA instance.
      */
-    override fun getJDA() = member.jda
+    override fun getJDA() = member.jda!!
     
     /**
      * Retrieve a Mention for this User.
      *
      * @return A resolvable mention.
      */
-    override fun getAsMention() = member.asMention
+    override fun getAsMention() = member.asMention!!
     
     /**
      * Check if the member have a role named [name].
