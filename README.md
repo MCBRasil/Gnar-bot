@@ -1,6 +1,16 @@
-# Mega-Gnar
-Rewritten Gnar project.
+# Gnar
+**Gnar** is a Discord bot written in Java and Kotlin, using JDA 3.
+Project _Mega-Gnar_ is the rewrite of the legacy Gnar project.
 
-# To-Do List
-> Finish Text Adventures
-> Just did this to test the GitHub push shit.
+## Main Contributors
+* Avarel
+* Maeyrl
+* Gatt
+
+## Dependencies
+This project uses **Java 8**.
+
+* [JDA 3](https://github.com/DV8FromTheWorld/JDA)
+* [Kotlin](https://kotlinlang.org/)
+* [Guice](https://github.com/google/guice)
+* [Unirest](https://github.com/Mashape/unirest-java)
