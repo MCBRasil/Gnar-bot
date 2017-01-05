@@ -18,7 +18,7 @@ fun File.readProperties() : Properties
 fun File.child(path : String) = File(this, path)
 
 @JvmOverloads
-fun makeEmbed(title : String?, msg : String, color : Color = Bot.color, thumb : String? = null, img : String? = null, author : User? = null) : MessageEmbed
+fun makeEmbed(title : String?, msg : String?, color : Color? = Bot.color, thumb : String? = null, img : String? = null, author : User? = null) : MessageEmbed
 {
     return EmbedBuilder().run {
         setDescription(msg)
@@ -30,11 +30,9 @@ fun makeEmbed(title : String?, msg : String, color : Color = Bot.color, thumb : 
             setAuthor(author.name, null, author.avatarUrl)
         }
         
-        if (!thumb.isNullOrBlank())
-            setThumbnail(thumb)
+        setThumbnail(thumb)
         
-        if (!img.isNullOrBlank())
-            setImage(img)
+        setImage(img)
         
         build()
     }

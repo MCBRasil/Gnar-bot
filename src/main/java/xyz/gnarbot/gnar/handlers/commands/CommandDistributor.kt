@@ -1,7 +1,6 @@
 package xyz.gnarbot.gnar.handlers.commands
 
 import com.google.inject.Inject
-import org.reflections.Reflections
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.TestCommand
 import xyz.gnarbot.gnar.commands.`fun`.ASCIICommand
@@ -31,7 +30,20 @@ import xyz.gnarbot.gnar.commands.`fun`.YodaTalkCommand
 import xyz.gnarbot.gnar.commands.games.GameLookupCommand
 import xyz.gnarbot.gnar.commands.games.LeagueLookupCommand
 import xyz.gnarbot.gnar.commands.games.OverwatchLookupCommand
-import xyz.gnarbot.gnar.commands.general.*
+import xyz.gnarbot.gnar.commands.general.BotInfoCommand
+import xyz.gnarbot.gnar.commands.general.DeleteMessageCommand
+import xyz.gnarbot.gnar.commands.general.GoogleCommand
+import xyz.gnarbot.gnar.commands.general.HelpCommand
+import xyz.gnarbot.gnar.commands.general.InviteBotCommand
+import xyz.gnarbot.gnar.commands.general.MathCommand
+import xyz.gnarbot.gnar.commands.general.PingCommand
+import xyz.gnarbot.gnar.commands.general.QuoteMessageCommand
+import xyz.gnarbot.gnar.commands.general.ReactToMessageCommand
+import xyz.gnarbot.gnar.commands.general.RemindMeCommand
+import xyz.gnarbot.gnar.commands.general.TestEmbedCommand
+import xyz.gnarbot.gnar.commands.general.UptimeCommand
+import xyz.gnarbot.gnar.commands.general.WhoIsCommand
+import xyz.gnarbot.gnar.commands.general.YoutubeCommand
 import xyz.gnarbot.gnar.commands.media.CatsCommand
 import xyz.gnarbot.gnar.commands.media.ExplosmCommand
 import xyz.gnarbot.gnar.commands.media.ExplosmRCGCommand
@@ -154,14 +166,15 @@ object CommandDistributor
         MANAGED
     }
     
-    @Suppress("UNCHECKED_CAST")
-    fun registerAll(packages : String)
-    {
-        val reflections = Reflections(packages)
-        
-        reflections.getTypesAnnotatedWith(Command::class.java)
-                .forEach { register(it as Class<out CommandExecutor>) }
-    }
+    // DEPENDENCY: REFLECTIONS
+//    @Suppress("UNCHECKED_CAST")
+//    fun registerAll(packages : String)
+//    {
+//        val reflections = Reflections(packages)
+//
+//        reflections.getTypesAnnotatedWith(Command::class.java)
+//                .forEach { register(it as Class<out CommandExecutor>) }
+//    }
     
     /**
      * Register the command class and automatically

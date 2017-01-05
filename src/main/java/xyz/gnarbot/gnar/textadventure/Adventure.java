@@ -30,7 +30,7 @@ public class Adventure
     
     private String lastResponse;
     
-    private Long starttime;
+    private Long startTime;
     
     private ArrayList<Area> areas = new ArrayList<>();
     
@@ -66,10 +66,10 @@ public class Adventure
         
         adventures.put(u, this);
         this.user = u;
-        this.starttime = System.currentTimeMillis();
+        this.startTime = System.currentTimeMillis();
         this.gameID = UUID.randomUUID();
         this.random = new Random();
-        this.random.setSeed(this.starttime);
+        this.random.setSeed(this.startTime);
         this.grid = new AdventureGrid(this);
         state = STATE.WAITING_FOR_NAME;
         stateRelation = "waitname";
@@ -342,9 +342,9 @@ public class Adventure
         return gameID;
     }
     
-    public Long getStarttime()
+    public Long getStartTime()
     {
-        return starttime;
+        return startTime;
     }
     
     public ArrayList<Area> getAreas()

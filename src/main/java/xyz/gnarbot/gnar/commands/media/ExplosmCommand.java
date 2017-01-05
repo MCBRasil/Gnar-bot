@@ -3,6 +3,7 @@ package xyz.gnarbot.gnar.commands.media;
 import com.google.inject.Inject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.handlers.servers.Host;
@@ -10,7 +11,7 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.Random;
 
-@Command(aliases = {"c&h", "cah"})
+@Command(aliases = {"c&h", "cah"}, description = "Get Cyanide and Happiness comics.", usage = "~id")
 public class ExplosmCommand extends CommandExecutor
 {
     @Inject
@@ -24,7 +25,7 @@ public class ExplosmCommand extends CommandExecutor
             Document document;
             
             int min = 1500;
-            int max = 4300;
+            int max = 4500;
             
             String rand;
             
@@ -60,16 +61,17 @@ public class ExplosmCommand extends CommandExecutor
                 rand = String.valueOf(min + new Random().nextInt(max - min));
             }
             
-            document = Jsoup.connect(String.format("http://explosm.net/comics/%s/", rand)).get();
+            document = Jsoup.connect("http://explosm.net/comics/" + rand + "/").get();
             
-            String builder = "Cyanide and Happiness" + "\n" + "No: **" + rand + "**\n" + "Link: " + document
-                    .getElementById("main-comic").absUrl("src");
+            String url = document.getElementById("main-comic").absUrl("src");
             
-            note.getChannel().sendMessage(builder).queue();
+            String logo = "http://explosm.net/img/logo.png";
+            
+            note.replyEmbedRaw("Cyanide and Happiness", "No: **" + rand + "**\n", Bot.getColor(), logo, url);
         }
         catch (Exception e)
         {
-            note.reply("Unable to grab Cyanide and Happiness comic.");
+            note.replyError("Unable to grab Cyanide and Happiness comic.");
             e.printStackTrace();
         }
     }

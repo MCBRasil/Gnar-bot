@@ -2,6 +2,7 @@ package xyz.gnarbot.gnar.commands.media;
 
 import com.google.inject.Inject;
 import org.json.JSONObject;
+import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.handlers.servers.Host;
@@ -38,7 +39,7 @@ public class XKCDCommand extends CommandExecutor
                         
                         if (input > max || input < 1)
                         {
-                            note.reply("xkcd does not have a comic for that number.");
+                            note.replyError("xkcd does not have a comic for that number.");
                         }
                         
                         rand = input;
@@ -51,7 +52,7 @@ public class XKCDCommand extends CommandExecutor
                         }
                         else
                         {
-                            note.reply("You didn't enter a proper number.");
+                            note.replyError("You didn't enter a proper number.");
                             return;
                         }
                     }
@@ -65,16 +66,21 @@ public class XKCDCommand extends CommandExecutor
                 
                 if (randJSON != null)
                 {
-                    String builder = "XKCD **" + randJSON.getString("title") + "**\n" + "No: **" + randJSON.getInt
-                            ("num") + "**\n" + "Link: " + randJSON.getString("img").replaceAll("\\\\/", "/");
+                    String title = randJSON.getString("title");
                     
-                    note.replyRaw(builder);
+                    int num = randJSON.getInt("num");
+                    
+                    String url = randJSON.getString("img").replaceAll("\\\\/", "/");
+                    
+                    String logo = "http://imgs.xkcd.com/static/terrible_small_logo.png";
+                    
+                    note.replyEmbed(title, "No: " + num, Bot.getColor(), logo, url);
                     
                     return;
                 }
             }
             
-            note.reply("Unable to grab xkcd comic.");
+            note.replyError("Unable to grab xkcd comic.");
         }
         catch (Exception e)
         {

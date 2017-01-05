@@ -2,6 +2,7 @@ package xyz.gnarbot.gnar.commands.media;
 
 import com.google.inject.Inject;
 import org.w3c.dom.Document;
+import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.handlers.servers.Host;
@@ -11,7 +12,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.net.URL;
 
-@Command(aliases = "cat")
+@Command(aliases = {"cats", "cat"})
 public class CatsCommand extends CommandExecutor
 {
     @Inject
@@ -47,17 +48,18 @@ public class CatsCommand extends CommandExecutor
             }
             else
             {
-                doc = db.parse(new URL(String.format("http://thecatapi" +
-                        ".com/api/images/get?format=xml&api_key=%s&results_per_page=1", apiKey)).openStream());
+                doc = db.parse(
+                        new URL("http://thecatapi.com/api/images/get?format=xml&api_key="
+                                + apiKey + "&results_per_page=1").openStream());
             }
             
             String catURL = doc.getElementsByTagName("url").item(0).getTextContent();
             
-            note.replyRaw("Random Cat Pictures\nLink: " + catURL);
+            note.replyEmbed("Random Cat Pictures", null, Bot.getColor(), null, catURL);
         }
         catch (Exception e)
         {
-            note.reply("Unable to find cats to sooth the darkness of your soul.");
+            note.replyError("Unable to find cats to sooth the darkness of your soul.");
             e.printStackTrace();
         }
     }

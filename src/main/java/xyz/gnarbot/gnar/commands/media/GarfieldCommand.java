@@ -8,7 +8,8 @@ import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.handlers.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
-@Command(aliases = "garfield")
+// TODO BROKEN AF CUZ AGE DIALOG ON SITE
+@Command(aliases = "garfield", showInHelp = false)
 public class GarfieldCommand extends CommandExecutor
 {
     @Inject

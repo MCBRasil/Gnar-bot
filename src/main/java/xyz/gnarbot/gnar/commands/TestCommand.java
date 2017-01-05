@@ -1,14 +1,11 @@
 package xyz.gnarbot.gnar.commands;
 
 import com.google.inject.Inject;
-import org.reflections.Reflections;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.handlers.members.Clearance;
 import xyz.gnarbot.gnar.handlers.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
-
-import java.util.StringJoiner;
 
 @Command(aliases = "wow", clearance = Clearance.BOT_MASTER, showInHelp = false)
 public class TestCommand extends CommandExecutor
@@ -26,13 +23,13 @@ public class TestCommand extends CommandExecutor
         //        msg.reply(msg.getAuthor().toString());
         //
         //        msg.reply(String.valueOf(msg.getAuthor().isBotMaster()));
-        Reflections reflections = new Reflections("xyz.gnarbot.gnar.commands");
+//        Reflections reflections = new Reflections("xyz.gnarbot.gnar.commands");
+//
+//        StringJoiner joiner = new StringJoiner("\n");
+//
+//        reflections.getTypesAnnotatedWith(Command.class).parallelStream().forEach(cls -> joiner.add(cls
+//                .toGenericString()));
         
-        StringJoiner joiner = new StringJoiner("\n");
-        
-        reflections.getTypesAnnotatedWith(Command.class).parallelStream().forEach(cls -> joiner.add(cls
-                .toGenericString()));
-        
-        note.replyRaw(joiner.toString());
+        //note.replyRaw(joiner.toString());
     }
 }

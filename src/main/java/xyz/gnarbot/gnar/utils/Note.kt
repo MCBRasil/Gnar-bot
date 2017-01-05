@@ -35,7 +35,7 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun reply(msg : String) = Note(host, channel.sendMessage("__**${message.author.name}**__ \u279c $msg").complete())
+    fun reply(msg : String) = Note(host, channel.sendMessage("__**${message.author.name}__ ›** $msg").complete())
     
     fun edit(msg : String)
     {
@@ -57,8 +57,8 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @return The Message created by this function.
      */
     @JvmOverloads
-    fun replyEmbed(title : String?, msg : String, color : Color = Bot.color, thumb : String? = null, img : String? = null)
-    {
+    fun replyEmbed(title : String?, msg : String?, color : Color? = Bot.color, thumb : String? = null, img : String? = null)
+    {//›
         channel.sendMessage(makeEmbed(title, msg, color, thumb, img, author)).queue()
     }
     
@@ -69,7 +69,7 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @return The Message created by this function.
      */
     @JvmOverloads
-    fun replyEmbedRaw(title : String?, msg : String, color : Color = Bot.color, thumb : String? = null, img : String? = null)
+    fun replyEmbedRaw(title : String?, msg : String?, color : Color? = Bot.color, thumb : String? = null, img : String? = null)
     {
         channel.sendMessage(makeEmbed(title, msg, color, thumb, img)).queue()
     }
@@ -81,7 +81,7 @@ class Note(val host : Host, private val message : Message) : Message by message
         eb.setAuthor("Error", null, "http://gnarbot.xyz/img/Error.png")
         eb.setDescription(msg)
         eb.setColor(Color.RED)
-    
+        
         channel.sendMessage(eb.build()).queue()
     }
     

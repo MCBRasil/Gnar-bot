@@ -19,7 +19,7 @@ public class WhoIsCommand extends CommandExecutor
     {
         if (args.length == 0)
         {
-            note.reply("You did not mention a user.");
+            note.replyError("You did not mention a user.");
             return;
         }
         
@@ -83,10 +83,13 @@ public class WhoIsCommand extends CommandExecutor
         
         mainBuilder.append("__**Roles**                                                           __").append('\n');
         
-        user.getRoles().stream().filter(role -> !mainBuilder.toString().contains(role.getId())).forEach(role ->
-                mainBuilder.append("  - **[").append(role.getName()).append("]()**").append('\n'));
+        user.getRoles().stream()
+                .filter(role -> !mainBuilder.toString().contains(role.getId()))
+                .forEach(role -> mainBuilder.append("  - **[").append(role.getName()).append("]()**").append('\n'));
         
-        note.replyEmbedRaw("Who is " + user.getName() + "?", mainBuilder.toString().replaceAll("null", "None"),
-                Bot.getColor(), user.getAvatarUrl());
+        note.replyEmbedRaw("Who is " + user.getName() + "?",
+                mainBuilder.toString().replaceAll("null", "None"),
+                Bot.getColor(),
+                user.getAvatarUrl());
     }
 }

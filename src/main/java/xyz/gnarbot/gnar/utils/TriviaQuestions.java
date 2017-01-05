@@ -97,7 +97,7 @@ public class TriviaQuestions
 
             return line + "\n\n**For the answer, type _answer " + randNum + "**";
         } catch (Exception e) {
-            return "Category not found. Here is a list of all of our categories: \n\n" + categories.toString();
+            return "Category not found. Here is a list of all of our categories: \n\n" + Arrays.toString(categories);
         }
         
     }
