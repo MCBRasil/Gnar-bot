@@ -3,8 +3,7 @@ package xyz.gnarbot.gnar.commands.general
 import net.dv8tion.jda.core.EmbedBuilder
 import org.jsoup.Jsoup
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.handlers.commands.Command
-import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
+import xyz.gnarbot.gnar.handlers.commands.*
 import xyz.gnarbot.gnar.utils.Note
 import java.io.IOException
 import java.net.URLEncoder
@@ -18,7 +17,7 @@ class GoogleCommand : CommandExecutor()
     {
         if (args.isEmpty())
         {
-            note.replyError("Gotta have something to search Google.")
+            note.error("Gotta have something to search Google.")
             return
         }
         
@@ -35,7 +34,7 @@ class GoogleCommand : CommandExecutor()
     
             if (blocks.isEmpty())
             {
-                note.replyError("No search results for `$query`.")
+                note.error("No search results for `$query`.")
                 return
             }
             
@@ -72,7 +71,7 @@ class GoogleCommand : CommandExecutor()
         }
         catch (e : IOException)
         {
-            note.replyError("Caught an exception while trying to Google stuff.")
+            note.error("Caught an exception while trying to Google stuff.")
             e.printStackTrace()
         }
     }

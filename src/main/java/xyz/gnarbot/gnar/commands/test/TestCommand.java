@@ -1,18 +1,13 @@
-package xyz.gnarbot.gnar.commands;
+package xyz.gnarbot.gnar.commands.test;
 
-import com.google.inject.Inject;
 import xyz.gnarbot.gnar.handlers.commands.Command;
 import xyz.gnarbot.gnar.handlers.commands.CommandExecutor;
 import xyz.gnarbot.gnar.handlers.members.Clearance;
-import xyz.gnarbot.gnar.handlers.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
 @Command(aliases = "wow", clearance = Clearance.BOT_MASTER, showInHelp = false)
 public class TestCommand extends CommandExecutor
 {
-    @Inject
-    public Host host;
-    
     @Override
     public void execute(Note note, String label, String[] args)
     {

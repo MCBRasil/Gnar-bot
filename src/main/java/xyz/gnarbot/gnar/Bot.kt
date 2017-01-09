@@ -1,12 +1,10 @@
 package xyz.gnarbot.gnar
 
-import net.dv8tion.jda.core.AccountType
-import net.dv8tion.jda.core.JDABuilder
+import net.dv8tion.jda.core.*
 import net.dv8tion.jda.core.entities.Game
 import net.dv8tion.jda.core.utils.SimpleLog
 import xyz.gnarbot.gnar.handlers.servers.Shard
-import xyz.gnarbot.gnar.utils.Utils
-import xyz.gnarbot.gnar.utils.readProperties
+import xyz.gnarbot.gnar.utils.*
 import java.awt.Color
 import java.util.Date
 import java.util.concurrent.Executors
@@ -41,25 +39,25 @@ object Bot
     
     val authTokens = files.tokens.readProperties()
     
-    
-    
-    fun initBot(token : String, num_shards : Int)
+    fun start(token : String, numShards : Int)
     {
         if (initialized) throw IllegalStateException("Bot instance have already been initialized.")
         initialized = true
         
         LOG.info("Initializing Bot.")
-        LOG.info("Requesting $num_shards shards.")
+        LOG.info("Requesting $numShards shards.")
         
         LOG.info("There are ${admins.size} administrators registered for the bot.")
         
-        for (id in 0 .. num_shards - 1)
+        for (id in 0 .. numShards - 1)
         {
             val jda = JDABuilder(AccountType.BOT).run {
-                if (num_shards > 1) useSharding(id, num_shards)
+                if (numShards > 1) useSharding(id, numShards)
+                
                 setToken(token)
                 setAutoReconnect(true)
                 setGame(Game.of("Shard: $id | _help"))
+                
                 buildBlocking()
             }
             
@@ -70,6 +68,14 @@ object Bot
         
         LOG.info("Bot is now connected to Discord.")
         Utils.setLeagueInfo()
+    }
+    
+    fun stop()
+    {
+        shards.forEach(Shard::shutdown)
+        initialized = false
+        
+        LOG.info("Bot is now disconnected from Discord.")
     }
     
     val uptime : String

@@ -15,6 +15,7 @@ import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
+//TODO REMOVE ALL THE EDIT STUFF
 @Command(aliases = "quotemsg", usage = "(messageid)", description = "Quote somebody else..")
 public class QuoteMessageCommand extends CommandExecutor
 {
@@ -23,7 +24,7 @@ public class QuoteMessageCommand extends CommandExecutor
     {
         if (args.length < 1)
         {
-            note.reply("**" + BotData.randomQuote() + "** Well that sounds fantastic! I'll just quote th-... You " +
+            note.error("**" + BotData.randomQuote() + "** Well that sounds fantastic! I'll just quote th-... You " +
                     "didn't give me anything to work with. *(I need the message ID)*");
             return;
         }

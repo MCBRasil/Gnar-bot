@@ -40,7 +40,7 @@ public class PoopCommand extends CommandExecutor
             }
             catch (IndexOutOfBoundsException e)
             {
-                note.reply("Poop is too big. Constipation occurred.");
+                note.error("Poop is too big. Constipation occurred.");
                 return;
             }
         }

@@ -70,7 +70,7 @@ public class CommandHandler extends CommandRegistry
                     }
                     catch (RuntimeException e)
                     {
-                        note.replyError(e.getMessage());
+                        note.error(e.getMessage());
                         e.printStackTrace();
                     }
                     

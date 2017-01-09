@@ -41,7 +41,7 @@ public class UrbanDictionaryCommand extends CommandExecutor
                     
                     Bot.getColor(), "https://s3.amazonaws.com/mashape-production-logos/apis/53aa4f67e4b0a9b1348da532_medium");
         }
-        catch (Exception e) { note.replyError("Could not find that word, rip u"); }
+        catch (Exception e) { note.error("Could not find that word, rip u"); }
     }
     
 }

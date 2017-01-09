@@ -14,6 +14,7 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.concurrent.TimeUnit;
 
+//TODO REMOVE ALL THIS WEIRD HAVING TO EDIT AND DELETE STUFF
 @Command(aliases = "deletemsg", usage = "(messageid)", description = "Delete those messages..")
 public class DeleteMessageCommand extends CommandExecutor
 {
@@ -21,12 +22,12 @@ public class DeleteMessageCommand extends CommandExecutor
     public void execute(Note note, String label, String[] args)
     {
         if (!note.getAuthor().hasPermission(Permission.MESSAGE_MANAGE)){
-            note.replyError("Gnar don't have the MESSAGE_MANAGE permission!");
+            note.error("Gnar don't have the MESSAGE_MANAGE permission!");
             return;
         }
         if (args.length < 1)
         {
-            note.replyError("**" + BotData.randomQuote() + "** Well that sounds fantastic! I'll just delete th-... You " +
+            note.error("**" + BotData.randomQuote() + "** Well that sounds fantastic! I'll just delete th-... You " +
                     "didn't give me anything to work with. *(I need the message ID)*");
             return;
         }

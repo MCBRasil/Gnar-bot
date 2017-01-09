@@ -8,7 +8,7 @@ class KotlinTests
     @Test
     fun `Initialize the bot`()
     {
-        Bot.initBot(Bot.authTokens.getProperty("test-bot"), 1)
+        Bot.start(Bot.authTokens.getProperty("test-bot"), 1)
     }
     
     @Test

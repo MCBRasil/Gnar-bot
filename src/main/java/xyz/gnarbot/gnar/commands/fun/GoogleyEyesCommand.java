@@ -16,7 +16,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public class GoogleyEyesCommand extends CommandExecutor
     {
         if (args.length == 0)
         {
-            note.replyError("Please provide an image link.");
+            note.error("Please provide an image link.");
             return;
         }
         
@@ -81,19 +80,14 @@ public class GoogleyEyesCommand extends CommandExecutor
             {
                 if (eyesJSON.isEmpty())
                 {
-                    note.replyError("The API did not detect any eyes/facial features.");
+                    note.error("The API did not detect any eyes/facial features.");
                     return;
                 }
             }
             
-            //set connection header so access wont get forbidden'ed
-            URLConnection uCon = new URL(urlStr).openConnection();
-            uCon.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, " +
-                    "like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-            uCon.connect();
-            
-            BufferedImage targetImg = ImageIO.read(uCon.getInputStream());
+            BufferedImage targetImg = ImageIO.read(new URL(urlStr));
             BufferedImage eye, resizedEye;
+            
             Graphics graphics = targetImg.getGraphics();
             for (JSONObject json : eyesJSON)
             {
@@ -126,7 +120,7 @@ public class GoogleyEyesCommand extends CommandExecutor
         }
         catch (Exception e)
         {
-            note.reply("An unexpected error occurred, did you provide a proper link?");
+            note.error("An unexpected error occurred, did you provide a proper link?");
             e.printStackTrace();
         }
     }

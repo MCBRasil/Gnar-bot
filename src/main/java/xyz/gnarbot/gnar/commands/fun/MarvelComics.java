@@ -19,7 +19,7 @@ public class MarvelComics extends CommandExecutor
     {
         if (args.length == 0)
         {
-            note.replyError("Please provide a name.");
+            note.error("Please provide a name.");
             return;
         }
         

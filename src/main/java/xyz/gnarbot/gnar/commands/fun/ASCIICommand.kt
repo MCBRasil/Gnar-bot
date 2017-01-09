@@ -2,21 +2,23 @@ package xyz.gnarbot.gnar.commands.`fun`
 
 import org.apache.commons.lang3.StringUtils
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Element
-import org.jsoup.nodes.TextNode
-import xyz.gnarbot.gnar.handlers.commands.Command
-import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
+import org.jsoup.nodes.*
+import xyz.gnarbot.gnar.handlers.commands.*
 import xyz.gnarbot.gnar.utils.Note
 import java.util.StringJoiner
 
-@Command(aliases = arrayOf("ascii"), usage = "(string)", description = "ASCII text art!", showInHelp = false)
+@Command(
+        aliases = arrayOf("ascii"),
+        usage = "(string)",
+        description = "ASCII text art!"
+)
 class ASCIICommand : CommandExecutor()
 {
     override fun execute(note : Note, label : String, args : Array<out String>)
     {
         if (args.isEmpty())
         {
-            note.replyError("Please provide a query.")
+            note.error("Please provide a query.")
             return
         }
         
@@ -26,7 +28,7 @@ class ASCIICommand : CommandExecutor()
             
             if (query.length > 15)
             {
-                note.reply("The query has too many characters. `15 at most.`")
+                note.error("The query has too many characters. `15 at most.`")
                 return
             }
             
@@ -40,7 +42,7 @@ class ASCIICommand : CommandExecutor()
         }
         catch (e : Exception)
         {
-            note.replyError("Unable to generate ASCII art.")
+            note.error("Unable to generate ASCII art.")
             e.printStackTrace()
         }
         

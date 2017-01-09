@@ -14,7 +14,7 @@ public class TextToSpeechCommand extends CommandExecutor
     {
         if (args.length == 0)
         {
-            note.replyError("Please provide a query.");
+            note.error("Please provide a query.");
             return;
         }
         

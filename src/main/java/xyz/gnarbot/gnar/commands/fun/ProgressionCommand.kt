@@ -3,14 +3,17 @@ package xyz.gnarbot.gnar.commands.`fun`
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.text.WordUtils
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.handlers.commands.Command
-import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
+import xyz.gnarbot.gnar.handlers.commands.*
 import xyz.gnarbot.gnar.handlers.members.Clearance
 import xyz.gnarbot.gnar.utils.Note
 import java.util.StringJoiner
 import java.util.concurrent.TimeUnit
 
-@Command(aliases = arrayOf("progress"), clearance = Clearance.BOT_MASTER, showInHelp = false)
+@Command(
+        aliases = arrayOf("progress"),
+        clearance = Clearance.BOT_MASTER,
+        showInHelp = false
+)
 class ProgressionCommand : CommandExecutor()
 {
     override fun execute(note : Note, label : String, args : Array<out String>)
@@ -73,13 +76,13 @@ class ProgressionCommand : CommandExecutor()
             
             list.forEachIndexed { i, s ->
                 Bot.scheduler.schedule({
-                    msg.editMessage(list[i]).queue()
+                    msg.get().edit(list[i])
                 }, i + 1L, TimeUnit.SECONDS)
             }
         }
         catch (e : UnsupportedOperationException)
         {
-            note.reply("Message was too long or something... no memes for you.")
+            note.error("Message was too long or something... no memes for you.")
         }
     }
 }

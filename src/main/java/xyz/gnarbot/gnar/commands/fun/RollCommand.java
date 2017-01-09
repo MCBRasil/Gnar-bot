@@ -16,7 +16,7 @@ public class RollCommand extends CommandExecutor
         {
             if (!(Integer.valueOf(args[0]) > 0))
             {
-                note.replyError("Number need to be > 0.");
+                note.error("Number need to be > 0.");
                 
                 return;
             }
@@ -26,7 +26,7 @@ public class RollCommand extends CommandExecutor
         }
         else
         {
-            note.replyError("Insufficient amount of arguments.");
+            note.error("Insufficient amount of arguments.");
         }
     }
 }

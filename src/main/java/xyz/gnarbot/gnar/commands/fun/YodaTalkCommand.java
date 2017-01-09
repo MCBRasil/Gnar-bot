@@ -17,7 +17,7 @@ public class YodaTalkCommand extends CommandExecutor
     {
         if (args.length == 0)
         {
-            note.replyError("At least put something. `:[`");
+            note.error("At least put something. `:[`");
             return;
         }
         

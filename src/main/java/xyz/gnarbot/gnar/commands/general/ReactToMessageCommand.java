@@ -11,6 +11,7 @@ import xyz.gnarbot.gnar.utils.Utils;
 
 import java.util.concurrent.TimeUnit;
 
+//TODO REMOVE THE EDITZ
 @Command(aliases = "react", usage = "(messageid) (emoji)", description = "Make GNAR react to something, against it's " +
         "will. You evil prick.")
 public class ReactToMessageCommand extends CommandExecutor
@@ -20,7 +21,7 @@ public class ReactToMessageCommand extends CommandExecutor
     {
         if (args.length < 2)
         {
-            note.reply("**" + BotData.randomQuote() + "** Well that sounds fantastic! I'll just react to th-... " +
+            note.error("**" + BotData.randomQuote() + "** Well that sounds fantastic! I'll just react to th-... " +
                     "You didn't give me anything to work with. *(I need two arguments, the first being a Message's ID" +
                     " and the second being the emoji.)*");
             return;

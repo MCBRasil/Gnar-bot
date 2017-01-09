@@ -23,11 +23,11 @@ public class TriviaAnswerCommand extends CommandExecutor
         
         try
         {
-            note.reply(TriviaQuestions.getAnswer(Integer.valueOf(args[0])));
+            note.info(TriviaQuestions.getAnswer(Integer.valueOf(args[0])));
         }
         catch (Exception e)
         {
-            note.reply("Please enter a number.");
+            note.error("Please enter a number.");
         }
     }
     

@@ -2,10 +2,8 @@ package xyz.gnarbot.gnar.commands.general
 
 import net.dv8tion.jda.core.EmbedBuilder
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.handlers.commands.Command
-import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
+import xyz.gnarbot.gnar.handlers.commands.*
 import xyz.gnarbot.gnar.handlers.members.Clearance
-import xyz.gnarbot.gnar.utils.BotData
 import xyz.gnarbot.gnar.utils.Note
 import java.util.StringJoiner
 
@@ -22,7 +20,7 @@ class HelpCommand : CommandExecutor()
     
             if (cmd == null)
             {
-                note.replyError("There is no command named `${args[0]}`. :cry:")
+                note.error("There is no command named `${args[0]}`. :cry:")
                 return
             }
     
@@ -51,7 +49,10 @@ class HelpCommand : CommandExecutor()
         
         for (perm in Clearance.values())
         {
-            val secCount = commandEntries.values.filter { it.clearance == perm && it.isShownInHelp }.count()
+            val secCount = commandEntries.values
+                    .filter { it.clearance == perm && it.isShownInHelp }
+                    .count()
+            
             if (secCount < 1) continue
             
             eb.addField("", "__**${perm.toString().replace("_", " ")}** $secCount __", false)
@@ -109,8 +110,8 @@ class HelpCommand : CommandExecutor()
         
         val embed = eb.build()
         
-        note.author?.requestPrivateChannel()?.sendMessage(embed)?.queue()
+        note.author.requestPrivateChannel().sendMessage(embed)?.queue()
         
-        note.reply("**${BotData.randomQuote()}** My commands has been PM'ed to you.")
+        note.info("Gnar's guide has been directly messaged to you.")
     }
 }

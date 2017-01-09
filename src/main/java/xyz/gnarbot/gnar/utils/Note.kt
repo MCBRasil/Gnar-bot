@@ -7,6 +7,7 @@ import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.handlers.members.User
 import xyz.gnarbot.gnar.handlers.servers.Host
 import java.awt.Color
+import java.util.concurrent.*
 
 /**
  * Gnar's wrapper class for JDA's [Message].
@@ -20,7 +21,7 @@ class Note(val host : Host, private val message : Message) : Message by message
      *
      * @return Message author as User.
      */
-    override fun getAuthor() : User? = host.userHandler.asUser(message.author)
+    override fun getAuthor() : User = host.userHandler.asUser(message.author)
     
     /**
      * Get mentioned users of this Message as [User] instances.
@@ -35,11 +36,10 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun reply(msg : String) = Note(host, channel.sendMessage("__**${message.author.name}__ ›** $msg").complete())
-    
-    fun edit(msg : String)
+    @Deprecated("Use one of the embeds, it has style you fucks.")
+    fun reply(msg : String) : Note
     {
-        editMessage(msg).queue()
+        return Note(host, channel.sendMessage("__**${message.author.name}__ ›** $msg").complete())
     }
     
     /**
@@ -48,7 +48,7 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun replyRaw(msg : String) = Note(host, channel.sendMessage(msg).complete())
+    fun replyRaw(msg : String) = channel.sendMessage(msg).submit().toNote()
     
     /**
      * Send an embeded message.
@@ -57,24 +57,47 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @return The Message created by this function.
      */
     @JvmOverloads
-    fun replyEmbed(title : String?, msg : String?, color : Color? = Bot.color, thumb : String? = null, img : String? = null)
-    {//›
-        channel.sendMessage(makeEmbed(title, msg, color, thumb, img, author)).queue()
-    }
-    
-    /**
-     * Send an embeded message.
-     *
-     * @param msg The text to send.
-     * @return The Message created by this function.
-     */
-    @JvmOverloads
-    fun replyEmbedRaw(title : String?, msg : String?, color : Color? = Bot.color, thumb : String? = null, img : String? = null)
+    fun replyEmbed(title : String?,
+                   msg : String?,
+                   color : Color? = Bot.color,
+                   thumb : String? = null,
+                   img : String? = null) : Future<Note>
     {
-        channel.sendMessage(makeEmbed(title, msg, color, thumb, img)).queue()
+        return channel.sendMessage(makeEmbed(title, msg, color, thumb, img, author))
+                .submit()
+                .toNote()
     }
     
-    fun replyError(msg : String)
+    /**
+     * Send an embeded message.
+     *
+     * @param msg The text to send.
+     * @return The Message created by this function.
+     */
+    @JvmOverloads
+    fun replyEmbedRaw(title : String?,
+                      msg : String?,
+                      color : Color? = Bot.color,
+                      thumb : String? = null,
+                      img : String? = null) : Future<Note>
+    {
+        return channel.sendMessage(makeEmbed(title, msg, color, thumb, img))
+                .submit()
+                .toNote()
+    }
+    
+    fun info(msg : String) : Future<Note>
+    {
+        val eb = EmbedBuilder()
+        
+        eb.setAuthor("Info", null, "http://gnarbot.xyz/img/Info.png")
+        eb.setDescription(msg)
+        eb.setColor(Bot.color)
+        
+        return channel.sendMessage(eb.build()).submit().toNote()
+    }
+    
+    fun error(msg : String) : Future<Note>
     {
         val eb = EmbedBuilder()
     
@@ -82,14 +105,16 @@ class Note(val host : Host, private val message : Message) : Message by message
         eb.setDescription(msg)
         eb.setColor(Color.RED)
         
-        channel.sendMessage(eb.build()).queue()
+        return channel.sendMessage(eb.build()).submit().toNote()
     }
+    
+    fun edit(msg : String) = editMessage(msg).submit().toNote()
     
     fun delete() : Boolean
     {
         try
         {
-            deleteMessage().complete()
+            deleteMessage().queue()
             return true
         }
         catch(e : PermissionException)
@@ -101,5 +126,12 @@ class Note(val host : Host, private val message : Message) : Message by message
     /**
      * @return String representation of the note.
      */
-    override fun toString() = "Note(id=$id, author=${author?.name}, content=\"$content\")"
+    override fun toString() = "Note(id=$id, author=${author.name}, content=\"$content\")"
+    
+    private fun Future<Message>.toNote() : Future<Note> = object : CompletableFuture<Note>()
+    {
+        override fun get(timeout : Long, unit : TimeUnit) = Note(host, this@toNote.get(timeout, unit))
+        override fun get() : Note = Note(host, this@toNote.get())
+    }
 }
+

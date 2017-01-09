@@ -25,11 +25,11 @@ public class TriviaCommand extends CommandExecutor
         
         if (args.length > 0)
         {
-            note.reply(TriviaQuestions.getRandomQuestion(StringUtils.join(args, " ")));
+            note.info(TriviaQuestions.getRandomQuestion(StringUtils.join(args, " ")));
         }
         else
         {
-            note.reply(TriviaQuestions.getRandomQuestion());
+            note.error(TriviaQuestions.getRandomQuestion());
         }
     }
     

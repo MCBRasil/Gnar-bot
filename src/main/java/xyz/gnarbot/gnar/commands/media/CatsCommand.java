@@ -36,13 +36,12 @@ public class CatsCommand extends CommandExecutor
                     case "png":
                     case "jpg":
                     case "gif":
-                        doc = db.parse(new URL(String.format("http://thecatapi" +
-                                ".com/api/images/get?format=xml&type=%s&api_key=%s&results_per_page=1", args[0],
-                                apiKey)).openStream());
+                        doc = db.parse("http://thecatapi.com/api/images/get?format=xml&type="
+                                        + args[0] + "&api_key=" + apiKey + "&results_per_page=1");
+    
                         break;
                     default:
-                        note.getChannel().sendMessage(String.format("%s ➜ Not a valid picture type. `[png, jpg, " +
-                                "gif]`", note.getAuthor().getAsMention())).queue();
+                        note.error("Not a valid picture type. `[png, jpg, gif]`");
                         return;
                 }
             }
@@ -59,7 +58,7 @@ public class CatsCommand extends CommandExecutor
         }
         catch (Exception e)
         {
-            note.replyError("Unable to find cats to sooth the darkness of your soul.");
+            note.error("Unable to find cats to sooth the darkness of your soul.");
             e.printStackTrace();
         }
     }

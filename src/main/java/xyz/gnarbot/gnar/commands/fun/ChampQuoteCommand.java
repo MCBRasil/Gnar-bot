@@ -91,7 +91,7 @@ public class ChampQuoteCommand extends CommandExecutor
                 
                 br = new BufferedReader(new FileReader(new File("_DATA/quotes/" + maybe + ".txt")));
                 
-                note.reply("I think you meant **" + maybe + "**? Here's a quote from them!");
+                note.replyEmbed("Champion Quotes", "I think you meant **" + maybe + "**? Here's a quote from them!");
                 champ = maybe;
             }
             

@@ -28,12 +28,12 @@ public class GarfieldCommand extends CommandExecutor
             
             String builder = "Garfield" + "\n" + "Date: **" + link.substring(link.lastIndexOf("/") + 1, link
                     .lastIndexOf(".")) + "**\n" + "Link: " + link;
-            note.replyRaw(builder);
             
+            note.replyRaw(builder);
         }
         catch (Exception e)
         {
-            note.reply("Unable to grab Garfield comic.");
+            note.error("Unable to grab Garfield comic.");
             e.printStackTrace();
         }
     }

@@ -35,7 +35,7 @@ public class BanCommand extends CommandExecutor
         }
         catch (Exception e)
         {
-            note.reply("User is not on this server");
+            note.error("User is not on this server.");
             return;
         }
         

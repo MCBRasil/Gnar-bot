@@ -1,8 +1,9 @@
-package xyz.gnarbot.gnar;
+package xyz.gnarbot.gnar.tests;
 
 import com.mashape.unirest.http.Unirest;
 import org.json.JSONObject;
 import org.junit.Test;
+import xyz.gnarbot.gnar.Bot;
 
 public class UnirestPosting
 {

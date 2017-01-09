@@ -1,6 +1,9 @@
 package xyz.gnarbot.gnar.handlers.servers;
 
 
+import net.dv8tion.jda.client.events.relationship.FriendRequestReceivedEvent;
+import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import xyz.gnarbot.gnar.handlers.commands.CommandDistributor;
@@ -24,5 +27,23 @@ class ShardListener extends ListenerAdapter
     
             if (host != null) host.handleMessageEvent(event);
         }
+    }
+    
+    @Override
+    public void onFriendRequestReceived(FriendRequestReceivedEvent event)
+    {
+        event.getFriendRequest().accept().queue();
+    }
+    
+    @Override
+    public void onGuildJoin(GuildJoinEvent event)
+    {
+        shard.update();
+    }
+    
+    @Override
+    public void onGuildLeave(GuildLeaveEvent event)
+    {
+        shard.update();
     }
 }

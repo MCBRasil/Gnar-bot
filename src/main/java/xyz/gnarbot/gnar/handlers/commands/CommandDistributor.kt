@@ -2,61 +2,17 @@ package xyz.gnarbot.gnar.handlers.commands
 
 import com.google.inject.Inject
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.commands.TestCommand
-import xyz.gnarbot.gnar.commands.`fun`.ASCIICommand
-import xyz.gnarbot.gnar.commands.`fun`.ChampDataCommand
-import xyz.gnarbot.gnar.commands.`fun`.ChampQuoteCommand
-import xyz.gnarbot.gnar.commands.`fun`.CleverBotCommand
-import xyz.gnarbot.gnar.commands.`fun`.CoinFlipCommand
-import xyz.gnarbot.gnar.commands.`fun`.DialogCommand
-import xyz.gnarbot.gnar.commands.`fun`.DiscordBotsUserInfoCommand
-import xyz.gnarbot.gnar.commands.`fun`.EightBallCommand
-import xyz.gnarbot.gnar.commands.`fun`.GoodShitCommand
-import xyz.gnarbot.gnar.commands.`fun`.GraphCommand
-import xyz.gnarbot.gnar.commands.`fun`.LeetifyCommand
-import xyz.gnarbot.gnar.commands.`fun`.MarvelComics
-import xyz.gnarbot.gnar.commands.`fun`.PandoraBotCommand
-import xyz.gnarbot.gnar.commands.`fun`.PoopCommand
-import xyz.gnarbot.gnar.commands.`fun`.ProgressionCommand
-import xyz.gnarbot.gnar.commands.`fun`.RollCommand
-import xyz.gnarbot.gnar.commands.`fun`.Rule34Command
-import xyz.gnarbot.gnar.commands.`fun`.ServersSharedCommand
-import xyz.gnarbot.gnar.commands.`fun`.TextToBrickCommand
-import xyz.gnarbot.gnar.commands.`fun`.TextToSpeechCommand
-import xyz.gnarbot.gnar.commands.`fun`.TriviaAnswerCommand
-import xyz.gnarbot.gnar.commands.`fun`.TriviaCommand
-import xyz.gnarbot.gnar.commands.`fun`.UrbanDictionaryCommand
-import xyz.gnarbot.gnar.commands.`fun`.YodaTalkCommand
-import xyz.gnarbot.gnar.commands.games.GameLookupCommand
-import xyz.gnarbot.gnar.commands.games.LeagueLookupCommand
-import xyz.gnarbot.gnar.commands.games.OverwatchLookupCommand
-import xyz.gnarbot.gnar.commands.general.BotInfoCommand
-import xyz.gnarbot.gnar.commands.general.DeleteMessageCommand
-import xyz.gnarbot.gnar.commands.general.GoogleCommand
-import xyz.gnarbot.gnar.commands.general.HelpCommand
-import xyz.gnarbot.gnar.commands.general.InviteBotCommand
-import xyz.gnarbot.gnar.commands.general.MathCommand
-import xyz.gnarbot.gnar.commands.general.PingCommand
-import xyz.gnarbot.gnar.commands.general.QuoteMessageCommand
-import xyz.gnarbot.gnar.commands.general.ReactToMessageCommand
-import xyz.gnarbot.gnar.commands.general.RemindMeCommand
-import xyz.gnarbot.gnar.commands.general.TestEmbedCommand
-import xyz.gnarbot.gnar.commands.general.UptimeCommand
-import xyz.gnarbot.gnar.commands.general.WhoIsCommand
-import xyz.gnarbot.gnar.commands.general.YoutubeCommand
-import xyz.gnarbot.gnar.commands.media.CatsCommand
-import xyz.gnarbot.gnar.commands.media.ExplosmCommand
-import xyz.gnarbot.gnar.commands.media.ExplosmRCGCommand
-import xyz.gnarbot.gnar.commands.media.GarfieldCommand
-import xyz.gnarbot.gnar.commands.media.XKCDCommand
-import xyz.gnarbot.gnar.commands.mod.BanCommand
-import xyz.gnarbot.gnar.commands.mod.DeleteMessagesCommand
-import xyz.gnarbot.gnar.commands.mod.KickCommand
-import xyz.gnarbot.gnar.commands.mod.UnbanCommand
+import xyz.gnarbot.gnar.commands.`fun`.*
+import xyz.gnarbot.gnar.commands.admin.*
+import xyz.gnarbot.gnar.commands.games.*
+import xyz.gnarbot.gnar.commands.general.*
+import xyz.gnarbot.gnar.commands.media.*
+import xyz.gnarbot.gnar.commands.mod.*
 import xyz.gnarbot.gnar.commands.polls.PollCommand
-import xyz.gnarbot.gnar.textadventure.AdventureCommand
-import xyz.gnarbot.gnar.textadventure.StartAdventureCommand
+import xyz.gnarbot.gnar.commands.test.TestCommand
+import xyz.gnarbot.gnar.textadventure.*
 import java.lang.reflect.Field
+import kotlin.reflect.KClass
 import kotlin.jvm.JvmStatic as static
 
 /**
@@ -72,84 +28,89 @@ object CommandDistributor
     init
     {
         //General Commands
-        register(HelpCommand::class.java)
-        register(InviteBotCommand::class.java)
-        register(PingCommand::class.java)
-        register(MathCommand::class.java)
-        register(RemindMeCommand::class.java)
-        register(GoogleCommand::class.java)
-        register(YoutubeCommand::class.java)
-        register(UptimeCommand::class.java)
-        register(WhoIsCommand::class.java)
-        register(BotInfoCommand::class.java)
+        register(HelpCommand::class)
+        register(InviteBotCommand::class)
+        register(PingCommand::class)
+        register(MathCommand::class)
+        register(RemindMeCommand::class)
+        register(GoogleCommand::class)
+        register(YoutubeCommand::class)
+        register(UptimeCommand::class)
+        register(WhoIsCommand::class)
+        register(BotInfoCommand::class)
         //End General Commands
     
         //Fun Commands
-        register(ASCIICommand::class.java)
-        register(CoinFlipCommand::class.java)
-        register(DialogCommand::class.java)
-        register(YodaTalkCommand::class.java)
-        register(RollCommand::class.java)
-        register(PoopCommand::class.java)
-        register(GoodShitCommand::class.java)
-        register(EightBallCommand::class.java)
-        register(LeetifyCommand::class.java)
-        register(MarvelComics::class.java)
-        register(ProgressionCommand::class.java)
-        register(Rule34Command::class.java)
-        register(ServersSharedCommand::class.java)
-        register(TextToSpeechCommand::class.java)
-        register(ReactToMessageCommand::class.java)
-        register(ChampDataCommand::class.java)
-        register(DiscordBotsUserInfoCommand::class.java)
-        register(TriviaAnswerCommand::class.java)
-        register(TriviaCommand::class.java)
-        register(GraphCommand::class.java)
-        register(UrbanDictionaryCommand::class.java)
-        register(ChampQuoteCommand::class.java)
-        register(CleverBotCommand::class.java)
-        register(PandoraBotCommand::class.java)
+        register(ASCIICommand::class)
+        register(CoinFlipCommand::class)
+        register(DialogCommand::class)
+        register(YodaTalkCommand::class)
+        register(RollCommand::class)
+        register(PoopCommand::class)
+        register(GoodShitCommand::class)
+        register(EightBallCommand::class)
+        register(LeetifyCommand::class)
+        register(MarvelComics::class)
+        register(ProgressionCommand::class)
+        register(Rule34Command::class)
+        register(ServersSharedCommand::class)
+        register(TextToSpeechCommand::class)
+        register(ReactToMessageCommand::class)
+        register(ChampDataCommand::class)
+        register(DiscordBotsUserInfoCommand::class)
+        register(TriviaAnswerCommand::class)
+        register(TriviaCommand::class)
+        register(GraphCommand::class)
+        register(UrbanDictionaryCommand::class)
+        register(ChampQuoteCommand::class)
+        register(CleverBotCommand::class)
+        register(PandoraBotCommand::class)
         //End Fun Commands
     
         //Mod Commands
-        register(BanCommand::class.java)
-        register(KickCommand::class.java)
-        register(UnbanCommand::class.java)
-        register(DeleteMessagesCommand::class.java)
+        register(BanCommand::class)
+        register(KickCommand::class)
+        register(UnbanCommand::class)
+        register(DeleteMessagesCommand::class)
         //End Mod Commands
     
         //Testing Commands
-        register(TestCommand::class.java)
+        register(TestCommand::class)
         //End Testing Commands
     
         //Text Adventure Commands
-        register(AdventureCommand::class.java)
-        register(StartAdventureCommand::class.java)
+        register(AdventureCommand::class)
+        register(StartAdventureCommand::class)
         //End Text Adventure Commands
     
         //Game Commands
-        register(OverwatchLookupCommand::class.java)
-        register(LeagueLookupCommand::class.java)
-        register(GameLookupCommand::class.java)
+        register(OverwatchLookupCommand::class)
+        register(LeagueLookupCommand::class)
+        register(GameLookupCommand::class)
         //End Game Commands
     
         //Poll Commands
-        register(PollCommand::class.java)
+        register(PollCommand::class)
         //End Poll Commands
     
         //Media Commands
-        register(CatsCommand::class.java)
-        register(ExplosmCommand::class.java)
-        register(ExplosmRCGCommand::class.java)
-        register(GarfieldCommand::class.java)
-        register(XKCDCommand::class.java)
+        register(CatsCommand::class)
+        register(ExplosmCommand::class)
+        register(ExplosmRCGCommand::class)
+        register(GarfieldCommand::class)
+        register(XKCDCommand::class)
         //End Media Commands
     
+        // Administrator commands
+        register(JavascriptCommand::class)
+        register(ShardInfoCommand::class)
+        register(ThrowError::class)
+        
         // Test Commands
-        register(TestEmbedCommand::class.java)
-        register(QuoteMessageCommand::class.java)
-        register(TextToBrickCommand::class.java)
-        register(DeleteMessageCommand::class.java)
+        register(TestEmbedCommand::class)
+        register(QuoteMessageCommand::class)
+        register(TextToBrickCommand::class)
+        register(DeleteMessageCommand::class)
     }
     
     fun checkValid(str : String) : Boolean
@@ -175,6 +136,8 @@ object CommandDistributor
 //        reflections.getTypesAnnotatedWith(Command::class.java)
 //                .forEach { register(it as Class<out CommandExecutor>) }
 //    }
+    
+    fun register(kCls : KClass<out CommandExecutor>) = register(kCls.java)
     
     /**
      * Register the command class and automatically

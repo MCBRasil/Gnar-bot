@@ -35,7 +35,7 @@ public class ExplosmRCGCommand extends CommandExecutor
         }
         catch (Exception e)
         {
-            note.replyError("Unable to grab random Cyanide and Happiness comic.");
+            note.error("Unable to grab random Cyanide and Happiness comic.");
             e.printStackTrace();
         }
     }

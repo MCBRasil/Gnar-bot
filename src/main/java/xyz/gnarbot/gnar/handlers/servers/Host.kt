@@ -1,23 +1,14 @@
 package xyz.gnarbot.gnar.handlers.servers
 
-import com.google.inject.AbstractModule
-import com.google.inject.Guice
-import com.google.inject.Injector
+import com.google.inject.*
 import net.dv8tion.jda.core.JDA
-import net.dv8tion.jda.core.entities.ChannelType
-import net.dv8tion.jda.core.entities.Guild
-import net.dv8tion.jda.core.entities.Member
+import net.dv8tion.jda.core.entities.*
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent
 import net.dv8tion.jda.core.exceptions.PermissionException
 import net.dv8tion.jda.core.managers.GuildManager
-import org.json.JSONObject
-import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.handlers.commands.CommandDistributor
-import xyz.gnarbot.gnar.handlers.commands.CommandHandler
-import xyz.gnarbot.gnar.handlers.members.MemberHandler
+import xyz.gnarbot.gnar.handlers.commands.*
+import xyz.gnarbot.gnar.handlers.members.*
 import xyz.gnarbot.gnar.handlers.members.User
-import xyz.gnarbot.gnar.utils.NullableJSON
-import xyz.gnarbot.gnar.utils.child
 import java.io.File
 import net.dv8tion.jda.core.entities.User as JDAUser
 
@@ -28,8 +19,6 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
 {
     lateinit var file : File
         private set
-    lateinit var jsonObject : JSONObject
-        private set
     
     val userHandler = MemberHandler(this)
     val commandHandler = CommandHandler(this)
@@ -39,9 +28,6 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     
     init
     {
-//        loadJSON()
-//        saveJSON()
-        
         commandHandler.recieveFrom(CommandDistributor)
         commandHandler.registry.values.forEach { injector.injectMembers(it) }
     }
@@ -52,20 +38,22 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
         if (event.isFromType(ChannelType.PRIVATE)) return
         commandHandler.callCommand(event)
     }
-    
-    /** Load JSON instance from the Host's storage. */
-    fun loadJSON()
-    {
-        file = Bot.files.hosts.child("$id.json")
-        file.createNewFile()
-        
-        val content = file.readText()
-        if (content.isEmpty()) jsonObject = NullableJSON()
-        else jsonObject = NullableJSON(content)
-    }
-    
-    /** Save the JSON instance of the Host. */
-    fun saveJSON() = file.writeText(jsonObject.toString(4))
+//
+//    @Deprecated("Useless")
+//    /** Load JSON instance from the Host's storage. */
+//    fun loadJSON()
+//    {
+//        file = Bot.files.hosts.child("$id.json")
+//        file.createNewFile()
+//
+//        val content = file.readText()
+////        if (content.isEmpty()) jsonObject = NullableJSON()
+////        else jsonObject = NullableJSON(content)
+//    }
+//
+//    @Deprecated("Useless")
+//    /** Save the JSON instance of the Host. */
+//    fun saveJSON() = file.writeText(jsonObject.toString(4))
     
     /**
      * @return String representation of the Host.

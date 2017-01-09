@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.commands.media;
 
 import com.google.inject.Inject;
+import com.mashape.unirest.http.Unirest;
 import org.json.JSONObject;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.commands.Command;
@@ -22,7 +23,10 @@ public class XKCDCommand extends CommandExecutor
     {
         try
         {
-            JSONObject latestJSON = Utils.jsonFromUrl("http://xkcd.com/info.0.json");
+            JSONObject latestJSON = Unirest.get("http://xkcd.com/info.0.json")
+                    .asJson()
+                    .getBody()
+                    .getObject();
             
             if (latestJSON != null)
             {
@@ -39,7 +43,7 @@ public class XKCDCommand extends CommandExecutor
                         
                         if (input > max || input < 1)
                         {
-                            note.replyError("xkcd does not have a comic for that number.");
+                            note.error("xkcd does not have a comic for that number.");
                         }
                         
                         rand = input;
@@ -52,7 +56,7 @@ public class XKCDCommand extends CommandExecutor
                         }
                         else
                         {
-                            note.replyError("You didn't enter a proper number.");
+                            note.error("You didn't enter a proper number.");
                             return;
                         }
                     }
@@ -80,7 +84,7 @@ public class XKCDCommand extends CommandExecutor
                 }
             }
             
-            note.replyError("Unable to grab xkcd comic.");
+            note.error("Unable to grab xkcd comic.");
         }
         catch (Exception e)
         {

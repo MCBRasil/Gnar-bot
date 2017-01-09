@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar;
+package xyz.gnarbot.gnar.tests;
 
 
 import java.util.Scanner;

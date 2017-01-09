@@ -19,7 +19,7 @@ public class WhoIsCommand extends CommandExecutor
     {
         if (args.length == 0)
         {
-            note.replyError("You did not mention a user.");
+            note.error("You did not mention a user.");
             return;
         }
         
@@ -58,7 +58,7 @@ public class WhoIsCommand extends CommandExecutor
         
         if (user == null)
         {
-            note.reply("You did not mention a valid user.");
+            note.error("You did not mention a valid user.");
             return;
         }
         

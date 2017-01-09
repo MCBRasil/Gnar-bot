@@ -38,7 +38,7 @@ public class ExplosmCommand extends CommandExecutor
                     
                     if (input > max || input < 100)
                     {
-                        note.reply("Explosm does not have a comic for that number.");
+                        note.error("Explosm does not have a comic for that number.");
                     }
                     
                     rand = String.valueOf(input);
@@ -51,7 +51,7 @@ public class ExplosmCommand extends CommandExecutor
                     }
                     else
                     {
-                        note.reply("You didn't enter a proper number.");
+                        note.error("You didn't enter a proper ID number.");
                         return;
                     }
                 }
@@ -71,7 +71,7 @@ public class ExplosmCommand extends CommandExecutor
         }
         catch (Exception e)
         {
-            note.replyError("Unable to grab Cyanide and Happiness comic.");
+            note.error("Unable to grab Cyanide and Happiness comic.");
             e.printStackTrace();
         }
     }

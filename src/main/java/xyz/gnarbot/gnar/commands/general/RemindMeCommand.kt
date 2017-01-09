@@ -1,10 +1,8 @@
 package xyz.gnarbot.gnar.commands.general
 
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.handlers.commands.Command
-import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
-import xyz.gnarbot.gnar.utils.Note
-import xyz.gnarbot.gnar.utils.makeEmbed
+import xyz.gnarbot.gnar.handlers.commands.*
+import xyz.gnarbot.gnar.utils.*
 import java.util.Arrays
 import java.util.concurrent.TimeUnit
 
@@ -23,7 +21,7 @@ class RemindMeCommand : CommandExecutor()
             }
             catch (e : NumberFormatException)
             {
-                note.replyError("The time number was not an integer.")
+                note.error("The time number was not an integer.")
                 return
             }
             
@@ -33,7 +31,7 @@ class RemindMeCommand : CommandExecutor()
             }
             catch (e : IllegalArgumentException)
             {
-                note.replyError("The specified time unit was invalid. \n`${Arrays.toString(TimeUnit.values())}`")
+                note.error("The specified time unit was invalid. \n`${Arrays.toString(TimeUnit.values())}`")
                 return
             }
             
@@ -50,12 +48,12 @@ class RemindMeCommand : CommandExecutor()
             }
             else
             {
-                note.replyError("Number must be more than 0.")
+                note.error("Number must be more than 0.")
             }
         }
         else
         {
-            note.replyError("Insufficient amount of arguments. `(#) (unit) (msg)`")
+            note.error("Insufficient amount of arguments. `(#) (unit) (msg)`")
         }
     }
 }

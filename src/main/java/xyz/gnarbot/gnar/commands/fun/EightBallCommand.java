@@ -22,7 +22,7 @@ public class EightBallCommand extends CommandExecutor
     {
         if (args.length == 0)
         {
-            note.replyError("Ask the 8-ball something.");
+            note.error("Ask the 8-ball something.");
             return;
         }
         

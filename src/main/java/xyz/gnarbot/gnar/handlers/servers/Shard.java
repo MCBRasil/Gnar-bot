@@ -1,10 +1,7 @@
 package xyz.gnarbot.gnar.handlers.servers;
 
-import net.dv8tion.jda.client.events.relationship.FriendRequestReceivedEvent;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
-import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.utils.DiscordBotsInfo;
@@ -31,24 +28,9 @@ public class Shard
         this.jda = jda;
         
         jda.addEventListener(new ShardListener(this));
-        jda.addEventListener(new ListenerAdapter() {
-            @Override
-            public void onFriendRequestReceived(FriendRequestReceivedEvent event) {
-                super.onFriendRequestReceived(event);
-                event.getFriendRequest().accept().queue();
-            }
-
-            @Override
-            public void onGuildJoin(GuildJoinEvent event) {
-                super.onGuildJoin(event);
-                update();
-            }
-
-            @Override
-            public void onGuildLeave(GuildLeaveEvent event) {
-                super.onGuildLeave(event);
-                update();
-            }
+        jda.addEventListener(new ListenerAdapter()
+        {
+            
         });
     }
 
@@ -56,11 +38,15 @@ public class Shard
      * Updates Server Counts on ad sites
      *
      */
-    public void update(){
+    public void update()
+    {
         int count=0;
-        for(Shard s : Bot.INSTANCE.getShards()) {
-            count+=s.getJDA().getGuilds().size();
+        
+        for(Shard s : Bot.INSTANCE.getShards())
+        {
+            count += s.getJDA().getGuilds().size();
         }
+        
         DiscordBotsInfo.updateAbalCount(count);
         DiscordBotsInfo.updateCarbonitexCount(count);
     }
@@ -88,16 +74,9 @@ public class Shard
     {
         if (guild == null) return null;
     
-        Host host = hosts.get(guild);
+        //Bot.getLOG().info("Creating new Host instance for " + guild.getName() + ".");
     
-        if (host == null)
-        {
-            //Bot.getLOG().info("Creating new Host instance for " + guild.getName() + ".");
-            host = new Host(this, guild);
-            hosts.put(guild, host);
-        }
-    
-        return host;
+        return hosts.computeIfAbsent(guild, k -> new Host(this, guild));
     }
     
     /**
@@ -127,6 +106,12 @@ public class Shard
     public String toString()
     {
         return "Shard(id=" + id + ", guilds=" + jda.getGuilds().size() + ")";
+    }
+    
+    public void shutdown()
+    {
+        jda.shutdown();
+        hosts.clear();
     }
 }
 

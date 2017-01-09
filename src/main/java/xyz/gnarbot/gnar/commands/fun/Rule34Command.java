@@ -67,16 +67,16 @@ public class Rule34Command extends CommandExecutor
                 
                 url = att2.getValue();
                 
-                note.reply("http:" + url);
+                note.replyEmbed("Rule34","http:" + url);
             }
             catch (Exception e)
             {
-                note.reply("Please refer to rule 35.");
+                note.error("Please refer to rule 35.");
             }
         }
         else
         {
-            note.reply("Sorry, you must have the role `Fucking Teemo` to use this command!");
+            note.error("Sorry, you must have the role `Fucking Teemo` to use this command!");
         }
         
     }

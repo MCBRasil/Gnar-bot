@@ -2,11 +2,9 @@ package xyz.gnarbot.gnar.commands.general
 
 import com.mashape.unirest.http.Unirest
 import net.dv8tion.jda.core.EmbedBuilder
-import org.json.JSONException
-import org.json.JSONObject
+import org.json.*
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.handlers.commands.Command
-import xyz.gnarbot.gnar.handlers.commands.CommandExecutor
+import xyz.gnarbot.gnar.handlers.commands.*
 import xyz.gnarbot.gnar.utils.Note
 import java.awt.Color
 import java.util.StringJoiner
@@ -18,7 +16,7 @@ class YoutubeCommand : CommandExecutor()
     {
         if (args.isEmpty())
         {
-            note.reply("Gotta put something to search YouTube.")
+            note.error("Gotta put something to search YouTube.")
             return
         }
         
@@ -33,7 +31,7 @@ class YoutubeCommand : CommandExecutor()
             
             if (jsonObject.length() == 0)
             {
-                note.replyError("No search results for `$query`.")
+                note.error("No search results for `$query`.")
                 return
             }
             
@@ -67,12 +65,12 @@ class YoutubeCommand : CommandExecutor()
         }
         catch (e : JSONException)
         {
-            note.replyError("Unable to get YouTube results.")
+            note.error("Unable to get YouTube results.")
             e.printStackTrace()
         }
         catch (e : NullPointerException)
         {
-            note.replyError("Unable to get YouTube results.")
+            note.error("Unable to get YouTube results.")
             e.printStackTrace()
         }
         

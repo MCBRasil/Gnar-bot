@@ -5,7 +5,6 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.handlers.commands.Command;
@@ -32,27 +31,24 @@ public class GameLookupCommand extends CommandExecutor
             
             if (jsa.length() == 0)
             {
-                note.reply("No game found with that title.");
+                note.error("No game found with that title.");
                 return;
             }
             
-            JSONObject jso = new JSONObject(jsa.getJSONObject(0).toString())
-            {
-                @Override
-                public String getString(String key) throws JSONException
-                {
-                    String s = super.getString(key);
-                    return s == null || s.isEmpty() ? "Not found." : s;
-                }
-            };
+            JSONObject jso = jsa.getJSONObject(0);
+            
+            String title = jso.optString("title");
+            String publisher = jso.optString("publisher");
+            String score = jso.optString("score");
+            String desc = jso.optString("short_description");
             
             StringJoiner joiner = new StringJoiner("\n");
 
-            joiner.add("Publisher: **[" + jso.getString("publisher") + "]()**");
-            joiner.add("Score: **[" + jso.getString("score") + "]()**");
-            joiner.add("Description: **[" + jso.getString("short_description") + "]()**");
+            joiner.add("Publisher: **[" + publisher + "]()**");
+            joiner.add("Score: **[" + score + "]()**");
+            joiner.add("Description: **[" + desc + "]()**");
             
-            note.replyEmbedRaw("**" + jso.getString("title") + "**", joiner.toString(), Bot.getColor(), jso.getString("thumb"));
+            note.replyEmbedRaw(title, joiner.toString(), Bot.getColor(), jso.optString("thumb"));
         }
         catch (Exception e)
         {
