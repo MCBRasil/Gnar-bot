@@ -4,8 +4,8 @@ import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.entities.Message
 import net.dv8tion.jda.core.exceptions.PermissionException
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.handlers.members.User
-import xyz.gnarbot.gnar.handlers.servers.Host
+import xyz.gnarbot.gnar.members.User
+import xyz.gnarbot.gnar.servers.Host
 import java.awt.Color
 import java.util.concurrent.*
 
@@ -100,7 +100,7 @@ class Note(val host : Host, private val message : Message) : Message by message
     fun error(msg : String) : Future<Note>
     {
         val eb = EmbedBuilder()
-    
+        
         eb.setAuthor("Error", null, "http://gnarbot.xyz/img/Error.png")
         eb.setDescription(msg)
         eb.setColor(Color.RED)

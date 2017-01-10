@@ -76,19 +76,20 @@ public class Adventure
         logAction("Started your adventure...");
         System.out.println("Started new Text Adventure for " + u.getName() + " (ID: " + gameID.toString() + ")");
         sendMessage(note, "***A new adventure begins... This is the story of... `_________`***\n" + "\n" + "\n       " +
-                "                 :warning:      **Response Required!**      :warning:" + "\n  :bulb: :bulb: :bulb:  " +
-                "    **What is your name, hero?**      :bulb: :bulb: :bulb:   " + "\n ➜ *To answer dialog options, " +
-                "use the `_adventure` command!*" + "\n ➜ *Example: `_adventure " + u.getName() + " the Great`*",
-                Bot.getColor());
+                "" + "                 :warning:      **Response Required!**      :warning:" + "\n  :bulb: :bulb: " +
+                ":bulb:  " + "    **What is your name, hero?**      :bulb: :bulb: :bulb:   " + "\n ➜ *To answer " +
+                "dialog options, " + "use the `_adventure` command!*" + "\n ➜ *Example: `_adventure " + u
+                .getName() + " the Great`*", Bot.getColor());
     }
-
-    public static boolean hasAdventure(User u){
+    
+    public static boolean hasAdventure(User u)
+    {
         return adventures.containsKey(u);
     }
-
+    
     public static Adventure getAdventure(User u, Note n)
     {
-
+        
         if (adventures.containsKey(u))
         {
             return adventures.get(u);
@@ -136,7 +137,9 @@ public class Adventure
     {
         this.lastMessage = message;
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**").addBlankField(true).setDescription(message)
+        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
+                .addBlankField(true)
+                .setDescription(message)
                 .setColor(getDefaultMessageColor());
         if (getPlayerIcon() != null)
         {
@@ -154,7 +157,9 @@ public class Adventure
     {
         this.lastMessage = message;
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**").addBlankField(true).setDescription(message)
+        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
+                .addBlankField(true)
+                .setDescription(message)
                 .setColor(color);
         if (getPlayerIcon() != null)
         {
@@ -172,7 +177,9 @@ public class Adventure
     {
         this.lastMessage = message;
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**").addBlankField(true).setDescription(message)
+        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
+                .addBlankField(true)
+                .setDescription(message)
                 .setColor(getDefaultMessageColor());
         eb.setThumbnail(url);
         MessageEmbed embed = eb.build();
@@ -187,7 +194,9 @@ public class Adventure
     {
         this.lastMessage = message;
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**").addBlankField(true).setDescription(message)
+        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
+                .addBlankField(true)
+                .setDescription(message)
                 .setColor(color);
         eb.setThumbnail(url);
         MessageEmbed embed = eb.build();
@@ -201,8 +210,11 @@ public class Adventure
     public void sendInformativeMessage(Note n, String message)
     {
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**").addBlankField(true).setDescription(message)
-                .setThumbnail(getPlayerIcon()).setColor(new Color(0xFFDD15));
+        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
+                .addBlankField(true)
+                .setDescription(message)
+                .setThumbnail(getPlayerIcon())
+                .setColor(new Color(0xFFDD15));
         MessageEmbed embed = eb.build();
         MessageBuilder mb = new MessageBuilder();
         mb.setEmbed(embed);
@@ -214,8 +226,11 @@ public class Adventure
     {
         
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("*Sending last sent message...*").addBlankField(true).setDescription
-                (lastMessage).setThumbnail(getPlayerIcon()).setColor(getDefaultMessageColor());
+        eb.setTitle("*Sending last sent message...*")
+                .addBlankField(true)
+                .setDescription(lastMessage)
+                .setThumbnail(getPlayerIcon())
+                .setColor(getDefaultMessageColor());
         MessageEmbed embed = eb.build();
         MessageBuilder mb = new MessageBuilder();
         mb.setEmbed(embed);
@@ -249,7 +264,8 @@ public class Adventure
             this.grid.beginBuild();
             gender = "selecting";
             sendMessage(n, "*A new adventure begins! This is the story of...* ***`" + heroName + "`!***\n\nWait a " +
-                    "moment... Are you a **BOY** or a **GIRL**?", Bot.getColor());
+                    "moment... Are you a **BOY** or a **GIRL**?", Bot
+                    .getColor());
             state = STATE.WAITING;
             stateRelation = "selectGender";
             logAction("Decided that you would call yourself '" + getHeroName() + "'");
@@ -265,15 +281,16 @@ public class Adventure
                 stateRelation = "move";
                 currentArea = startArea;
                 getGrid().getCurrentArea().discover();
-                sendMessage(n, "Ah! So you're a " + response.toLowerCase() + "! Fantastic! Let's get you started on " +
-                        "your very own adventure!\nThe world is yours to claim! Go out and claim it!\n\n ➜ *To move, " +
-                        "use the `_adventure` command!*\n Example: *`_adventure up`* will try to move you up\n ➜ *To " +
-                        "view your map, use the `_adventure map` command!*");
+                sendMessage(n, "Ah! So you're a " + response.toLowerCase() + "! Fantastic! Let's get you started on "
+                        + "your very own adventure!\nThe world is yours to claim! Go out and claim it!\n\n ➜ *To " +
+                        "move, " + "use the `_adventure` command!*\n Example: *`_adventure up`* will try to move you " +
+                        "up\n ➜ *To " + "view your map, use the `_adventure map` command!*");
             }
             else
             {
-                sendMessage(n, "I'm unsure of what you meant by `" + response + "`. Type `_adventure help` to bring " +
-                        "up the Help Menu.", Bot.getColor()); // Placeholder until I add the moving system.
+                sendMessage(n, "I'm unsure of what you meant by `" + response + "`. Type `_adventure help` to bring "
+                        + "up the Help Menu.", Bot
+                        .getColor()); // Placeholder until I add the moving system.
             }
         }
         else
@@ -282,14 +299,16 @@ public class Adventure
             {
                 lastResponse = response;
                 if (response.equalsIgnoreCase("up") || response.equalsIgnoreCase("down") || response.equalsIgnoreCase
-                        ("left") || response.equalsIgnoreCase("right") || response.equalsIgnoreCase("north") ||
-                        response.equalsIgnoreCase("south") || response.equalsIgnoreCase("east") || response
-                        .equalsIgnoreCase("west"))
+                        ("left") || response
+                        .equalsIgnoreCase("right") || response.equalsIgnoreCase("north") || response.equalsIgnoreCase
+                        ("south") || response
+                        .equalsIgnoreCase("east") || response.equalsIgnoreCase("west"))
                 {
                     if (!getGrid().moveInDirection(DIRECTION.getFromString(response)))
                     {
-                        sendMessage(n, "Oops! There's something blocking your way!", "http://i.imgur" +
-                                ".com/R9gfp56.png", Bot.getColor());
+                        sendMessage(n, "Oops! There's something blocking your way!", "http://i.imgur" + "" +
+                                ".com/R9gfp56.png", Bot
+                                .getColor());
                     }
                     else
                     {
@@ -299,7 +318,8 @@ public class Adventure
                         }
                         getGrid().getCurrentArea().discover();
                         getGrid().getCurrentArea().moveToHere();
-                        sendMessage(n, "You continue onwards, towards a " + getGrid().getCurrentArea().getType()
+                        sendMessage(n, "You continue onwards, towards a " + getGrid().getCurrentArea()
+                                .getType()
                                 .getName(), getGrid().getCurrentArea().getType().getUrl(), Bot.getColor());
                         if (getGrid().getCurrentArea().getRelatedEvent() != null && !getGrid().getCurrentArea()
                                 .hasCompletedEvent())
@@ -312,8 +332,9 @@ public class Adventure
                     return;
                 }
             }
-            sendMessage(n, "I'm unsure of what you meant by `" + response + "`. Type `_adventure help` to bring up " +
-                    "the Help Menu.", Bot.getColor()); // Placeholder until I add the moving system.
+            sendMessage(n, "I'm unsure of what you meant by `" + response + "`. Type `_adventure help` to bring up "
+                    + "the Help Menu.", Bot
+                    .getColor()); // Placeholder until I add the moving system.
         }
     }
     

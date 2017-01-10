@@ -93,8 +93,9 @@ public class Area
             {
                 if (random.nextInt() * 100 > 80)
                 {
-                    if (getRelatedAdventure().getHeroName().toLowerCase().contains("lewd") || getRelatedAdventure()
-                            .getHeroName().toLowerCase().contains("mae"))
+                    if (getRelatedAdventure().getHeroName()
+                            .toLowerCase()
+                            .contains("lewd") || getRelatedAdventure().getHeroName().toLowerCase().contains("mae"))
                     {
                         relatedEvent = new FirstSwordLewdEvent();
                     }
@@ -120,7 +121,7 @@ public class Area
     private void initate()
     {
         /*
-		if (prevDirect == DIRECTION.FIRSTMOVE) {
+        if (prevDirect == DIRECTION.FIRSTMOVE) {
 			setAreaNorth(new Area(relatedAdventure, DIRECTION.NORTH, this));
 			setAreaEast(new Area(relatedAdventure, DIRECTION.EAST, this));
 			setAreaSouth(new Area(relatedAdventure, DIRECTION.SOUTH, this));

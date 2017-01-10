@@ -5,7 +5,7 @@ package xyz.gnarbot.gnar.utils
 import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.entities.MessageEmbed
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.handlers.members.User
+import xyz.gnarbot.gnar.members.User
 import java.awt.Color
 import java.io.File
 import java.util.Properties

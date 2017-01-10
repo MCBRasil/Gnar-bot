@@ -30,7 +30,14 @@ public class TriviaQuestions
             System.out.println("No trivia folder detected.");
         }
         
-        for (File file : f.listFiles())
+        File[] files = f.listFiles();
+        
+        if (files == null)
+        {
+            return;
+        }
+        
+        for (File file : files)
         {
             try
             {
@@ -69,34 +76,40 @@ public class TriviaQuestions
     
     public static String getRandomQuestion(String category)
     {
-        try {
+        try
+        {
             int distance = 100;
             String possibleCategory = "";
-
-            for (String s : categories) {
-                if (distance > StringUtils.getLevenshteinDistance(category, s)) {
+            
+            for (String s : categories)
+            {
+                if (distance > StringUtils.getLevenshteinDistance(category, s))
+                {
                     distance = StringUtils.getLevenshteinDistance(category, s);
                     possibleCategory = s;
                 }
             }
-
+            
             BufferedReader br;
-
+            
             ArrayList<String> quotes = new ArrayList<>();
-
-
+            
+            
             ArrayList<String> cats = new ArrayList<>(Arrays.asList(categories));
-
+            
             String line = "";
             Random rand = new Random();
             int randNum = 0;
-            while (!line.contains(possibleCategory)) {
+            while (!line.contains(possibleCategory))
+            {
                 randNum = rand.nextInt(questions.size());
                 line = questions.get(randNum);
             }
-
+            
             return line + "\n\n**For the answer, type _answer " + randNum + "**";
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             return "Category not found. Here is a list of all of our categories: \n\n" + Arrays.toString(categories);
         }
         
