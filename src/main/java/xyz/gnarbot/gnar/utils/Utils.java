@@ -13,7 +13,9 @@ import java.net.URLEncoder;
 
 public class Utils
 {
-    
+
+
+    public static JSONObject memes;
     public static JSONObject information;
     
 //    static
@@ -114,5 +116,9 @@ public class Utils
             e.printStackTrace();
             return "https://www.google.com/";
         }
+    }
+
+    public static void loadMemes() {
+        JSONObject j = new JSONObject(new File("_DATA/resousces/memes.json"));
     }
 }

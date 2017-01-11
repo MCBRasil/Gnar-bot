@@ -65,7 +65,7 @@ public class Rule34Command extends CommandExecutor
                 
                 url = att2.getValue();
                 
-                note.replyEmbed("Rule34", "http:" + url);
+                note.replyRaw("http:" + url);
             }
             catch (Exception e)
             {

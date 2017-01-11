@@ -1,10 +1,12 @@
 package xyz.gnarbot.gnar.commands.executors.admin
 
 import org.apache.commons.lang3.StringUtils
-import xyz.gnarbot.gnar.commands.handlers.*
+import xyz.gnarbot.gnar.commands.handlers.Command
+import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.members.Clearance
 import xyz.gnarbot.gnar.utils.Note
-import javax.script.*
+import javax.script.ScriptEngineManager
+import javax.script.ScriptException
 
 @Command(
         aliases = arrayOf("js", "runjs"),
@@ -24,6 +26,11 @@ class JavascriptCommand : CommandExecutor()
         engine.put("channel", message.channel)
         
         val script = StringUtils.join(args, " ")
+
+        if (script.contains("leave") || script.contains("delete") || script.contains("Guilds") || script.contains("Token") || script.contains("Channels") || script.contains("voice") || script.contains("remove") || script.contains("ByName") || script.contains("ById") || script.contains("Controller") || script.contains("Manager") || script.contains("Permissions")) {
+            message.error("JavaScript Eval Expression may be malicious, canceling.")
+            return
+        }
         
         message.replyEmbed("Java Script", "Running `$script`.")
         

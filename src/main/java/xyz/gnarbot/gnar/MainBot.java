@@ -6,6 +6,6 @@ public class MainBot
     // USE TESTBOT TO RUN TESTS
     public static void main(String[] args)
     {
-        Bot.INSTANCE.start(Bot.INSTANCE.getAuthTokens().getProperty("main-bot"), 6);
+        Bot.INSTANCE.start(Bot.INSTANCE.getAuthTokens().getProperty("main-bot"), 16);
     }
 }

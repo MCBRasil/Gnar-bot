@@ -1,12 +1,14 @@
 package xyz.gnarbot.gnar
 
-import net.dv8tion.jda.core.*
+import net.dv8tion.jda.core.AccountType
+import net.dv8tion.jda.core.JDABuilder
 import net.dv8tion.jda.core.entities.Game
 import net.dv8tion.jda.core.utils.SimpleLog
 import xyz.gnarbot.gnar.servers.Shard
-import xyz.gnarbot.gnar.utils.*
+import xyz.gnarbot.gnar.utils.Utils
+import xyz.gnarbot.gnar.utils.readProperties
 import java.awt.Color
-import java.util.Date
+import java.util.*
 import java.util.concurrent.Executors
 import kotlin.jvm.JvmStatic as static
 
@@ -68,6 +70,7 @@ object Bot
         
         LOG.info("Bot is now connected to Discord.")
         Utils.setLeagueInfo()
+        Utils.loadMemes()
     }
     
     fun stop()
