@@ -119,6 +119,11 @@ public class Utils
     }
 
     public static void loadMemes() {
-        JSONObject j = new JSONObject(new File("_DATA/resousces/memes.json"));
+        try {
+            memes = new JSONObject(Unirest.get("https://api.imgflip.com/get_memes").asString().getBody());
+        } catch (Exception e) {
+            System.out.println("Memes were not loaded.");
+            e.printStackTrace();
+        }
     }
 }

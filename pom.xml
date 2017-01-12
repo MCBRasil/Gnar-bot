@@ -103,10 +103,25 @@
 			<version>3.4</version>
 		</dependency>
 
+		<!--JRAW-->
 		<dependency>
 			<groupId>net.dean.jraw</groupId>
 			<artifactId>JRAW</artifactId>
 			<version>0.9.0</version>
+		</dependency>
+
+		<!--APACHECOMMONSIO-->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
+		</dependency>
+
+		<!--GOOGLEJSON-->
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
 		</dependency>
 
 	</dependencies>
