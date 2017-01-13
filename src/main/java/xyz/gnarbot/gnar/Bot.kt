@@ -1,14 +1,12 @@
 package xyz.gnarbot.gnar
 
-import net.dv8tion.jda.core.AccountType
-import net.dv8tion.jda.core.JDABuilder
+import net.dv8tion.jda.core.*
 import net.dv8tion.jda.core.entities.Game
 import net.dv8tion.jda.core.utils.SimpleLog
 import xyz.gnarbot.gnar.servers.Shard
-import xyz.gnarbot.gnar.utils.Utils
-import xyz.gnarbot.gnar.utils.readProperties
+import xyz.gnarbot.gnar.utils.*
 import java.awt.Color
-import java.util.*
+import java.util.Date
 import java.util.concurrent.Executors
 import kotlin.jvm.JvmStatic as static
 
@@ -66,11 +64,12 @@ object Bot
             jda.selfUser.manager.setName("Gnar").queue()
             
             shards += Shard(id, jda)
+            
+            LOG.info("Built shard $id.")
         }
         
-        LOG.info("Bot is now connected to Discord.")
+        LOG.info("Bot is now connecting to Discord.")
         Utils.setLeagueInfo()
-        Utils.loadMemes()
     }
     
     fun stop()
@@ -78,7 +77,7 @@ object Bot
         shards.forEach(Shard::shutdown)
         initialized = false
         
-        LOG.info("Bot is now disconnected from Discord.")
+        LOG.info("Bot is now disconnecting from Discord.")
     }
     
     val uptime : String

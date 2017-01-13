@@ -3,26 +3,14 @@ package xyz.gnarbot.gnar.commands.handlers
 import com.google.inject.Inject
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.executors.`fun`.*
-import xyz.gnarbot.gnar.commands.executors.admin.GarbageCollectCommand
-import xyz.gnarbot.gnar.commands.executors.admin.JavascriptCommand
-import xyz.gnarbot.gnar.commands.executors.admin.ShardInfoCommand
-import xyz.gnarbot.gnar.commands.executors.admin.ThrowError
-import xyz.gnarbot.gnar.commands.executors.games.GameLookupCommand
-import xyz.gnarbot.gnar.commands.executors.games.LeagueLookupCommand
-import xyz.gnarbot.gnar.commands.executors.games.OverwatchLookupCommand
+import xyz.gnarbot.gnar.commands.executors.admin.*
+import xyz.gnarbot.gnar.commands.executors.games.*
 import xyz.gnarbot.gnar.commands.executors.general.*
-import xyz.gnarbot.gnar.commands.executors.media.CatsCommand
-import xyz.gnarbot.gnar.commands.executors.media.ExplosmCommand
-import xyz.gnarbot.gnar.commands.executors.media.ExplosmRCGCommand
-import xyz.gnarbot.gnar.commands.executors.media.XKCDCommand
-import xyz.gnarbot.gnar.commands.executors.mod.BanCommand
-import xyz.gnarbot.gnar.commands.executors.mod.KickCommand
-import xyz.gnarbot.gnar.commands.executors.mod.PruneCommand
-import xyz.gnarbot.gnar.commands.executors.mod.UnbanCommand
+import xyz.gnarbot.gnar.commands.executors.media.*
+import xyz.gnarbot.gnar.commands.executors.mod.*
 import xyz.gnarbot.gnar.commands.executors.polls.PollCommand
 import xyz.gnarbot.gnar.commands.executors.test.TestCommand
-import xyz.gnarbot.gnar.textadventure.AdventureCommand
-import xyz.gnarbot.gnar.textadventure.StartAdventureCommand
+import xyz.gnarbot.gnar.textadventure.*
 import java.lang.reflect.Field
 import kotlin.reflect.KClass
 import kotlin.jvm.JvmStatic as static
@@ -67,7 +55,7 @@ object CommandTable
         register(Rule34Command::class)
         register(ServersSharedCommand::class)
         register(TextToSpeechCommand::class)
-        register(ReactToMessageCommand::class)
+        register(ReactCommand::class)
         register(ChampDataCommand::class)
         //register(DiscordBotsUserInfoCommand::class)
         register(TriviaAnswerCommand::class)
@@ -122,7 +110,7 @@ object CommandTable
         
         // Test Commands
         register(TestEmbedCommand::class)
-        register(QuoteMessageCommand::class)
+        register(QuoteCommand::class)
         register(TextToBrickCommand::class)
         register(DeleteMessageCommand::class)
     }

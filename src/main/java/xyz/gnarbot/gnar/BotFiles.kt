@@ -10,9 +10,9 @@ class BotFiles
             .apply { if (!exists()) mkdir() }
     
     /** _data/hosts folder. */
-    val hosts = data
-            .child("host")
-            .apply { if (!exists()) mkdir() }
+//    val hosts = data
+//            .child("host")
+//            .apply { if (!exists()) mkdir() }
     
     /** tokens.properties file. */
     val tokens = data

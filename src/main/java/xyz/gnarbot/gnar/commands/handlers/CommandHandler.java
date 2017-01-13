@@ -48,7 +48,7 @@ public class CommandHandler extends CommandRegistry
             String label = tokens[0];
             String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
             
-            Note note = new Note(host, event.getMessage());
+            Note note = host.noteOf(event.getMessage());
             User user = host.getUserHandler().asUser(event.getMember());
             
             for (String cmdLabel : getRegistry().keySet())
@@ -70,7 +70,7 @@ public class CommandHandler extends CommandRegistry
                     }
                     catch (RuntimeException e)
                     {
-                        note.error(e.getMessage());
+                        note.error("**Exception**:" + e.getMessage());
                         e.printStackTrace();
                     }
                     

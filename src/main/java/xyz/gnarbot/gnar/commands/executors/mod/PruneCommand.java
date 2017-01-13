@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import net.dv8tion.jda.core.MessageHistory;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
-import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Clearance;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 @Command(aliases = {"prune", "delmessages", "delmsgs"},
          description = "Delete up to 100 messages.",
@@ -80,7 +78,7 @@ public class PruneCommand extends CommandExecutor
             
             Note info = note.info("Attempted to delete **[" + msgs.size() + "]()** messages.\nDeleting this message in **5** seconds.").get();
             
-            Bot.INSTANCE.getScheduler().schedule(info::delete, 5, TimeUnit.SECONDS);
+            info.delete(5);
         }
         catch (NumberFormatException e)
         {

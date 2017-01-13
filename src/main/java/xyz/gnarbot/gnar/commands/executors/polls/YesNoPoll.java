@@ -1,9 +1,9 @@
 package xyz.gnarbot.gnar.commands.executors.polls;
 
 import xyz.gnarbot.gnar.Bot;
+import xyz.gnarbot.gnar.commands.executors.general.ReactCommand;
 import xyz.gnarbot.gnar.members.User;
 import xyz.gnarbot.gnar.utils.Note;
-import xyz.gnarbot.gnar.utils.Utils;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
@@ -48,7 +48,8 @@ public class YesNoPoll extends Poll
                     .get();
 
             System.out.println(repliedMessage.getId());
-            Utils.sendReactionAutoEncode(repliedMessage, "❌");
+            ReactCommand.sendReactionEncode(repliedMessage, "❌");
+            
             runTask = Bot.INSTANCE.getScheduler().scheduleAtFixedRate(new Runnable()
             {
                 int minutesInst = minutes;
@@ -64,7 +65,7 @@ public class YesNoPoll extends Poll
                     timetaken++;
                     if (timetaken == 1)
                     {
-                        Utils.sendReactionAutoEncode(repliedMessage, "✅");
+                        ReactCommand.sendReactionEncode(repliedMessage, "✅");
                     }
                     if (minutesInst >= 0)
                     {

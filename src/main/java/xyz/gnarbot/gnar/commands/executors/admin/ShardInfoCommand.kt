@@ -1,5 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.admin
 
+import net.dv8tion.jda.core.EmbedBuilder
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.*
 import xyz.gnarbot.gnar.members.Clearance
@@ -16,14 +17,21 @@ class ShardInfoCommand : CommandExecutor()
 {
     override fun execute(message : Note, label : String, args : Array<String>)
     {
-        val sj = StringJoiner("\n")
+        val eb = EmbedBuilder()
         
-        Bot.shards.forEach {
-            sj.add("__**Shard ${it.id}                                                       **__")
-            sj.add("  Status: **[${it.jda.status}]()**")
-            sj.add("  Hosts: **[${it.jda.guilds.size}]()**")
+        repeat(Bot.shards.size / 2 + 1)
+        {
+            val sj = StringJoiner("\n")
+    
+            Bot.shards.forEach {
+                sj.add("__**Shard ${it.id}                                                       **__")
+                sj.add("  Status: **[${it.jda.status}]()**")
+                sj.add("  Hosts: **[${it.jda.guilds.size}]()**")
+            }
+            
+            eb.addField("", sj.toString(), true)
         }
         
-        message.replyEmbed("Shard Information", sj.toString())
+        message.channel.sendMessage(eb.build())
     }
 }

@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.managers.GuildManager
 import xyz.gnarbot.gnar.commands.handlers.*
 import xyz.gnarbot.gnar.members.*
 import xyz.gnarbot.gnar.members.User
+import xyz.gnarbot.gnar.utils.Note
 import net.dv8tion.jda.core.entities.User as JDAUser
 
 /**
@@ -36,6 +37,11 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     {
         if (event.isFromType(ChannelType.PRIVATE)) return
         commandHandler.callCommand(event)
+    }
+    
+    fun noteOf(msg : Message) : Note
+    {
+        return Note(this, msg)
     }
 
 //    @Deprecated("Useless")

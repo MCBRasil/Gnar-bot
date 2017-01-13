@@ -1,12 +1,10 @@
 package xyz.gnarbot.gnar.commands.executors.admin
 
 import org.apache.commons.lang3.StringUtils
-import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
+import xyz.gnarbot.gnar.commands.handlers.*
 import xyz.gnarbot.gnar.members.Clearance
 import xyz.gnarbot.gnar.utils.Note
-import javax.script.ScriptEngineManager
-import javax.script.ScriptException
+import javax.script.*
 
 @Command(
         aliases = arrayOf("js", "runjs"),
@@ -16,6 +14,9 @@ import javax.script.ScriptException
 )
 class JavascriptCommand : CommandExecutor()
 {
+    val blocked = arrayListOf("leave", "delete", "Guilds", "Token", "Channels", "voice",
+            "remove", "ByName", "ById", "Controller", "Manager", "Permissions")
+    
     override fun execute(message : Note, label : String, args : Array<out String>?)
     {
         val engine = ScriptEngineManager().getEngineByName("javascript")
@@ -27,7 +28,8 @@ class JavascriptCommand : CommandExecutor()
         
         val script = StringUtils.join(args, " ")
 
-        if (script.contains("leave") || script.contains("delete") || script.contains("Guilds") || script.contains("Token") || script.contains("Channels") || script.contains("voice") || script.contains("remove") || script.contains("ByName") || script.contains("ById") || script.contains("Controller") || script.contains("Manager") || script.contains("Permissions")) {
+        if (blocked.any { script.contains(it) })
+        {
             message.error("JavaScript Eval Expression may be malicious, canceling.")
             return
         }
@@ -46,14 +48,7 @@ class JavascriptCommand : CommandExecutor()
         
         if (result != null)
         {
-            if (result.javaClass == Int::class.javaObjectType
-                    || result.javaClass == Double::class.javaObjectType
-                    || result.javaClass == Float::class.javaObjectType
-                    || result.javaClass == String::class.javaObjectType
-                    || result.javaClass == Boolean::class.javaObjectType)
-            {
-                message.replyEmbed("Result", result.toString())
-            }
+            message.replyEmbed("Result", result.toString())
         }
     }
 }

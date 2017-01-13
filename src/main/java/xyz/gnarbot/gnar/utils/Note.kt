@@ -10,9 +10,10 @@ import java.awt.Color
 import java.util.concurrent.*
 
 /**
- * Gnar's wrapper class for JDA's [Message].
+ * The bot's wrapper class for JDA's [Message].
  *
  * @see Message
+ * @see Host
  */
 class Note(val host : Host, private val message : Message) : Message by message
 {
@@ -41,6 +42,8 @@ class Note(val host : Host, private val message : Message) : Message by message
     {
         return Note(host, channel.sendMessage("__**${message.author.name}__ ›** $msg").complete())
     }
+    
+    //TODO Add reactions here
     
     /**
      * Quick-reply to a message.
@@ -121,6 +124,11 @@ class Note(val host : Host, private val message : Message) : Message by message
         {
             return false
         }
+    }
+    
+    fun delete(seconds : Long)
+    {
+        Bot.scheduler.schedule({ delete() }, seconds, TimeUnit.SECONDS)
     }
     
     /**

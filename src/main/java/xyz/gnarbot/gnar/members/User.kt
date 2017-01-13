@@ -17,8 +17,8 @@ class User(private val host : Host, private val member : Member) : User by membe
     val clearance : Clearance
         get() = when
         {
-            isBotMaster -> Clearance.BOT_MASTER
             isBot -> Clearance.BOT
+            isBotMaster -> Clearance.BOT_MASTER
             member == host.owner -> Clearance.SERVER_OWNER
             hasRole("Bot Commander") -> Clearance.BOT_COMMANDER
             else -> Clearance.USER

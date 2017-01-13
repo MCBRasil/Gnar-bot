@@ -1,21 +1,13 @@
 package xyz.gnarbot.gnar.utils;
 
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import net.dv8tion.jda.core.entities.Emote;
-import net.dv8tion.jda.core.entities.Message;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.net.URLEncoder;
 
 public class Utils
 {
-
-
-    public static JSONObject memes;
     public static JSONObject information;
     
 //    static
@@ -41,47 +33,7 @@ public class Utils
 //        catch (Exception ignore) {}
 //    }
     
-    public static void sendReaction(Message message, String encodedEmoji)
-    {
-        try
-        {
-            Unirest.put("https://discordapp.com/api/v6/channels/" + message.getChannel()
-                    .getId() + "/messages/" + message.getId() + "/reactions/" + encodedEmoji + "/@me")
-                    .header("Authorization", message.getJDA().getToken())
-                    .asJsonAsync();
-        }
-        catch (Exception ignore) {}
-    }
     
-    public static boolean sendReactionAutoEncode(Message message, String encodedEmoji)
-    {
-        try
-        {
-            Unirest.put("https://discordapp.com/api/v6/channels/" + message.getChannel()
-                    .getId() + "/messages/" + message.getId() + "/reactions/" + URLEncoder.encode(encodedEmoji,
-                    "UTF-8") + "/@me")
-                    .header("Authorization", message.getJDA().getToken())
-                    .asJsonAsync();
-            return true;
-        }
-        catch (Exception e)
-        {
-            return false;
-        }
-    }
-    
-    public static void sendReaction(Message message, Emote emote)
-    {
-        try
-        {
-            Unirest.put("https://discordapp.com/api/v6/channels/" + message.getChannel()
-                    .getId() + "/messages/" + message.getId() + "/reactions/" + emote.getName() + ":" + emote.getId()
-                    + "/@me")
-                    .header("Authorization", message.getJDA().getToken())
-                    .asJsonAsync();
-        }
-        catch (Exception ignore) {}
-    }
     
     public static void setLeagueInfo()
     {
@@ -102,28 +54,4 @@ public class Utils
         catch (Exception ignore) { }
     }
     
-    public String getTinyURL(String link)
-    {
-        try
-        {
-            return Unirest.get("http://tinyurl.com/api-create.php")
-                    .queryString("url", link)
-                    .asString()
-                    .getBody();
-        }
-        catch (UnirestException e)
-        {
-            e.printStackTrace();
-            return "https://www.google.com/";
-        }
-    }
-
-    public static void loadMemes() {
-        try {
-            memes = new JSONObject(Unirest.get("https://api.imgflip.com/get_memes").asString().getBody());
-        } catch (Exception e) {
-            System.out.println("Memes were not loaded.");
-            e.printStackTrace();
-        }
-    }
 }
