@@ -27,11 +27,16 @@ class ShardInfoCommand : CommandExecutor()
                 sj.add("__**Shard ${it.id}                                                       **__")
                 sj.add("  Status: **[${it.jda.status}]()**")
                 sj.add("  Hosts: **[${it.jda.guilds.size}]()**")
+                sj.add("  Users: **[${it.jda.users.size}]()**")
+                sj.add("  Requests: **[${it.hosts.sumBy { it.commandHandler.requests }}]()**")
             }
             
             eb.addField("", sj.toString(), true)
         }
         
-        message.channel.sendMessage(eb.build())
+        eb.setTitle("Shard Information")
+        eb.setColor(Bot.color)
+        
+        message.channel.sendMessage(eb.build()).queue()
     }
 }

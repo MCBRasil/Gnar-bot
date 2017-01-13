@@ -9,7 +9,7 @@ import xyz.gnarbot.gnar.commands.executors.general.*
 import xyz.gnarbot.gnar.commands.executors.media.*
 import xyz.gnarbot.gnar.commands.executors.mod.*
 import xyz.gnarbot.gnar.commands.executors.polls.PollCommand
-import xyz.gnarbot.gnar.commands.executors.test.TestCommand
+import xyz.gnarbot.gnar.commands.executors.test.*
 import xyz.gnarbot.gnar.textadventure.*
 import java.lang.reflect.Field
 import kotlin.reflect.KClass
@@ -65,7 +65,7 @@ object CommandTable
         register(ChampQuoteCommand::class)
         register(CleverBotCommand::class)
         register(PandoraBotCommand::class)
-        register(GenerateMemeCommand::class)
+        register(MemeCommand::class)
         //End Fun Commands
         
         //Mod Commands

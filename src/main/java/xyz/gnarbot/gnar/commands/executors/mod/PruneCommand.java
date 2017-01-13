@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Command(aliases = {"prune", "delmessages", "delmsgs"},
+         usage = "-amount -words...",
          description = "Delete up to 100 messages.",
          clearance = Clearance.BOT_COMMANDER)
 public class PruneCommand extends CommandExecutor

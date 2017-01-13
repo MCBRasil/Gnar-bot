@@ -6,7 +6,8 @@ import xyz.gnarbot.gnar.commands.handlers.*
 import xyz.gnarbot.gnar.utils.Note
 import java.util.*
 
-@Command(aliases = arrayOf("dialog"))
+@Command(aliases = arrayOf("dialog"),
+        description = "Make some of that Windows ASCII art!")
 class DialogCommand : CommandExecutor()
 {
     override fun execute(note : Note, label : String, args : Array<out String>)

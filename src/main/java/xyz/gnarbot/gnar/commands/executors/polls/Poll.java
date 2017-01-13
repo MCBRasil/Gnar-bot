@@ -19,9 +19,5 @@ public class Poll
         this.pollid = pollid;
     }
     
-    public void startPoll()
-    {
-        
-    }
-    
+    public void startPoll() {}
 }

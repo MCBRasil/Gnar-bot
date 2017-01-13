@@ -1,6 +1,5 @@
 package xyz.gnarbot.gnar.commands.executors.fun;
 
-import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
@@ -22,13 +21,13 @@ public class UrbanDictionaryCommand extends CommandExecutor
         {
             String query = StringUtils.join(args, "+");
             
-            HttpResponse<String> s = Unirest.get("https://mashape-community-urban-dictionary.p.mashape.com/define")
+            JSONObject json = Unirest.get("https://mashape-community-urban-dictionary.p.mashape.com/define")
                     .queryString("term", query)
                     .header("X-Mashape-Key", Bot.INSTANCE.getAuthTokens().getProperty("mashape"))
                     .header("Accept", "text/plain")
-                    .asString();
-            
-            JSONObject json = new JSONObject(s.getBody());
+                    .asJson()
+                    .getBody()
+                    .getObject();
             
             JSONArray words = json.getJSONArray("list");
             

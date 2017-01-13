@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar.commands.executors.fun;
+package xyz.gnarbot.gnar.commands.executors.media;
 
 
 import com.mashape.unirest.http.Unirest;
@@ -13,8 +13,10 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.*;
 
-@Command(aliases = "meme")
-public class GenerateMemeCommand extends CommandExecutor
+@Command(aliases = "meme",
+         usage = "-meme_name | _top | _bottom",
+         description = "Create the dankest memes ever.")
+public class MemeCommand extends CommandExecutor
 {
     private static Map<String, String> map = new TreeMap<>();
     
@@ -34,8 +36,7 @@ public class GenerateMemeCommand extends CommandExecutor
                 map.put(jso.getString("name"), jso.getString("id"));
             }
         }
-        catch (UnirestException e)
-        {
+        catch (UnirestException e) {
             e.printStackTrace();
         }
     }
@@ -60,25 +61,25 @@ public class GenerateMemeCommand extends CommandExecutor
                 
                 if (page == 0) { page = 1; }
                 
-                List<String> memeNames = new ArrayList<>(map.keySet());
+                List<String> names = new ArrayList<>(map.keySet());
 
                 StringJoiner sj = new StringJoiner("\n");
 
                 int pages;
 
-                if (memeNames.size() % 10 == 0)
+                if (names.size() % 10 == 0)
                 {
-                    pages = memeNames.size() / 10;
+                    pages = names.size() / 10;
                 }
                 else
                 {
-                    pages = memeNames.size() / 10+1;
+                    pages = names.size() / 10+1;
                 }
 
                 if (page > pages) page = pages;
 
                 int i = 0;
-                for (String g : memeNames)
+                for (String g : names)
                 {
                     i++;
                     if (i < 10 * page + 1 && i > 10 * page - 10)

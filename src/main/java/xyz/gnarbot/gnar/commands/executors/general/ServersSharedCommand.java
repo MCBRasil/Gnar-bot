@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar.commands.executors.fun;
+package xyz.gnarbot.gnar.commands.executors.general;
 
 import net.dv8tion.jda.core.entities.Guild;
 import xyz.gnarbot.gnar.Bot;

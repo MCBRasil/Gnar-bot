@@ -38,12 +38,7 @@ class Note(val host : Host, private val message : Message) : Message by message
      * @return The Message created by this function.
      */
     @Deprecated("Use one of the embeds, it has style you fucks.")
-    fun reply(msg : String) : Note
-    {
-        return Note(host, channel.sendMessage("__**${message.author.name}__ ›** $msg").complete())
-    }
-    
-    //TODO Add reactions here
+    fun reply(msg : String) = channel.sendMessage("__**${message.author.name}__ ›** $msg").submit().toNote()
     
     /**
      * Quick-reply to a message.
@@ -89,24 +84,34 @@ class Note(val host : Host, private val message : Message) : Message by message
                 .toNote()
     }
     
+    /**
+     * Send a standard info message.
+     *
+     * @param msg The text to send.
+     * @return The Message created by this function.
+     */
     fun info(msg : String) : Future<Note>
     {
         val eb = EmbedBuilder()
-        
-        eb.setAuthor("Info", null, "http://gnarbot.xyz/img/Info.png")
-        eb.setDescription(msg)
-        eb.setColor(Bot.color)
+                .setAuthor("Info", null, "http://gnarbot.xyz/img/Info.png")
+                .setDescription(msg)
+                .setColor(Bot.color)
         
         return channel.sendMessage(eb.build()).submit().toNote()
     }
     
+    /**
+     * Send a standard error message.
+     *
+     * @param msg The text to send.
+     * @return The Message created by this function.
+     */
     fun error(msg : String) : Future<Note>
     {
         val eb = EmbedBuilder()
-        
-        eb.setAuthor("Error", null, "http://gnarbot.xyz/img/Error.png")
-        eb.setDescription(msg)
-        eb.setColor(Color.RED)
+                .setAuthor("Error", null, "http://gnarbot.xyz/img/Error.png")
+                .setDescription(msg)
+                .setColor(Color.RED)
         
         return channel.sendMessage(eb.build()).submit().toNote()
     }

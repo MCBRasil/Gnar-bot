@@ -7,7 +7,7 @@ import xyz.hexav.aje.ExpressionBuilder
 import java.awt.Color
 import java.util.Arrays
 
-@Command(aliases = arrayOf("math"), usage = "(expression)", description = "Calculate fancy math expressions.")
+@Command(aliases = arrayOf("math"), usage = "-expression", description = "Calculate fancy math expressions.")
 class MathCommand : CommandExecutor()
 {
     override fun execute(note : Note, label : String, args : Array<out String>)

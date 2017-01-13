@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar.commands.executors.general;
+package xyz.gnarbot.gnar.commands.executors.test;
 
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;

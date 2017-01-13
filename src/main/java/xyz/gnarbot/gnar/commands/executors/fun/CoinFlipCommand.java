@@ -6,7 +6,7 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.Random;
 
-@Command(aliases = {"coinflip"}, description = "Heads or Tails?")
+@Command(aliases = {"coinflip", "flip"}, description = "Heads or Tails?")
 public class CoinFlipCommand extends CommandExecutor
 {
     @Override

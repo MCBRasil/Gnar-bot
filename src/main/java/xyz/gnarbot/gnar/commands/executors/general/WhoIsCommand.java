@@ -11,7 +11,7 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.StringJoiner;
 
-@Command(aliases = {"whois", "infoof", "infoon", "user"}, usage = "(@user)", description = "Get information on a user.")
+@Command(aliases = {"whois", "infoof", "infoon", "user"}, usage = "-@user", description = "Get information on a user.")
 public class WhoIsCommand extends CommandExecutor
 {
     @Override

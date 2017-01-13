@@ -9,7 +9,9 @@ import xyz.gnarbot.gnar.members.Clearance;
 import xyz.gnarbot.gnar.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
-@Command(aliases = "kick", clearance = Clearance.BOT_COMMANDER)
+@Command(aliases = "kick",
+         usage = "-user",
+         clearance = Clearance.BOT_COMMANDER)
 public class KickCommand extends CommandExecutor
 {
     @Override

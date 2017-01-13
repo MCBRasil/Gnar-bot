@@ -29,7 +29,6 @@ public class PoopCommand extends CommandExecutor
         joiner.add("░░░▌▐▀▀▀░▀▀▀▀░░█░▌░░░░░");
         joiner.add("░░▐▌▐▄░░▀▄░░░░░█░█▄▄░░░");
         
-        
         StringBuilder poopArt = new StringBuilder("░░░▀▀░▄███▄▄░░░▀▄▄▄▀░░░");
         
         for (int i = 0; i < poop.length(); i++)

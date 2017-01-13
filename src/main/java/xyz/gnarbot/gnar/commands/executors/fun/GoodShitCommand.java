@@ -4,7 +4,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
-@Command(aliases = {"goodshit"}, description = "go౦ԁ sHit\uD83D\uDC4C.")
+@Command(aliases = "goodshit", description = "go౦ԁ sHit\uD83D\uDC4C.")
 public class GoodShitCommand extends CommandExecutor
 {
     @Override

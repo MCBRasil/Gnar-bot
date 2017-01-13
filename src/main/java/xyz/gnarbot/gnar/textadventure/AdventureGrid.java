@@ -1,6 +1,5 @@
 package xyz.gnarbot.gnar.textadventure;
 
-import net.dv8tion.jda.core.entities.Message;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.textadventure.enums.DIRECTION;
 import xyz.gnarbot.gnar.textadventure.enums.LOCATION;
@@ -12,6 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class AdventureGrid
@@ -45,7 +45,7 @@ public class AdventureGrid
         return relatedAdventure;
     }
     
-    public Area getAreaAtLocation(Integer x, Integer y)
+    public Area getAreaAtLocation(int x, int y)
     {
         return (xygrid[x][y] != null) ? xygrid[x][y] : null;
     }
@@ -238,11 +238,10 @@ public class AdventureGrid
             {
                 try
                 {
-                    Message m = n.reply("Sending...");
+                    Note m = n.info("Sending your map!").get();
                     n.getChannel().sendFile(mapFile, m).queue();
-                    m.editMessage("Here's your map!").queue();
                 }
-                catch (IOException e)
+                catch (IOException | ExecutionException | InterruptedException e)
                 {
                     e.printStackTrace();
                 }
@@ -273,23 +272,23 @@ public class AdventureGrid
             return this;
         }
         
-        public void setResizeX(Integer resizeX)
+        public void setResizeX(int resizeX)
         {
             this.resizeX = resizeX;
         }
         
-        public void setResizeY(Integer resizeY)
+        public void setResizeY(int resizeY)
         {
             this.resizeY = resizeY;
         }
         
-        public ImageBuilder setX(Integer x)
+        public ImageBuilder setX(int x)
         {
             this.x = x;
             return this;
         }
         
-        public ImageBuilder setY(Integer y)
+        public ImageBuilder setY(int y)
         {
             this.y = y;
             return this;

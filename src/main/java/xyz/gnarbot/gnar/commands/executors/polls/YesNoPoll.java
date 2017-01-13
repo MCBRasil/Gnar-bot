@@ -1,7 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.polls;
 
 import xyz.gnarbot.gnar.Bot;
-import xyz.gnarbot.gnar.commands.executors.general.ReactCommand;
 import xyz.gnarbot.gnar.members.User;
 import xyz.gnarbot.gnar.utils.Note;
 
@@ -31,6 +30,7 @@ public class YesNoPoll extends Poll
         this.minutes = minutes;
     }
     
+    
     @Override
     public void startPoll()
     {
@@ -48,7 +48,7 @@ public class YesNoPoll extends Poll
                     .get();
 
             System.out.println(repliedMessage.getId());
-            ReactCommand.sendReactionEncode(repliedMessage, "❌");
+            repliedMessage.addReaction("❌");
             
             runTask = Bot.INSTANCE.getScheduler().scheduleAtFixedRate(new Runnable()
             {
@@ -65,7 +65,7 @@ public class YesNoPoll extends Poll
                     timetaken++;
                     if (timetaken == 1)
                     {
-                        ReactCommand.sendReactionEncode(repliedMessage, "✅");
+                        repliedMessage.addReaction("✅");
                     }
                     if (minutesInst >= 0)
                     {
@@ -95,8 +95,8 @@ public class YesNoPoll extends Poll
             
             Bot.INSTANCE.getScheduler().schedule(() ->
             {
-                
                 System.out.println("lmao");
+                
                 repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingUser.getName() +
                         "**" + " `(Poll ID: " + getPollid() + ")`\n\n" + ":paperclip: Question:\n" + "        ╚ " +
                         question + "\n\n" + ":clock1: Time Left:\n" + "        ╚ **Voting Over**\n\n" + ":gem: " +
@@ -106,11 +106,14 @@ public class YesNoPoll extends Poll
                         .getCount() - 1) + " Votes]\n" + "        ╚ " + "✅ - Yes [" + (repliedMessage.getReactions()
                         .get(0)
                         .getCount() - 1) + " Votes]").queue();
+                
                 repliedMessage.replyRaw(":exclamation: Poll `#" + getPollid() + "` by " + startingUser.getName() + " " +
                         "has " + "finished! Check above for the results!");
+                
                 startingUser.getPrivateChannel()
                         .sendMessage(":exclamation: Your poll in <#" + n.getChannel()
                                 .getId() + "> has ended! Go check it's results!");
+                
                 runTask.cancel(true);
             }, minutes * 60 + 5, TimeUnit.SECONDS);
 

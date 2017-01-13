@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@Command(aliases = {"eyes", "googleyeyes"}, usage = "(image url)", description = "Put weird eyes on people!")
+@Command(aliases = {"eyes", "googleyeyes"}, usage = "-image_url", description = "Put weird eyes on people!")
 public class GoogleyEyesCommand extends CommandExecutor
 {
     private static BufferedImage resize(BufferedImage img, int newW, int newH)
@@ -51,12 +51,12 @@ public class GoogleyEyesCommand extends CommandExecutor
             String urlStr = args[0];
             String encodedStr = URLEncoder.encode(urlStr, StandardCharsets.UTF_8.displayName());
             
-            HttpResponse<JsonNode> response = Unirest.get("https://apicloud-facerect.p.mashape.com/process-url" + "" +
-                    ".json?features=true&url=" + encodedStr)
+            HttpResponse<JsonNode> response = Unirest.get("https://apicloud-facerect.p.mashape.com/process-url.json")
+                    .queryString("features", true)
+                    .queryString("url", encodedStr)
                     .header("X-Mashape-Key", Bot.INSTANCE.getAuthTokens().getProperty("mashape"))
                     .header("Accept", "application/json")
                     .asJson();
-            
             
             JSONObject j = new JSONObject(response.getBody().toString());
             

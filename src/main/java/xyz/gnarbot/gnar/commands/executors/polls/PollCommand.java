@@ -4,7 +4,11 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
-@Command(aliases = "poll", usage = "(argument)", description = "Do poll-y stuff!")
+// TODO recode command.
+@Command(aliases = "poll",
+         usage = "(argument)",
+         description = "Do poll-y stuff!",
+         showInHelp = false)
 public class PollCommand extends CommandExecutor
 {
     @Override

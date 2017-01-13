@@ -6,7 +6,7 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.Random;
 
-@Command(aliases = "8ball", usage = "(question)", description = "Test your wildest dreams!")
+@Command(aliases = "8ball", usage = "-question", description = "Test your wildest dreams!")
 public class EightBallCommand extends CommandExecutor
 {
     private final Random random = new Random();
