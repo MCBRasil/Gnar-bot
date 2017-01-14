@@ -21,16 +21,16 @@ public class QuoteCommand extends CommandExecutor
             return;
         }
         
-        String id = args[0];
-        
         try
         {
-            Message msg = note.getChannel().getMessageById(id).complete();
-            
-            note.getChannel().sendMessage(KUtils.makeEmbed(null,
-                    msg.getContent(), Bot.getColor(),
-                    msg.getAuthor().getAvatarUrl(), null,
-                    note.getHost().getUserHandler().asUser(msg.getAuthor()))).queue();
+            for (String id : args) {
+                Message msg = note.getChannel().getMessageById(id).complete();
+
+                note.getChannel().sendMessage(KUtils.makeEmbed(null,
+                        msg.getContent(), Bot.getColor(),
+                        msg.getAuthor().getAvatarUrl(), null,
+                        note.getHost().getUserHandler().asUser(msg.getAuthor()))).queue();
+            }
         }
         catch (Exception e)
         {
