@@ -1,6 +1,5 @@
 package xyz.gnarbot.gnar.commands.executors.admin
 
-import org.apache.commons.lang3.StringUtils
 import xyz.gnarbot.gnar.commands.handlers.*
 import xyz.gnarbot.gnar.members.Clearance
 import xyz.gnarbot.gnar.utils.Note
@@ -17,7 +16,7 @@ class JavascriptCommand : CommandExecutor()
     val blocked = arrayListOf("leave", "delete", "Guilds", "Token", "Channels", "voice",
             "remove", "ByName", "ById", "Controller", "Manager", "Permissions")
     
-    override fun execute(message : Note, label : String, args : Array<out String>?)
+    override fun execute(message : Note, label : String, args : Array<out String>)
     {
         val engine = ScriptEngineManager().getEngineByName("javascript")
         
@@ -26,7 +25,7 @@ class JavascriptCommand : CommandExecutor()
         engine.put("host", message.host)
         engine.put("channel", message.channel)
         
-        val script = StringUtils.join(args, " ")
+        val script = args.joinToString(" ")
 
         if (blocked.any { script.contains(it, true) })
         {

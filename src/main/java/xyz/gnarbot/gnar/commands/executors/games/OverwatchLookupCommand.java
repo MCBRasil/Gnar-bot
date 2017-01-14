@@ -1,7 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.games;
 
 import com.mashape.unirest.http.Unirest;
-import org.json.JSONException;
 import org.json.JSONObject;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
@@ -11,65 +10,103 @@ import java.awt.*;
 import java.util.StringJoiner;
 
 @Command(aliases = {"overwatch", "ow"},
-         usage = "(Battle Tag) [Region]",
-         description = "Look up Overwatch information" + " about a " + "player.")
+         usage = "-BattleTag#0000 ~region",
+         description = "Look up Overwatch information about a player.")
 public class OverwatchLookupCommand extends CommandExecutor
 {
+    String[] regions = {"us", "eu", "kr"};
+    
     public void execute(Note note, String label, String[] args)
     {
         if (args.length == 0)
         {
-            note.error("You need to provide a BattleTag.");
+            note.error("Insufficient arguments. `" + getUsage() + "`.");
             return;
         }
         
-        if (!args[0].matches("[a-zA-Z1-9]+#\\d+"))
+        if (!args[0].matches("[a-zA-Z1-9]+(#|-)\\d+"))
         {
-            note.error("You did not enter a valid BattleTag.");
+            note.error("You did not enter a valid BattleTag `[BattleTag#0000]`.");
             return;
         }
         
         try
         {
-            String region = "us";
+            String tag = args[0].replaceAll("#", "-");
+            String region = null;
+    
             if (args.length > 1)
             {
-                if (args[1].equalsIgnoreCase("us") || args[1].equalsIgnoreCase("kr") || args[1].equalsIgnoreCase("eu"))
+                for (String r : regions)
                 {
-                    region = args[1].toLowerCase();
+                    if (args[1].equalsIgnoreCase(r))
+                    {
+                        region = r;
+                    }
                 }
-            }
-            StringJoiner joiner = new StringJoiner("\n");
-            
-            JSONObject jso;
-            try
-            {
-                jso = Unirest.get("https://owapi.net/api/v3/u/" + args[0].replaceAll("#", "-") + "/stats")
-                        .asJson()
-                        .getBody()
-                        .getObject();
-                
-                if (jso == null)
+                if (region == null)
                 {
-                    note.error("Unable to find Overwatch Player `" + args[0] + "`.");
+                    note.error("Invalid region provided. `[us, eu, kr]`");
                     return;
                 }
             }
-            catch (JSONException e)
+            
+            StringJoiner joiner = new StringJoiner("\n");
+            
+            JSONObject response = Unirest.get("https://owapi.net/api/v3/u/{tag}/stats")
+                    .routeParam("tag", tag)
+                    .asJson()
+                    .getBody()
+                    .getObject();
+            
+            JSONObject jso = null;
+            
+            // Region arg provided.
+            if (region != null)
             {
-                note.error("Unable to find Overwatch Player `" + args[0] + "` within that region.");
+                jso = response.optJSONObject(region);
+    
+                if (jso == null)
+                {
+                    note.error("Unable to find Overwatch player `" + tag + "` in region `" + region.toUpperCase() + "`.");
+                    return;
+                }
+            }
+            // Region arg not provided. Search for first non-null region.
+            else
+            {
+                for (String r : regions)
+                {
+                    jso = response.optJSONObject(r);
+                    
+                    if (jso != null)
+                    {
+                        region = r;
+                        break;
+                    }
+                }
+    
+                if (jso == null)
+                {
+                    note.error("Unable to find Overwatch player `" + tag + "`.");
+                    return;
+                }
+            }
+            
+            
+            joiner.add("Battle Tag: **__[" + tag + "](https://playoverwatch.com/en-gb/career/pc/" + region + "/" + tag + ")__**");
+            
+            joiner.add("Region: **__[" + region.toUpperCase() + "](http://masteroverwatch.com/leaderboards/pc/" + region + "/mode/ranked/category/skillrating)__**");
+            
+            
+            JSONObject overallStats = jso.optJSONObject("stats");
+            
+            if (overallStats == null)
+            {
+                note.error("Unable to find statistics for Overwatch player`" + tag + "`.");
                 return;
             }
             
-            String tag = args[0].replaceAll("-", "#");
-            joiner.add("Battle Tag: **__[" + tag + "](https://playoverwatch.com/en-gb/career/pc/" + region
-                    .toLowerCase() + "/" + tag
-                    .replaceAll("#", "-") + ")__**");
-            
-            joiner.add("Region: **__[" + region.toUpperCase() + "](http://masteroverwatch.com/leaderboards/pc/" + region
-                    .toLowerCase() + "/mode/ranked/category/skillrating)__**");
-            
-            JSONObject overallStats = jso.getJSONObject("stats");
             JSONObject compStats = overallStats.getJSONObject("competitive");
             JSONObject compOverallStats = compStats.getJSONObject("overall_stats");
             JSONObject compGameStats = compStats.getJSONObject("game_stats");
@@ -80,8 +117,9 @@ public class OverwatchLookupCommand extends CommandExecutor
             JSONObject quickPAvgStats = quickPStats.getJSONObject("average_stats");
             
             joiner.add("\n**__General                                                      __**");
-            joiner.add("  Level: **[" + (quickPOverallStats.optInt("prestige") * 100 + quickPOverallStats.optInt
-                    ("level")) + "]()**");
+            joiner.add("  Level: **["
+                    + (quickPOverallStats.optInt("prestige") * 100
+                    + quickPOverallStats.optInt("level")) + "]()**");
             joiner.add("\n**__Quick Play                                                 __**");
             joiner.add("  Avg. Elims: **[" + quickPAvgStats.optDouble("eliminations_avg") + "]()**");
             joiner.add("  Avg. Deaths: **[" + quickPAvgStats.optDouble("deaths_avg") + "]()**");
@@ -95,9 +133,9 @@ public class OverwatchLookupCommand extends CommandExecutor
             int rank = compOverallStats.optInt("comprank");
             joiner.add("  Avg. Elims: **[" + compAvgStats.optDouble("eliminations_avg") + "]()**");
             joiner.add("  Avg. Deaths: **[" + compAvgStats.optDouble("deaths_avg") + "]()**");
-            joiner.add("  Wins/Draws/Loses: **[" + compGameStats.optInt("games_won") + "]()** | **[" + compGameStats
-                    .optInt("games_tied") + "]()** | **[" + compGameStats
-                    .optInt("games_lost") + "]()**");
+            joiner.add("  Wins/Draws/Loses: **[" + compGameStats.optInt("games_won") + "]()** | **["
+                    + compGameStats.optInt("games_tied") + "]()** | **["
+                    + compGameStats.optInt("games_lost") + "]()**");
             joiner.add("  K/D Ratio: **[" + compGameStats.optDouble("kpd") + "]()**");
             joiner.add("  Played for: **[" + compGameStats.optInt("time_played") + " hours]()**");
             

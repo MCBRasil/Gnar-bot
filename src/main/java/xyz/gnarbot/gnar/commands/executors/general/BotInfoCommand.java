@@ -61,15 +61,12 @@ public class BotInfoCommand extends CommandExecutor
             }
         }
         
-        int commandSize = commandHandler.getUniqueRegistry()
-                .values()
-                .parallelStream()
+        int commandSize = commandHandler.getUniqueRegistry().values().parallelStream()
                 .filter(CommandExecutor::isShownInHelp)
                 .collect(Collectors.toList())
                 .size();
         
-        int requests = Bot.INSTANCE.getShards()
-                .stream()
+        int requests = Bot.INSTANCE.getShards().stream()
                 .flatMap(shard -> shard.getHosts().stream())
                 .mapToInt(guild -> guild.getCommandHandler().getRequests())
                 .sum();

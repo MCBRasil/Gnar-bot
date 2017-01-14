@@ -15,6 +15,7 @@ public class BotData
     private static final List<String> botQuotes = FilesKt.readLines(new File(Bot.getFiles()
             .getData(), "quotes/bot" + ".txt"), StandardCharsets.UTF_8);
     
+    @Deprecated
     public static String randomQuote()
     {
         return botQuotes.get(random.nextInt(botQuotes.size()));

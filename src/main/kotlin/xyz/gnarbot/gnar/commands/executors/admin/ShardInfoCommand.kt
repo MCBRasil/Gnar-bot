@@ -19,19 +19,16 @@ class ShardInfoCommand : CommandExecutor()
     {
         val eb = EmbedBuilder()
         
-        repeat(Bot.shards.size / 2 + 1)
-        {
-            val sj = StringJoiner("\n")
-    
-            Bot.shards.forEach {
-                sj.add("__**Shard ${it.id}                                                       **__")
-                sj.add("  Status: **[${it.jda.status}]()**")
-                sj.add("  Hosts: **[${it.jda.guilds.size}]()**")
-                sj.add("  Users: **[${it.jda.users.size}]()**")
-                sj.add("  Requests: **[${it.hosts.sumBy { it.commandHandler.requests }}]()**")
-            }
+        Bot.shards.forEach {
             
-            eb.addField("", sj.toString(), true)
+            val sj = StringJoiner("\n")
+            
+            sj.add("Status: **[${it.jda.status}]()**")
+            sj.add("Hosts: **[${it.jda.guilds.size}]()**")
+            sj.add("Users: **[${it.jda.users.size}]()**")
+            sj.add("Requests: **[${it.hosts.sumBy { it.commandHandler.requests }}]()**")
+            
+            eb.addField("Shard ${it.id}", sj.toString(), true)
         }
         
         eb.setTitle("Shard Information")

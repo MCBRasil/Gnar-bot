@@ -1,6 +1,5 @@
 package xyz.gnarbot.gnar.commands.handlers
 
-import com.google.inject.Inject
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.executors.`fun`.*
 import xyz.gnarbot.gnar.commands.executors.admin.*
@@ -11,7 +10,6 @@ import xyz.gnarbot.gnar.commands.executors.mod.*
 import xyz.gnarbot.gnar.commands.executors.polls.PollCommand
 import xyz.gnarbot.gnar.commands.executors.test.*
 import xyz.gnarbot.gnar.textadventure.*
-import java.lang.reflect.Field
 import kotlin.reflect.KClass
 import kotlin.jvm.JvmStatic as static
 
@@ -22,8 +20,7 @@ object CommandTable
 {
     val allAliases = mutableListOf<String>()
     
-    val singletonCommands = mutableMapOf<String, CommandExecutor>()
-    val managedCommands = mutableListOf<Class<out CommandExecutor>>()
+    val commands = mutableMapOf<String, CommandExecutor>()
     
     init
     {
@@ -117,33 +114,11 @@ object CommandTable
     
     fun checkValid(str : String) : Boolean
     {
-        return allAliases.any { str.startsWith("${Bot.token}$it") }
+        return allAliases.any { str.startsWith("${Bot.token}${it.toLowerCase()}") }
     }
-    
-    /** Command type classifications. */
-    enum class CommandType
-    {
-        /** Does not inject anything. Same instances across all hosts. */
-        SINGLETON,
-        /** Need to inject something. Different instances. */
-        MANAGED
-    }
-    
-    // DEPENDENCY: REFLECTIONS
-//    @Suppress("UNCHECKED_CAST")
-//    fun registerAll(packages : String)
-//    {
-//        val reflections = Reflections(packages)
-//
-//        reflections.getTypesAnnotatedWith(Command::class.java)
-//                .forEach { register(it as Class<out CommandExecutor>) }
-//    }
-    
-    fun register(kCls : KClass<out CommandExecutor>) = register(kCls.java)
     
     /**
-     * Register the command class and automatically
-     * classify the command.
+     * Register the command class.
      *
      * @param cls Class to register.
      */
@@ -153,80 +128,25 @@ object CommandTable
         {
             throw IllegalStateException("@Command annotation not found for class: ${cls.name}")
         }
-        
-        when (classify(cls))
-        {
-            CommandType.SINGLETON -> registerAsSingleton(cls)
-            CommandType.MANAGED -> registerAsManaged(cls)
-        }
-    }
     
-    /**
-     * Register command as a singleton command.
-     *
-     * @param cls Class to register.
-     */
-    fun registerAsSingleton(cls : Class<out CommandExecutor>)
-    {
         val cmd = cls.newInstance()
-        
-        val meta = cls.getAnnotation(Command::class.java)
-        allAliases += meta.aliases
-        
-        cmd.setAliases(*meta.aliases)
-        cmd.description = meta.description
-        cmd.clearance = meta.clearance
-        cmd.isShownInHelp = meta.showInHelp
-        cmd.usage = meta.usage
-        
-        
+    
+        val annot = cls.getAnnotation(Command::class.java)
+        allAliases += annot.aliases
+    
+        cmd.setAliases(*annot.aliases)
+        cmd.description = annot.description
+        cmd.clearance = annot.clearance
+        cmd.isShownInHelp = annot.showInHelp
+        cmd.usage = annot.usage
+        cmd.isInjected = annot.separate
+        cmd.isInjected = annot.inject
+    
         for (alias in cmd.aliases)
         {
-            singletonCommands[alias] = cmd
+            commands[alias] = cmd
         }
     }
     
-    /**
-     * Register command as a managed command.
-     *
-     * @param cls Class to register.
-     */
-    fun registerAsManaged(cls : Class<out CommandExecutor>)
-    {
-        val meta = cls.getAnnotation(Command::class.java)
-        allAliases += meta.aliases
-        
-        managedCommands += cls
-    }
-    
-    /**
-     * Find all field within a class that is annotated with @Inject.
-     *
-     * @see Inject
-     * @param cls Target class.
-     * @return Fields in target class annotated with [@Inject][Inject].
-     */
-    @kotlin.jvm.JvmStatic fun findInjectableFields(cls : Class<*>) : Array<Field>
-    {
-        val fields = cls.declaredFields.filter { it.isAnnotationPresent(Inject::class.java) }
-        
-        return fields.toTypedArray()
-    }
-    
-    /**
-     * Classify the command based on it's injectable fields.
-     *
-     * @param cls Target class.
-     * @return Command type.
-     */
-    @kotlin.jvm.JvmStatic fun classify(cls : Class<out CommandExecutor>) : CommandType
-    {
-        val types = findInjectableFields(cls).map { it.type }
-        
-        return when
-        {
-            types.isNotEmpty() -> CommandType.MANAGED
-            else -> CommandType.SINGLETON
-        }
-    }
+    fun register(kCls : KClass<out CommandExecutor>) = register(kCls.java)
 }

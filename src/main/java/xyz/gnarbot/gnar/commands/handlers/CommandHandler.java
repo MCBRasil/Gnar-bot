@@ -10,6 +10,7 @@ import java.util.Arrays;
 
 public class CommandHandler extends CommandRegistry
 {
+    
     private final Host host;
     
     private int requests = 0;
@@ -25,10 +26,9 @@ public class CommandHandler extends CommandRegistry
      *
      * @param distributor CommandDistributor instance.
      */
-    public void recieveFrom(CommandTable distributor)
+    public void receiveFrom(CommandTable distributor)
     {
-        distributor.getSingletonCommands().forEach(this::registerCommand);
-        distributor.getManagedCommands().forEach(this::registerCommand);
+        distributor.getCommands().forEach(this::registerCommand);
     }
     
     /**
@@ -38,45 +38,52 @@ public class CommandHandler extends CommandRegistry
      */
     public void callCommand(MessageReceivedEvent event)
     {
-        String messageContent = event.getMessage().getContent();
+        String content = event.getMessage().getContent();
+    
+        if (!content.startsWith(Bot.getToken())) return;
         
-        if (messageContent.startsWith(Bot.getToken()))
+        // Tokenize the message.
+        String[] tokens = content.split(" ");
+    
+        String label = tokens[0].substring(Bot.getToken().length());
+        
+        String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
+    
+        Note note = host.noteOf(event.getMessage());
+        User user = host.getUserHandler().asUser(event.getMember());
+    
+        CommandExecutor cmd = getRegistry().get(label);
+        if (cmd == null) return;
+    
+        if (cmd.getClearance().getValue() > user.getClearance().getValue())
         {
-            // Tokenize the message.
-            String[] tokens = messageContent.split(" ");
+            note.error("Insufficient clearance.");
+            return;
+        }
+    
+        try
+        {
+            requests++;
+//
+//            if (debug)
+//            {
+//                long start = System.currentTimeMillis();
+//
+//                cmd.execute(note, label, args);
+//
+//                long end = System.currentTimeMillis();
+//
+//                StringJoiner sj = new StringJoiner("\n");
+//
+//                note.replyEmbed("Debug", sj.toString());
+//            }
+            cmd.execute(note, label, args);
             
-            String label = tokens[0];
-            String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
-            
-            Note note = host.noteOf(event.getMessage());
-            User user = host.getUserHandler().asUser(event.getMember());
-            
-            for (String cmdLabel : getRegistry().keySet())
-            {
-                if (label.equalsIgnoreCase(Bot.getToken() + cmdLabel))
-                {
-                    CommandExecutor cmd = getRegistry().get(cmdLabel);
-                    
-                    if (cmd.getClearance().getValue() > user.getClearance().getValue())
-                    {
-                        note.error("Insufficient permission.");
-                        return;
-                    }
-                    
-                    try
-                    {
-                        requests++;
-                        cmd.execute(note, label, args);
-                    }
-                    catch (RuntimeException e)
-                    {
-                        note.error("**Exception**:" + e.getMessage());
-                        e.printStackTrace();
-                    }
-                    
-                    return;
-                }
-            }
+        }
+        catch (RuntimeException e)
+        {
+            note.error("**Exception**: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     

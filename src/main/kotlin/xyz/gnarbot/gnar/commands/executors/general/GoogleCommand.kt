@@ -10,7 +10,7 @@ import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.util.StringJoiner
 
-@Command(aliases = arrayOf("google"), usage = "(query)", description = "Who needs browsers!?")
+@Command(aliases = arrayOf("google"), usage = "-query...", description = "Who needs browsers!?")
 class GoogleCommand : CommandExecutor()
 {
     override fun execute(note : Note, label : String, args : Array<String>)
@@ -25,10 +25,8 @@ class GoogleCommand : CommandExecutor()
         {
             val query = args.joinToString(" ")
             
-            val userAgent = "GN4R-Bot"
-            
             val blocks = Jsoup.connect("http://www.google.com/search?q=%s${URLEncoder.encode(query, StandardCharsets.UTF_8.displayName())}")
-                    .userAgent(userAgent)
+                    .userAgent("Gnar")
                     .get()
                     .select(".g")
             

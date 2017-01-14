@@ -10,59 +10,38 @@ public abstract class CommandRegistry
     private Map<String, CommandExecutor> registry = new LinkedHashMap<>();
     
     /**
-     * Register and instantiate the class.
-     *
-     * @param cls CommandExecutor class.
-     */
-    public void registerCommand(Class<? extends CommandExecutor> cls)
-    {
-        if (!cls.isAnnotationPresent(Command.class))
-        {
-            throw new IllegalStateException("@Command annotation not found for class: " + cls.getName());
-        }
-        
-        try
-        {
-            CommandExecutor cmd = cls.newInstance();
-            
-            Command meta = cls.getAnnotation(Command.class);
-            
-            cmd.setAliases(meta.aliases());
-            cmd.setDescription(meta.description());
-            cmd.setClearance(meta.clearance());
-            cmd.setShownInHelp(meta.showInHelp());
-            cmd.setUsage(meta.usage());
-            
-            Arrays.stream(cmd.getAliases()).forEach(s -> registerCommand(s, cmd));
-        }
-        catch (IllegalAccessException | InstantiationException e)
-        {
-            e.printStackTrace();
-        }
-    }
-    
-    /**
      * Register the CommandExecutor instance into the registry.
      *
      * @param label Invoking key.
      * @param cmd   CommandExecutor instance.
      */
-    public void registerCommand(String label, CommandExecutor cmd)
+    public CommandExecutor registerCommand(String label, CommandExecutor cmd)
     {
-        if (!registry.isEmpty())
+        if (registry.containsKey(label))
         {
-            for (String command : registry.keySet())
+            throw new IllegalStateException("Command " + label + " is already registered.");
+        }
+        
+        if (cmd.isSeparate())
+        {
+            try
             {
-                if (label.equals(command))
+                CommandExecutor copy = cmd.copy();
+                
+                for (String s : copy.getAliases())
                 {
-                    // Removed until mae fucking fixes this shit
-                    return;
-                    //throw new IllegalStateException("Command " + label + " is already registered.");
+                    registry.put(s, copy);
                 }
+                
+                return copy;
+            }
+            catch (IllegalAccessException | InstantiationException e)
+            {
+                e.printStackTrace();
             }
         }
         
-        registry.put(label, cmd);
+        return registry.put(label, cmd);
     }
     
     /**
@@ -72,11 +51,7 @@ public abstract class CommandRegistry
      */
     public void unregisterCommand(String label) //throws IllegalStateException
     {
-        if (!registry.isEmpty())
-        {
-            registry.keySet().stream().filter(label::equals).forEach(command -> registry.remove(label));
-        }
-        //throw new IllegalStateException("Command " + label + " isn't registered.");
+        registry.remove(label);
     }
     
     /**

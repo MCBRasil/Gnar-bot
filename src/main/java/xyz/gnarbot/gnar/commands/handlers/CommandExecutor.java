@@ -20,6 +20,10 @@ public abstract class CommandExecutor
     
     private boolean shownInHelp = true;
     
+    private boolean separate = false;
+    
+    private boolean injected = false;
+    
     /**
      * Abstract method to be executed when the command is called.
      *
@@ -29,8 +33,6 @@ public abstract class CommandExecutor
     public abstract void execute(Note note, String label, String[] args);
     
     /**
-     * Returns the aliases of the command.
-     *
      * @return The aliases of the command.
      */
     public String[] getAliases()
@@ -39,8 +41,6 @@ public abstract class CommandExecutor
     }
     
     /**
-     * Set the aliases of the command.
-     *
      * @param aliases Varargs list of aliases.
      */
     public void setAliases(String... aliases)
@@ -49,8 +49,6 @@ public abstract class CommandExecutor
     }
     
     /**
-     * Returns the description of the command.
-     *
      * @return The description of the command.
      */
     public String getDescription()
@@ -59,8 +57,6 @@ public abstract class CommandExecutor
     }
     
     /**
-     * Set the description of the command.
-     *
      * @param desc New description.
      */
     public void setDescription(String desc)
@@ -69,8 +65,6 @@ public abstract class CommandExecutor
     }
     
     /**
-     * Returns the permission required to execute the command.
-     *
      * @return The permission required to execute the command.
      */
     public Clearance getClearance()
@@ -79,8 +73,6 @@ public abstract class CommandExecutor
     }
     
     /**
-     * Set the permission required to execute the command.
-     *
      * @param perm New permission required.
      */
     public void setClearance(Clearance perm)
@@ -89,8 +81,6 @@ public abstract class CommandExecutor
     }
     
     /**
-     * Returns the usage message of the command.
-     *
      * @return The usage message of the command.
      */
     public String getUsage()
@@ -99,8 +89,6 @@ public abstract class CommandExecutor
     }
     
     /**
-     * Set the usage message of the command.
-     *
      * @param usage New usage message.
      */
     public void setUsage(String usage)
@@ -109,8 +97,6 @@ public abstract class CommandExecutor
     }
     
     /**
-     * Returns if the command is shown in _help.
-     *
      * @return Flag to show this command in help.
      */
     public boolean isShownInHelp()
@@ -119,13 +105,45 @@ public abstract class CommandExecutor
     }
     
     /**
-     * Set if the command is to be shown in _help.
-     *
-     * @param bool Is the command going to be shown in help?
+     * @param shown Is the command going to be shown in help?
      */
-    public void setShownInHelp(boolean bool)
+    public void setShownInHelp(boolean shown)
     {
-        this.shownInHelp = bool;
+        this.shownInHelp = shown;
+    }
+    
+    /**
+     * @return If the command require a separate instance.
+     */
+    public boolean isSeparate()
+    {
+        return this.separate;
+    }
+    
+    /**
+     * Set if the command require a separate instance.
+     */
+    public void setSeparate(boolean separate)
+    {
+        this.separate = separate;
+    }
+    
+    /**
+     * @return if the command have fields that needs
+     * to be injected.
+     */
+    public boolean isInjected()
+    {
+        return this.injected;
+    }
+    
+    /**
+     * Set if the command have fields that needs
+     * to be injected.
+     */
+    public void setInjected(boolean injected)
+    {
+        this.injected = injected;
     }
     
     /**
@@ -134,8 +152,20 @@ public abstract class CommandExecutor
     @Override
     public String toString()
     {
-        return this.getClass()
-                .getSimpleName() + "(aliases=" + Arrays.toString(aliases) + ", desc=\"" + description + "\", " +
+        return this.getClass().getSimpleName() + "(aliases=" + Arrays.toString(aliases) + ", desc=\"" + description + "\", " +
                 "usage=\"" + usage + "\", clearance=" + clearance + ", shownInHelp=" + shownInHelp + ")";
+    }
+    
+    public CommandExecutor copy() throws IllegalAccessException, InstantiationException
+    {
+        CommandExecutor copy = this.getClass().newInstance();
+        copy.aliases = aliases;
+        copy.usage = usage;
+        copy.description = description;
+        copy.clearance = clearance;
+        copy.shownInHelp = shownInHelp;
+        copy.separate = separate;
+        copy.injected = injected;
+        return copy;
     }
 }

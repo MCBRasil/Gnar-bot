@@ -49,18 +49,16 @@ class HelpCommand : CommandExecutor()
         
         for (perm in Clearance.values())
         {
-            val secCount = commandEntries.values
-                    .filter { it.clearance == perm && it.isShownInHelp }
-                    .count()
+            val sectionCount = commandEntries.values.count { it.clearance == perm && it.isShownInHelp }
             
-            if (secCount < 1) continue
+            if (sectionCount < 1) continue
             
-            eb.addField("", "__**${perm.toString().replace("_", " ")}** $secCount __", false)
+            eb.addField("", "__**${perm.toString().replace("_", " ")}** $sectionCount __", false)
             
             var joiner = StringJoiner("\n")
             var count = 0
             
-            val secLim = if (secCount > 9) secCount / 3 else secCount
+            val rows = sectionCount / 3
             
             for ((cmdLabel, cmd) in commandEntries)
             {
@@ -69,7 +67,7 @@ class HelpCommand : CommandExecutor()
                 count++
                 joiner.add("**[${Bot.token}$cmdLabel]()**")
                 
-                if (count > secLim)
+                if (count > rows)
                 {
                     eb.addField("", joiner.toString(), true)
                     joiner = StringJoiner("\n")

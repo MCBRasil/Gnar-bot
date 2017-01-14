@@ -9,7 +9,7 @@ import java.util.StringJoiner
 
 @Command(
         aliases = arrayOf("ascii"),
-        usage = "(string)",
+        usage = "-string",
         description = "ASCII text art!"
 )
 class ASCIICommand : CommandExecutor()

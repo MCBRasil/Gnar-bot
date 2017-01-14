@@ -9,7 +9,7 @@ import xyz.gnarbot.gnar.utils.Note
 import java.awt.Color
 import java.util.StringJoiner
 
-@Command(aliases = arrayOf("youtube"), usage = "(query)", description = "Search and get a YouTube video.")
+@Command(aliases = arrayOf("youtube"), usage = "-query...", description = "Search and get a YouTube video.")
 class YoutubeCommand : CommandExecutor()
 {
     override fun execute(note : Note, label : String, args : Array<String>)
@@ -44,6 +44,8 @@ class YoutubeCommand : CommandExecutor()
             
             val sj = StringJoiner("\n")
             
+            var firstUrl : String? = null
+            
             for (obj in items)
             {
                 val item = obj as JSONObject
@@ -57,6 +59,11 @@ class YoutubeCommand : CommandExecutor()
                         .getString("videoId")
                 val url = "https://www.youtube.com/watch?v=$videoID"
                 
+                if (firstUrl == null)
+                {
+                    firstUrl = url
+                }
+                
                 sj.add("\n**[$title]($url)**\n$desc")
             }
             
@@ -67,6 +74,7 @@ class YoutubeCommand : CommandExecutor()
                     .setColor(Color(141, 20, 0))
             
             note.channel.sendMessage(eb.build()).queue()
+            note.replyRaw("**First Video:** $firstUrl")
         }
         catch (e : JSONException)
         {

@@ -28,8 +28,10 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     
     init
     {
-        commandHandler.recieveFrom(CommandTable)
-        commandHandler.registry.values.forEach { injector.injectMembers(it) }
+        commandHandler.receiveFrom(CommandTable)
+        commandHandler.registry.values
+                .filter { it.isInjected }
+                .forEach { injector.injectMembers(it) }
     }
     
     /** Hanldles incoming message events.*/

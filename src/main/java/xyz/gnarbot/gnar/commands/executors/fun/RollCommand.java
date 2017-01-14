@@ -7,7 +7,7 @@ import xyz.gnarbot.gnar.utils.Note;
 import java.util.Random;
 
 @Command(aliases = {"roll"},
-         usage = "(integer)",
+         usage = "-max_value",
          description = "Roll a random number from 0 to argument.")
 public class RollCommand extends CommandExecutor
 {
@@ -22,6 +22,7 @@ public class RollCommand extends CommandExecutor
                 
                 return;
             }
+            
             note.replyEmbedRaw("Roll a Number", "You rolled __**[" + new Random().nextInt(Integer.valueOf(args[0])) +
                     "]()**__ from range **[0 to " + args[0] + "]()**.");
         }

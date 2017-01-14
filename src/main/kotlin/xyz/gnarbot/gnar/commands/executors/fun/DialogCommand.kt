@@ -7,6 +7,7 @@ import xyz.gnarbot.gnar.utils.Note
 import java.util.*
 
 @Command(aliases = arrayOf("dialog"),
+        usage = "-words...",
         description = "Make some of that Windows ASCII art!")
 class DialogCommand : CommandExecutor()
 {
