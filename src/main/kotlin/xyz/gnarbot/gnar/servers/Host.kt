@@ -20,7 +20,7 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
 //    lateinit var file : File
 //        private set
     
-    val userHandler = MemberHandler(this)
+    val userHandler = UserHandler(this)
     val commandHandler = CommandHandler(this)
     
     /** Dependency injection instance from Guice. */
@@ -30,7 +30,7 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
     {
         commandHandler.receiveFrom(CommandTable)
         commandHandler.registry.values
-                .filter { it.isInjected }
+                .filter { it.isInject }
                 .forEach { injector.injectMembers(it) }
     }
     
@@ -161,7 +161,7 @@ class Host(val shard : Shard, guild : Guild) : GuildManager(guild), Guild by gui
         {
             bind(Guild::class.java).toInstance(guild)
             bind(CommandHandler::class.java).toInstance(commandHandler)
-            bind(MemberHandler::class.java).toInstance(userHandler)
+            bind(UserHandler::class.java).toInstance(userHandler)
             bind(Host::class.java).toInstance(this@Host)
             bind(Shard::class.java).toInstance(shard)
             bind(JDA::class.java).toInstance(jda)

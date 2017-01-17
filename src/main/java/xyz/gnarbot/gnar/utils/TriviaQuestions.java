@@ -12,7 +12,6 @@ import java.util.Random;
 
 public class TriviaQuestions
 {
-    
     private static final String[] categories = {"2015", "Anime", "Cars", "Clash Royale", "Disney", "Dota 2 " +
             "Abilities", "Dota 2 Items", "Games", "General", "General Extended", "Greek Mythology", "Harry Potter",
             "League of Legends", "League of Legends Ults", "Pokemon", "Pokémon", "Slogans", "Star Wars", "U.S. " +

@@ -23,13 +23,14 @@ object Bot
     
     @static val files = BotFiles()
     
+    /** @returns If the bot is initialized. */
     var initialized = false
         private set
     
-    /** Sharded JDA instances of the bot.*/
+    /** @return Sharded JDA instances of the bot.*/
     val shards = mutableListOf<Shard>()
     
-    /** Administrator users of the bot. */
+    /** @return Administrator users of the bot. */
     val admins = hashSetOf<String>().apply {
         addAll(files.admins.readLines())
     }
@@ -39,6 +40,12 @@ object Bot
     
     val authTokens = files.tokens.readProperties()
     
+    /**
+     * Start the bot.
+     *
+     * @param token Discord token.
+     * @param numShards Number of shards to request.
+     */
     fun start(token : String, numShards : Int)
     {
         if (initialized) throw IllegalStateException("Bot instance have already been initialized.")
@@ -72,6 +79,9 @@ object Bot
         Utils.setLeagueInfo()
     }
     
+    /**
+     * Stop the bot.
+     */
     fun stop()
     {
         shards.forEach(Shard::shutdown)
@@ -80,23 +90,8 @@ object Bot
         LOG.info("Bot is now disconnecting from Discord.")
     }
     
-    val uptime : String
-        get()
-        {
-            val s = (Date().time - startTime) / 1000
-            val m = s / 60
-            val h = m / 60
-            val d = h / 24
-            return "$d days, ${h % 24} hours, ${m % 60} minutes and ${s % 60} seconds"
-        }
-    
-    val simpleUptime : String
-        get()
-        {
-            val s = (Date().time - startTime) / 1000
-            val m = s / 60
-            val h = m / 60
-            val d = h / 24
-            return "${d}d ${h % 24}h ${m % 60}m ${s % 60}s"
-        }
+    /**
+     * Returns how many seconds
+     */
+    val uptime : Long get() = Date().time - startTime
 }

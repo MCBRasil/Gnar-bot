@@ -112,6 +112,9 @@ object CommandTable
         register(DeleteMessageCommand::class)
     }
     
+    /**
+     * Check to see if [str] is a valid command invocation.
+     */
     fun checkValid(str : String) : Boolean
     {
         return allAliases.any { str.startsWith("${Bot.token}${it.toLowerCase()}") }
@@ -139,8 +142,8 @@ object CommandTable
         cmd.clearance = annot.clearance
         cmd.isShownInHelp = annot.showInHelp
         cmd.usage = annot.usage
-        cmd.isInjected = annot.separate
-        cmd.isInjected = annot.inject
+        cmd.isSeparate = annot.separate
+        cmd.isInject = annot.inject
     
         for (alias in cmd.aliases)
         {
@@ -148,5 +151,10 @@ object CommandTable
         }
     }
     
+    /**
+     * Register the command class.
+     *
+     * @param kCls Class to register.
+     */
     fun register(kCls : KClass<out CommandExecutor>) = register(kCls.java)
 }

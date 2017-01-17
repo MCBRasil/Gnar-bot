@@ -10,7 +10,7 @@ import xyz.gnarbot.gnar.servers.Host
  *
  * @see Member
  */
-class User(private val host : Host, private val member : Member) : User by member.user, Member by member
+class User(val host : Host, private val member : Member) : User by member.user, Member by member
 {
     val isBotMaster : Boolean = Bot.admins.contains(member.user.id)
     

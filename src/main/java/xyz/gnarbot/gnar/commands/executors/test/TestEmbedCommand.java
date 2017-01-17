@@ -12,7 +12,7 @@ import xyz.gnarbot.gnar.utils.Note;
 import java.awt.*;
 import java.util.Random;
 
-@Command(aliases = "embedthis", usage = "(argument)")
+@Command(aliases = "embedthis", usage = "(argument)", showInHelp = false)
 public class TestEmbedCommand extends CommandExecutor
 {
     @Override

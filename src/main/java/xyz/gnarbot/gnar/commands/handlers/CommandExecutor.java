@@ -22,7 +22,7 @@ public abstract class CommandExecutor
     
     private boolean separate = false;
     
-    private boolean injected = false;
+    private boolean inject = false;
     
     /**
      * Abstract method to be executed when the command is called.
@@ -132,18 +132,18 @@ public abstract class CommandExecutor
      * @return if the command have fields that needs
      * to be injected.
      */
-    public boolean isInjected()
+    public boolean isInject()
     {
-        return this.injected;
+        return this.inject;
     }
     
     /**
      * Set if the command have fields that needs
      * to be injected.
      */
-    public void setInjected(boolean injected)
+    public void setInject(boolean inject)
     {
-        this.injected = injected;
+        this.inject = inject;
     }
     
     /**
@@ -165,7 +165,7 @@ public abstract class CommandExecutor
         copy.clearance = clearance;
         copy.shownInHelp = shownInHelp;
         copy.separate = separate;
-        copy.injected = injected;
+        copy.inject = inject;
         return copy;
     }
 }
