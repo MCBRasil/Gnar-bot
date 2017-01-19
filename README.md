@@ -1,4 +1,4 @@
-![](https://www.versioneye.com/user/projects/58813ef2452b830054c17358/badge.svg?style=flat-square)
+[![Dependency Status](https://www.versioneye.com/user/projects/58813ef2452b830054c17358/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58813ef2452b830054c17358)
 
 # Gnar
 **Gnar** is a Discord bot written in Java and Kotlin, using JDA 3.
