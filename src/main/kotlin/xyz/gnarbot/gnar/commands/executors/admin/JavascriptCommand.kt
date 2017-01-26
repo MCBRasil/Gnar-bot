@@ -1,9 +1,11 @@
 package xyz.gnarbot.gnar.commands.executors.admin
 
-import xyz.gnarbot.gnar.commands.handlers.*
+import xyz.gnarbot.gnar.commands.handlers.Command
+import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.members.Clearance
 import xyz.gnarbot.gnar.utils.Note
-import javax.script.*
+import javax.script.ScriptEngineManager
+import javax.script.ScriptException
 
 @Command(
         aliases = arrayOf("js", "runjs"),
@@ -33,8 +35,6 @@ class JavascriptCommand : CommandExecutor()
             return
         }
         
-        message.replyEmbed("Java Script", "Running `$script`.")
-        
         val result : Any? = try
         {
             engine.eval(script)
@@ -47,7 +47,7 @@ class JavascriptCommand : CommandExecutor()
         
         if (result != null)
         {
-            message.replyEmbed("Result", result.toString())
+            message.replyEmbed("Java Script", "Running `$script`.\n\n**Result:**\n\n" + result.toString())
         }
     }
 }

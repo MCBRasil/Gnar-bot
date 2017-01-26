@@ -124,6 +124,20 @@
 			<version>1.1.1</version>
 		</dependency>
 
+		<!--MUSIC-->
+		<dependency>
+			<groupId>com.sedmelluq</groupId>
+			<artifactId>lavaplayer</artifactId>
+			<version>1.1.42</version>
+		</dependency>
+
+		<!--SLF4J-->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.22</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

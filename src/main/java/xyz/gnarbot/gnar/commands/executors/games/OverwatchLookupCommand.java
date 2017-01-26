@@ -239,9 +239,6 @@ public class OverwatchLookupCommand extends CommandExecutor
             
             note.replyEmbedRaw("**Overwatch Stats: " + tag + "**", joiner.toString(), sideColor, avatar);
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        catch (Exception e) { note.error("User not found, make sure you are typing your name and Overwatch ID correctly.\n\n**Example:**\n\n[Avalon#11557]()"); }
     }
 }
