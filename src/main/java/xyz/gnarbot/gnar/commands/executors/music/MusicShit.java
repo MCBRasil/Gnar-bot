@@ -153,11 +153,11 @@ public class MusicShit extends ListenerAdapter {
             else    //Commands has 2 parts, .play and url.
             {
                 if(command[1].contains("http") && command[1].contains("youtu")) {
+                    loadAndPlay(mng, event.getChannel(), command[1], false);
+                } else {
                     String[] args = Arrays.copyOfRange(command, 1, command.length);
                     loadAndPlay(mng, event.getChannel(), KUtils.getFirstVideo(args), false);
                 }
-
-                loadAndPlay(mng, event.getChannel(), command[1], false);
             }
         }
         else if ("_pplay".equals(command[0]) && command.length == 2)

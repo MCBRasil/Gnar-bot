@@ -51,7 +51,7 @@
 		<dependency>
 			<groupId>net.dv8tion</groupId>
 			<artifactId>JDA</artifactId>
-			<version>3.0.BETA2_121</version>
+			<version>3.0.BETA2_122</version>
 		</dependency>
 
 		<!--CHATTERBOT-->
@@ -201,7 +201,7 @@
 						<id>make-assembly</id>
 						<phase>package</phase>
 						<goals>
-							<goal>attached</goal>
+							<goal>single</goal>
 						</goals>
 					</execution>
 				</executions>
