@@ -14,15 +14,14 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import xyz.gnarbot.gnar.utils.KUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 import java.util.logging.Level;
 
 public class MusicShit extends ListenerAdapter {
@@ -67,13 +66,23 @@ public class MusicShit extends ListenerAdapter {
     public void onGuildMessageReceived(GuildMessageReceivedEvent event)
     {
 
-        if(!event.getAuthor().getId().equals("138481382794985472") || !event.getAuthor().getId().equals("192113152328990726")) {
-            return;
-        }
-
         String[] command = event.getMessage().getContent().split(" ", 2);
         if (!command[0].startsWith("_")) {    //message doesn't start with prefix.
             return;
+        }
+
+        boolean isDJ = false;
+
+        Role dj = event.getGuild().getRolesByName("DJ", true).get(0);
+
+        if(!event.getAuthor().getId().equals("138481382794985472") || !event.getAuthor().getId().equals("192113152328990726")) {
+            isDJ = true;
+        }
+
+        if(dj!=null) {
+            if(event.getGuild().getMember(event.getAuthor()).getRoles().contains(dj)) {
+                isDJ = true;
+            }
         }
 
         Guild guild = event.getGuild();
@@ -94,7 +103,7 @@ public class MusicShit extends ListenerAdapter {
                     chan = guild.getVoiceChannelsByName(command[1], true).stream().findFirst().orElse(null);
                 if (chan == null)
                 {
-                    event.getChannel().sendMessage("Could not find VoiceChannel by name: " + command[1]).queue();
+                    event.getChannel().sendMessage("I don't see where  " + command[1] + " is. Did you make a typo?").queue();
                 }
                 else
                 {
@@ -108,7 +117,7 @@ public class MusicShit extends ListenerAdapter {
                     {
                         if (e.getPermission() == Permission.VOICE_CONNECT)
                         {
-                            event.getChannel().sendMessage("Yui does not have permission to connect to: " + chan.getName()).queue();
+                            event.getChannel().sendMessage("GNAR doesn't have permission to join this channel " + chan.getName()).queue();
                         }
                     }
                 }
@@ -116,8 +125,12 @@ public class MusicShit extends ListenerAdapter {
         }
         else if ("_leave".equals(command[0]))
         {
-            guild.getAudioManager().setSendingHandler(null);
-            guild.getAudioManager().closeAudioConnection();
+            if(isDJ) {
+                guild.getAudioManager().setSendingHandler(null);
+                guild.getAudioManager().closeAudioConnection();
+            } else {
+                event.getChannel().sendMessage("You must have the role `DJ` to run this command!");
+            }
         }
         else if ("_play".equals(command[0]))
         {
@@ -126,108 +139,133 @@ public class MusicShit extends ListenerAdapter {
                 if (player.isPaused())
                 {
                     player.setPaused(false);
-                    event.getChannel().sendMessage("Playback as been resumed.").queue();
+                    event.getChannel().sendMessage("Music is now playing.").queue();
                 }
                 else if (player.getPlayingTrack() != null)
                 {
-                    event.getChannel().sendMessage("Player is already playing!").queue();
+                    event.getChannel().sendMessage("Music is already playing!").queue();
                 }
                 else if (scheduler.queue.isEmpty())
                 {
-                    event.getChannel().sendMessage("The current audio queue is empty! Add something to the queue first!").queue();
+                    event.getChannel().sendMessage("There is no music queued right now. Add some songs with _play [song]").queue();
                 }
             }
             else    //Commands has 2 parts, .play and url.
             {
+                if(command[1].contains("http") && command[1].contains("youtu")) {
+                    String[] args = Arrays.copyOfRange(command, 1, command.length);
+                    loadAndPlay(mng, event.getChannel(), KUtils.getFirstVideo(args), false);
+                }
+
                 loadAndPlay(mng, event.getChannel(), command[1], false);
             }
         }
         else if ("_pplay".equals(command[0]) && command.length == 2)
         {
-            loadAndPlay(mng, event.getChannel(), command[1], true);
+            if(isDJ) {
+                loadAndPlay(mng, event.getChannel(), command[1], true);
+            } else {
+                event.getChannel().sendMessage("You must have the role `DJ` to run this command!");
+            }
         }
         else if ("_skip".equals(command[0]))
         {
-            scheduler.nextTrack();
-            event.getChannel().sendMessage("The current track was skipped.").queue();
+            if(isDJ) {
+                scheduler.nextTrack();
+                event.getChannel().sendMessage("The current track was skipped.").queue();
+            } else {
+                event.getChannel().sendMessage("You must have the role `DJ` to run this command!");
+            }
         }
         else if ("_pause".equals(command[0]))
         {
-            if (player.getPlayingTrack() == null)
-            {
-                event.getChannel().sendMessage("Cannot pause or resume player because no track is loaded for playing.").queue();
-                return;
-            }
+            if(isDJ) {
+                if (player.getPlayingTrack() == null) {
+                    event.getChannel().sendMessage("Cannot pause or resume player because no track is loaded for playing.").queue();
+                    return;
+                }
 
-            player.setPaused(!player.isPaused());
-            if (player.isPaused())
-                event.getChannel().sendMessage("The player has been paused.").queue();
-            else
-                event.getChannel().sendMessage("The player has resumed playing.").queue();
+                player.setPaused(!player.isPaused());
+                if (player.isPaused())
+                    event.getChannel().sendMessage("The player has been paused.").queue();
+                else
+                    event.getChannel().sendMessage("The player has resumed playing.").queue();
+            } else {
+                event.getChannel().sendMessage("You must have the role `DJ` to run this command!");
+            }
         }
         else if ("_stop".equals(command[0]))
         {
-            scheduler.queue.clear();
-            player.stopTrack();
-            player.setPaused(false);
-            event.getChannel().sendMessage("Playback has been completely stopped and the queue has been cleared.").queue();
+            if(isDJ) {
+                scheduler.queue.clear();
+                player.stopTrack();
+                player.setPaused(false);
+                event.getChannel().sendMessage("Playback has been completely stopped and the queue has been cleared.").queue();
+            }  else {
+                event.getChannel().sendMessage("You must have the role `DJ` to run this command!");
+            }
         }
         else if ("_volume".equals(command[0]))
         {
-            if (command.length == 1)
-            {
-                event.getChannel().sendMessage("Current player volume: **" + player.getVolume() + "**").queue();
-            }
-            else
-            {
-                try
-                {
-                    int newVolume = Math.max(10, Math.min(100, Integer.parseInt(command[1])));
-                    int oldVolume = player.getVolume();
-                    player.setVolume(newVolume);
-                    event.getChannel().sendMessage("Player volume changed from `" + oldVolume + "` to `" + newVolume + "`").queue();
+            if(isDJ) {
+                if (command.length == 1) {
+                    event.getChannel().sendMessage("Current player volume: **" + player.getVolume() + "**").queue();
+                } else {
+                    try {
+                        int newVolume = Math.max(10, Math.min(100, Integer.parseInt(command[1])));
+                        int oldVolume = player.getVolume();
+                        player.setVolume(newVolume);
+                        event.getChannel().sendMessage("Player volume changed from `" + oldVolume + "` to `" + newVolume + "`").queue();
+                    } catch (NumberFormatException e) {
+                        event.getChannel().sendMessage("`" + command[1] + "` is not a valid integer. (10 - 100)").queue();
+                    }
                 }
-                catch (NumberFormatException e)
-                {
-                    event.getChannel().sendMessage("`" + command[1] + "` is not a valid integer. (10 - 100)").queue();
-                }
+            } else {
+                event.getChannel().sendMessage("You must have the role `DJ` to run this command!");
             }
         }
         else if ("_restart".equals(command[0]))
         {
-            AudioTrack track = player.getPlayingTrack();
-            if (track == null)
-                track = scheduler.lastTrack;
+            if(isDJ) {
+                AudioTrack track = player.getPlayingTrack();
+                if (track == null)
+                    track = scheduler.lastTrack;
 
-            if (track != null)
-            {
-                event.getChannel().sendMessage("Restarting track: " + track.getInfo().title).queue();
-                player.playTrack(track.makeClone());
-            }
-            else
-            {
-                event.getChannel().sendMessage("No track has been previously started, so the player cannot replay a track!").queue();
+                if (track != null) {
+                    event.getChannel().sendMessage("Restarting track: " + track.getInfo().title).queue();
+                    player.playTrack(track.makeClone());
+                } else {
+                    event.getChannel().sendMessage("No track has been previously started, so the player cannot replay a track!").queue();
+                }
+            } else {
+                event.getChannel().sendMessage("You must have the role `DJ` to run this command!");
             }
         }
         else if ("_repeat".equals(command[0]))
         {
-            scheduler.setRepeating(!scheduler.isRepeating());
-            event.getChannel().sendMessage("Player was set to: **" + (scheduler.isRepeating() ? "repeat" : "not repeat") + "**").queue();
+            if(isDJ) {
+                scheduler.setRepeating(!scheduler.isRepeating());
+                event.getChannel().sendMessage("Player was set to: **" + (scheduler.isRepeating() ? "repeat" : "not repeat") + "**").queue();
+            } else {
+                event.getChannel().sendMessage("You must have the role `DJ` to run this command!");
+            }
         }
         else if ("_reset".equals(command[0]))
         {
-            synchronized (musicManagers)
-            {
-                scheduler.queue.clear();
-                player.destroy();
-                guild.getAudioManager().setSendingHandler(null);
-                musicManagers.remove(guild.getId());
+            if(isDJ) {
+                synchronized (musicManagers) {
+                    scheduler.queue.clear();
+                    player.destroy();
+                    guild.getAudioManager().setSendingHandler(null);
+                    musicManagers.remove(guild.getId());
+                }
+
+                mng = getMusicManager(guild);
+                guild.getAudioManager().setSendingHandler(mng.sendHandler);
+                event.getChannel().sendMessage("The player has been completely reset!").queue();
+            } else {
+                event.getChannel().sendMessage("You must have the role `DJ` to run this command!");
             }
-
-            mng = getMusicManager(guild);
-            guild.getAudioManager().setSendingHandler(mng.sendHandler);
-            event.getChannel().sendMessage("The player has been completely reset!").queue();
-
         }
         else if ("_nowplaying".equals(command[0]) || ".np".equals(command[0]))
         {
@@ -279,14 +317,17 @@ public class MusicShit extends ListenerAdapter {
         }
         else if ("_shuffle".equals(command[0]))
         {
-            if (scheduler.queue.isEmpty())
-            {
-                event.getChannel().sendMessage("The queue is currently empty!").queue();
-                return;
-            }
+            if(isDJ) {
+                if (scheduler.queue.isEmpty()) {
+                    event.getChannel().sendMessage("The queue is currently empty!").queue();
+                    return;
+                }
 
-            scheduler.shuffle();
-            event.getChannel().sendMessage("The queue has been shuffled!").queue();
+                scheduler.shuffle();
+                event.getChannel().sendMessage("The queue has been shuffled!").queue();
+            } else {
+                event.getChannel().sendMessage("You must have the role `DJ` to run this command!");
+            }
         }
     }
 
