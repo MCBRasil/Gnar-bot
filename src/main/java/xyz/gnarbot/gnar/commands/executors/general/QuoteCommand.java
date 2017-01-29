@@ -20,12 +20,10 @@ public class QuoteCommand extends CommandExecutor
             note.error("Provide a message id.");
             return;
         }
-        
         try
         {
             for (String id : args) {
                 Message msg = note.getChannel().getMessageById(id).complete();
-
                 note.getChannel().sendMessage(KUtils.makeEmbed(null,
                         msg.getContent(), Bot.getColor(),
                         msg.getAuthor().getAvatarUrl(), null,

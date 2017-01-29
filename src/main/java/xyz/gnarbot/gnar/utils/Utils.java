@@ -44,12 +44,12 @@ public class Utils
         catch (Exception ignore) {}
     }
 
-    public static boolean sendReactionAutoEncode(Message message, String encodedEmoji)
+    public static boolean sendReactionAutoEncode(Message message, String emoji)
     {
         try
         {
             Unirest.put("https://discordapp.com/api/v6/channels/" + message.getChannel()
-                    .getId() + "/messages/" + message.getId() + "/reactions/" + URLEncoder.encode(encodedEmoji,
+                    .getId() + "/messages/" + message.getId() + "/reactions/" + URLEncoder.encode(emoji,
                     "UTF-8") + "/@me")
                     .header("Authorization", message.getJDA().getToken())
                     .asJsonAsync();

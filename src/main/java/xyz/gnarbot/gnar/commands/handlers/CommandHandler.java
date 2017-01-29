@@ -45,7 +45,7 @@ public class CommandHandler extends CommandRegistry
         // Tokenize the message.
         String[] tokens = content.split(" ");
     
-        String label = tokens[0].substring(Bot.getToken().length());
+        String label = tokens[0].substring(Bot.getToken().length()).toLowerCase();
         
         String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
     

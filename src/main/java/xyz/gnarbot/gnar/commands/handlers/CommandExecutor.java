@@ -45,7 +45,11 @@ public abstract class CommandExecutor
      */
     public void setAliases(String... aliases)
     {
-        this.aliases = aliases;
+        String[] finalS = new String[aliases.length];
+        for (int i = 0; i < aliases.length; i++){
+            finalS[i] = aliases[i].toLowerCase();
+        }
+        this.aliases = finalS;
     }
     
     /**
