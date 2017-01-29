@@ -46,6 +46,7 @@ public class CommandHandler extends CommandRegistry
         String[] tokens = content.split(" ");
     
         String label = tokens[0].substring(Bot.getToken().length()).toLowerCase();
+        System.out.println("Got command " + label);
         
         String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
     

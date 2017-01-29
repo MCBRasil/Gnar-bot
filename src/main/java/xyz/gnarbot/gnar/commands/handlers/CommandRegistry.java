@@ -17,6 +17,7 @@ public abstract class CommandRegistry
      */
     public CommandExecutor registerCommand(String label, CommandExecutor cmd)
     {
+        label = label.toLowerCase();
         if (registry.containsKey(label))
         {
             throw new IllegalStateException("Command " + label + " is already registered.");
@@ -87,7 +88,7 @@ public abstract class CommandRegistry
      */
     public CommandExecutor getCommand(String key)
     {
-        return getRegistry().get(key);
+        return getRegistry().get(key.toLowerCase());
     }
     
     /**

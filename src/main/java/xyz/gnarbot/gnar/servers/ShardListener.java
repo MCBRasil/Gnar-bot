@@ -20,7 +20,7 @@ class ShardListener extends ListenerAdapter
     @Override
     public void onMessageReceived(MessageReceivedEvent event)
     {
-        if (!event.getAuthor().isBot() && CommandTable.INSTANCE.checkValid(event.getMessage().getContent()))
+        if (!event.getAuthor().isBot() && CommandTable.INSTANCE.checkValid(event.getMessage().getContent().toLowerCase()))
         {
             Host host = shard.getHost(event.getGuild());
             
