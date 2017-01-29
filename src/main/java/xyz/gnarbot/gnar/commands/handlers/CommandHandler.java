@@ -10,16 +10,16 @@ import java.util.Arrays;
 
 public class CommandHandler extends CommandRegistry
 {
-    
+
     private final Host host;
-    
+
     private int requests = 0;
-    
+
     public CommandHandler(Host host)
     {
         this.host = host;
     }
-    
+
     /**
      * Extract command classes/instances from CommandDistributor
      * and register it in this handler.
@@ -30,7 +30,7 @@ public class CommandHandler extends CommandRegistry
     {
         distributor.getCommands().forEach(this::registerCommand);
     }
-    
+
     /**
      * Call the command based on the message content.
      *
@@ -39,28 +39,28 @@ public class CommandHandler extends CommandRegistry
     public void callCommand(MessageReceivedEvent event)
     {
         String content = event.getMessage().getContent();
-    
+
         if (!content.startsWith(Bot.getToken())) return;
-        
+
         // Tokenize the message.
         String[] tokens = content.split(" ");
-    
+
         String label = tokens[0].substring(Bot.getToken().length()).toLowerCase();
-        
+
         String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
-    
+
         Note note = host.noteOf(event.getMessage());
         User user = host.getUserHandler().asUser(event.getMember());
-    
+
         CommandExecutor cmd = getRegistry().get(label);
         if (cmd == null) return;
-    
+
         if (cmd.getClearance().getValue() > user.getClearance().getValue())
         {
             note.error("Insufficient clearance.");
             return;
         }
-    
+
         try
         {
             requests++;
@@ -78,7 +78,7 @@ public class CommandHandler extends CommandRegistry
 //                note.replyEmbed("Debug", sj.toString());
 //            }
             cmd.execute(note, label, args);
-            
+
         }
         catch (RuntimeException e)
         {
@@ -86,7 +86,7 @@ public class CommandHandler extends CommandRegistry
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Return the amount of successful requests on this command handler.
      *
