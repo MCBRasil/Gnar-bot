@@ -13,41 +13,34 @@ import javax.script.ScriptException
         clearance = Clearance.BOT_MASTER,
         showInHelp = false
 )
-class JavascriptCommand : CommandExecutor()
-{
+class JavascriptCommand : CommandExecutor() {
     val blocked = arrayListOf("leave", "delete", "Guilds", "Token", "Channels", "voice",
             "remove", "ByName", "ById", "Controller", "Manager", "Permissions")
-    
-    override fun execute(message : Note, label : String, args : Array<out String>)
-    {
+
+    override fun execute(note: Note, args: Array<String>) {
         val engine = ScriptEngineManager().getEngineByName("javascript")
-        
-        engine.put("jda", message.jda)
-        engine.put("message", message)
-        engine.put("host", message.host)
-        engine.put("channel", message.channel)
-        
+
+        engine.put("jda", note.jda)
+        engine.put("message", note)
+        engine.put("host", note.host)
+        engine.put("channel", note.channel)
+
         val script = args.joinToString(" ")
 
-        if (blocked.any { script.contains(it, true) })
-        {
-            message.error("JavaScript Eval Expression may be malicious, canceling.")
+        if (blocked.any { script.contains(it, true) }) {
+            note.error("JavaScript Eval Expression may be malicious, canceling.")
             return
         }
-        
-        val result : Any? = try
-        {
+
+        val result: Any? = try {
             engine.eval(script)
-        }
-        catch (e : ScriptException)
-        {
-            message.error("The error `$e` occurred while executing the JavaScript statement.")
+        } catch (e: ScriptException) {
+            note.error("The error `$e` occurred while executing the JavaScript statement.")
             return
         }
-        
-        if (result != null)
-        {
-            message.replyEmbed("Java Script", "Running `$script`.\n\n**Result:**\n\n" + result.toString())
+
+        if (result != null) {
+            note.replyEmbed("Java Script", "Running `$script`.\n\n**Result:**\n\n" + result.toString())
         }
     }
 }

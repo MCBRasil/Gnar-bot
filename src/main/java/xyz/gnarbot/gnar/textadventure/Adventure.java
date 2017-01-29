@@ -14,56 +14,54 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Adventure
-{
+public class Adventure {
     private static HashMap<User, Adventure> adventures = new HashMap<>();
-    
+
     private static int lastID = 0;
-    
+
     private Random random;
-    
+
     private User user;
-    
+
     private UUID gameID;
-    
+
     private Color defaultMessageColor = new Color(39, 255, 9);
-    
+
     private String lastResponse;
-    
+
     private Long startTime;
-    
+
     private ArrayList<Area> areas = new ArrayList<>();
-    
+
     private ArrayList<String> actionList = new ArrayList<>();
-    
+
     private String heroName;
 
 
 	/* -------------------------------------------------- */
-    
+
     private Adventure.STATE state;
-    
+
     private String stateRelation;
-    
+
     private String lastMessage;
-    
+
     private Message lastSentMessage;
-    
+
     private Inventory inventory = null;
-    
+
     private Area currentArea, startArea;
-    
+
     private int areasFound = 0;
-    
+
     private Event currentEvent;
-    
+
     private AdventureGrid grid;
-    
+
     private String gender = "";
-    
-    public Adventure(User u, Note note)
-    {
-        
+
+    public Adventure(User u, Note note) {
+
         adventures.put(u, this);
         this.user = u;
         this.startTime = System.currentTimeMillis();
@@ -81,68 +79,52 @@ public class Adventure
                 "dialog options, " + "use the `_adventure` command!*" + "\n ➜ *Example: `_adventure " + u
                 .getName() + " the Great`*", Bot.getColor());
     }
-    
-    public static boolean hasAdventure(User u)
-    {
+
+    public static boolean hasAdventure(User u) {
         return adventures.containsKey(u);
     }
-    
-    public static Adventure getAdventure(User u, Note n)
-    {
-        
-        if (adventures.containsKey(u))
-        {
+
+    public static Adventure getAdventure(User u, Note n) {
+
+        if (adventures.containsKey(u)) {
             return adventures.get(u);
-        }
-        else
-        {
+        } else {
             return new Adventure(u, n);
         }
     }
-    
-    public static int getLastID()
-    {
+
+    public static int getLastID() {
         return lastID;
     }
-    
-    public void logAction(String action)
-    {
+
+    public void logAction(String action) {
         actionList.add("(" + new SimpleDateFormat("HH:mm:ss.SSS").format(new Date(System.currentTimeMillis())) + ") "
                 + action);
         System.out.println("(" + new SimpleDateFormat("HH:mm:ss.SSS").format(new Date(System.currentTimeMillis())) +
                 ") " + action);
     }
-    
-    public String getPlayerIcon()
-    {
-        if (gender.equalsIgnoreCase("selecting"))
-        {
+
+    public String getPlayerIcon() {
+        if (gender.equalsIgnoreCase("selecting")) {
             return "http://i.imgur.com/HxWJti2.png";
-        }
-        else
-        {
-            if (gender.equalsIgnoreCase("boy"))
-            {
+        } else {
+            if (gender.equalsIgnoreCase("boy")) {
                 return "http://i.imgur.com/0Uh68PW.png";
-            }
-            else if (gender.equalsIgnoreCase("girl"))
-            {
+            } else if (gender.equalsIgnoreCase("girl")) {
                 return "http://i.imgur.com/tgkBMjv.png";
             }
             return null;
         }
     }
-    
-    public void sendMessage(Note n, String message)
-    {
+
+    public void sendMessage(Note n, String message) {
         this.lastMessage = message;
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
                 .addBlankField(true)
                 .setDescription(message)
                 .setColor(getDefaultMessageColor());
-        if (getPlayerIcon() != null)
-        {
+        if (getPlayerIcon() != null) {
             eb.setThumbnail(getPlayerIcon());
         }
         MessageEmbed embed = eb.build();
@@ -152,17 +134,15 @@ public class Adventure
         n.getChannel().sendMessage(m).queue();
         lastSentMessage = m;
     }
-    
-    public void sendMessage(Note n, String message, Color color)
-    {
+
+    public void sendMessage(Note n, String message, Color color) {
         this.lastMessage = message;
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
                 .addBlankField(true)
                 .setDescription(message)
                 .setColor(color);
-        if (getPlayerIcon() != null)
-        {
+        if (getPlayerIcon() != null) {
             eb.setThumbnail(getPlayerIcon());
         }
         MessageEmbed embed = eb.build();
@@ -172,9 +152,8 @@ public class Adventure
         n.getChannel().sendMessage(m).queue();
         lastSentMessage = m;
     }
-    
-    public void sendMessage(Note n, String message, String url)
-    {
+
+    public void sendMessage(Note n, String message, String url) {
         this.lastMessage = message;
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
@@ -189,9 +168,8 @@ public class Adventure
         n.getChannel().sendMessage(m).queue();
         lastSentMessage = m;
     }
-    
-    public void sendMessage(Note n, String message, String url, Color color)
-    {
+
+    public void sendMessage(Note n, String message, String url, Color color) {
         this.lastMessage = message;
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
@@ -206,9 +184,8 @@ public class Adventure
         n.getChannel().sendMessage(m).queue();
         lastSentMessage = m;
     }
-    
-    public void sendInformativeMessage(Note n, String message)
-    {
+
+    public void sendInformativeMessage(Note n, String message) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
                 .addBlankField(true)
@@ -221,10 +198,9 @@ public class Adventure
         Message m = mb.build();
         n.getChannel().sendMessage(m).queue();
     }
-    
-    public void sendLastMessage(Note n, String extra)
-    {
-        
+
+    public void sendLastMessage(Note n, String extra) {
+
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("*Sending last sent message...*")
                 .addBlankField(true)
@@ -237,29 +213,23 @@ public class Adventure
         Message m = mb.build();
         n.getChannel().sendMessage(m).queue();
     }
-    
-    public void getResponseFromEvent(Event e, String response)
-    {
-        if (e instanceof FirstBagEvent && response.equalsIgnoreCase("completed"))
-        {
+
+    public void getResponseFromEvent(Event e, String response) {
+        if (e instanceof FirstBagEvent && response.equalsIgnoreCase("completed")) {
             this.inventory = new Inventory(9);
         }
     }
-    
-    public void parseResponse(Note n, String response, boolean fromEvent)
-    {
-        if (state == STATE.RESPONSE_REQUIRED && stateRelation.equalsIgnoreCase("EVENTRESPONSE"))
-        {
+
+    public void parseResponse(Note n, String response, boolean fromEvent) {
+        if (state == STATE.RESPONSE_REQUIRED && stateRelation.equalsIgnoreCase("EVENTRESPONSE")) {
             this.currentEvent.parseResponse(this, n, response);
-            if (this.currentEvent.hasCompletedEvent())
-            {
+            if (this.currentEvent.hasCompletedEvent()) {
                 this.stateRelation = "move";
                 state = STATE.WAITING;
             }
             return;
         }
-        if (stateRelation.equalsIgnoreCase("waitname") && this.state == STATE.WAITING_FOR_NAME)
-        {
+        if (stateRelation.equalsIgnoreCase("waitname") && this.state == STATE.WAITING_FOR_NAME) {
             setHeroName(response);
             this.grid.beginBuild();
             gender = "selecting";
@@ -270,11 +240,8 @@ public class Adventure
             stateRelation = "selectGender";
             logAction("Decided that you would call yourself '" + getHeroName() + "'");
             areasFound++;
-        }
-        else if (stateRelation.equalsIgnoreCase("selectGender") && this.state == STATE.WAITING)
-        {
-            if (response.equalsIgnoreCase("boy") || response.equalsIgnoreCase("girl"))
-            {
+        } else if (stateRelation.equalsIgnoreCase("selectGender") && this.state == STATE.WAITING) {
+            if (response.equalsIgnoreCase("boy") || response.equalsIgnoreCase("girl")) {
                 startArea = this.grid.getAreaAtLocation(this.grid.getCurrentX(), this.grid.getCurrentY());
                 setGender(response.toLowerCase());
                 state = STATE.WAITING;
@@ -285,35 +252,25 @@ public class Adventure
                         + "your very own adventure!\nThe world is yours to claim! Go out and claim it!\n\n ➜ *To " +
                         "move, " + "use the `_adventure` command!*\n Example: *`_adventure up`* will try to move you " +
                         "up\n ➜ *To " + "view your map, use the `_adventure map` command!*");
-            }
-            else
-            {
+            } else {
                 sendMessage(n, "I'm unsure of what you meant by `" + response + "`. Type `_adventure help` to bring "
                         + "up the Help Menu.", Bot
                         .getColor()); // Placeholder until I add the moving system.
             }
-        }
-        else
-        {
-            if (state == STATE.WAITING && stateRelation.equalsIgnoreCase("move"))
-            {
+        } else {
+            if (state == STATE.WAITING && stateRelation.equalsIgnoreCase("move")) {
                 lastResponse = response;
                 if (response.equalsIgnoreCase("up") || response.equalsIgnoreCase("down") || response.equalsIgnoreCase
                         ("left") || response
                         .equalsIgnoreCase("right") || response.equalsIgnoreCase("north") || response.equalsIgnoreCase
                         ("south") || response
-                        .equalsIgnoreCase("east") || response.equalsIgnoreCase("west"))
-                {
-                    if (!getGrid().moveInDirection(DIRECTION.getFromString(response)))
-                    {
+                        .equalsIgnoreCase("east") || response.equalsIgnoreCase("west")) {
+                    if (!getGrid().moveInDirection(DIRECTION.getFromString(response))) {
                         sendMessage(n, "Oops! There's something blocking your way!", "http://i.imgur" + "" +
                                 ".com/R9gfp56.png", Bot
                                 .getColor());
-                    }
-                    else
-                    {
-                        if (getGrid().getCurrentArea().isNewLocation())
-                        {
+                    } else {
+                        if (getGrid().getCurrentArea().isNewLocation()) {
                             areasFound++;
                         }
                         getGrid().getCurrentArea().discover();
@@ -322,8 +279,7 @@ public class Adventure
                                 .getType()
                                 .getName(), getGrid().getCurrentArea().getType().getUrl(), Bot.getColor());
                         if (getGrid().getCurrentArea().getRelatedEvent() != null && !getGrid().getCurrentArea()
-                                .hasCompletedEvent())
-                        {
+                                .hasCompletedEvent()) {
                             currentEvent = getGrid().getCurrentArea().getRelatedEvent().runEvent(this, n);
                             state = STATE.RESPONSE_REQUIRED;
                             stateRelation = "EVENTRESPONSE";
@@ -337,129 +293,104 @@ public class Adventure
                     .getColor()); // Placeholder until I add the moving system.
         }
     }
-    
-    public Color getDefaultMessageColor()
-    {
+
+    public Color getDefaultMessageColor() {
         return defaultMessageColor;
     }
-    
-    public String getLastResponse()
-    {
+
+    public String getLastResponse() {
         return lastResponse;
     }
-    
-    public Random getRandom()
-    {
+
+    public Random getRandom() {
         return random;
     }
-    
-    public User getUser()
-    {
+
+    public User getUser() {
         return user;
     }
-    
-    public UUID getGameID()
-    {
+
+    public UUID getGameID() {
         return gameID;
     }
-    
-    public Long getStartTime()
-    {
+
+    public Long getStartTime() {
         return startTime;
     }
-    
-    public ArrayList<Area> getAreas()
-    {
+
+    public ArrayList<Area> getAreas() {
         return areas;
     }
-    
-    public ArrayList<String> getActionList()
-    {
+
+    public ArrayList<String> getActionList() {
         return actionList;
     }
-    
-    public String getHeroName()
-    {
+
+    public String getHeroName() {
         return heroName;
     }
-    
-    public void setHeroName(String heroName)
-    {
+
+    public void setHeroName(String heroName) {
         this.heroName = heroName;
     }
-    
-    public STATE getState()
-    {
+
+    public STATE getState() {
         return state;
     }
-    
-    public void setState(STATE state)
-    {
+
+    public void setState(STATE state) {
         this.state = state;
     }
-    
-    public String getStateRelation()
-    {
+
+    public String getStateRelation() {
         return stateRelation;
     }
-    
-    public void setStateRelation(String stateRelation)
-    {
+
+    public void setStateRelation(String stateRelation) {
         this.stateRelation = stateRelation;
     }
-    
-    public String getLastMessage()
-    {
+
+    public String getLastMessage() {
         return lastMessage;
     }
-    
-    public Message getLastSentMessage()
-    {
+
+    public Message getLastSentMessage() {
         return lastSentMessage;
     }
-    
-    public Inventory getInventory()
-    {
+
+    public Inventory getInventory() {
         return inventory;
     }
-    
-    public Area getCurrentArea()
-    {
+
+    public Area getCurrentArea() {
         return currentArea;
     }
-    
-    public Area getStartArea()
-    {
+
+    public Area getStartArea() {
         return startArea;
     }
-    
-    public int getAreasFound()
-    {
+
+    public int getAreasFound() {
         return areasFound;
     }
-    
-    public Event getCurrentEvent()
-    {
+
+    public Event getCurrentEvent() {
         return currentEvent;
     }
-    
-    public AdventureGrid getGrid()
-    {
+
+    public AdventureGrid getGrid() {
         return grid;
     }
-    
-    public String getGender()
-    {
+
+    public String getGender() {
         return gender;
     }
-    
-    public void setGender(String gender)
-    {
+
+    public void setGender(String gender) {
         this.gender = gender;
     }
-    
-    protected enum STATE
-    {
+
+    protected enum STATE {
         WORKING, WAITING, INTERACTING, RESPONSE_REQUIRED, WAITING_FOR_NAME
     }
 }

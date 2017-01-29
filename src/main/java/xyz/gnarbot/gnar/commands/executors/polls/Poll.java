@@ -1,23 +1,19 @@
 package xyz.gnarbot.gnar.commands.executors.polls;
 
-public class Poll
-{
+public class Poll {
     private int pollid;
-    
-    public Poll()
-    {
+
+    public Poll() {
         // Poll identifier.
     }
-    
-    public int getPollid()
-    {
+
+    public int getPollid() {
         return pollid;
     }
-    
-    public void setPollid(int pollid)
-    {
+
+    public void setPollid(int pollid) {
         this.pollid = pollid;
     }
-    
+
     public void startPoll() {}
 }

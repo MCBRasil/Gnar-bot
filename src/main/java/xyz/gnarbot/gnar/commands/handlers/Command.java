@@ -14,39 +14,38 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Command
-{
+public @interface Command {
     /**
      * @return The aliases of this command.
      */
     String[] aliases();
-    
+
     /**
      * @return The description of this command.
      */
     String description() default "No description provided.";
-    
+
     /**
      * @return The usage of this command.
      */
     String usage() default "";
-    
+
     /**
      * @return Flag to show this command in help.
      */
     boolean showInHelp() default true;
-    
+
     /**
-     * @return If the command require a separate instance.
+     * @return If the command require a copy instance.
      */
-    boolean separate() default false;
-    
+    boolean copy() default false;
+
     /**
      * @return if the command have fields that needs
      * to be injected.
      */
     boolean inject() default false;
-    
+
     /**
      * @return The permission required for this command.
      */

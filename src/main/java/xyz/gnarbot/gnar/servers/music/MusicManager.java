@@ -1,9 +1,12 @@
-package xyz.gnarbot.gnar.commands.executors.music;
+package xyz.gnarbot.gnar.servers.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 
-public class GuildMusicManager {
+public class MusicManager {
+
+    public final AudioPlayerManager manager;
+
     /**
      * Audio player for the guild.
      */
@@ -17,12 +20,14 @@ public class GuildMusicManager {
      */
     public final AudioPlayerSendHandler sendHandler;
 
+
     /**
      * Creates a player and a track scheduler.
+     *
      * @param manager Audio player manager to use for creating the player.
      */
-    public GuildMusicManager(AudioPlayerManager manager)
-    {
+    public MusicManager(AudioPlayerManager manager) {
+        this.manager = manager;
         player = manager.createPlayer();
         scheduler = new TrackScheduler(player);
         sendHandler = new AudioPlayerSendHandler(player);

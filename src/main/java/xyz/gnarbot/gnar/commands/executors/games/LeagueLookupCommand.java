@@ -5,13 +5,11 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
 @Command(aliases = {"league", "lol"},
-         usage = "(LOL Username)",
-         description = "Look up Leauge of Legends statistics " + "of a player.")
-public class LeagueLookupCommand extends CommandExecutor
-{
+        usage = "(LOL Username)",
+        description = "Look up Leauge of Legends statistics " + "of a player.")
+public class LeagueLookupCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String label, String[] args)
-    {
+    public void execute(Note note, String[] args) {
         note.error("This is being worked on right now, spam Maeyrl to fix me.");
 
         /*

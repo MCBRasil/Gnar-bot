@@ -14,137 +14,104 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-public class AdventureGrid
-{
-    
+public class AdventureGrid {
+
     private Area[][] xygrid = new Area[15][15];
-    
+
     private Adventure relatedAdventure;
-    
+
     private int maxSize = 15; // Indicates the maximum and minimum x and y values (convert to negative for minimum)
-    
+
     private int currentX = 7, currentY = 7;
-    
-    public AdventureGrid(Adventure relatedAdventure)
-    {
+
+    public AdventureGrid(Adventure relatedAdventure) {
         this.relatedAdventure = relatedAdventure;
     }
-    
-    public int getMaxSize()
-    {
+
+    public int getMaxSize() {
         return maxSize;
     }
-    
-    public void setMaxSize(int maxSize)
-    {
+
+    public void setMaxSize(int maxSize) {
         this.maxSize = maxSize;
     }
-    
-    public Adventure getRelatedAdventure()
-    {
+
+    public Adventure getRelatedAdventure() {
         return relatedAdventure;
     }
-    
-    public Area getAreaAtLocation(int x, int y)
-    {
+
+    public Area getAreaAtLocation(int x, int y) {
         return (xygrid[x][y] != null) ? xygrid[x][y] : null;
     }
-    
-    public int getCurrentX()
-    {
+
+    public int getCurrentX() {
         return currentX;
     }
-    
-    public void setCurrentX(int currentX)
-    {
+
+    public void setCurrentX(int currentX) {
         this.currentX = currentX;
     }
-    
-    public int getCurrentY()
-    {
+
+    public int getCurrentY() {
         return currentY;
     }
-    
-    public void setCurrentY(int currentY)
-    {
+
+    public void setCurrentY(int currentY) {
         this.currentY = currentY;
     }
-    
-    public Area getCurrentArea()
-    {
+
+    public Area getCurrentArea() {
         return getAreaAtLocation(getCurrentX(), getCurrentY());
     }
-    
-    public Area getAreaInDirection(DIRECTION dir)
-    {
-        if (dir == DIRECTION.NORTH)
-        {
+
+    public Area getAreaInDirection(DIRECTION dir) {
+        if (dir == DIRECTION.NORTH) {
             return getAreaAtLocation(getCurrentX(), getCurrentY() - 1);
         }
-        if (dir == DIRECTION.SOUTH)
-        {
+        if (dir == DIRECTION.SOUTH) {
             return getAreaAtLocation(getCurrentX(), getCurrentY() + 1);
         }
-        if (dir == DIRECTION.EAST)
-        {
+        if (dir == DIRECTION.EAST) {
             return getAreaAtLocation(getCurrentX() + 1, getCurrentY());
         }
-        if (dir == DIRECTION.WEST)
-        {
+        if (dir == DIRECTION.WEST) {
             return getAreaAtLocation(getCurrentX() - 1, getCurrentY());
         }
         return null;
     }
-    
-    public boolean moveInDirection(DIRECTION dir)
-    {
-        if (dir == DIRECTION.NORTH)
-        {
-            if (getAreaInDirection(dir).getType() != LOCATION.DEAD_END)
-            {
+
+    public boolean moveInDirection(DIRECTION dir) {
+        if (dir == DIRECTION.NORTH) {
+            if (getAreaInDirection(dir).getType() != LOCATION.DEAD_END) {
                 setCurrentY(getCurrentY() - 1);
-            }
-            else
-            {
+            } else {
                 getAreaInDirection(dir).discover();
                 return false;
             }
             return true;
         }
-        if (dir == DIRECTION.SOUTH)
-        {
-            if (getAreaInDirection(dir).getType() != LOCATION.DEAD_END)
-            {
+        if (dir == DIRECTION.SOUTH) {
+            if (getAreaInDirection(dir).getType() != LOCATION.DEAD_END) {
                 setCurrentY(getCurrentY() + 1);
-            }
-            else
-            {
+            } else {
                 getAreaInDirection(dir).discover();
                 return false;
             }
             return true;
         }
-        if (dir == DIRECTION.EAST)
-        {
-            if (getAreaInDirection(dir).getType() != LOCATION.DEAD_END)
-            {
+        if (dir == DIRECTION.EAST) {
+            if (getAreaInDirection(dir).getType() != LOCATION.DEAD_END) {
                 setCurrentX(getCurrentX() + 1);
-            }
-            else
-            {
+            } else {
                 getAreaInDirection(dir).discover();
                 return false;
             }
             return true;
         }
-        if (dir == DIRECTION.WEST)
-        {
-            if (getAreaInDirection(dir).getType() != LOCATION.DEAD_END)
-            {
+        if (dir == DIRECTION.WEST) {
+            if (getAreaInDirection(dir).getType() != LOCATION.DEAD_END) {
                 setCurrentX(getCurrentX() - 1);
-            }
-            else
-            {
+            } else {
                 getAreaInDirection(dir).discover();
                 return false;
             }
@@ -152,33 +119,23 @@ public class AdventureGrid
         }
         return false;
     }
-    
-    public void beginBuild()
-    {
+
+    public void beginBuild() {
         int curX, curY;
-        for (curX = 0; curX < getMaxSize(); curX++)
-        {
-            for (curY = 0; curY < getMaxSize(); curY++)
-            {
-                if (curX == 0 || curX == getMaxSize() - 1 || curY == 0 || curY == getMaxSize() - 1)
-                {
+        for (curX = 0; curX < getMaxSize(); curX++) {
+            for (curY = 0; curY < getMaxSize(); curY++) {
+                if (curX == 0 || curX == getMaxSize() - 1 || curY == 0 || curY == getMaxSize() - 1) {
                     Area a = new Area(relatedAdventure, LOCATION.DEAD_END);
                     a.discover();
                     xygrid[curX][curY] = a;
-                }
-                else
-                {
+                } else {
                     Area a;
-                    if (curX == currentX && curY == currentY)
-                    {
+                    if (curX == currentX && curY == currentY) {
                         a = new Area(relatedAdventure, LOCATION.CLEARING);
-                    }
-                    else
-                    {
+                    } else {
                         a = new Area(relatedAdventure);
                     }
-                    if (getRelatedAdventure().getHeroName().toLowerCase().contains("cheat"))
-                    {
+                    if (getRelatedAdventure().getHeroName().toLowerCase().contains("cheat")) {
                         a.discover();
                     }
                     xygrid[curX][curY] = a;
@@ -186,9 +143,8 @@ public class AdventureGrid
             }
         }
     }
-    
-    public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font)
-    {
+
+    public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
         // Get the FontMetrics
         FontMetrics metrics = g.getFontMetrics(font);
         int x = (rect.width - metrics.stringWidth(text)) / 2;
@@ -196,14 +152,12 @@ public class AdventureGrid
         g.setFont(font);
         g.drawString(text, x, y);
     }
-    
-    public void sendMap(Note n)
-    {
+
+    public void sendMap(Note n) {
         /*String rtrn = "";
 
 		return rtrn;*/
-        try
-        {
+        try {
 
 			/*
             BufferedImage map = new BufferedImage(getMaxSize() * 64, (getMaxSize() * 64) + 200, BufferedImage
@@ -225,85 +179,72 @@ public class AdventureGrid
 			canvas.snapshot(null, new WritableImage(getMaxSize() * 64, (getMaxSize() * 64) + 200));
 			canvas.getGraphicsContext2D().fillRect(0, 0, canvas.getHeight(), canvas.getWidth());
 			canvas.getGraphicsContext2D().setFontSmoothingType(FontSmoothingType.GRAY);*/
-            
+
             ImageBuilder builder = new ImageBuilder();
             File mapFile = builder.runBuilder();
-            if (mapFile == null)
-            {
+            if (mapFile == null) {
                 n.replyEmbedRaw("**Error**", "Couldn't create map file. Notify @Gatt#9711 please.", Color.RED);
                 return;
             }
-            
+
             Bot.INSTANCE.getScheduler().schedule(() ->
             {
-                try
-                {
+                try {
                     Note m = n.info("Sending your map!").get();
                     n.getChannel().sendFile(mapFile, m).queue();
-                }
-                catch (IOException | ExecutionException | InterruptedException e)
-                {
+                } catch (IOException | ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
             }, 1, TimeUnit.SECONDS);
-            
+
             Bot.INSTANCE.getScheduler().schedule(() ->
             {
-                mapFile.delete();
+                if (!mapFile.delete()) {
+                    Bot.getLOG().warn("Unable to delete map file.");
+                }
                 mapFile.deleteOnExit();
             }, 10, TimeUnit.SECONDS);
-            
-        }
-        catch (Exception e)
-        {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
-    public class ImageBuilder extends JComponent
-    {
+
+    public class ImageBuilder extends JComponent {
         private Image img;
-        
+
         private Integer x, y, resizeX, resizeY;
-        
-        public ImageBuilder setImg(Image img)
-        {
+
+        public ImageBuilder setImg(Image img) {
             this.img = img;
             return this;
         }
-        
-        public void setResizeX(int resizeX)
-        {
+
+        public void setResizeX(int resizeX) {
             this.resizeX = resizeX;
         }
-        
-        public void setResizeY(int resizeY)
-        {
+
+        public void setResizeY(int resizeY) {
             this.resizeY = resizeY;
         }
-        
-        public ImageBuilder setX(int x)
-        {
+
+        public ImageBuilder setX(int x) {
             this.x = x;
             return this;
         }
-        
-        public ImageBuilder setY(int y)
-        {
+
+        public ImageBuilder setY(int y) {
             this.y = y;
             return this;
         }
-        
-        public File runBuilder()
-        {
+
+        public File runBuilder() {
             final File mapFile = new File("_temp/adventures/maps/" + getRelatedAdventure().getGameID()
                     .toString() + "map.png");
-            if (!mapFile.exists())
-            {
+            if (!mapFile.exists()) {
                 mapFile.mkdirs();
             }
-            try
-            {
+            try {
                 BufferedImage map = new BufferedImage(getMaxSize() * 64, (getMaxSize() * 64) + 200, BufferedImage
                         .TYPE_INT_ARGB);
                 Graphics2D graphics = map.createGraphics();
@@ -313,37 +254,26 @@ public class AdventureGrid
                 graphics.setColor(Color.BLACK);
                 int curX, curY;
                 int printX = 0, printY = 200;
-                for (curY = 0; curY < getMaxSize(); curY++)
-                {
-                    for (curX = 0; curX < getMaxSize(); curX++)
-                    {
+                for (curY = 0; curY < getMaxSize(); curY++) {
+                    for (curX = 0; curX < getMaxSize(); curX++) {
                         Area a = getAreaAtLocation(curX, curY);
-                        if (curY == currentY && curX == currentX)
-                        {
+                        if (curY == currentY && curX == currentX) {
                             Image img = ImageIO.read(new File
                                     ("_DATA/adventureresources/locationicons/64/position-marker.png"));
                             setImg(img).setX(printX).setY(printY).paintComponent(graphics);
-                        }
-                        else
-                        {
-                            if (a != null)
-                            {
-                                if (a.isDiscovered())
-                                {
+                        } else {
+                            if (a != null) {
+                                if (a.isDiscovered()) {
                                     Image img = ImageIO.read(new File("_DATA/adventureresources/locationicons/64/" +
                                             a.getType()
-                                            .getFile() + ".png"));
+                                                    .getFile() + ".png"));
                                     setImg(img).setX(printX).setY(printY).paintComponent(graphics);
-                                }
-                                else
-                                {
+                                } else {
                                     Image img = ImageIO.read(new File
                                             ("_DATA/adventureresources/locationicons/64/unknown.png"));
                                     setImg(img).setX(printX).setY(printY).paintComponent(graphics);
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 Image img = ImageIO.read(new File("_DATA/adventureresources/locationicons/64/unknown" +
                                         ".png"));
                                 setImg(img).setX(printX).setY(printY).paintComponent(graphics);
@@ -370,27 +300,21 @@ public class AdventureGrid
                         () * 64, 200), graphics
                         .getFont());
                 ImageIO.write(map, "png", mapFile);
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
                 return null;
             }
             return mapFile;
         }
-        
+
         @Override
-        public void paintComponent(Graphics g)
-        {
+        public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            if (resizeX == null)
-            {
+            if (resizeX == null) {
                 g.drawImage(img, x, y, this); // draw background image
-            }
-            else
-            {
+            } else {
                 g.drawImage(img, x, y, resizeX, resizeY, this);
-                
+
             }
         }
     }

@@ -9,27 +9,22 @@ import xyz.gnarbot.gnar.utils.Note;
 // TODO BROKEN AF CUZ AGE DIALOG ON SITE
 @Deprecated
 @Command(aliases = "garfield", showInHelp = false)
-public class GarfieldCommand extends CommandExecutor
-{
+public class GarfieldCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String label, String[] args)
-    {
-        try
-        {
+    public void execute(Note note, String[] args) {
+        try {
             Document document;
-            
+
             document = Jsoup.connect("https://garfield.com/comic/random").followRedirects(true).get();
-            
+
             String link = document.getElementsByClass("img-responsive").get(0).absUrl("src");
-            
+
             String builder = "Garfield" + "\n" + "Date: **" + link.substring(link.lastIndexOf("/") + 1, link
                     .lastIndexOf(".")) + "**\n" + "Link: " + link;
-            
+
             //note.replyRaw(builder);
             note.error("Garfield command is broken right now.");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             note.error("Unable to grab Garfield comic.");
             e.printStackTrace();
         }

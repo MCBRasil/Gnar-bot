@@ -14,68 +14,53 @@ import xyz.gnarbot.gnar.utils.Note;
 import java.util.Random;
 
 @Command(aliases = {"rule", "rule34"},
-         usage = "[query]",
-         description = "Pulls a random rule 34 article from your keywords",
-         showInHelp = false)
-public class Rule34Command extends CommandExecutor
-{
+        usage = "[query]",
+        description = "Pulls a random rule 34 article from your keywords",
+        showInHelp = false)
+public class Rule34Command extends CommandExecutor {
     @Override
-    public void execute(Note note, String label, String[] args)
-    {
-        if (note.getAuthor().hasRole("Fucking Teemo"))
-        {
+    public void execute(Note note, String[] args) {
+        if (note.getAuthor().hasRole("Fucking Teemo")) {
             String tag = "";
-            try
-            {
-                for (String s : args)
-                {
+            try {
+                for (String s : args) {
                     if (s.equals("_rule")) continue;
-                    if (tag.equals(""))
-                    {
+                    if (tag.equals("")) {
                         tag += ("&tags=" + s);
-                    }
-                    else
-                    {
+                    } else {
                         tag += ("+" + s);
                     }
                 }
+            } catch (Exception ignore) {
             }
-            catch (Exception ignore)
-            {
-            }
-            
-            try
-            {
-                
+
+            try {
+
                 String xml = "http://rule34.xxx/index.php?page=dapi&s=post&q=index" + tag;
-                
+
                 Document document = Jsoup.connect(xml).parser(Parser.xmlParser()).get();
-                
+
                 Elements posts = document.getElementsByTag("post");
-                
+
                 int rand = new Random().nextInt(posts.size());
-                
+
                 Element target = posts.get(rand);
-                
+
                 String url;
-                
+
                 Attributes att = target.attributes();
-                
+
                 Attribute att2 = att.asList().get(2);
-                
+
                 url = att2.getValue();
-                
+
                 note.replyRaw("http:" + url);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 note.error("Please refer to rule 35.");
             }
-        }
-        else
-        {
+        } else {
             note.error("Sorry, you must have the role `Fucking Teemo` to use this command!");
         }
-        
+
     }
 }

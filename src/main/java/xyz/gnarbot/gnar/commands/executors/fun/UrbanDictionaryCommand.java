@@ -12,15 +12,12 @@ import xyz.gnarbot.gnar.utils.Note;
 import java.util.StringJoiner;
 
 @Command(aliases = "ub")
-public class UrbanDictionaryCommand extends CommandExecutor
-{
+public class UrbanDictionaryCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String label, String[] args)
-    {
-        try
-        {
+    public void execute(Note note, String[] args) {
+        try {
             String query = StringUtils.join(args, "+");
-            
+
             JSONObject json = Unirest.get("https://mashape-community-urban-dictionary.p.mashape.com/define")
                     .queryString("term", query)
                     .header("X-Mashape-Key", Bot.INSTANCE.getAuthTokens().getProperty("mashape"))
@@ -28,22 +25,21 @@ public class UrbanDictionaryCommand extends CommandExecutor
                     .asJson()
                     .getBody()
                     .getObject();
-            
+
             JSONArray words = json.getJSONArray("list");
-            
+
             JSONObject word = words.getJSONObject(0);
-    
+
             StringJoiner sj = new StringJoiner("\n");
-            
+
             sj.add("Word: **[" + word.get("word") + "](" + word.get("permalink") + ")" + "**\n\n");
             sj.add("Definition: \n**[" + word.get("definition") + "]()**\n\n");
             sj.add("Example: \n**[" + word.get("example") + "]()**");
-            
+
             String logo = "https://s3.amazonaws.com/mashape-production-logos/apis/53aa4f67e4b0a9b1348da532_medium";
-            
+
             note.replyEmbedRaw("Urban Dictionary", sj.toString(), Bot.getColor(), logo);
-        }
-        catch (Exception e) { note.error("Could not find that word, rip u"); }
+        } catch (Exception e) { note.error("Could not find that word, rip u"); }
     }
-    
+
 }

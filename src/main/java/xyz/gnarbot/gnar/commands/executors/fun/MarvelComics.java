@@ -13,28 +13,24 @@ import xyz.gnarbot.gnar.utils.Note;
 import java.awt.*;
 
 @Command(aliases = {"marvel"}, usage = "(hero/villain name)", description = "Look up info on a Marvel character.")
-public class MarvelComics extends CommandExecutor
-{
+public class MarvelComics extends CommandExecutor {
     @Override
-    public void execute(Note note, String label, String[] args)
-    {
-        if (args.length == 0)
-        {
+    public void execute(Note note, String[] args) {
+        if (args.length == 0) {
             note.error("Please provide a name.");
             return;
         }
-        
-        try
-        {
+
+        try {
             long timeStamp = System.currentTimeMillis();
             String ts = String.valueOf(timeStamp);
             String apiKeyPu = Bot.INSTANCE.getAuthTokens().getProperty("marvelPuToken");
             String apiKeyPr = Bot.INSTANCE.getAuthTokens().getProperty("marvelPrToken");
             String preHash = timeStamp + apiKeyPr + apiKeyPu;
             String hash = DigestUtils.md5Hex(preHash);
-            
+
             String s = StringUtils.join(args, "+");
-            
+
             JSONObject jso = Unirest.get("http://gateway.marvel.com:80/v1/public/characters")
                     .queryString("apikey", apiKeyPu)
                     .queryString("hash", hash)
@@ -43,19 +39,17 @@ public class MarvelComics extends CommandExecutor
                     .asJson()
                     .getBody()
                     .getObject();
-            
+
             JSONObject je = jso.getJSONObject("data");
             JSONArray j2 = je.getJSONArray("results");
             JSONObject j = j2.getJSONObject(0);
-            
+
             JSONObject thumb = (JSONObject) j.get("thumbnail");
-            
+
             note.replyEmbedRaw("Marvel Characters",
                     StringUtils.capitalize(s.toLowerCase().replaceAll("\\+", " ")),
                     Color.RED, null, thumb.optString("path") + "." + thumb.optString("extension"));
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             note.error("Couldn't find that Marvel character.");
         }
     }

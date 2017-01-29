@@ -8,30 +8,26 @@ import xyz.gnarbot.gnar.utils.KUtils;
 import xyz.gnarbot.gnar.utils.Note;
 
 @Command(aliases = {"quote", "quotemsg"},
-         usage = "-msg_id",
-         description = "Quote somebody else..")
-public class QuoteCommand extends CommandExecutor
-{
+        usage = "-msg_id",
+        description = "Quote somebody else..")
+public class QuoteCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String label, String[] args)
-    {
-        if (args.length < 1)
-        {
+    public void execute(Note note, String[] args) {
+        if (args.length < 1) {
             note.error("Provide a message id.");
             return;
         }
-        try
-        {
+
+        try {
             for (String id : args) {
                 Message msg = note.getChannel().getMessageById(id).complete();
+
                 note.getChannel().sendMessage(KUtils.makeEmbed(null,
                         msg.getContent(), Bot.getColor(),
                         msg.getAuthor().getAvatarUrl(), null,
-                        note.getHost().getUserHandler().asUser(msg.getAuthor()))).queue();
+                        note.getHost().getPersonHandler().asPerson(msg.getAuthor()))).queue();
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             note.error("Could not find that message within this channel.");
         }
     }

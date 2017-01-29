@@ -2,21 +2,18 @@ package xyz.gnarbot.gnar.commands.handlers;
 
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import xyz.gnarbot.gnar.Bot;
-import xyz.gnarbot.gnar.members.User;
+import xyz.gnarbot.gnar.members.Person;
 import xyz.gnarbot.gnar.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.Arrays;
 
-public class CommandHandler extends CommandRegistry
-{
-
+public class CommandHandler extends CommandRegistry {
     private final Host host;
 
     private int requests = 0;
 
-    public CommandHandler(Host host)
-    {
+    public CommandHandler(Host host) {
         this.host = host;
     }
 
@@ -26,8 +23,7 @@ public class CommandHandler extends CommandRegistry
      *
      * @param distributor CommandDistributor instance.
      */
-    public void receiveFrom(CommandTable distributor)
-    {
+    public void receiveFrom(CommandTable distributor) {
         distributor.getCommands().forEach(this::registerCommand);
     }
 
@@ -36,8 +32,7 @@ public class CommandHandler extends CommandRegistry
      *
      * @param event Message event.
      */
-    public void callCommand(MessageReceivedEvent event)
-    {
+    public void callCommand(MessageReceivedEvent event) {
         String content = event.getMessage().getContent();
 
         if (!content.startsWith(Bot.getToken())) return;
@@ -46,42 +41,26 @@ public class CommandHandler extends CommandRegistry
         String[] tokens = content.split(" ");
 
         String label = tokens[0].substring(Bot.getToken().length()).toLowerCase();
-        
+
         String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
 
         Note note = host.noteOf(event.getMessage());
-        User user = host.getUserHandler().asUser(event.getMember());
+        Person person = host.getPersonHandler().asPerson(event.getMember());
 
-        CommandExecutor cmd = getRegistry().get(label);
+        CommandExecutor cmd = getCommand(label);
+
         if (cmd == null) return;
 
-        if (cmd.getClearance().getValue() > user.getClearance().getValue())
-        {
+        if (cmd.getClearance().getValue() > person.getClearance().getValue()) {
             note.error("Insufficient clearance.");
             return;
         }
 
-        try
-        {
+        try {
             requests++;
-//
-//            if (debug)
-//            {
-//                long start = System.currentTimeMillis();
-//
-//                cmd.execute(note, label, args);
-//
-//                long end = System.currentTimeMillis();
-//
-//                StringJoiner sj = new StringJoiner("\n");
-//
-//                note.replyEmbed("Debug", sj.toString());
-//            }
-            cmd.execute(note, label, args);
+            cmd.execute(note, args);
 
-        }
-        catch (RuntimeException e)
-        {
+        } catch (RuntimeException e) {
             note.error("**Exception**: " + e.getMessage());
             e.printStackTrace();
         }
@@ -92,8 +71,7 @@ public class CommandHandler extends CommandRegistry
      *
      * @return the amount of successful requests on this command handler.
      */
-    public int getRequests()
-    {
+    public int getRequests() {
         return requests;
     }
 }

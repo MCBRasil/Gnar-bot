@@ -7,17 +7,12 @@ import xyz.gnarbot.gnar.utils.Note;
 import java.util.Random;
 
 @Command(aliases = {"coinflip", "flip"}, description = "Heads or Tails?")
-public class CoinFlipCommand extends CommandExecutor
-{
+public class CoinFlipCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String label, String[] args)
-    {
-        if (new Random().nextInt(2) == 0)
-        {
+    public void execute(Note note, String[] args) {
+        if (new Random().nextInt(2) == 0) {
             note.replyEmbedRaw("Coin Flip", "**[Heads!]()**");
-        }
-        else
-        {
+        } else {
             note.replyEmbedRaw("Coin Flip", "**[Tails!]()**");
         }
     }

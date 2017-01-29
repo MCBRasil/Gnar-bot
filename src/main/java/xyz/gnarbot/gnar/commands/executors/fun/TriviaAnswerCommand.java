@@ -6,24 +6,18 @@ import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.TriviaQuestions;
 
 @Command(aliases = "answer")
-public class TriviaAnswerCommand extends CommandExecutor
-{
+public class TriviaAnswerCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String label, String[] args)
-    {
-        if (!TriviaQuestions.isSetup())
-        {
+    public void execute(Note note, String[] args) {
+        if (!TriviaQuestions.isSetup()) {
             TriviaQuestions.init();
         }
-        
-        try
-        {
+
+        try {
             note.info(TriviaQuestions.getAnswer(Integer.valueOf(args[0])));
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             note.error("Please enter a number.");
         }
     }
-    
+
 }

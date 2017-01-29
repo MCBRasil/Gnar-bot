@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar.commands.executors.music;
+package xyz.gnarbot.gnar.servers.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
@@ -11,16 +11,15 @@ import java.util.List;
 import java.util.Queue;
 
 public class TrackScheduler extends AudioEventAdapter {
-    private boolean repeating = false;
     final AudioPlayer player;
-    final Queue<AudioTrack> queue;
-    AudioTrack lastTrack;
+    private final Queue<AudioTrack> queue;
+    private boolean repeating = false;
+    private AudioTrack lastTrack;
 
     /**
      * @param player The audio player this scheduler uses
      */
-    public TrackScheduler(AudioPlayer player)
-    {
+    public TrackScheduler(AudioPlayer player) {
         this.player = player;
         this.queue = new LinkedList<>();
     }
@@ -30,14 +29,12 @@ public class TrackScheduler extends AudioEventAdapter {
      *
      * @param track The track to play or add to queue.
      */
-    public void queue(AudioTrack track)
-    {
+    public void queue(AudioTrack track) {
 
         // Calling startTrack with the noInterrupt set to true will start the track only if nothing is currently playing. If
         // something is playing, it returns false and does nothing. In that case the player was already playing so this
         // track goes to the queue instead.
-        if (!player.startTrack(track, true))
-        {
+        if (!player.startTrack(track, true)) {
             queue.offer(track);
         }
     }
@@ -45,20 +42,17 @@ public class TrackScheduler extends AudioEventAdapter {
     /**
      * Start the next track, stopping the current one if it is playing.
      */
-    public void nextTrack()
-    {
+    public void nextTrack() {
         // Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
         // giving null to startTrack, which is a valid argument and will simply stop the player.
         player.startTrack(queue.poll(), false);
     }
 
     @Override
-    public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason)
-    {
+    public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
         this.lastTrack = track;
         // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
-        if (endReason.mayStartNext)
-        {
+        if (endReason.mayStartNext) {
             if (repeating)
                 player.startTrack(lastTrack.makeClone(), false);
             else
@@ -67,18 +61,23 @@ public class TrackScheduler extends AudioEventAdapter {
 
     }
 
-    public boolean isRepeating()
-    {
+    public boolean isRepeating() {
         return repeating;
     }
 
-    public void setRepeating(boolean repeating)
-    {
+    public void setRepeating(boolean repeating) {
         this.repeating = repeating;
     }
 
-    public void shuffle()
-    {
+    public void shuffle() {
         Collections.shuffle((List<?>) queue);
+    }
+
+    public AudioTrack getLastTrack() {
+        return lastTrack;
+    }
+
+    public Queue<AudioTrack> getQueue() {
+        return queue;
     }
 }

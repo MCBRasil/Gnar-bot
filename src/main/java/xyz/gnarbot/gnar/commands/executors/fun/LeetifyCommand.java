@@ -9,10 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Command(aliases = {"leet"}, usage = "(string)", description = "Leet it!")
-public class LeetifyCommand extends CommandExecutor
-{
-    private static final Map<String, String> substitutions = new HashMap<String, String>()
-    {{
+public class LeetifyCommand extends CommandExecutor {
+    private static final Map<String, String> substitutions = new HashMap<String, String>() {{
         put("a", "4");
         put("A", "@");
         put("G", "6");
@@ -26,17 +24,15 @@ public class LeetifyCommand extends CommandExecutor
         put("I", "1");
         put("B", "|3");
     }};
-    
+
     @Override
-    public void execute(Note note, String label, String[] args)
-    {
+    public void execute(Note note, String[] args) {
         String s = StringUtils.join(args, " ");
-        
-        for (Map.Entry<String, String> entry : substitutions.entrySet())
-        {
+
+        for (Map.Entry<String, String> entry : substitutions.entrySet()) {
             s = s.replaceAll(entry.getKey(), entry.getValue());
         }
-        
+
         note.replyEmbedRaw("Leet It", s);
     }
 }

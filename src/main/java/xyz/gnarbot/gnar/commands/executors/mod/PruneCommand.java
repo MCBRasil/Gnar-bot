@@ -16,77 +16,64 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Command(aliases = {"prune", "delmessages", "delmsgs"},
-         usage = "-amount -words...",
-         description = "Delete up to 100 messages.",
-         clearance = Clearance.BOT_COMMANDER)
-public class PruneCommand extends CommandExecutor
-{
+        usage = "-amount -words...",
+        description = "Delete up to 100 messages.",
+        clearance = Clearance.BOT_COMMANDER)
+public class PruneCommand extends CommandExecutor {
     @Inject
     public Host host;
-    
+
     @Override
-    public void execute(Note note, String label, String[] args)
-    {
-        try
-        {
-            if (!note.getAuthor().hasPermission(Permission.MESSAGE_MANAGE))
-            {
-                note.error("You do not have permission to delete messages.");
-                return;
-            }
-            
-            if (args.length == 0)
-            {
-                note.error("Insufficient amount of arguments.");
-                return;
-            }
-            
+    public void execute(Note note, String[] args) {
+        if (!note.getAuthor().hasPermission(Permission.MESSAGE_MANAGE)) {
+            note.error("You don't have the `Manage Messages` permission!");
+            return;
+        }
+
+        if (args.length == 0) {
+            note.error("Insufficient amount of arguments.");
+            return;
+        }
+
+        try {
             note.delete();
-            
+
             MessageHistory history = note.getChannel().getHistory();
-            
+
             int amount = Integer.parseInt(args[0]);
             amount = Math.min(amount, 100);
-            
-            if (amount < 2)
-            {
+
+            if (amount < 2) {
                 note.error("You need to delete 2 or more messages to use this command.");
                 return;
             }
-            
+
             List<Message> msgs = history.retrievePast(amount).complete();
-            
-            if (args.length >= 2)
-            {
+
+            if (args.length >= 2) {
                 String[] filter = Arrays.copyOfRange(args, 1, args.length);
-                
+
                 List<Message> _msgs = new ArrayList<>();
-                
-                for (Message msg : msgs)
-                {
-                    for (String word : filter)
-                    {
-                        if (msg.getContent().contains(word))
-                        {
+
+                for (Message msg : msgs) {
+                    for (String word : filter) {
+                        if (msg.getContent().contains(word)) {
                             _msgs.add(msg);
                         }
                     }
                 }
                 msgs = _msgs;
             }
-            
+
             note.getTextChannel().deleteMessages(msgs).queue();
-            
-            Note info = note.info("Attempted to delete **[" + msgs.size() + "]()** messages.\nDeleting this message in **5** seconds.").get();
-            
+
+            Note info = note.info("Attempted to delete **[" + msgs.size() + "]()** messages.\nDeleting this message in **5** seconds.")
+                    .get();
+
             info.delete(5);
-        }
-        catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             note.error("Improper arguments supplies, must be a number.");
-        }
-        catch (InterruptedException | ExecutionException e)
-        {
+        } catch (InterruptedException | ExecutionException e) {
             note.error("Delete queue was interrupted.");
         }
     }

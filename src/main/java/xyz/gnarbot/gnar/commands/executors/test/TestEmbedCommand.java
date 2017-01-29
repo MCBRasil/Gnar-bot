@@ -13,11 +13,9 @@ import java.awt.*;
 import java.util.Random;
 
 @Command(aliases = "embedthis", usage = "(argument)", showInHelp = false)
-public class TestEmbedCommand extends CommandExecutor
-{
+public class TestEmbedCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String label, String[] args)
-    {
+    public void execute(Note note, String[] args) {
         EmbedBuilder eb = new EmbedBuilder();
         String s = StringUtils.join(args, " ");
         Random r = new Random();
@@ -25,13 +23,10 @@ public class TestEmbedCommand extends CommandExecutor
         eb.setTitle("**Message from " + note.getAuthor().getName() + "**");
         eb.setDescription(parts[0]);
         parts[0] = "";
-        if (parts.length > 1)
-        {
+        if (parts.length > 1) {
             int id = 0;
-            for (String p : parts)
-            {
-                if (p.equals(""))
-                {
+            for (String p : parts) {
+                if (p.equals("")) {
                     id++;
                     eb.addField("Section " + id, p, false);
                 }

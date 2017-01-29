@@ -8,118 +8,97 @@ import xyz.gnarbot.gnar.textadventure.events.FirstSwordLewdEvent;
 
 import java.util.Random;
 
-public class Area
-{
+public class Area {
     private LOCATION locationType;
-    
+
     private int id;
-    
+
     private boolean newLocation = true;
-    
+
     private Event relatedEvent;
-    
+
     private Random random;
-    
+
     private Adventure relatedAdventure;
-    
+
     private boolean discovered = false;
-    
+
     private DIRECTION prevDirect;
-    
-    public Area(Adventure adventure, LOCATION location)
-    {
+
+    public Area(Adventure adventure, LOCATION location) {
         this.relatedAdventure = adventure;
         this.locationType = location;
         this.random = adventure.getRandom();
         initate();
     }
-    
-    public Area(Adventure adventure)
-    {
+
+    public Area(Adventure adventure) {
         this.random = adventure.getRandom();
         this.relatedAdventure = adventure;
         this.locationType = LOCATION.values()[random.nextInt(LOCATION.values().length)];
-        
+
         initate();
     }
-    
-    public Area(Adventure adventure, DIRECTION prevDirection)
-    {
+
+    public Area(Adventure adventure, DIRECTION prevDirection) {
         this.random = adventure.getRandom();
         this.relatedAdventure = adventure;
         this.locationType = LOCATION.values()[random.nextInt(LOCATION.values().length)];
         this.prevDirect = prevDirection;
-        
+
         initate();
     }
-    
-    public boolean isDiscovered()
-    {
+
+    public boolean isDiscovered() {
         return discovered;
     }
-    
-    public void discover()
-    {
+
+    public void discover() {
         this.discovered = true;
     }
-    
-    public Event getRelatedEvent()
-    {
+
+    public Event getRelatedEvent() {
         return relatedEvent;
     }
-    
-    public boolean isNewLocation()
-    {
+
+    public boolean isNewLocation() {
         return newLocation;
     }
-    
-    public Adventure getRelatedAdventure()
-    {
+
+    public Adventure getRelatedAdventure() {
         return relatedAdventure;
     }
-    
-    public boolean moveToHere()
-    {
-        if (this.newLocation)
-        {
+
+    public boolean moveToHere() {
+        if (this.newLocation) {
             this.newLocation = false;
             System.out.println("New location. ID: " + getRelatedAdventure().getAreasFound());
-            if (getRelatedAdventure().getAreasFound() == 4)
-            {
+            if (getRelatedAdventure().getAreasFound() == 4) {
                 relatedEvent = new FirstBagEvent();
                 System.out.println("Created an Event!");
             }
-            if (getRelatedAdventure().getAreasFound() > 6)
-            {
-                if (random.nextInt() * 100 > 80)
-                {
+            if (getRelatedAdventure().getAreasFound() > 6) {
+                if (random.nextInt() * 100 > 80) {
                     if (getRelatedAdventure().getHeroName()
                             .toLowerCase()
-                            .contains("lewd") || getRelatedAdventure().getHeroName().toLowerCase().contains("mae"))
-                    {
+                            .contains("lewd") || getRelatedAdventure().getHeroName().toLowerCase().contains("mae")) {
                         relatedEvent = new FirstSwordLewdEvent();
-                    }
-                    else
-                    {
+                    } else {
                         relatedEvent = new FirstSwordEvent();
                     }
                 }
             }
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
-    
-    public boolean hasCompletedEvent()
-    {
+
+    public boolean hasCompletedEvent() {
         return relatedEvent == null || relatedEvent.hasCompletedEvent();
     }
-    
-    private void initate()
-    {
+
+    private void initate() {
         /*
         if (prevDirect == DIRECTION.FIRSTMOVE) {
 			setAreaNorth(new Area(relatedAdventure, DIRECTION.NORTH, this));
@@ -164,10 +143,9 @@ public class Area
 			}
 		}*/
     }
-    
-    public LOCATION getType()
-    {
+
+    public LOCATION getType() {
         return this.locationType;
     }
-    
+
 }

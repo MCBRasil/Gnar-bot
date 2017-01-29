@@ -9,14 +9,12 @@ import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Command(aliases = "ping", description = "Show the bot's current response time.")
-public class PingCommand extends CommandExecutor
-{
+public class PingCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String label, String[] args)
-    {
+    public void execute(Note note, String[] args) {
         OffsetDateTime sentTime = note.getCreationTime();
         OffsetDateTime responseTime = OffsetDateTime.now();
-        
+
         note.replyEmbedRaw("Response Time", Math.abs(sentTime.until(responseTime, ChronoUnit.MILLIS)) + "ms", Bot
                 .getColor());
     }

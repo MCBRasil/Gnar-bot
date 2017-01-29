@@ -8,21 +8,19 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
 @Command(aliases = "cbot")
-public class CleverBotCommand extends CommandExecutor
-{
+public class CleverBotCommand extends CommandExecutor {
     // TODO put this on again when we fix this
 //    @Inject
 //    public Host host;
-    
+
     private ChatterBotFactory factory = new ChatterBotFactory();
-    
+
     private ChatterBot bot = null;
-    
+
     private ChatterBotSession session = null;
-    
+
     @Override
-    public void execute(Note note, String label, String[] args)
-    {
+    public void execute(Note note, String[] args) {
         note.error("Command is being worked on :), use _pbot for a bit");
         
         /*
@@ -46,5 +44,5 @@ public class CleverBotCommand extends CommandExecutor
             bot = null;
         }*/
     }
-    
+
 }

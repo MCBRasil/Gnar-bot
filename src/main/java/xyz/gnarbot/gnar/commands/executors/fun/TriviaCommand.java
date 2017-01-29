@@ -7,24 +7,18 @@ import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.TriviaQuestions;
 
 @Command(aliases = "trivia")
-public class TriviaCommand extends CommandExecutor
-{
+public class TriviaCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String label, String[] args)
-    {
-        if (!TriviaQuestions.isSetup())
-        {
+    public void execute(Note note, String[] args) {
+        if (!TriviaQuestions.isSetup()) {
             TriviaQuestions.init();
         }
-        
-        if (args.length > 0)
-        {
+
+        if (args.length > 0) {
             note.info(TriviaQuestions.getRandomQuestion(StringUtils.join(args, " ")));
-        }
-        else
-        {
+        } else {
             note.error(TriviaQuestions.getRandomQuestion());
         }
     }
-    
+
 }

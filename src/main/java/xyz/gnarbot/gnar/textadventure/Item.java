@@ -1,84 +1,70 @@
 package xyz.gnarbot.gnar.textadventure;
 
-public class Item
-{
+public class Item {
     private static int lastID = 0;
-    
+
     private int id;
-    
+
     private String itemName, itemType, itemDescription;
-    
+
     private int amount = 0;
-    
-    public Item(String itemName, String itemType, String itemDescription, int amount)
-    {
+
+    public Item(String itemName, String itemType, String itemDescription, int amount) {
         this.itemName = itemName;
         this.itemType = itemType;
         this.itemDescription = itemDescription;
         this.id = lastID++;
         this.amount = amount;
     }
-    
-    public Item(String itemName, String itemType, String itemDescription)
-    {
+
+    public Item(String itemName, String itemType, String itemDescription) {
         this.itemName = itemName;
         this.itemType = itemType;
         this.itemDescription = itemDescription;
         this.id = lastID++;
         this.amount = 1;
     }
-    
-    public void reduceAmount()
-    {
+
+    public void reduceAmount() {
         this.amount--;
     }
-    
-    public void addAmount()
-    {
+
+    public void addAmount() {
         this.amount++;
     }
-    
-    public void reduceAmount(int amount)
-    {
+
+    public void reduceAmount(int amount) {
         this.amount -= amount;
-        if (this.amount < 0)
-        {
+        if (this.amount < 0) {
             this.amount = 0;
         }
     }
-    
-    public void addAmount(int amount)
-    {
+
+    public void addAmount(int amount) {
         this.amount += amount;
     }
-    
-    public int getAmount()
-    {
+
+    public int getAmount() {
         return amount;
     }
-    
-    public void setAmount(int amount)
-    {
+
+    public void setAmount(int amount) {
         this.amount = amount;
     }
-    
-    public int getID()
-    {
+
+    public int getID() {
         return id;
     }
-    
-    public String getItemName()
-    {
+
+    public String getItemName() {
         return itemName;
     }
-    
-    public String getItemType()
-    {
+
+    public String getItemType() {
         return itemType;
     }
-    
-    public String getItemDescription()
-    {
+
+    public String getItemDescription() {
         return itemDescription;
     }
 }

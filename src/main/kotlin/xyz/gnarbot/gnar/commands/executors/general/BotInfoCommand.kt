@@ -2,39 +2,34 @@ package xyz.gnarbot.gnar.commands.executors.general
 
 import net.dv8tion.jda.core.OnlineStatus
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.commands.handlers.*
+import xyz.gnarbot.gnar.commands.handlers.Command
+import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
-import java.util.StringJoiner
+import java.util.*
 
 @Command(aliases = arrayOf("info", "botinfo"), description = "Show information about GN4R-BOT.")
-class BotInfoCommand : CommandExecutor()
-{
-    override fun execute(note : Note, label : String, args : Array<String>)
-    {
+class BotInfoCommand : CommandExecutor() {
+    override fun execute(note: Note, args: Array<String>) {
         val commandHandler = note.host.commandHandler
-        
+
         var textChannels = 0
         var voiceChannels = 0
         var servers = 0
-        
+
         var users = 0
         var offline = 0
         var online = 0
         var inactive = 0
         var others = 0
-        
-        for (shard in Bot.shards)
-        {
+
+        for (shard in Bot.shards) {
             val jda = shard.jda
-            
+
             servers += jda.guilds.size
-            
-            for (g in jda.guilds)
-            {
-                for (u in g.members)
-                {
-                    when (u.onlineStatus)
-                    {
+
+            for (g in jda.guilds) {
+                for (u in g.members) {
+                    when (u.onlineStatus) {
                         OnlineStatus.ONLINE -> online++
                         OnlineStatus.OFFLINE -> offline++
                         OnlineStatus.IDLE -> inactive++
@@ -42,24 +37,23 @@ class BotInfoCommand : CommandExecutor()
                     }
                 }
             }
-            
+
             users += jda.users.size
             textChannels += jda.textChannels.size
             voiceChannels += jda.voiceChannels.size
         }
-        
-        val commandSize = commandHandler.uniqueRegistry.values
-                .count { it.isShownInHelp }
-        
+
+        val commandSize = commandHandler.uniqueExecutors.count { it -> it.isShownInHelp }
+
         val requests = Bot.shards
                 .flatMap { it.hosts }
                 .map { it.commandHandler.requests }
-                .count()
-        
+                .sum()
+
         val joiner = StringJoiner("\n")
-        
+
         //         "__**General**                                                      __"
-        
+
         joiner.add("Requests: **[$requests]()**")
         joiner.add("Servers: **[$servers]()**")
         joiner.add("Shards: **[" + Bot.shards.size + "]()**")
@@ -81,7 +75,7 @@ class BotInfoCommand : CommandExecutor()
         joiner.add("  Website: **[gnarbot.xyz](https://gnarbot.xyz)**")
         joiner.add("  Commands: **[$commandSize]()**")
         joiner.add("  Library: **[JDA 3" + "](https://github.com/DV8FromTheWorld/JDA)**")
-        
+
         note.replyEmbedRaw("Bot Information", joiner.toString(), Bot.color, note.jda.selfUser.avatarUrl)
     }
 }
