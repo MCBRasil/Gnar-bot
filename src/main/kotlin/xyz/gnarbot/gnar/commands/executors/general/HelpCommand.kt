@@ -2,7 +2,6 @@ package xyz.gnarbot.gnar.commands.executors.general
 
 import net.dv8tion.jda.core.EmbedBuilder
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.members.Clearance
@@ -62,8 +61,8 @@ class HelpCommand : CommandExecutor() {
 
                 count++
 
-                if (cmd is MusicExecutor) {
-                    joiner.add("__♬__ **[${Bot.token}${cmd.aliases.first()}]()**")
+                if (cmd.symbol != null) {
+                    joiner.add("${cmd.symbol} **[${Bot.token}${cmd.aliases.first()}]()**")
                 }
                 else {
                     joiner.add("**[${Bot.token}${cmd.aliases.first()}]()**")
@@ -94,9 +93,7 @@ class HelpCommand : CommandExecutor() {
         builder.append("\n")
 
         builder.append("**Latest News:**\n")
-        builder.append(" - Gnar v2.0 is now running LIVE. Report any bugs you might find.\n")
-        builder.append(" - Dropping a new look/style to Gnar's responses! Check them out!\n")
-        builder.append(" - Text Adventures are fixed! Use `_startadventure`!\n")
+        builder.append(" - Music player now running LIVE. Report any bugs to us!\n")
 
         builder.append("\n")
 

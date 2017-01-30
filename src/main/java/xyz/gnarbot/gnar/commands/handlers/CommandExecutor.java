@@ -17,6 +17,8 @@ public abstract class CommandExecutor {
 
     private Clearance clearance = Clearance.USER;
 
+    private String symbol;
+
     private boolean shownInHelp = true;
 
     private boolean copy = false;
@@ -59,6 +61,20 @@ public abstract class CommandExecutor {
     }
 
     /**
+     * @return The usage message of the command.
+     */
+    public String getUsage() {
+        return usage;
+    }
+
+    /**
+     * @param usage New usage message.
+     */
+    public void setUsage(String usage) {
+        this.usage = usage;
+    }
+
+    /**
      * @return The permission required to execute the command.
      */
     public Clearance getClearance() {
@@ -73,17 +89,17 @@ public abstract class CommandExecutor {
     }
 
     /**
-     * @return The usage message of the command.
+     * @return Symbol of the command for _help.
      */
-    public String getUsage() {
-        return usage;
+    public String getSymbol() {
+        return symbol;
     }
 
     /**
-     * @param usage New usage message.
+     * @param symbol New symbol of the command.
      */
-    public void setUsage(String usage) {
-        this.usage = usage;
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 
     /**

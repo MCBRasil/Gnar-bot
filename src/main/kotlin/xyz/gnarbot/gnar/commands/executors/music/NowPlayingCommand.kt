@@ -2,12 +2,11 @@ package xyz.gnarbot.gnar.commands.executors.music
 
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.members.Clearance
 import xyz.gnarbot.gnar.servers.Host
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("nowplaying", "np"), clearance = Clearance.DJ)
+@Command(aliases = arrayOf("nowplaying", "np"))
 class NowPlayingCommand : MusicExecutor() {
     override fun execute(note: Note, args: Array<String>, host: Host, manager: MusicManager) {
         val track = manager.player.playingTrack

@@ -15,6 +15,10 @@ abstract class MusicExecutor : CommandExecutor() {
 
     protected val color = Color(0, 221, 88)
 
+    init {
+        symbol = "**♬**"
+    }
+
     override fun execute(note: Note, args: Array<String>) {
         execute(note, args, note.host, note.host.getMusicManager())
     }
@@ -47,12 +51,14 @@ abstract class MusicExecutor : CommandExecutor() {
 
                 if (track.duration > Duration.ofHours(1).toMillis()) {
                     note.error("The track can not exceed 1 hour.")
+                    return
                 }
 
                 var msg = "Adding `${track.info.title}` to queue."
 
-                if (mng.player.playingTrack == null)
+                if (mng.player.playingTrack == null && note.host.audioManager.isConnected) {
                     msg += "\nThe player has started playing."
+                }
 
                 mng.scheduler.queue(track)
                 note.replyMusic(msg)

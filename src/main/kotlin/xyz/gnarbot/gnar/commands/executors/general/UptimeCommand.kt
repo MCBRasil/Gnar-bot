@@ -8,7 +8,7 @@ import xyz.gnarbot.gnar.utils.Note
 @Command(aliases = arrayOf("uptime"), description = "Show the bot's uptime.")
 class UptimeCommand : CommandExecutor() {
     override fun execute(note: Note, args: Array<String>) {
-        val s = Bot.uptime
+        val s = Bot.uptime / 1000
         val m = s / 60
         val h = m / 60
         val d = h / 24
