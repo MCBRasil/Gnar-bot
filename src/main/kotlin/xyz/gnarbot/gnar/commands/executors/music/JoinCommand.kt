@@ -16,10 +16,12 @@ class JoinCommand : MusicExecutor() {
             return
         }
 
-        val chan = host.getVoiceChannelsByName(args[0], true).firstOrNull()
+        val name = args.joinToString(" ")
+
+        val chan = host.getVoiceChannelsByName(name, true).firstOrNull()
 
         if (chan == null) {
-            note.error("Channel `${args[0]}` does not exist.")
+            note.error("Channel `$name` does not exist.")
             return
         }
 

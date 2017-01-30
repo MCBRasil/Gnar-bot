@@ -18,6 +18,7 @@ class RestartCommand : MusicExecutor() {
 
         if (track != null) {
             note.replyMusic("Restarting track: `${track.info.title}`.")
+            manager.player.playTrack(track.makeClone())
         } else {
             note.error("No track has been previously started.")
         }

@@ -7,7 +7,7 @@ import xyz.gnarbot.gnar.servers.Host
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("restart"), clearance = Clearance.DJ)
+@Command(aliases = arrayOf("repeat"), clearance = Clearance.DJ)
 class RepeatCommand : MusicExecutor() {
     override fun execute(note: Note, args: Array<String>, host: Host, manager: MusicManager) {
         manager.scheduler.isRepeating = !manager.scheduler.isRepeating
