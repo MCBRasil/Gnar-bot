@@ -33,11 +33,11 @@ object Bot {
 
     /** @return Administrator users of the bot. */
     val admins = hashSetOf<String>().apply {
-        addAll(files.admins.readLines())
+        this += files.admins.readLines()
     }
 
     val blockedUsers = hashSetOf<String>().apply {
-        addAll(files.blockedMusic.readLines())
+        this += files.blockedMusic.readLines()
     }
 
     val startTime = System.currentTimeMillis()

@@ -12,6 +12,8 @@ import xyz.gnarbot.gnar.commands.handlers.CommandTable;
 class ShardListener extends ListenerAdapter {
     private final Shard shard;
 
+    private int changes = 0;
+
     public ShardListener(Shard shard) {
         this.shard = shard;
     }
@@ -36,11 +38,20 @@ class ShardListener extends ListenerAdapter {
 
     @Override
     public void onGuildJoin(GuildJoinEvent event) {
-        shard.update();
+        updateQueue();
     }
 
     @Override
     public void onGuildLeave(GuildLeaveEvent event) {
-        shard.update();
+        updateQueue();
+    }
+
+    private void updateQueue() {
+        changes++;
+
+        if (changes > 20) {
+            shard.update();
+            changes = 0;
+        }
     }
 }

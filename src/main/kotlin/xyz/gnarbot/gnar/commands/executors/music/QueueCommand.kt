@@ -26,11 +26,11 @@ class QueueCommand : MusicExecutor() {
         val sj = StringJoiner("\n")
 
         eb.setTitle("Current Music Queue")
-        var track = manager.player.playingTrack;
-        if (track.sourceManager.sourceName.contains("youtube")){
-            sj.add("**Playing Now :musical_note:** `[${getTimestamp(track.duration)}]` __[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__")
-        }else{
-            sj.add("**Playing Now :musical_note:** `[${getTimestamp(track.duration)}]` __[${track.info.title}]()__")
+        val current = manager.player.playingTrack
+        if (current.sourceManager.sourceName.contains("youtube")){
+            sj.add("**Playing Now:** `[${getTimestamp(current.duration)}]` __[${current.info.title}](https://youtube.com/watch?v=${current.info.identifier})__")
+        } else {
+            sj.add("**Playing Now:** `[${getTimestamp(current.duration)}]` __[${current.info.title}]()__")
         }
 
         for (track in queue) {
@@ -38,15 +38,14 @@ class QueueCommand : MusicExecutor() {
             trackCount++
             if (track.sourceManager.sourceName.contains("youtube")){
                 sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__")
-            }else{
+            } else {
                 sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}]()__")
             }
-
         }
 
         eb.addField("", sj.toString(), false)
 
-        eb.addField("", "**Entries:** `${trackCount}`\n**Total queue length:** `[${getTimestamp(queueLength)}]`", false)
+        eb.addField("", "**Entries:** `$trackCount`\n**Total queue length:** `[${getTimestamp(queueLength)}]`", false)
         eb.setColor(color)
 
         note.channel.sendMessage(eb.build()).queue()

@@ -10,6 +10,7 @@ import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 import java.awt.Color
 import java.time.Duration
+import java.util.concurrent.Future
 
 abstract class MusicExecutor : CommandExecutor() {
 
@@ -25,8 +26,8 @@ abstract class MusicExecutor : CommandExecutor() {
 
     abstract fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager)
 
-    protected fun Note.replyMusic(msg: String) {
-        this.replyEmbedRaw("Music", msg, color)
+    protected fun Note.replyMusic(msg: String) : Future<Note> {
+        return this.replyEmbedRaw("Music", msg, color)
     }
 
     protected fun getTimestamp(milliseconds: Long): String {
@@ -34,14 +35,15 @@ abstract class MusicExecutor : CommandExecutor() {
         val minutes = (milliseconds / (1000 * 60) % 60).toInt()
         val hours = (milliseconds / (1000 * 60 * 60) % 24).toInt()
 
-        if (hours > 0)
+        if (hours > 0) {
             return String.format("%02d:%02d:%02d", hours, minutes, seconds)
-        else
+        } else {
             return String.format("%02d:%02d", minutes, seconds)
+        }
     }
 
-    protected fun loadAndPlay(note: Note, mng: MusicManager, trackUrl: String, addPlaylist: Boolean) {
-        mng.manager.loadItemOrdered(mng, trackUrl, object : AudioLoadResultHandler {
+    protected fun loadAndPlay(note: Note, mng: MusicManager, trackUrl: String) {
+        mng.playerManager.loadItemOrdered(mng, trackUrl, object : AudioLoadResultHandler {
             override fun trackLoaded(track: AudioTrack) {
 
                 if (mng.scheduler.queue.size >= 20) {
@@ -54,40 +56,27 @@ abstract class MusicExecutor : CommandExecutor() {
                     return
                 }
 
-                var msg = "Adding `${track.info.title}` to queue."
+                mng.scheduler.queue(track)
+
+                var msg = "Added `${track.info.title}` to queue."
 
                 if (mng.player.playingTrack == null && note.host.audioManager.isConnected) {
                     msg += "\nThe player has started playing."
                 }
 
-                mng.scheduler.queue(track)
                 note.replyMusic(msg)
             }
 
             override fun playlistLoaded(playlist: AudioPlaylist) {
-//                var firstTrack: AudioTrack? = playlist.selectedTrack
-//                val tracks = playlist.tracks
-//
-//
-//                if (firstTrack == null) {
-//                    firstTrack = playlist.tracks[0]
-//                }
-//
-//                if (addPlaylist) {
-//
-//                    note.replyEmbedRaw(
-//                            msg = "Adding `${playlist.tracks.size}` tracks to queue from playlist: ${playlist.name}",
-//                            color = color)
-//                    tracks.forEach {
-//                        mng.scheduler.queue(it)
-//                    }
-//                } else {
-//                    note.replyEmbedRaw(
-//                            msg = "Adding to queue `${firstTrack!!.info.title}` (1st track of playlist ${playlist.name})",
-//                            color = color)
-//                    mng.scheduler.queue(firstTrack)
-//                }
-                note.error("I don't know how you got here, but adding playlists are disabled for now.")
+                val tracks = playlist.tracks
+
+                var added = 0
+                for (track in tracks) {
+                    mng.scheduler.queue(track)
+                    added++
+                }
+
+                note.replyMusic("Added `$added` tracks to queue from playlist `${playlist.name}`.")
             }
 
             override fun noMatches() {
