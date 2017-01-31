@@ -31,7 +31,12 @@ class QueueCommand : MusicExecutor() {
             queueLength += track.duration
 
             trackCount++
-            sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __${track.info.title}__")
+            if (track.sourceManager.sourceName.contains("youtube")){
+                sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__")
+            }else{
+                sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}]()__")
+            }
+
         }
 
         eb.addField("", sj.toString(), false)
