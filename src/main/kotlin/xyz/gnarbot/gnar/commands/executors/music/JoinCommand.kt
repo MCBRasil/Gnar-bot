@@ -18,18 +18,13 @@ class JoinCommand : MusicExecutor() {
 
         val name = args.joinToString(" ")
 
-        var chan = host.getVoiceChannelsByName(name, true).firstOrNull()
+        var chan = host.getVoiceChannelsByName(name, true).firstOrNull() ?: host.getVoiceChannelById(name)
 
         if (chan == null) {
-            chan = host.getVoiceChannelById(name)
-            if (chan == null) {
-                note.error("Channel `$name` does not exist.")
-                return
-            }
+            note.error("Channel `$name` does not exist.")
+            return
         }
-
         host.audioManager.sendingHandler = manager.sendHandler
-
         try {
             host.audioManager.openAudioConnection(chan)
             note.replyMusic("Joined channel `${chan.name}`.")
