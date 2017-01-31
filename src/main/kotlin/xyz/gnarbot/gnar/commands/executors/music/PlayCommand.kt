@@ -7,6 +7,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.servers.Host
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
+import java.net.URL
 
 @Command(aliases = arrayOf("play"))
 class PlayCommand : MusicExecutor() {
@@ -22,8 +23,7 @@ class PlayCommand : MusicExecutor() {
             }
             return
         }
-
-        if (args[0].contains("https:://")
+        if (args[0].contains("https://")
                 && args[0].contains("yout")
                     || args[0].contains("http://")
                     && args[0].contains("yout")
