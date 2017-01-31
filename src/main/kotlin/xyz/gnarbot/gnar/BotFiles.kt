@@ -21,4 +21,8 @@ class BotFiles {
     val admins = data
             .child("administrators")
             .apply { if (!exists()) throw IllegalStateException("`$path` do not exist.") }
+
+    val blockedMusic = data
+            .child("blocked")
+            .apply { if (!exists()) throw IllegalStateException("`$path` do not exist.") }
 }

@@ -23,8 +23,10 @@ class PlayCommand : MusicExecutor() {
             return
         }
 
-        if (args[0].contains("http:://")
+        if (args[0].contains("https:://")
                 && args[0].contains("yout")
+                    || args[0].contains("http://")
+                    && args[0].contains("yout")
                     || args[0].contains("vimeo")
                     || args[0].contains("twitch.tv")
                     || args[0].contains("soundcloud.com")) {

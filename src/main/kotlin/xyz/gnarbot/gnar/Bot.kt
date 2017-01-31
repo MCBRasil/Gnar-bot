@@ -36,6 +36,10 @@ object Bot {
         addAll(files.admins.readLines())
     }
 
+    val blockedUsers = hashSetOf<String>().apply {
+        addAll(files.blockedMusic.readLines())
+    }
+
     val startTime = System.currentTimeMillis()
     val scheduler = Executors.newSingleThreadScheduledExecutor()!!
 

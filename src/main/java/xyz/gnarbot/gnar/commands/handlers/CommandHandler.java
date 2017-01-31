@@ -35,6 +35,12 @@ public class CommandHandler extends CommandRegistry {
     public void callCommand(MessageReceivedEvent event) {
         String content = event.getMessage().getContent();
 
+        if(Bot.INSTANCE.getBlockedUsers().contains(event.getAuthor().getId())) {
+            event.getChannel().sendMessage("You are not allowed to use this bot.").queue();
+
+            return;
+        }
+
         if (!content.startsWith(Bot.getToken())) return;
 
         // Tokenize the message.

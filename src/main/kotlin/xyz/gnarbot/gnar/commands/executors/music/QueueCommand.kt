@@ -9,7 +9,7 @@ import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 import java.util.*
 
-@Command(aliases = arrayOf("queue", "list"), clearance = Clearance.DJ)
+@Command(aliases = arrayOf("queue", "list"), clearance = Clearance.USER)
 class QueueCommand : MusicExecutor() {
     override fun execute(note: Note, args: Array<String>, host: Host, manager: MusicManager) {
         val queue = manager.scheduler.queue
