@@ -14,7 +14,7 @@ class QueueCommand : MusicExecutor() {
     override fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager) {
         val queue = manager.scheduler.queue
 
-        if (queue.isEmpty()) {
+        if (queue.isEmpty() && manager.player == null) {
             note.replyMusic("The queue is currently empty.")
             return
         }
@@ -26,10 +26,15 @@ class QueueCommand : MusicExecutor() {
         val sj = StringJoiner("\n")
 
         eb.setTitle("Current Music Queue")
+        var track = manager.player.playingTrack;
+        if (track.sourceManager.sourceName.contains("youtube")){
+            sj.add("**Playing Now :musical_note:** `[${getTimestamp(track.duration)}]` __[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__")
+        }else{
+            sj.add("**Playing Now :musical_note:** `[${getTimestamp(track.duration)}]` __[${track.info.title}]()__")
+        }
 
         for (track in queue) {
             queueLength += track.duration
-
             trackCount++
             if (track.sourceManager.sourceName.contains("youtube")){
                 sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__")
