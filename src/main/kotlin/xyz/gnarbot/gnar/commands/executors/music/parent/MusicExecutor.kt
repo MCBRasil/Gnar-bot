@@ -19,11 +19,11 @@ abstract class MusicExecutor : CommandExecutor() {
         symbol = "**♬**"
     }
 
-    override fun execute(note: Note, args: Array<String>) {
+    override fun execute(note: Note, args: List<String>) {
         execute(note, args, note.host, note.host.getMusicManager())
     }
 
-    abstract fun execute(note: Note, args: Array<String>, host: Host, manager: MusicManager)
+    abstract fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager)
 
     protected fun Note.replyMusic(msg: String) {
         this.replyEmbedRaw("Music", msg, color)

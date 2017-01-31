@@ -13,7 +13,7 @@ import xyz.gnarbot.gnar.utils.Note
         showInHelp = false
 )
 class GarbageCollectCommand : CommandExecutor() {
-    override fun execute(note: Note, args: Array<String>) {
+    override fun execute(note: Note, args: MutableList<String>) {
         System.gc()
 
         note.info("Garbage collection request sent to JVM.")

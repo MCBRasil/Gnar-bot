@@ -11,7 +11,6 @@ import xyz.gnarbot.gnar.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -24,13 +23,13 @@ public class PruneCommand extends CommandExecutor {
     public Host host;
 
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         if (!note.getAuthor().hasPermission(Permission.MESSAGE_MANAGE)) {
             note.error("You don't have the `Manage Messages` permission!");
             return;
         }
 
-        if (args.length == 0) {
+        if (args.isEmpty()) {
             note.error("Insufficient amount of arguments.");
             return;
         }
@@ -40,7 +39,7 @@ public class PruneCommand extends CommandExecutor {
 
             MessageHistory history = note.getChannel().getHistory();
 
-            int amount = Integer.parseInt(args[0]);
+            int amount = Integer.parseInt(args.get(0));
             amount = Math.min(amount, 100);
 
             if (amount < 2) {
@@ -50,8 +49,8 @@ public class PruneCommand extends CommandExecutor {
 
             List<Message> msgs = history.retrievePast(amount).complete();
 
-            if (args.length >= 2) {
-                String[] filter = Arrays.copyOfRange(args, 1, args.length);
+            if (args.size() >= 2) {
+                List<String> filter = args.subList(1, args.size());
 
                 List<Message> _msgs = new ArrayList<>();
 

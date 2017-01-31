@@ -10,7 +10,7 @@ import java.util.*
 
 @Command(aliases = arrayOf("math"), usage = "-expression", description = "Calculate fancy math expressions.")
 class MathCommand : CommandExecutor() {
-    override fun execute(note: Note, args: Array<String>) {
+    override fun execute(note: Note, args: List<String>) {
         val _args = args
 
         if (args.isEmpty()) {

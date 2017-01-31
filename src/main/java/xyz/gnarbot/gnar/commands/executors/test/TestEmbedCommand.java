@@ -15,7 +15,7 @@ import java.util.Random;
 @Command(aliases = "embedthis", usage = "(argument)", showInHelp = false)
 public class TestEmbedCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, java.util.List<String> args) {
         EmbedBuilder eb = new EmbedBuilder();
         String s = StringUtils.join(args, " ");
         Random r = new Random();

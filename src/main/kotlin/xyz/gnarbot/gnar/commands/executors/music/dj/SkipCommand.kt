@@ -9,7 +9,7 @@ import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("skip"), clearance = Clearance.DJ)
 class SkipCommand : MusicExecutor() {
-    override fun execute(note: Note, args: Array<String>, host: Host, manager: MusicManager) {
+    override fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager) {
         manager.scheduler.nextTrack()
         note.replyMusic("The current track was skipped.")
     }

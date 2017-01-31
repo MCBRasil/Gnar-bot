@@ -8,7 +8,7 @@ import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("nowplaying", "np"))
 class NowPlayingCommand : MusicExecutor() {
-    override fun execute(note: Note, args: Array<String>, host: Host, manager: MusicManager) {
+    override fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager) {
         val track = manager.player.playingTrack
 
         if (track == null) {

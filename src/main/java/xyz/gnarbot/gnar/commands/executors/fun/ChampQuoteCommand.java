@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @Command(aliases = {"q", "quotes"})
@@ -29,7 +30,7 @@ public class ChampQuoteCommand extends CommandExecutor {
             "Zed", "Ziggs", "Zilean", "Zyra"};
 
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         try {
             //Makes the first character uppercase
             String champ = StringUtils.join(args, " ");

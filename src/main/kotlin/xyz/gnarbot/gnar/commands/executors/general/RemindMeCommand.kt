@@ -10,9 +10,9 @@ import java.util.concurrent.TimeUnit
 
 @Command(aliases = arrayOf("remindme", "remind"), usage = "(#) (unit) (msg)")
 class RemindMeCommand : CommandExecutor() {
-    override fun execute(note: Note, args: Array<String>) {
+    override fun execute(note: Note, args: List<String>) {
         if (args.size >= 3) {
-            val string = args.copyOfRange(2, args.size).joinToString(" ")
+            val string = args.subList(2, args.size).joinToString(" ")
 
             val time = try {
                 args[0].toInt()

@@ -15,7 +15,7 @@ import java.util.*
         showInHelp = false
 )
 class ShardInfoCommand : CommandExecutor() {
-    override fun execute(note: Note, args: Array<String>) {
+    override fun execute(note: Note, args: MutableList<String>) {
         val eb = EmbedBuilder()
 
         Bot.shards.forEach {

@@ -15,24 +15,24 @@ import java.util.StringJoiner;
 public class OverwatchLookupCommand extends CommandExecutor {
     String[] regions = {"us", "eu", "kr"};
 
-    public void execute(Note note, String[] args) {
-        if (args.length == 0) {
+    public void execute(Note note, java.util.List<String> args) {
+        if (args.isEmpty()) {
             note.error("Insufficient arguments. `" + getUsage() + "`.");
             return;
         }
 
-        if (!args[0].matches("[a-zA-Z1-9]+(#|-)\\d+")) {
+        if (!args.get(0).matches("[a-zA-Z1-9]+(#|-)\\d+")) {
             note.error("You did not enter a valid BattleTag `[BattleTag#0000]`.");
             return;
         }
 
         try {
-            String tag = args[0].replaceAll("#", "-");
+            String tag = args.get(0).replaceAll("#", "-");
             String region = null;
 
-            if (args.length > 1) {
+            if (args.size() > 1) {
                 for (String r : regions) {
-                    if (args[1].equalsIgnoreCase(r)) {
+                    if (args.get(1).equalsIgnoreCase(r)) {
                         region = r;
                     }
                 }

@@ -8,12 +8,14 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.Utils;
 
+import java.util.List;
+
 @Command(aliases = "champdata")
 public class ChampDataCommand extends CommandExecutor {
     public static String[] names = ChampQuoteCommand.names;
 
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         int maybeDistance = 20;
         String maybe = "";
 

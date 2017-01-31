@@ -7,6 +7,7 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.Utils;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 //TODO REMOVE THE EDITZ
@@ -15,12 +16,12 @@ import java.util.concurrent.ExecutionException;
         description = "Make GNAR react to something, against it's " + "will. You evil prick.")
 public class ReactCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
-        if (args.length < 2) {
+    public void execute(Note note, List<String> args) {
+        if (args.size() < 2) {
             note.error("Insufficient arguments. `" + this.getUsage() + "`");
             return;
         }
-        String msgid = args[0];
+        String msgid = args.get(0);
         Message msg = note.getChannel().getMessageById(msgid).complete();
         if (note.getEmotes().size() > 0) {
             for (Emote em : note.getEmotes()) {
@@ -35,7 +36,7 @@ public class ReactCommand extends CommandExecutor {
                 e.printStackTrace();
             }
         } else {
-            args[0] = "";
+            args.set(0, "");
             boolean suc = false;
             for (String r : args) {
                 if (!r.equalsIgnoreCase("")) {
@@ -46,7 +47,7 @@ public class ReactCommand extends CommandExecutor {
             }
             if (suc) {
                 try {
-                    note.info("Reacted to the message with " + (args.length - 1) + " emotes. :smile:").get().delete(5);
+                    note.info("Reacted to the message with " + (args.size() - 1) + " emotes. :smile:").get().delete(5);
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }

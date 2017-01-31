@@ -11,7 +11,7 @@ import java.util.*
 
 @Command(aliases = arrayOf("queue", "list"), clearance = Clearance.USER)
 class QueueCommand : MusicExecutor() {
-    override fun execute(note: Note, args: Array<String>, host: Host, manager: MusicManager) {
+    override fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager) {
         val queue = manager.scheduler.queue
 
         if (queue.isEmpty()) {

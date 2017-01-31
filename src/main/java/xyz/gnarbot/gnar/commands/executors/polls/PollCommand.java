@@ -4,6 +4,8 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.List;
+
 // TODO recode command.
 @Command(aliases = "poll",
         usage = "(argument)",
@@ -11,22 +13,22 @@ import xyz.gnarbot.gnar.utils.Note;
         showInHelp = false)
 public class PollCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
-        if (args.length == 0 || (args.length > 0 && args[0].equalsIgnoreCase("help"))) {
+    public void execute(Note note, List<String> args) {
+        if (args.isEmpty() || (!args.isEmpty() && args.get(0).equalsIgnoreCase("help"))) {
             String reply = "Poll System Help!~\n {} = Required Arguments  |  () = Optional Arguments```ini\n" +
                     "[_poll help] This list\n" + "[_poll startyesno {time} {question}] Start a Yes/No Poll for " +
                     "\"time\" minutes." + "\n```";
             note.info(reply);
-        } else if (args.length > 0) {
-            if (args[0].equalsIgnoreCase("startyesno") && args.length > 1) {
+        } else if (args.size() > 0) {
+            if (args.get(0).equalsIgnoreCase("startyesno") && args.size() > 1) {
                 int time = 15;
 
                 try {
-                    time = Integer.parseInt(args[1].trim());
+                    time = Integer.parseInt(args.get(1).trim());
                 } catch (NumberFormatException ignore) {}
 
-                args[0] = "";
-                args[1] = "";
+                args.set(0, "");
+                args.set(1, "");
                 String q = "";
                 for (String s : args) {
                     if (!s.equalsIgnoreCase("")) {

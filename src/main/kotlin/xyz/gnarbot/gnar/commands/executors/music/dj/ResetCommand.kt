@@ -9,7 +9,7 @@ import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("reset"), clearance = Clearance.DJ)
 class ResetCommand : MusicExecutor() {
-    override fun execute(note: Note, args: Array<String>, host: Host, manager: MusicManager) {
+    override fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager) {
         manager.scheduler.queue.clear()
         manager.player.destroy()
         host.audioManager.sendingHandler = null

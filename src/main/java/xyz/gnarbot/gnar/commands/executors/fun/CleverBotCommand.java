@@ -7,6 +7,8 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.List;
+
 @Command(aliases = "cbot")
 public class CleverBotCommand extends CommandExecutor {
     // TODO put this on again when we fix this
@@ -20,7 +22,7 @@ public class CleverBotCommand extends CommandExecutor {
     private ChatterBotSession session = null;
 
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         note.error("Command is being worked on :), use _pbot for a bit");
         
         /*

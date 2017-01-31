@@ -8,7 +8,6 @@ import xyz.gnarbot.gnar.members.Clearance;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -18,18 +17,18 @@ import java.util.concurrent.ExecutionException;
         clearance = Clearance.BOT_COMMANDER)
 public class DeleteMessageCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         if (!note.getAuthor().hasPermission(Permission.MESSAGE_MANAGE)) {
             note.error("You don't have the `Manage Messages` permission!");
             return;
         }
 
-        if (args.length < 1) {
+        if (args.isEmpty()) {
             note.error("Please input message ID(s) to queue them for deletion.");
             return;
         }
 
-        String[] ids = Arrays.copyOfRange(args, 1, args.length);
+        List<String> ids = args.subList(1, args.size());
         List<Message> list = new ArrayList<>();
 
         for (String id : ids) {

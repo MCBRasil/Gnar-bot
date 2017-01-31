@@ -6,6 +6,7 @@ import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.handlers.CommandTable;
 
 class ShardListener extends ListenerAdapter {
@@ -17,6 +18,11 @@ class ShardListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+        if(Bot.INSTANCE.getBlockedUsers().contains(event.getAuthor().getId())) {
+            event.getChannel().sendMessage("You are not allowed to use this bot.").queue();
+            return;
+        }
+
         if (CommandTable.INSTANCE.checkValid(event.getMessage().getContent())) {
             Host host = shard.getHost(event.getGuild());
             if (host != null) host.handleMessageEvent(event);

@@ -4,10 +4,12 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.List;
+
 @Command(aliases = "goodshit", description = "go౦ԁ sHit\uD83D\uDC4C.")
 public class GoodShitCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         note.replyRaw("\uD83D\uDC4C\uD83D\uDC40\uD83D\uDC4C\uD83D\uDC40\uD83D\uDC4C\uD83D\uDC40\uD83D\uDC4C\uD83D" +
                 "\uDC40\uD83D\uDC4C\uD83D\uDC40 good shit go౦ԁ sHit\uD83D\uDC4C thats ✔ some " +
                 "good\uD83D\uDC4C\uD83D\uDC4Cshit " +

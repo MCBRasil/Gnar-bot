@@ -36,6 +36,8 @@ public class Utils {
         } catch (Exception ignore) {}
     }
 
+
+
     public static boolean sendReactionAutoEncode(Message message, String encodedEmoji) {
         try {
             Unirest.put("https://discordapp.com/api/v6/channels/" + message.getChannel()

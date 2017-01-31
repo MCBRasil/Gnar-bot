@@ -9,11 +9,13 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.List;
+
 @Command(aliases = {"yodatalk"}, usage = "(sentence)", description = "Learn to speak like Yoda, you will.")
 public class YodaTalkCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
-        if (args.length == 0) {
+    public void execute(Note note, List<String> args) {
+        if (args.isEmpty()) {
             note.error("At least put something. `:[`");
             return;
         }

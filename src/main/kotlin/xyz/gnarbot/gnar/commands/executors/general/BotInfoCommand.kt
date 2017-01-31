@@ -9,7 +9,7 @@ import java.util.*
 
 @Command(aliases = arrayOf("info", "botinfo"), description = "Show information about GN4R-BOT.")
 class BotInfoCommand : CommandExecutor() {
-    override fun execute(note: Note, args: Array<String>) {
+    override fun execute(note: Note, args: List<String>) {
         val commandHandler = note.host.commandHandler
 
         var textChannels = 0

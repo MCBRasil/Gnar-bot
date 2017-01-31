@@ -10,7 +10,7 @@ import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("play"))
 class PlayCommand : MusicExecutor() {
-    override fun execute(note: Note, args: Array<String>, host: Host, manager: MusicManager) {
+    override fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager) {
         if (args.isEmpty()) {
             if (manager.player.isPaused)  {
                 manager.player.isPaused = false

@@ -9,13 +9,14 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Person;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.List;
 import java.util.StringJoiner;
 
 @Command(aliases = {"whois", "infoof", "infoon", "user"}, usage = "-@user", description = "Get information on a user.")
 public class WhoIsCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
-        if (args.length == 0) {
+    public void execute(Note note, List<String> args) {
+        if (args.isEmpty()) {
             note.error("You did not mention a user.");
             return;
         }

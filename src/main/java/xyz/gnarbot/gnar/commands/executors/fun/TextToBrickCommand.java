@@ -6,11 +6,13 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.List;
+
 @Command(aliases = "ttb", usage = "(string)", description = "Text to bricks fun.")
 public class TextToBrickCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
-        if (args.length == 0) {
+    public void execute(Note note, List<String> args) {
+        if (args.isEmpty()) {
             note.error("Please provide a query.");
             return;
         }

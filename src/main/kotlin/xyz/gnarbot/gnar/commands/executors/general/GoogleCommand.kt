@@ -13,7 +13,7 @@ import java.util.*
 
 @Command(aliases = arrayOf("google"), usage = "-query...", description = "Who needs browsers!?")
 class GoogleCommand : CommandExecutor() {
-    override fun execute(note: Note, args: Array<String>) {
+    override fun execute(note: Note, args: List<String>) {
         if (args.isEmpty()) {
             note.error("Gotta have something to search Google.")
             return

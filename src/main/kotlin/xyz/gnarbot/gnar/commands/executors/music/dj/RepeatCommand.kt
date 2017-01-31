@@ -9,7 +9,7 @@ import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("repeat"), clearance = Clearance.DJ)
 class RepeatCommand : MusicExecutor() {
-    override fun execute(note: Note, args: Array<String>, host: Host, manager: MusicManager) {
+    override fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager) {
         manager.scheduler.isRepeating = !manager.scheduler.isRepeating
         note.replyMusic("Music player was set to __${if (manager.scheduler.isRepeating) "repeat" else "not repeat"}__.")
     }

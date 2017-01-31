@@ -11,6 +11,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.List;
 import java.util.Random;
 
 @Command(aliases = {"rule", "rule34"},
@@ -19,7 +20,7 @@ import java.util.Random;
         showInHelp = false)
 public class Rule34Command extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         if (note.getAuthor().hasRole("Fucking Teemo")) {
             String tag = "";
             try {

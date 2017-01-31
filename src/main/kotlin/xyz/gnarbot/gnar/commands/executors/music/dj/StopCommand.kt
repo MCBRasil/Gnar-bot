@@ -9,7 +9,7 @@ import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("stop"), clearance = Clearance.DJ)
 class StopCommand : MusicExecutor() {
-    override fun execute(note: Note, args: Array<String>, host: Host, manager: MusicManager) {
+    override fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager) {
         manager.scheduler.queue.clear()
         manager.player.stopTrack()
         manager.player.isPaused = false

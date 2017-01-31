@@ -37,14 +37,14 @@ public class MemeCommand extends CommandExecutor {
     }
 
     @Override
-    public void execute(Note msg, String[] args) {
+    public void execute(Note msg, List<String> args) {
         try {
-            if (args[0].equalsIgnoreCase("list")) {
+            if (args.get(0).equalsIgnoreCase("list")) {
                 int page = 1;
 
                 try {
-                    if (args[1] != null) {
-                        page = Integer.valueOf(args[1]);
+                    if (args.get(1) != null) {
+                        page = Integer.valueOf(args.get(1));
                     }
                 } catch (Exception ignore) {}
 

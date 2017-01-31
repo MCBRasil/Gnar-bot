@@ -4,6 +4,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.List;
 import java.util.Random;
 
 @Command(aliases = "8ball", usage = "-question", description = "Test your wildest dreams!")
@@ -17,8 +18,8 @@ public class EightBallCommand extends CommandExecutor {
             "Very" + " doubtful"};
 
     @Override
-    public void execute(Note note, String[] args) {
-        if (args.length == 0) {
+    public void execute(Note note, List<String> args) {
+        if (args.isEmpty()) {
             note.error("Ask the 8-ball something.");
             return;
         }

@@ -13,7 +13,7 @@ import java.util.*
 
 @Command(aliases = arrayOf("youtube"), usage = "-query...", description = "Search and get a YouTube video.")
 class YoutubeCommand : CommandExecutor() {
-    override fun execute(note: Note, args: Array<String>) {
+    override fun execute(note: Note, args: List<String>) {
         if (args.isEmpty()) {
             note.error("Gotta put something to search YouTube.")
             return

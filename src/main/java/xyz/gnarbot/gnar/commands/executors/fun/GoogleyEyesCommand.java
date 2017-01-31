@@ -36,14 +36,14 @@ public class GoogleyEyesCommand extends CommandExecutor {
     }
 
     @Override
-    public void execute(Note note, String[] args) {
-        if (args.length == 0) {
+    public void execute(Note note, List<String> args) {
+        if (args.isEmpty()) {
             note.error("Please provide an image link.");
             return;
         }
 
         try {
-            String urlStr = args[0];
+            String urlStr = args.get(0);
             String encodedStr = URLEncoder.encode(urlStr, StandardCharsets.UTF_8.displayName());
 
             HttpResponse<JsonNode> response = Unirest.get("https://apicloud-facerect.p.mashape.com/process-url.json")

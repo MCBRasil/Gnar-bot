@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
         showInHelp = false
 )
 class ProgressionCommand : CommandExecutor() {
-    override fun execute(note: Note, args: Array<String>) {
+    override fun execute(note: Note, args: MutableList<String>) {
         val joiner = StringJoiner("\n", "```", "```")
         joiner.add("﻿ ___________________________ ")
         joiner.add("| Progression     [_][☐][✕]|")

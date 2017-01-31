@@ -6,6 +6,7 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Command(aliases = {"leet"}, usage = "(string)", description = "Leet it!")
@@ -26,7 +27,7 @@ public class LeetifyCommand extends CommandExecutor {
     }};
 
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         String s = StringUtils.join(args, " ");
 
         for (Map.Entry<String, String> entry : substitutions.entrySet()) {

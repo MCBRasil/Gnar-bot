@@ -11,12 +11,13 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.List;
 import java.util.StringJoiner;
 
 @Command(aliases = {"game", "gamelookup"}, usage = "(query)", description = "Look up information about a game.")
 public class GameLookupCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         try {
             String query = StringUtils.join(args, "+");
 

@@ -11,7 +11,7 @@ import xyz.gnarbot.gnar.utils.Note
         showInHelp = false
 )
 class ThrowError : CommandExecutor() {
-    override fun execute(message: Note, args: Array<String>) {
+    override fun execute(message: Note, args: MutableList<String>) {
         throw RuntimeException("Requested to throw an error, so here you go.")
     }
 }

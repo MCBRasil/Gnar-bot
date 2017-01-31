@@ -11,6 +11,8 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.List;
+
 @Command(aliases = "pbot")
 public class PandoraBotCommand extends CommandExecutor {
     @Inject
@@ -23,7 +25,7 @@ public class PandoraBotCommand extends CommandExecutor {
     private ChatterBotSession session = null;
 
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         try {
             if (bot == null) {
                 bot = factory.create(ChatterBotType.PANDORABOTS, "b0dafd24ee35a477");

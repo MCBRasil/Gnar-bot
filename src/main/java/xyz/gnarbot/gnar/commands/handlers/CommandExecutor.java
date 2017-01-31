@@ -4,6 +4,7 @@ import xyz.gnarbot.gnar.members.Clearance;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Abstract class that is extended when creating a command.
@@ -27,10 +28,10 @@ public abstract class CommandExecutor {
 
     /**
      * Abstract method to be executed when the command is called.
-     *  @param note Message object passed into the execution.
+     * @param note Message object passed into the execution.
      * @param args Arguments passed into the execution.
      */
-    public abstract void execute(Note note, String[] args);
+    public abstract void execute(Note note, List<String> args);
 
     /**
      * @return The aliases of the command.

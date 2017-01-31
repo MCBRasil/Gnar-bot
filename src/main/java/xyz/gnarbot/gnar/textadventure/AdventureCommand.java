@@ -11,15 +11,15 @@ import java.util.List;
 public class AdventureCommand extends CommandExecutor {
     @SuppressWarnings("all")
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         if (!Adventure.hasAdventure(note.getAuthor())) {
             note.info("Use `_startadventure` to begin your adventure!");
             return;
         }
         Adventure adventure = Adventure.getAdventure(note.getAuthor(), note);
 
-        if (args.length > 0) {
-            switch (args[0].toLowerCase()) {
+        if (args.size() > 0) {
+            switch (args.get(0).toLowerCase()) {
                 case "map": {
                     note.info("Preparing your map...");
                     adventure.getGrid().sendMap(note);
@@ -32,7 +32,7 @@ public class AdventureCommand extends CommandExecutor {
                     }
                 }
                 case "setname": {
-                    if (args.length > 1) {
+                    if (args.size() > 1) {
                         String oldname = adventure.getHeroName();
                         adventure.setHeroName(StringUtils.join(args, " ").replace("setname ", ""));
                         adventure.sendInformativeMessage(note,

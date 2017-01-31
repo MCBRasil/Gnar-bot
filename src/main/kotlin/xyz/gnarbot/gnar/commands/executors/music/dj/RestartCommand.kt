@@ -9,7 +9,7 @@ import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("restart"), clearance = Clearance.DJ)
 class RestartCommand : MusicExecutor() {
-    override fun execute(note: Note, args: Array<String>, host: Host, manager: MusicManager) {
+    override fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager) {
         var track = manager.player.playingTrack
 
         if (track == null) {

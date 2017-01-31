@@ -15,7 +15,7 @@ import java.util.List;
 @Command(aliases = "unban", clearance = Clearance.BOT_COMMANDER)
 public class UnbanCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         Host host = note.getHost();
 
         Person author = note.getAuthor();
@@ -29,14 +29,14 @@ public class UnbanCommand extends CommandExecutor {
         List<User> bans = note.getGuild().getController().getBans().complete();
 
         for (User user : bans) {
-            if (user.getId().equals(args[0])) {
+            if (user.getId().equals(args.get(0))) {
                 target = host.getPersonHandler().asPerson(user);
                 break;
             }
         }
 
-        if (args.length >= 1) {
-            target = note.getHost().getPersonHandler().getUser(args[0]);
+        if (args.size() >= 1) {
+            target = note.getHost().getPersonHandler().getUser(args.get(0));
         }
         if (target == null) {
             note.error("Could not find user.");

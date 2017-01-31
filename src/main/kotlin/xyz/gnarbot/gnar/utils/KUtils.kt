@@ -16,6 +16,23 @@ fun File.readProperties(): Properties {
 
 fun File.child(path: String) = File(this, path)
 
+fun String.fastSplit(char : Char) : List<String> {
+    val res = ArrayList<String>(count { it == char } + 1)
+    var i = 0
+    var p = 0
+
+    while (i < this.length) {
+        if (this[i] == char) {
+            res += this.substring(p, i)
+            p = i + 1
+        }
+        i++
+    }
+    res += this.substring(p)
+
+    return res
+}
+
 @JvmOverloads
 fun makeEmbed(title: String?, msg: String?, color: Color? = Bot.color, thumb: String? = null, img: String? = null, author: Person? = null): MessageEmbed {
     return EmbedBuilder().run {

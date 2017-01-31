@@ -15,8 +15,8 @@ import java.awt.*;
 @Command(aliases = {"marvel"}, usage = "(hero/villain name)", description = "Look up info on a Marvel character.")
 public class MarvelComics extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
-        if (args.length == 0) {
+    public void execute(Note note, java.util.List<String> args) {
+        if (args.isEmpty()) {
             note.error("Please provide a name.");
             return;
         }

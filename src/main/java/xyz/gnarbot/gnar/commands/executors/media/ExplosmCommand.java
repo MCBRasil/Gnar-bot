@@ -7,12 +7,13 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.List;
 import java.util.Random;
 
 @Command(aliases = {"c&h", "cah"}, description = "Get Cyanide and Happiness comics.", usage = "~id")
 public class ExplosmCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         try {
             Document document;
 
@@ -21,10 +22,10 @@ public class ExplosmCommand extends CommandExecutor {
 
             String rand;
 
-            if (args.length >= 1) {
+            if (args.size() >= 1) {
                 int input;
                 try {
-                    input = Integer.valueOf(args[0]);
+                    input = Integer.valueOf(args.get(0));
 
                     if (input > max || input < 100) {
                         note.error("Explosm does not have a comic for that number.");
@@ -32,7 +33,7 @@ public class ExplosmCommand extends CommandExecutor {
 
                     rand = String.valueOf(input);
                 } catch (NumberFormatException e) {
-                    if (args[0].equalsIgnoreCase("latest")) {
+                    if (args.get(0).equalsIgnoreCase("latest")) {
                         rand = "latest";
                     } else {
                         note.error("You didn't enter a proper ID number.");

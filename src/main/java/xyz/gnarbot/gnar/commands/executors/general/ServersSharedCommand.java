@@ -7,10 +7,12 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.servers.Shard;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.List;
+
 @Command(aliases = {"shared", "serversshared"}, description = "Shows servers you share with the bot.")
 public class ServersSharedCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         int total = 0;
         String servers = "";
 

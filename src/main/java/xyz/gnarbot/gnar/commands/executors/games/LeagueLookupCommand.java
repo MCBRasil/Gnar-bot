@@ -4,12 +4,14 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.List;
+
 @Command(aliases = {"league", "lol"},
         usage = "(LOL Username)",
         description = "Look up Leauge of Legends statistics " + "of a player.")
 public class LeagueLookupCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         note.error("This is being worked on right now, spam Maeyrl to fix me.");
 
         /*
@@ -19,7 +21,7 @@ public class LeagueLookupCommand extends CommandExecutor {
             JSONObject jso = Utils.jsonFromUrl("https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/" +
                     StringUtils.join(args, "").toLowerCase() + "?api_key=" + Bot.INSTANCE.getAuthTokens().getProperty
                     ("league"));
-            JSONObject info = jso.getJSONObject(args[0]);
+            JSONObject info = jso.getJSONObject(args.get(0));
             joiner.add("**League Of Legends** Account Info: ");
             joiner.add("Season: **SEASON 2016** \n");
             joiner.add("Current Name: **" + info.get("name") + "**");
@@ -62,7 +64,7 @@ public class LeagueLookupCommand extends CommandExecutor {
             JSONObject jso = Utils.jsonFromUrl("https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/" +
                     StringUtils.join(args, "").toLowerCase() + "?api_key=" + Bot.INSTANCE.getAuthTokens().getProperty
                     ("league"));
-            JSONObject info = jso.getJSONObject(args[0]);
+            JSONObject info = jso.getJSONObject(args.get(0));
             joiner.add("**League Of Legends** Account Info: ");
             joiner.add("Season: **SEASON 2016** \n");
             joiner.add("Current Name: **" + info.get("name") + "**");

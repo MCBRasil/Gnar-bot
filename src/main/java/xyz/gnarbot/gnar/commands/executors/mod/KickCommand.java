@@ -9,12 +9,14 @@ import xyz.gnarbot.gnar.members.Person;
 import xyz.gnarbot.gnar.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.List;
+
 @Command(aliases = "kick",
         usage = "-user",
         clearance = Clearance.BOT_COMMANDER)
 public class KickCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         Host host = note.getHost();
 
         Person author = note.getAuthor();
@@ -28,8 +30,8 @@ public class KickCommand extends CommandExecutor {
         if (note.getMentionedChannels().size() >= 1) {
             target = note.getMentionedUsers().get(0);
         }
-        else if (args.length >= 1) {
-            target = note.getHost().getPersonHandler().getUser(args[0]);
+        else if (args.size() >= 1) {
+            target = note.getHost().getPersonHandler().getUser(args.get(0));
         }
 
         if (target == null) {

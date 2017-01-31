@@ -9,7 +9,7 @@ import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("pause"), clearance = Clearance.DJ)
 class PauseCommand : MusicExecutor() {
-    override fun execute(note: Note, args: Array<String>, host: Host, manager: MusicManager) {
+    override fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager) {
         if (manager.player.playingTrack == null) {
             note.error("Can not pause or resume player because there is no track loaded for playing.")
             return

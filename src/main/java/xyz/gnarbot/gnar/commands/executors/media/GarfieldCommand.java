@@ -6,12 +6,14 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.List;
+
 // TODO BROKEN AF CUZ AGE DIALOG ON SITE
 @Deprecated
 @Command(aliases = "garfield", showInHelp = false)
 public class GarfieldCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, String[] args) {
+    public void execute(Note note, List<String> args) {
         try {
             Document document;
 
