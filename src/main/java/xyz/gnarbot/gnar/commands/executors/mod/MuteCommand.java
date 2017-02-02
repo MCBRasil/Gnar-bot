@@ -4,14 +4,14 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.members.Clearance;
+import xyz.gnarbot.gnar.members.BotPermission;
 import xyz.gnarbot.gnar.members.Person;
 import xyz.gnarbot.gnar.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 
-@Command(aliases = "mute", clearance = Clearance.BOT_COMMANDER)
+@Command(aliases = "mute", botPermission = BotPermission.BOT_COMMANDER)
 public class MuteCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
@@ -27,8 +27,7 @@ public class MuteCommand extends CommandExecutor {
 
         if (note.getMentionedChannels().size() >= 1) {
             target = note.getMentionedUsers().get(0);
-        }
-        else if (args.size() >= 1) {
+        } else if (args.size() >= 1) {
             target = note.getHost().getPersonHandler().getUser(args.get(0));
         }
 

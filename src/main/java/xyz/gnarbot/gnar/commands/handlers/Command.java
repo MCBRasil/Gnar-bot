@@ -1,6 +1,6 @@
 package xyz.gnarbot.gnar.commands.handlers;
 
-import xyz.gnarbot.gnar.members.Clearance;
+import xyz.gnarbot.gnar.members.BotPermission;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -36,11 +36,6 @@ public @interface Command {
     boolean showInHelp() default true;
 
     /**
-     * @return If the command require a copy instance.
-     */
-    boolean copy() default false;
-
-    /**
      * @return if the command have fields that needs
      * to be injected.
      */
@@ -49,5 +44,5 @@ public @interface Command {
     /**
      * @return The permission required for this command.
      */
-    Clearance clearance() default Clearance.USER;
+    BotPermission botPermission() default BotPermission.USER;
 }

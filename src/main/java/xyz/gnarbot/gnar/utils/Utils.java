@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
     public static JSONObject information;
@@ -27,6 +29,21 @@ public class Utils {
         } catch (Exception ignore) { }
     }
 
+    public static List<String> fastSplit(String s, char delimiter) {
+        List<String> f = new ArrayList<>();
+
+        int p = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == delimiter) {
+                f.add(s.substring(p, i));
+                p = i + 1;
+            }
+        }
+        f.add(s.substring(p));
+
+        return f;
+    }
+
     public static void sendReaction(Message message, String encodedEmoji) {
         try {
             Unirest.put("https://discordapp.com/api/v6/channels/" + message.getChannel()
@@ -35,7 +52,6 @@ public class Utils {
                     .asJsonAsync();
         } catch (Exception ignore) {}
     }
-
 
 
     public static boolean sendReactionAutoEncode(Message message, String encodedEmoji) {

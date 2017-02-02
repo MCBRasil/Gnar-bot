@@ -1,17 +1,20 @@
 package xyz.gnarbot.gnar.commands.executors.music
 
+import com.google.inject.Inject
 import net.dv8tion.jda.core.EmbedBuilder
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.members.Clearance
-import xyz.gnarbot.gnar.servers.Host
+import xyz.gnarbot.gnar.members.BotPermission
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 import java.util.*
 
-@Command(aliases = arrayOf("queue", "list"), clearance = Clearance.USER)
+@Command(aliases = arrayOf("queue", "list"), botPermission = BotPermission.USER, inject = true)
 class QueueCommand : MusicExecutor() {
-    override fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager) {
+
+    @Inject lateinit var manager: MusicManager
+
+    override fun execute(note: Note, args: List<String>) {
         val queue = manager.scheduler.queue
 
         if (queue.isEmpty() && manager.player == null) {

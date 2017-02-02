@@ -1,14 +1,9 @@
 package xyz.gnarbot.gnar.servers;
 
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import xyz.gnarbot.gnar.Bot;
+import xyz.gnarbot.gnar.commands.handlers.CommandRegistry;
 import xyz.gnarbot.gnar.utils.DiscordBotsInfo;
 
 import java.util.ArrayList;
@@ -25,9 +20,9 @@ public class Shard {
 
     private final JDA jda;
 
-    private final AudioPlayerManager playerManager;
+    private final Map<String, Host> hosts = new WeakHashMap<>();
 
-    private final Map<Guild, Host> hosts = new WeakHashMap<>(2000);
+    private final CommandRegistry commandRegistry = new CommandRegistry();
 
     public Shard(int id, JDA jda) {
         this.id = id;
@@ -37,12 +32,6 @@ public class Shard {
 
         java.util.logging.Logger.getLogger("org.apache.http.client.protocol.ResponseProcessCookies")
                 .setLevel(Level.OFF);
-
-        playerManager = new DefaultAudioPlayerManager();
-        playerManager.registerSourceManager(new YoutubeAudioSourceManager());
-        playerManager.registerSourceManager(new SoundCloudAudioSourceManager());
-        playerManager.registerSourceManager(new VimeoAudioSourceManager());
-        playerManager.registerSourceManager(new TwitchStreamAudioSourceManager());
     }
 
     /**
@@ -58,8 +47,8 @@ public class Shard {
         DiscordBotsInfo.updateServerCount(count);
     }
 
-    public AudioPlayerManager getPlayerManager() {
-        return playerManager;
+    public CommandRegistry getCommandRegistry() {
+        return commandRegistry;
     }
 
     /**
@@ -83,7 +72,7 @@ public class Shard {
 
         //Bot.getLOG().info("Creating new Host instance for " + guild.getName() + ".");
 
-        return hosts.computeIfAbsent(guild, k -> new Host(this, guild));
+        return hosts.computeIfAbsent(guild.getId(), k -> new Host(this, guild.getId()));
     }
 
     /**

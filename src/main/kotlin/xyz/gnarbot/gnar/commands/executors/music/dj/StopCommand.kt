@@ -1,15 +1,18 @@
 package xyz.gnarbot.gnar.commands.executors.music.dj
 
+import com.google.inject.Inject
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.members.Clearance
-import xyz.gnarbot.gnar.servers.Host
+import xyz.gnarbot.gnar.members.BotPermission
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("stop"), clearance = Clearance.DJ)
+@Command(aliases = arrayOf("stop"), botPermission = BotPermission.DJ, inject = true)
 class StopCommand : MusicExecutor() {
-    override fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager) {
+
+    @Inject lateinit var manager: MusicManager
+
+    override fun execute(note: Note, args: List<String>) {
         manager.scheduler.queue.clear()
         manager.player.stopTrack()
         manager.player.isPaused = false

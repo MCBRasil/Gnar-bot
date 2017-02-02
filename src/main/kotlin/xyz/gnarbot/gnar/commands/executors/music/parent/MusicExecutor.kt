@@ -5,7 +5,6 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.servers.Host
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 import java.awt.Color
@@ -20,11 +19,7 @@ abstract class MusicExecutor : CommandExecutor() {
         symbol = "**♬**"
     }
 
-    override fun execute(note: Note, args: List<String>) {
-        execute(note, args, note.host, note.host.getMusicManager())
-    }
-
-    abstract fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager)
+    //abstract fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager)
 
     protected fun Note.replyMusic(msg: String) : Future<Note> {
         return this.replyEmbedRaw("Music", msg, color)
@@ -60,7 +55,7 @@ abstract class MusicExecutor : CommandExecutor() {
 
                 var msg = "Added `${track.info.title}` to queue."
 
-                if (mng.player.playingTrack == null && note.host.audioManager.isConnected) {
+                if (mng.player.playingTrack == null && note.host.guild.audioManager.isConnected) {
                     msg += "\nThe player has started playing."
                 }
 

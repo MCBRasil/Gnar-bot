@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.commands.handlers;
 
-import xyz.gnarbot.gnar.members.Clearance;
+import com.google.inject.Injector;
+import xyz.gnarbot.gnar.members.BotPermission;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.Arrays;
@@ -16,22 +17,26 @@ public abstract class CommandExecutor {
 
     private String usage = "No usage provided.";
 
-    private Clearance clearance = Clearance.USER;
+    private BotPermission botPermission = BotPermission.USER;
 
     private String symbol;
 
     private boolean shownInHelp = true;
 
-    private boolean copy = false;
-
     private boolean inject = false;
+
+    public synchronized void injectAndExecute(Injector injector, Note note, List<String> args) {
+        if (inject) injector.injectMembers(this);
+        execute(note, args);
+    }
 
     /**
      * Abstract method to be executed when the command is called.
+     *
      * @param note Message object passed into the execution.
      * @param args Arguments passed into the execution.
      */
-    public abstract void execute(Note note, List<String> args);
+    protected abstract void execute(Note note, List<String> args);
 
     /**
      * @return The aliases of the command.
@@ -78,15 +83,15 @@ public abstract class CommandExecutor {
     /**
      * @return The permission required to execute the command.
      */
-    public Clearance getClearance() {
-        return clearance;
+    public BotPermission getBotPermission() {
+        return botPermission;
     }
 
     /**
      * @param perm New permission required.
      */
-    public void setClearance(Clearance perm) {
-        this.clearance = perm;
+    public void setBotPermission(BotPermission perm) {
+        this.botPermission = perm;
     }
 
     /**
@@ -118,20 +123,6 @@ public abstract class CommandExecutor {
     }
 
     /**
-     * @return If the command require a separate instance.
-     */
-    public boolean isCopy() {
-        return this.copy;
-    }
-
-    /**
-     * Set if the command require a separate instance.
-     */
-    public void setCopy(boolean copy) {
-        this.copy = copy;
-    }
-
-    /**
      * @return if the command have fields that needs
      * to be injected.
      */
@@ -154,18 +145,6 @@ public abstract class CommandExecutor {
     public String toString() {
         return this.getClass()
                 .getSimpleName() + "(aliases=" + Arrays.toString(aliases) + ", desc=\"" + description + "\", " +
-                "usage=\"" + usage + "\", clearance=" + clearance + ", shownInHelp=" + shownInHelp + ")";
-    }
-
-    public CommandExecutor copy() throws IllegalAccessException, InstantiationException {
-        CommandExecutor copy = this.getClass().newInstance();
-        copy.aliases = aliases;
-        copy.usage = usage;
-        copy.description = description;
-        copy.clearance = clearance;
-        copy.shownInHelp = shownInHelp;
-        copy.copy = this.copy;
-        copy.inject = inject;
-        return copy;
+                "usage=\"" + usage + "\", clearance=" + botPermission + ", shownInHelp=" + shownInHelp + ")";
     }
 }

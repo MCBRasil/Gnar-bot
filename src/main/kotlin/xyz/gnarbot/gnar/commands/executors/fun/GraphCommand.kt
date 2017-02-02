@@ -19,18 +19,18 @@ import javax.imageio.ImageIO
 @Command(aliases = arrayOf("gusers"), description = "Fancy server stats ya uuuuuurdd mi?", showInHelp = false)
 class GraphCommand : CommandExecutor() {
     @Inject
-    lateinit var guild: Host
+    lateinit var host: Host
 
     override fun execute(note: Note, args: MutableList<String>) {
         note.channel.sendFile(drawPlot(note.creationTime as OffsetDateTime), null)
     }
 
     fun drawPlot(now: OffsetDateTime): File {
-        val start = MiscUtil.getCreationTime(guild.id).toEpochSecond()
+        val start = MiscUtil.getCreationTime(host.id).toEpochSecond()
         val end = now.toEpochSecond()
         val width = 1000
         val height = 1000
-        val joins = ArrayList(guild.members)
+        val joins = ArrayList(host.guild.members)
         Collections.sort(joins) { a, b -> a.joinDate.compareTo(b.joinDate) }
 
         val buffer = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE)
@@ -59,10 +59,10 @@ class GraphCommand : CommandExecutor() {
         graphic.font = Font("Century Gothic", Font.PLAIN, 24)
 
         graphic.drawString("0 - ${joins.size} Users", 20, 30)
-        graphic.drawString(MiscUtil.getCreationTime(guild.id).format(DateTimeFormatter.RFC_1123_DATE_TIME), 20, 60)
+        graphic.drawString(MiscUtil.getCreationTime(host.id).format(DateTimeFormatter.RFC_1123_DATE_TIME), 20, 60)
         graphic.drawString(now.format(DateTimeFormatter.RFC_1123_DATE_TIME), 20, 90)
-        graphic.drawString("Server: ${guild.name}", 20, 120)
-        graphic.drawString("Owner: ${guild.owner.effectiveName}", 20, 150)
+        graphic.drawString("Server: ${host.guild.name}", 20, 120)
+        graphic.drawString("Owner: ${host.guild.owner.effectiveName}", 20, 150)
 
         val f = File("plot.png")
 

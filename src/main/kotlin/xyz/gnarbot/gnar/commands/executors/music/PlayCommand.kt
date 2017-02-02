@@ -1,19 +1,21 @@
 package xyz.gnarbot.gnar.commands.executors.music
 
+import com.google.inject.Inject
 import com.mashape.unirest.http.Unirest
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.servers.Host
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
-import java.net.URL
 
-@Command(aliases = arrayOf("play"))
+@Command(aliases = arrayOf("play"), inject = true)
 class PlayCommand : MusicExecutor() {
-    override fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager) {
+
+    @Inject lateinit var manager: MusicManager
+
+    override fun execute(note: Note, args: List<String>) {
         if (args.isEmpty()) {
-            if (manager.player.isPaused)  {
+            if (manager.player.isPaused) {
                 manager.player.isPaused = false
                 note.replyMusic(msg = "Music is now playing.")
             } else if (manager.player.playingTrack != null) {
@@ -23,14 +25,13 @@ class PlayCommand : MusicExecutor() {
             }
             return
         }
+
         if (args[0].contains("https://")
                 && args[0].contains("yout")
-                    || args[0].contains("http://")
-                    && args[0].contains("yout")
-                    || args[0].contains("vimeo")
-                    || args[0].contains("twitch.tv")
-                    || args[0].contains("soundcloud.com")) {
-            loadAndPlay(note, manager, args[0], false)
+                || args[0].contains("vimeo")
+                || args[0].contains("twitch.tv")
+                || args[0].contains("soundcloud.com")) {
+            loadAndPlay(note, manager, args[0])
             return
         }
         val query = args.joinToString("+")
@@ -63,6 +64,6 @@ class PlayCommand : MusicExecutor() {
 
         val url = "https://www.youtube.com/watch?v=$videoID"
 
-        loadAndPlay(note, manager, url, false)
+        loadAndPlay(note, manager, url)
     }
 }
