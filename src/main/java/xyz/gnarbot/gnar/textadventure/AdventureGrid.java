@@ -259,7 +259,7 @@ public class AdventureGrid {
                     printX = 0;
                     printY += 64;
                 }
-                Image img = ImageIO.read(new File("_DATA/resources/adventure/icons/32/position-marker.png"));
+                Image img = ImageIO.read(new File("_DATA/resources/adventure/icons/64/position-marker.png"));
                 setImg(img).setX(8).setY(8).paintComponent(graphics);
                 graphics.drawString(" This is you! Current area: " + getAreaAtLocation(getCurrentX(), getCurrentY())
                         .getType()

@@ -9,6 +9,7 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.KUtils;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -23,27 +24,41 @@ public class QuoteCommand extends CommandExecutor {
             return;
         }
 
+        TextChannel targetChannel = note.getTextChannel();
+        if (note.getMentionedChannels().size() > 0){
+            targetChannel = note.getMentionedChannels().get(0);
+        }
+
+        List<Message> toDelete = new ArrayList<>();
+
+        for (String id : args) {
+            if (!id.contains("#")) {
+                try {
+                    Message msg = note.getChannel().getMessageById(id).complete();
+                    targetChannel.sendMessage(KUtils.makeEmbed(null,
+                            msg.getContent(), Bot.getColor(),
+                            null, null,
+                            note.getHost().getPersonHandler().asPerson(msg.getAuthor()))).queue();
+                }catch (Exception e) {
+                    try {
+                        Message m = note.error("Could not find a message with the ID " + id + " within this channel.").get();
+                        toDelete.add(m);
+                    }catch (Exception e2){
+
+                    }
+                }
+            }
+        }
+        toDelete.add(note);
         try {
-            String last = args.get(args.size() - 1);
-            TextChannel targetChannel = note.getTextChannel();
-            if (note.getMentionedChannels().size() > 0){
-                targetChannel = note.getMentionedChannels().get(0);
-            }
-            for (String id : args) {
-                 if (!id.contains("#")) {
-                     Message msg = note.getChannel().getMessageById(id).complete();
-                     targetChannel.sendMessage(KUtils.makeEmbed(null,
-                             msg.getContent(), Bot.getColor(),
-                             msg.getAuthor().getAvatarUrl(), null,
-                             note.getHost().getPersonHandler().asPerson(msg.getAuthor()))).queue();
-                 }
-            }
             Message m = note.getChannel().sendMessage(KUtils.makeEmbed("Quote Messages", "Sent quotes to the " + targetChannel.getName() + " channel!")).complete();
             TimeUnit.SECONDS.sleep(5);
             m.deleteMessage().complete();
-        } catch (Exception e) {
-            e.printStackTrace();
-            note.error("Could not find that message within this channel.");
+            for (Message m2 : toDelete){
+                m2.deleteMessage().complete();
+            }
+        } catch (Exception e){
+
         }
     }
 }
