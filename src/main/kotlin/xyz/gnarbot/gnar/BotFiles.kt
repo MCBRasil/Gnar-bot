@@ -5,7 +5,7 @@ import java.io.File
 
 class BotFiles {
     /** _data folder. */
-    val data = File("_data")
+    val data = File("data")
             .apply { if (!exists()) mkdir() }
 
     /** _data/hosts folder. */
