@@ -234,7 +234,7 @@ public class AdventureGrid {
                         Area a = getAreaAtLocation(curX, curY);
                         if (curY == currentY && curX == currentX) {
                             Image img = ImageIO.read(new File
-                                    ("_data/adventureresources/locationicons/64/position-marker.png"));
+                                    ("_DATA/resources/adventure/icons/64/position-marker.png"));
                             setImg(img).setX(printX).setY(printY).paintComponent(graphics);
                         } else {
                             if (a != null) {

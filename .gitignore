@@ -2,6 +2,7 @@
 
 target/
 
+<<<<<<< HEAD
 dependency-reduced-pom.xml
 _DATA/administrators
 _DATA/blocked
@@ -12,3 +13,6 @@ _DATA/hosts/000000000000000000.json
 _DATA/host/201794384600104962.json
 *.json
 *.jar
+=======
+dependency-reduced-pom.xml
+>>>>>>> origin/master
