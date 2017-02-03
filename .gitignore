@@ -1,13 +1,5 @@
 .idea/
 
-_data/
-
 target/
 
 dependency-reduced-pom.xml
-
-*.jar
-
-*.png
-
-*.iml

@@ -9,10 +9,10 @@ import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 import java.util.*
 
-@Command(aliases = arrayOf("queue", "list"), botPermission = BotPermission.USER, inject = true)
+@Command(aliases = arrayOf("queue", "list"), botPermission = BotPermission.USER)
 class QueueCommand : MusicExecutor() {
 
-    @Inject lateinit var manager: MusicManager
+    @Inject lateinit private var manager: MusicManager
 
     override fun execute(note: Note, args: List<String>) {
         val queue = manager.scheduler.queue

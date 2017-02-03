@@ -7,9 +7,9 @@ import xyz.gnarbot.gnar.members.BotPermission
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("pause"), botPermission = BotPermission.DJ, inject = true)
+@Command(aliases = arrayOf("pause"), botPermission = BotPermission.DJ)
 class PauseCommand : MusicExecutor() {
-    @Inject lateinit var manager: MusicManager
+    @Inject lateinit private var manager: MusicManager
 
     override fun execute(note: Note, args: List<String>) {
         if (manager.player.playingTrack == null) {

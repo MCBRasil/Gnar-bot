@@ -9,11 +9,11 @@ import xyz.gnarbot.gnar.servers.Host
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("join"), inject = true)
+@Command(aliases = arrayOf("join"))
 class JoinCommand : MusicExecutor() {
 
-    @Inject lateinit var host: Host
-    @Inject lateinit var manager: MusicManager
+    @Inject lateinit private var host: Host
+    @Inject lateinit private var manager: MusicManager
 
     override fun execute(note: Note, args: List<String>) {
         if (args.isEmpty()) {

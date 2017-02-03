@@ -60,7 +60,7 @@ public class CommandHandler {
 
         try {
             requests++;
-            cmd.injectAndExecute(injector, note, args);
+            cmd.syncExecute(injector, note, args);
 
         } catch (RuntimeException e) {
             note.error("**Exception**: " + e.getMessage());
@@ -83,12 +83,15 @@ public class CommandHandler {
     public class CommandModule extends AbstractModule {
         @Override
         protected void configure() {
-            bind(Guild.class).toInstance(host.getGuild());
-            bind(CommandHandler.class).toInstance(CommandHandler.this);
-            bind(PersonHandler.class).toInstance(host.getPersonHandler());
-            bind(MusicManager.class).toInstance(host.getMusicManager());
             bind(Host.class).toInstance(host);
             bind(Shard.class).toInstance(host.getShard());
+
+            bind(CommandHandler.class).toInstance(CommandHandler.this);
+            bind(PersonHandler.class).toInstance(host.getPersonHandler());
+
+            bind(MusicManager.class).toInstance(host.getMusicManager());
+
+            bind(Guild.class).toInstance(host.getGuild());
             bind(JDA.class).toInstance(host.getShard().getJDA());
         }
     }

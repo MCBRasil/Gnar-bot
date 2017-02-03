@@ -25,8 +25,15 @@ public abstract class CommandExecutor {
 
     private boolean inject = false;
 
-    public synchronized void injectAndExecute(Injector injector, Note note, List<String> args) {
-        if (inject) injector.injectMembers(this);
+    /**
+     * Synchronized method to inject dependencies and then run the
+     * {@link CommandExecutor#execute(Note, List)} method.
+     * @param injector Dependency injector.
+     * @param note Note wrapper.
+     * @param args Command arguments.
+     */
+    public synchronized void syncExecute(Injector injector, Note note, List<String> args) {
+        if (injector != null && inject) injector.injectMembers(this);
         execute(note, args);
     }
 

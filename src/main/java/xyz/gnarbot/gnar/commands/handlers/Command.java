@@ -36,12 +36,6 @@ public @interface Command {
     boolean showInHelp() default true;
 
     /**
-     * @return if the command have fields that needs
-     * to be injected.
-     */
-    boolean inject() default false;
-
-    /**
      * @return The permission required for this command.
      */
     BotPermission botPermission() default BotPermission.USER;

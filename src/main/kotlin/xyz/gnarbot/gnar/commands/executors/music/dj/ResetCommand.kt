@@ -8,7 +8,7 @@ import xyz.gnarbot.gnar.servers.Host
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("reset"), botPermission = BotPermission.DJ, inject = true)
+@Command(aliases = arrayOf("reset"), botPermission = BotPermission.DJ)
 class ResetCommand : MusicExecutor() {
 
     @Inject lateinit var host: Host

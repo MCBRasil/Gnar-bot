@@ -7,7 +7,7 @@ import xyz.gnarbot.gnar.members.BotPermission
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("repeat"), botPermission = BotPermission.DJ, inject = true)
+@Command(aliases = arrayOf("repeat"), botPermission = BotPermission.DJ)
 class RepeatCommand : MusicExecutor() {
 
     @Inject lateinit var manager: MusicManager

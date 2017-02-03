@@ -2,9 +2,10 @@ package xyz.gnarbot.gnar.servers;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
-import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.handlers.CommandRegistry;
-import xyz.gnarbot.gnar.utils.DiscordBotsInfo;
+import xyz.gnarbot.gnar.servers.listeners.GuildCountListener;
+import xyz.gnarbot.gnar.servers.listeners.ShardListener;
+import xyz.gnarbot.gnar.servers.listeners.UserListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,22 +30,11 @@ public class Shard {
         this.jda = jda;
 
         jda.addEventListener(new ShardListener(this));
+        jda.addEventListener(new UserListener());
+        jda.addEventListener(GuildCountListener.INSTANCE);
 
         java.util.logging.Logger.getLogger("org.apache.http.client.protocol.ResponseProcessCookies")
                 .setLevel(Level.OFF);
-    }
-
-    /**
-     * Updates Server Counts on ad sites
-     */
-    public void update() {
-        int count = 0;
-
-        for (Shard s : Bot.INSTANCE.getShards()) {
-            count += s.getJDA().getGuilds().size();
-        }
-
-        DiscordBotsInfo.updateServerCount(count);
     }
 
     public CommandRegistry getCommandRegistry() {

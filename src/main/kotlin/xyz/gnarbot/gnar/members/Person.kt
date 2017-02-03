@@ -17,8 +17,8 @@ class Person(var host: Host, private var member: Member) : User by member.user, 
 
     val botPermission: BotPermission
         get() = when {
-            isBot -> BotPermission.BOT
             isBotMaster -> BotPermission.BOT_MASTER
+            isBot -> BotPermission.BOT
             member == host.guild.owner -> BotPermission.SERVER_OWNER
             hasRole("DJ") -> BotPermission.DJ
             hasRole("Bot Commander") -> BotPermission.BOT_COMMANDER

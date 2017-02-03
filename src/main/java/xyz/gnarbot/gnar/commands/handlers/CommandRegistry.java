@@ -1,5 +1,6 @@
 package xyz.gnarbot.gnar.commands.handlers;
 
+import com.google.inject.Inject;
 import xyz.gnarbot.gnar.commands.executors.admin.GarbageCollectCommand;
 import xyz.gnarbot.gnar.commands.executors.admin.JavascriptCommand;
 import xyz.gnarbot.gnar.commands.executors.admin.ShardInfoCommand;
@@ -22,6 +23,7 @@ import xyz.gnarbot.gnar.commands.executors.test.TestEmbedCommand;
 import xyz.gnarbot.gnar.textadventure.AdventureCommand;
 import xyz.gnarbot.gnar.textadventure.StartAdventureCommand;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -79,7 +81,6 @@ public class CommandRegistry {
         register(KickCommand.class);
         register(UnbanCommand.class);
         register(PruneCommand.class);
-        register(MuteCommand.class);
         register(DeleteMessageCommand.class);
         //End Mod Commands
 
@@ -152,7 +153,13 @@ public class CommandRegistry {
             cmd.setBotPermission(annot.botPermission());
             cmd.setShownInHelp(annot.showInHelp());
             cmd.setUsage(annot.usage());
-            cmd.setInject(annot.inject());
+
+            for (Field field : cls.getDeclaredFields()) {
+                if (field.isAnnotationPresent(Inject.class)) {
+                    cmd.setInject(true);
+                    break;
+                }
+            }
 
             for (String alias : cmd.getAliases()) {
                 registerCommand(alias, cmd);
@@ -200,11 +207,7 @@ public class CommandRegistry {
      * @return Unique command executors.
      */
     public Set<CommandExecutor> getUniqueExecutors() {
-        Set<CommandExecutor> set = new LinkedHashSet<>();
-        for (CommandExecutor cmd : commandMap.values()) {
-            set.add(cmd);
-        }
-        return set;
+        return new LinkedHashSet<>(commandMap.values());
     }
 
     /**

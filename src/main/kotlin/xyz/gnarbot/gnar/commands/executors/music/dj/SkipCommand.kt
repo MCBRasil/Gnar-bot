@@ -7,7 +7,7 @@ import xyz.gnarbot.gnar.members.BotPermission
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("skip"), botPermission = BotPermission.DJ, inject = true)
+@Command(aliases = arrayOf("skip"), botPermission = BotPermission.DJ)
 class SkipCommand : MusicExecutor() {
 
     @Inject lateinit var manager: MusicManager

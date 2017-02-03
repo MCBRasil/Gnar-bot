@@ -8,10 +8,10 @@ import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("play"), inject = true)
+@Command(aliases = arrayOf("play"))
 class PlayCommand : MusicExecutor() {
 
-    @Inject lateinit var manager: MusicManager
+    @Inject lateinit private var manager: MusicManager
 
     override fun execute(note: Note, args: List<String>) {
         if (args.isEmpty()) {

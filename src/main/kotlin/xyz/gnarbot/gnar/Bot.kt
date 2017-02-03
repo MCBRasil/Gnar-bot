@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.AccountType
 import net.dv8tion.jda.core.JDABuilder
 import net.dv8tion.jda.core.entities.Game
 import net.dv8tion.jda.core.utils.SimpleLog
+import org.json.JSONArray
 import xyz.gnarbot.gnar.servers.Shard
 import xyz.gnarbot.gnar.utils.Utils
 import xyz.gnarbot.gnar.utils.readProperties
@@ -46,7 +47,9 @@ object Bot {
 
     /** @return Administrator users of the bot. */
     val admins = hashSetOf<String>().apply {
-        addAll(files.admins.readLines())
+        JSONArray(files.admins.readText()).forEach {
+            add(it as String)
+        }
     }
 
     val blockedUsers = hashSetOf<String>().apply {

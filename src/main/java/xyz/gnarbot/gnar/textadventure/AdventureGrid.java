@@ -259,22 +259,22 @@ public class AdventureGrid {
                         Area a = getAreaAtLocation(curX, curY);
                         if (curY == currentY && curX == currentX) {
                             Image img = ImageIO.read(new File
-                                    ("_DATA/adventureresources/locationicons/64/position-marker.png"));
+                                    ("_DATA/resources/adventure/icons/64/position-marker.png"));
                             setImg(img).setX(printX).setY(printY).paintComponent(graphics);
                         } else {
                             if (a != null) {
                                 if (a.isDiscovered()) {
-                                    Image img = ImageIO.read(new File("_DATA/adventureresources/locationicons/64/" +
+                                    Image img = ImageIO.read(new File("_DATA/resources/adventure/icons/64/" +
                                             a.getType()
                                                     .getFile() + ".png"));
                                     setImg(img).setX(printX).setY(printY).paintComponent(graphics);
                                 } else {
                                     Image img = ImageIO.read(new File
-                                            ("_DATA/adventureresources/locationicons/64/unknown.png"));
+                                            ("_DATA/resources/adventure/icons/64/unknown.png"));
                                     setImg(img).setX(printX).setY(printY).paintComponent(graphics);
                                 }
                             } else {
-                                Image img = ImageIO.read(new File("_DATA/adventureresources/locationicons/64/unknown" +
+                                Image img = ImageIO.read(new File("_DATA/resources/adventure/icons/64/unknown" +
                                         ".png"));
                                 setImg(img).setX(printX).setY(printY).paintComponent(graphics);
                             }
@@ -284,12 +284,12 @@ public class AdventureGrid {
                     printX = 0;
                     printY += 64;
                 }
-                Image img = ImageIO.read(new File("_DATA/adventureresources/locationicons/32/position-marker.png"));
+                Image img = ImageIO.read(new File("_DATA/resources/adventure/icons/32/position-marker.png"));
                 setImg(img).setX(8).setY(8).paintComponent(graphics);
                 graphics.drawString(" This is you! Current area: " + getAreaAtLocation(getCurrentX(), getCurrentY())
                         .getType()
                         .getName(), 16, 32);
-                Image img2 = ImageIO.read(new File("_DATA/adventureresources/locationicons/64/" + getAreaAtLocation
+                Image img2 = ImageIO.read(new File("_DATA/resources/adventure/icons/64/" + getAreaAtLocation
                         (getCurrentX(), getCurrentY())
                         .getType()
                         .getFile() + ".png"));

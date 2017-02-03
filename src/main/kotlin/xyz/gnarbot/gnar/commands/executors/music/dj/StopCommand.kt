@@ -7,7 +7,7 @@ import xyz.gnarbot.gnar.members.BotPermission
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("stop"), botPermission = BotPermission.DJ, inject = true)
+@Command(aliases = arrayOf("stop"), botPermission = BotPermission.DJ)
 class StopCommand : MusicExecutor() {
 
     @Inject lateinit var manager: MusicManager

@@ -7,9 +7,9 @@ import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.members.BotPermission
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("leave"), botPermission = BotPermission.DJ, inject = true)
+@Command(aliases = arrayOf("leave"), botPermission = BotPermission.DJ)
 class LeaveCommand : MusicExecutor() {
-    @Inject lateinit var guild: Guild
+    @Inject lateinit private var guild: Guild
 
     override fun execute(note: Note, args: List<String>) {
         guild.audioManager.sendingHandler = null

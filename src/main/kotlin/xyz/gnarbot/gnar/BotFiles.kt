@@ -5,7 +5,7 @@ import java.io.File
 
 class BotFiles {
     /** _data folder. */
-    val data = File("_DATA")
+    val data = File("_data")
             .apply { if (!exists()) mkdir() }
 
     /** _data/hosts folder. */
@@ -19,7 +19,7 @@ class BotFiles {
             .apply { if (!exists()) throw IllegalStateException("`$path` do not exist.") }
 
     val admins = data
-            .child("administrators")
+            .child("administrators.json")
             .apply { if (!exists()) throw IllegalStateException("`$path` do not exist.") }
 
     val blocked = data
