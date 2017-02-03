@@ -154,32 +154,7 @@ public class AdventureGrid {
     }
 
     public void sendMap(Note n) {
-        /*String rtrn = "";
-
-		return rtrn;*/
         try {
-
-			/*
-            BufferedImage map = new BufferedImage(getMaxSize() * 64, (getMaxSize() * 64) + 200, BufferedImage
-			.TYPE_INT_ARGB);
-			Graphics2D graphics = map.createGraphics();
-			graphics.setColor(Color.WHITE);
-			graphics.fillRect(0, 0, getMaxSize()* 64, getMaxSize()*64 + 200);
-			graphics.setFont(new Font(Font.DIALOG_INPUT, 25, 40));
-			graphics.setColor(Color.BLACK);
-			drawCenteredString(graphics, getRelatedAdventure().getHeroName() + "'s Map", new Rectangle(getMaxSize() *
-			64, 200), graphics.getFont());
-
-			graphics.
-			graphics.setColor(Color.BLACK);
-
-			graphics.drawString("Why tho", 128, 128);
-
-			Canvas canvas = new Canvas();
-			canvas.snapshot(null, new WritableImage(getMaxSize() * 64, (getMaxSize() * 64) + 200));
-			canvas.getGraphicsContext2D().fillRect(0, 0, canvas.getHeight(), canvas.getWidth());
-			canvas.getGraphicsContext2D().setFontSmoothingType(FontSmoothingType.GRAY);*/
-
             ImageBuilder builder = new ImageBuilder();
             File mapFile = builder.runBuilder();
             if (mapFile == null) {
@@ -239,7 +214,7 @@ public class AdventureGrid {
         }
 
         public File runBuilder() {
-            final File mapFile = new File("_temp/adventures/maps/" + getRelatedAdventure().getGameID()
+            final File mapFile = new File("_data/_temp/adventures/maps/" + getRelatedAdventure().getGameID()
                     .toString() + "map.png");
             if (!mapFile.exists()) {
                 mapFile.mkdirs();
@@ -259,7 +234,7 @@ public class AdventureGrid {
                         Area a = getAreaAtLocation(curX, curY);
                         if (curY == currentY && curX == currentX) {
                             Image img = ImageIO.read(new File
-                                    ("_DATA/adventureresources/locationicons/64/position-marker.png"));
+                                    ("_data/adventureresources/locationicons/64/position-marker.png"));
                             setImg(img).setX(printX).setY(printY).paintComponent(graphics);
                         } else {
                             if (a != null) {
