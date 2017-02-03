@@ -6,7 +6,7 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.members.Clearance;
+import xyz.gnarbot.gnar.members.BotPermission;
 import xyz.gnarbot.gnar.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutionException;
 @Command(aliases = {"prune", "delmessages", "delmsgs"},
         usage = "-amount -words...",
         description = "Delete up to 100 messages.",
-        clearance = Clearance.BOT_COMMANDER)
+        botPermission = BotPermission.BOT_COMMANDER)
 public class PruneCommand extends CommandExecutor {
     @Inject
     public Host host;

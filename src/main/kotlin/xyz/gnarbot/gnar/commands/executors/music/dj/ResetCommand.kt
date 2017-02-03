@@ -1,22 +1,27 @@
 package xyz.gnarbot.gnar.commands.executors.music.dj
 
+import com.google.inject.Inject
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.members.Clearance
+import xyz.gnarbot.gnar.members.BotPermission
 import xyz.gnarbot.gnar.servers.Host
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("reset"), clearance = Clearance.DJ)
+@Command(aliases = arrayOf("reset"), botPermission = BotPermission.DJ)
 class ResetCommand : MusicExecutor() {
-    override fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager) {
+
+    @Inject lateinit var host: Host
+    @Inject lateinit var manager: MusicManager
+
+    override fun execute(note: Note, args: List<String>) {
         manager.scheduler.queue.clear()
         manager.player.destroy()
-        host.audioManager.sendingHandler = null
-        host.setMusicManager(null)
+        host.guild.audioManager.sendingHandler = null
+        host.musicManager = null
 
-        val _manager = host.getMusicManager()
-        host.audioManager.sendingHandler = _manager.sendHandler
+        val _manager = host.musicManager
+        host.guild.audioManager.sendingHandler = _manager.sendHandler
         note.replyMusic("The player has been completely reset.")
     }
 }

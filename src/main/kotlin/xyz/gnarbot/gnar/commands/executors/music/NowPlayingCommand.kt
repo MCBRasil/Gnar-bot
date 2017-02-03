@@ -1,14 +1,17 @@
 package xyz.gnarbot.gnar.commands.executors.music
 
+import com.google.inject.Inject
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.servers.Host
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("nowplaying", "np"))
 class NowPlayingCommand : MusicExecutor() {
-    override fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager) {
+
+    @Inject lateinit private var manager: MusicManager
+
+    override fun execute(note: Note, args: List<String>) {
         val track = manager.player.playingTrack
 
         if (track == null) {

@@ -1,16 +1,21 @@
 package xyz.gnarbot.gnar.commands.executors.general
 
+import com.google.inject.Inject
 import net.dv8tion.jda.core.OnlineStatus
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
+import xyz.gnarbot.gnar.servers.Shard
 import xyz.gnarbot.gnar.utils.Note
 import java.util.*
 
 @Command(aliases = arrayOf("info", "botinfo"), description = "Show information about GN4R-BOT.")
 class BotInfoCommand : CommandExecutor() {
+
+    @Inject lateinit var shard : Shard
+
     override fun execute(note: Note, args: List<String>) {
-        val commandHandler = note.host.commandHandler
+        val registry = shard.commandRegistry
 
         var textChannels = 0
         var voiceChannels = 0
@@ -43,7 +48,7 @@ class BotInfoCommand : CommandExecutor() {
             voiceChannels += jda.voiceChannels.size
         }
 
-        val commandSize = commandHandler.uniqueExecutors.count { it -> it.isShownInHelp }
+        val commandSize = registry.uniqueExecutors.count { it -> it.isShownInHelp }
 
         val requests = Bot.shards
                 .flatMap { it.hosts }

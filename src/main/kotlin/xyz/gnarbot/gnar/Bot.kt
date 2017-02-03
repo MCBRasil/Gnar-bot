@@ -1,9 +1,16 @@
 package xyz.gnarbot.gnar
 
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager
+import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
+import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager
+import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager
+import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager
+import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import net.dv8tion.jda.core.AccountType
 import net.dv8tion.jda.core.JDABuilder
 import net.dv8tion.jda.core.entities.Game
 import net.dv8tion.jda.core.utils.SimpleLog
+import org.json.JSONArray
 import xyz.gnarbot.gnar.servers.Shard
 import xyz.gnarbot.gnar.utils.Utils
 import xyz.gnarbot.gnar.utils.readProperties
@@ -28,16 +35,25 @@ object Bot {
     var initialized = false
         private set
 
+    val playerManager: AudioPlayerManager = DefaultAudioPlayerManager().apply {
+        registerSourceManager(YoutubeAudioSourceManager())
+        registerSourceManager(SoundCloudAudioSourceManager())
+        registerSourceManager(VimeoAudioSourceManager())
+        registerSourceManager(TwitchStreamAudioSourceManager())
+    }
+
     /** @return Sharded JDA instances of the bot.*/
     val shards = mutableListOf<Shard>()
 
     /** @return Administrator users of the bot. */
     val admins = hashSetOf<String>().apply {
-        addAll(files.admins.readLines())
+        JSONArray(files.admins.readText()).forEach {
+            add(it as String)
+        }
     }
 
     val blockedUsers = hashSetOf<String>().apply {
-        addAll(files.blockedMusic.readLines())
+        addAll(files.blocked.readLines())
     }
 
     val startTime = System.currentTimeMillis()

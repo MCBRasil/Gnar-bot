@@ -1,17 +1,59 @@
-package xyz.gnarbot.gnar.utils;
+package xyz.gnarbot.gnar.servers.listeners;
 
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import net.dv8tion.jda.core.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.json.JSONObject;
 import xyz.gnarbot.gnar.Bot;
+import xyz.gnarbot.gnar.servers.Shard;
 
-public class DiscordBotsInfo {
-    public static void updateServerCount(int i) {
+public class GuildCountListener extends ListenerAdapter {
+    public static GuildCountListener INSTANCE = new GuildCountListener();
+
+    private int changes = 0;
+
+    private GuildCountListener() {}
+
+    @Override
+    public void onGuildJoin(GuildJoinEvent event) {
+        updateQueue();
+    }
+
+    @Override
+    public void onGuildLeave(GuildLeaveEvent event) {
+        updateQueue();
+    }
+
+    private void updateQueue() {
+        changes++;
+
+        if (changes > 20) {
+            update();
+            changes = 0;
+        }
+    }
+
+    /**
+     * Updates Server Counts on ad sites
+     */
+    public void update() {
+        int count = 0;
+
+        for (Shard s : Bot.INSTANCE.getShards()) {
+            count += s.getJDA().getGuilds().size();
+        }
+
+        updateServerCount(count);
+    }
+
+    public void updateServerCount(int i) {
         updateAbalCount(i);
         updateCarbonitexCount(i);
     }
 
-    public static void updateAbalCount(int i) {
+    public void updateAbalCount(int i) {
         try {
             String auth = Bot.INSTANCE.getAuthTokens().getProperty("authToken");
 
@@ -34,7 +76,7 @@ public class DiscordBotsInfo {
         }
     }
 
-    public static void updateCarbonitexCount(int i) {
+    public void updateCarbonitexCount(int i) {
         try {
             String auth = Bot.INSTANCE.getAuthTokens().getProperty("authToken");
             String key = Bot.INSTANCE.getAuthTokens().getProperty("serverKey");

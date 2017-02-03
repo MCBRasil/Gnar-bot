@@ -1,9 +1,9 @@
 package xyz.gnarbot.gnar.members
 
 import net.dv8tion.jda.core.entities.Member
+import net.dv8tion.jda.core.entities.User
 import xyz.gnarbot.gnar.servers.Host
 import java.util.*
-import net.dv8tion.jda.core.entities.User as JDAUser
 
 /**
  * Handle JDA's [Member] & [Person] instances.
@@ -14,10 +14,10 @@ class PersonHandler(private val host: Host) {
      *
      * @return The wrapper mapping registry.
      */
-    val registry: MutableMap<Member, Person> = WeakHashMap()
+    val registry = WeakHashMap<String, Person>()
 
-    fun getUser(name: String) : Person? {
-        val list = host.getMembersByName(name, true)
+    fun getUser(name: String): Person? {
+        val list = host.guild.getMembersByName(name, true)
 
         if (list.isEmpty()) return null
 
@@ -32,14 +32,7 @@ class PersonHandler(private val host: Host) {
      * @return User instance.
      */
     fun asPerson(member: Member): Person {
-        var user = registry[member]
-
-        if (user == null) {
-            registry[member] = Person(host, member)
-            user = registry[member]
-        }
-
-        return user!!
+        return asPerson(member.user)
     }
 
     /**
@@ -49,17 +42,22 @@ class PersonHandler(private val host: Host) {
      *
      * @return User instance.
      */
-    fun asPerson(user: JDAUser): Person {
-        val member = host.getMember(user)
+    fun asPerson(user: User): Person {
+        var person = registry[user.id]
 
-        return asPerson(member)
+        if (person == null) {
+            registry.put(user.id, Person(host, host.guild.getMember(user)))
+            person = registry[user.id]
+        }
+
+        return person!!
     }
 
-    /**
-     * Remove the user from the registry.
-     */
-    fun removeUser(member: Member) {
-        registry.remove(member)
-    }
+//    /**
+//     * Remove the user from the registry.
+//     */
+//    fun removeUser(member: Member) {
+//        registry.remove(member)
+//    }
 }
 

@@ -16,7 +16,7 @@ fun File.readProperties(): Properties {
 
 fun File.child(path: String) = File(this, path)
 
-fun String.fastSplit(char : Char) : List<String> {
+fun String.fastSplit(char: Char): List<String> {
     val res = ArrayList<String>(count { it == char } + 1)
     var i = 0
     var p = 0
