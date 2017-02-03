@@ -11,3 +11,4 @@ _DATA/hosts/000000000000000000.json
 *.properties
 _DATA/host/201794384600104962.json
 *.json
+*.jar
