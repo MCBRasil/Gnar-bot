@@ -5,7 +5,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import xyz.gnarbot.gnar.Bot;
+import xyz.gnarbot.gnar.Credentials;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -24,8 +24,8 @@ public class MarvelComics extends CommandExecutor {
         try {
             long timeStamp = System.currentTimeMillis();
             String ts = String.valueOf(timeStamp);
-            String apiKeyPu = Bot.INSTANCE.getAuthTokens().getProperty("marvelPuToken");
-            String apiKeyPr = Bot.INSTANCE.getAuthTokens().getProperty("marvelPrToken");
+            String apiKeyPu = Credentials.MARVEL_PU;
+            String apiKeyPr = Credentials.MARVEL_PR;
             String preHash = timeStamp + apiKeyPr + apiKeyPu;
             String hash = DigestUtils.md5Hex(preHash);
 

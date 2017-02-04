@@ -1,13 +1,11 @@
 package xyz.gnarbot.gnar.commands.executors.general
 
-import com.mashape.unirest.http.Unirest
 import net.dv8tion.jda.core.EmbedBuilder
 import org.json.JSONException
-import org.json.JSONObject
-import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
+import xyz.gnarbot.gnar.utils.YouTube
 import java.awt.Color
 import java.util.*
 
@@ -22,37 +20,22 @@ class YoutubeCommand : CommandExecutor() {
         try {
             val query = args.joinToString("+")
 
-            val jsonObject = Unirest.get("https://www.googleapis.com/youtube/v3/search")
-                    .queryString("part", "snippet")
-                    .queryString("maxResults", 3)
-                    .queryString("type", "video")
-                    .queryString("q", query)
-                    .queryString("key", Bot.authTokens["youtube"])
-                    .asJson()
-                    .body
-                    .`object`
+            val results = YouTube.search(query, 3)
 
-            if (jsonObject.length() == 0) {
+            if (results.isEmpty()) {
                 note.error("No search results for `$query`.")
                 return
             }
-
-            val items = jsonObject.getJSONArray("items")
 
             val sj = StringJoiner("\n")
 
             var firstUrl: String? = null
 
-            for (obj in items) {
-                val item = obj as JSONObject
+            for (result in results) {
 
-                val snippet = item.getJSONObject("snippet")
-
-                val title = snippet.getString("title")
-                val desc = snippet.getString("description")
-                val videoID = item
-                        .getJSONObject("id")
-                        .getString("videoId")
+                val title = result.title
+                val desc = result.description
+                val videoID = result.id
                 val url = "https://www.youtube.com/watch?v=$videoID"
 
                 if (firstUrl == null) {

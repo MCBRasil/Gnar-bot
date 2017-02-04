@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import xyz.gnarbot.gnar.Bot;
+import xyz.gnarbot.gnar.Credentials;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -94,9 +95,10 @@ public class MemeCommand extends CommandExecutor {
             JSONObject response = Unirest.get("https://api.imgflip.com/caption_image")
                     .queryString("template_id", id)
                     .queryString("username", "GNARBot")
-                    .queryString("password", Bot.INSTANCE.getAuthTokens().getProperty("imgflippass"))
+                    .queryString("password", Credentials.IMGFLIP)
                     .queryString("text0", arguments[1].trim())
-                    .queryString("text1", arguments[2].trim()).asJson()
+                    .queryString("text1", arguments[2].trim())
+                    .asJson()
                     .getBody()
                     .getObject()
                     .getJSONObject("data");

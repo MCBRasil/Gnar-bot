@@ -1,7 +1,8 @@
 .idea/
 
-administrators.json
-credentials.json
+data/administrators.json
+data/credentials.json
+data/blocked.json
 
 target/
 

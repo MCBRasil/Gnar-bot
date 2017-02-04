@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import xyz.gnarbot.gnar.Bot;
+import xyz.gnarbot.gnar.Credentials;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -23,7 +24,7 @@ public class GameLookupCommand extends CommandExecutor {
 
             HttpResponse<JsonNode> response = Unirest.get("https://videogamesrating.p.mashape.com/get" +
                     ".php?count=5&game=" + query)
-                    .header("X-Mashape-Key", Bot.INSTANCE.getAuthTokens().getProperty("mashape"))
+                    .header("X-Mashape-Key", Credentials.MASHAPE)
                     .header("Accept", "application/json")
                     .asJson();
 

@@ -1,6 +1,5 @@
 package xyz.gnarbot.gnar.commands.executors.general;
 
-import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import xyz.gnarbot.gnar.Bot;
@@ -11,7 +10,6 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Command(aliases = {"quote", "quotemsg"},
         usage = "-msg_id [-channel_in_#_format]",
@@ -35,31 +33,30 @@ public class QuoteCommand extends CommandExecutor {
             if (!id.contains("#")) {
                 try {
                     Message msg = note.getChannel().getMessageById(id).complete();
-                    targetChannel.sendMessage(KUtils.makeEmbed(null,
-                            msg.getContent(), Bot.getColor(),
-                            null, null,
-                            note.getHost().getPersonHandler().asPerson(msg.getAuthor()))).queue();
-                }catch (Exception e) {
+                    targetChannel.sendMessage(
+                            KUtils.makeEmbed(null, msg.getContent(), Bot.getColor(), null, null,
+                                    note.getHost().getPersonHandler().asPerson(msg.getAuthor()))).queue();
+                } catch (Exception e) {
                     try {
                         Message m = note.error("Could not find a message with the ID " + id + " within this channel.").get();
                         toDelete.add(m);
-                    }catch (Exception e2){
-
-                    }
+                    } catch (Exception ignore){}
                 }
             }
         }
+
         toDelete.add(note);
+
         try {
             Message m = note.getChannel().sendMessage(KUtils.makeEmbed("Quote Messages", "Sent quotes to the " + targetChannel.getName() + " channel!")).complete();
-            TimeUnit.SECONDS.sleep(5);
-            m.deleteMessage().complete();
-            for (Message m2 : toDelete){
-                m2.deleteMessage().complete();
-            }
-        } catch (Exception e){
+            m.deleteMessage().queue();
 
-        }
+            // SLEEP = NO NO
+
+            for (Message m2 : toDelete){
+                m2.deleteMessage().queue();
+            }
+        } catch (Exception ignore) {}
     }
 }
 

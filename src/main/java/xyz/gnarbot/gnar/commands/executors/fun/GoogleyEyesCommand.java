@@ -5,7 +5,7 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import xyz.gnarbot.gnar.Bot;
+import xyz.gnarbot.gnar.Credentials;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -49,7 +49,7 @@ public class GoogleyEyesCommand extends CommandExecutor {
             HttpResponse<JsonNode> response = Unirest.get("https://apicloud-facerect.p.mashape.com/process-url.json")
                     .queryString("features", true)
                     .queryString("url", encodedStr)
-                    .header("X-Mashape-Key", Bot.INSTANCE.getAuthTokens().getProperty("mashape"))
+                    .header("X-Mashape-Key", Credentials.MASHAPE)
                     .header("Accept", "application/json")
                     .asJson();
 

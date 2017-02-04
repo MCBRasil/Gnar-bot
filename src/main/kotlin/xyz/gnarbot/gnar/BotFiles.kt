@@ -13,16 +13,11 @@ class BotFiles {
 //            .child("host")
 //            .apply { if (!exists()) mkdir() }
 
-    /** tokens.properties file. */
-    val tokens = data
-            .child("tokens.properties")
-            .apply { if (!exists()) throw IllegalStateException("`$path` do not exist.") }
-
     val admins = data
             .child("administrators.json")
             .apply { if (!exists()) throw IllegalStateException("`$path` do not exist.") }
 
     val blocked = data
-            .child("blocked")
+            .child("blocked.json")
             .apply { if (!exists()) throw IllegalStateException("`$path` do not exist.") }
 }

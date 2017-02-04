@@ -16,7 +16,7 @@ public class ShardListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if (Bot.INSTANCE.getBlockedUsers().contains(event.getAuthor().getId())) {
+        if (Bot.INSTANCE.getBlocked().contains(event.getAuthor().getId())) {
             event.getChannel().sendMessage("You are not allowed to use this bot.").queue();
             return;
         }

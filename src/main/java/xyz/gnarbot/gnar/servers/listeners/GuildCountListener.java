@@ -7,6 +7,7 @@ import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.json.JSONObject;
 import xyz.gnarbot.gnar.Bot;
+import xyz.gnarbot.gnar.Credentials;
 import xyz.gnarbot.gnar.servers.Shard;
 
 public class GuildCountListener extends ListenerAdapter {
@@ -55,11 +56,11 @@ public class GuildCountListener extends ListenerAdapter {
 
     public void updateAbalCount(int i) {
         try {
-            String auth = Bot.INSTANCE.getAuthTokens().getProperty("authToken");
+            String auth = Credentials.ABAL_TOKEN;
 
             JSONObject json = new JSONObject().put("server_count", i);
 
-            String response = Unirest.post(Bot.INSTANCE.getAuthTokens().getProperty("url"))
+            String response = Unirest.post(Credentials.ABAL_URL)
                     .header("User-Agent", "Gnar Bot")
                     .header("Authorization", auth)
                     .header("Content-Type", "application/json")
@@ -78,8 +79,8 @@ public class GuildCountListener extends ListenerAdapter {
 
     public void updateCarbonitexCount(int i) {
         try {
-            String auth = Bot.INSTANCE.getAuthTokens().getProperty("authToken");
-            String key = Bot.INSTANCE.getAuthTokens().getProperty("serverKey");
+            String auth = Credentials.ABAL_TOKEN;
+            String key = Credentials.CARBONITEX;
 
             JSONObject json = new JSONObject().put("key", key).put("servercount", i);
 

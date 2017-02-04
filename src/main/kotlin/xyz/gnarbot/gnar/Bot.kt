@@ -13,9 +13,7 @@ import net.dv8tion.jda.core.utils.SimpleLog
 import org.json.JSONArray
 import xyz.gnarbot.gnar.servers.Shard
 import xyz.gnarbot.gnar.utils.Utils
-import xyz.gnarbot.gnar.utils.readProperties
 import java.awt.Color
-import java.util.*
 import java.util.concurrent.Executors
 import kotlin.jvm.JvmStatic as static
 
@@ -52,14 +50,17 @@ object Bot {
         }
     }
 
-    val blockedUsers = hashSetOf<String>().apply {
-        addAll(files.blocked.readLines())
+    val blocked = hashSetOf<String>().apply {
+        JSONArray(files.blocked.readText()).forEach {
+            add(it as String)
+        }
     }
 
     val startTime = System.currentTimeMillis()
-    val scheduler = Executors.newSingleThreadScheduledExecutor()!!
+    /** Returns how many milliseconds since the bot have been up. */
+    val uptime: Long get() = System.currentTimeMillis() - startTime
 
-    val authTokens = files.tokens.readProperties()
+    val scheduler = Executors.newSingleThreadScheduledExecutor()!!
 
     /**
      * Start the bot.
@@ -108,8 +109,4 @@ object Bot {
         LOG.info("Bot is now disconnecting from Discord.")
     }
 
-    /**
-     * Returns how many seconds
-     */
-    val uptime: Long get() = Date().time - startTime
 }

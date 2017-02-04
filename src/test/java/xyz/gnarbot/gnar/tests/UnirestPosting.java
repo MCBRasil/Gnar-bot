@@ -3,7 +3,7 @@ package xyz.gnarbot.gnar.tests;
 import com.mashape.unirest.http.Unirest;
 import org.json.JSONObject;
 import org.junit.Test;
-import xyz.gnarbot.gnar.Bot;
+import xyz.gnarbot.gnar.Credentials;
 
 public class UnirestPosting
 {
@@ -12,8 +12,8 @@ public class UnirestPosting
     {
         int i = 7000;
     
-        String auth = Bot.INSTANCE.getAuthTokens().getProperty("authToken");
-        String key = Bot.INSTANCE.getAuthTokens().getProperty("serverKey");
+        String auth = Credentials.ABAL_TOKEN;
+        String key = Credentials.CARBONITEX;
     
         JSONObject json = new JSONObject()
                 .put("key", key)
@@ -35,12 +35,12 @@ public class UnirestPosting
     {
         int i = 7000;
         
-        String auth = Bot.INSTANCE.getAuthTokens().getProperty("authToken");
+        String auth = Credentials.ABAL_TOKEN;
         
         JSONObject json = new JSONObject()
                 .put("server_count", i);
         
-        String response = Unirest.post(Bot.INSTANCE.getAuthTokens().getProperty("url"))
+        String response = Unirest.post(Credentials.ABAL_URL)
                 .header("User-Agent", "Gnar Bot")
                 .header("Authorization", auth)
                 .header("Content-Type", "application/json")

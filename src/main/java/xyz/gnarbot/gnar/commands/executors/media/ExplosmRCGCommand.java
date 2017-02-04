@@ -19,7 +19,7 @@ public class ExplosmRCGCommand extends CommandExecutor {
 
             document = Jsoup.connect("http://explosm.net/rcg").get();
 
-            Element element = document.getElementById("rcg-comic").getElementsByTag("img").get(0);
+            Element element = document.getElementById("rcg-comic").getElementsByTag("img").first();
 
             String url = element.absUrl("src");
 
