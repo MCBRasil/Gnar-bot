@@ -17,8 +17,8 @@ object Credentials {
     @JvmField val MARVEL_PR: String? = marvel.optString("pr")
 
     private val abal = jso.optJSONObject("abal")
-    @JvmField val ABAL_URL: String? = marvel.optString("url")
-    @JvmField val ABAL_TOKEN: String? = marvel.optString("token")
+    @JvmField val ABAL_URL: String? = abal.optString("url")
+    @JvmField val ABAL_TOKEN: String? = abal.optString("token")
 
     @JvmField val LEAUGE: String? = jso.optString("leauge")
     @JvmField val IMGFLIP: String? = jso.optString("imgflip")
