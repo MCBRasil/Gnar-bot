@@ -10,6 +10,7 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Command(aliases = {"quote", "quotemsg"},
         usage = "-msg_id [-channel_in_#_format]",
@@ -49,13 +50,14 @@ public class QuoteCommand extends CommandExecutor {
 
         try {
             Message m = note.getChannel().sendMessage(KUtils.makeEmbed("Quote Messages", "Sent quotes to the " + targetChannel.getName() + " channel!")).complete();
-            m.deleteMessage().queue();
+            toDelete.add(m);
 
-            // SLEEP = NO NO
+            Bot.INSTANCE.getScheduler().schedule(()-> {
+                        for (Message m2 : toDelete) {
+                            m2.deleteMessage().queue();
+                        }
+                    }, 5, TimeUnit.SECONDS);
 
-            for (Message m2 : toDelete){
-                m2.deleteMessage().queue();
-            }
         } catch (Exception ignore) {}
     }
 }
