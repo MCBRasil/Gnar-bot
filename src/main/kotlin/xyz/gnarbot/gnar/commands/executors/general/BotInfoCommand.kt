@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.commands.executors.general
 
 import com.google.inject.Inject
+import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.OnlineStatus
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.Command
@@ -18,8 +19,7 @@ class BotInfoCommand : CommandExecutor() {
         val registry = shard.commandRegistry
 
         var textChannels = 0
-        var voiceChannels = 0
-        var servers = 0
+        var guilds = 0
 
         var users = 0
         var offline = 0
@@ -30,7 +30,7 @@ class BotInfoCommand : CommandExecutor() {
         for (shard in Bot.shards) {
             val jda = shard.jda
 
-            servers += jda.guilds.size
+            guilds += jda.guilds.size
 
             for (g in jda.guilds) {
                 for (u in g.members) {
@@ -45,7 +45,6 @@ class BotInfoCommand : CommandExecutor() {
 
             users += jda.users.size
             textChannels += jda.textChannels.size
-            voiceChannels += jda.voiceChannels.size
         }
 
         val commandSize = registry.uniqueExecutors.count { it -> it.isShownInHelp }
@@ -55,32 +54,35 @@ class BotInfoCommand : CommandExecutor() {
                 .map { it.commandHandler.requests }
                 .sum()
 
-        val joiner = StringJoiner("\n")
+        val eb = EmbedBuilder()
 
-        //         "__**General**                                                      __"
+        eb.setTitle("Bot Information")
+        eb.setThumbnail(note.jda.selfUser.avatarUrl)
+        eb.setColor(Bot.color)
 
-        joiner.add("Requests: **[$requests]()**")
-        joiner.add("Servers: **[$servers]()**")
-        joiner.add("Shards: **[" + Bot.shards.size + "]()**")
-        joiner.add("")
-        joiner.add("__**Channels**                                                     __")
-        joiner.add("  Text: **[$textChannels]()**")
-        joiner.add("  Voice: **[$voiceChannels]()**")
-        joiner.add("")
-        joiner.add("__**Users**                                                          __")
-        joiner.add("  Total: **[$users]()**")
-        joiner.add("  Online: **[$online]()**")
-        joiner.add("  Offline: **[$offline]()**")
-        joiner.add("  Inactive: **[$inactive]()**")
-        joiner.add("  Others: **[$others]()**")
-        joiner.add("")
-        joiner.add("__**Others**                                                         __")
-        joiner.add("  Creators: **[Avarel](https://github.com/Avarel)** and **[Maeyrl](https://github.com/maeyrl)**")
-        joiner.add("  Contributor: **[Gatt](https://github.com/RealGatt)**")
-        joiner.add("  Website: **[gnarbot.xyz](https://gnarbot.xyz)**")
-        joiner.add("  Commands: **[$commandSize]()**")
-        joiner.add("  Library: **[JDA 3" + "](https://github.com/DV8FromTheWorld/JDA)**")
+        var joiner = StringJoiner("\n")
 
-        note.replyEmbedRaw("Bot Information", joiner.toString(), Bot.color, note.jda.selfUser.avatarUrl)
+        eb.addField("Usage", "Requests: **[$requests]()**\nShards: **[" + Bot.shards.size + "]()**", true)
+        eb.addField("Guilds", "Servers: **[$guilds]()**\nChannels: **[$textChannels]()**", true)
+
+        joiner.add("Total: **[$users]()**")
+        joiner.add("Online: **[$online]()**")
+        joiner.add("Offline: **[$offline]()**")
+        joiner.add("Inactive: **[$inactive]()**")
+        joiner.add("Others: **[$others]()**")
+
+        eb.addField("Users", joiner.toString(), true)
+
+        joiner = StringJoiner("\n")
+
+        joiner.add("Creators: **[Avarel](https://github.com/Avarel)** and **[Maeyrl](https://github.com/maeyrl)**")
+        joiner.add("Contributor: **[Gatt](https://github.com/RealGatt)**")
+        joiner.add("Website: **[gnarbot.xyz](https://gnarbot.xyz)**")
+        joiner.add("Commands: **[$commandSize]()**")
+        joiner.add("Library: **[JDA 3" + "](https://github.com/DV8FromTheWorld/JDA)**")
+
+        eb.addField("Others", joiner.toString(), true)
+
+        note.channel.sendMessage(eb.build()).queue()
     }
 }

@@ -60,21 +60,21 @@ public class WhoIsCommand extends CommandExecutor {
         metaBuilder.add("Name: **[" + person.getName() + "#" + person.getDiscriminator() + "]()**");
         metaBuilder.add("ID: **[" + person.getId() + "]()**");
         metaBuilder.add("");
-        metaBuilder.add("__**General**                                                      __");
-        metaBuilder.add("  Nick: **[" + (nickname != null ? nickname : "None") + "]()**");
-        metaBuilder.add("  Game: **[" + (game != null ? game.getName() : "None") + "]()**");
-        metaBuilder.add("  Bot: **[" + String.valueOf(person.isBot()).toUpperCase() + "]()**");
-        metaBuilder.add("  Level: **[" + person.getLevel().toString().replaceAll("_", " ") + "]()**");
+        metaBuilder.add("__**General**__");
+        metaBuilder.add("Nick: **[" + (nickname != null ? nickname : "None") + "]()**");
+        metaBuilder.add("Game: **[" + (game != null ? game.getName() : "None") + "]()**");
+        metaBuilder.add("Bot: **[" + String.valueOf(person.isBot()).toUpperCase() + "]()**");
+        metaBuilder.add("Level: **[" + person.getLevel().toString().replaceAll("_", " ") + "]()**");
         metaBuilder.add("\n");
 
         mainBuilder.append(metaBuilder.toString());
 
-        mainBuilder.append("__**Roles**                                                           __").append('\n');
+        mainBuilder.append("__**Roles**__").append('\n');
 
         person.getRoles()
                 .stream()
                 .filter(role -> !mainBuilder.toString().contains(role.getId()))
-                .forEach(role -> mainBuilder.append("  - **[").append(role.getName()).append("]()**").append('\n'));
+                .forEach(role -> mainBuilder.append("- **[").append(role.getName()).append("]()**").append('\n'));
 
         note.replyEmbedRaw("Who is " + person.getName() + "?", mainBuilder.toString()
                 .replaceAll("null", "None"), Bot.getColor(), person.getAvatarUrl());
