@@ -150,7 +150,7 @@ public class CommandRegistry {
 
             cmd.setAliases(annot.aliases());
             cmd.setDescription(annot.description());
-            cmd.setBotPermission(annot.botPermission());
+            cmd.setLevel(annot.level());
             cmd.setShownInHelp(annot.showInHelp());
             cmd.setUsage(annot.usage());
 

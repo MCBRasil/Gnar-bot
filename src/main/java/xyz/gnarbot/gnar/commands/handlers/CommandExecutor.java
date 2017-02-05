@@ -1,7 +1,7 @@
 package xyz.gnarbot.gnar.commands.handlers;
 
 import com.google.inject.Injector;
-import xyz.gnarbot.gnar.members.BotPermission;
+import xyz.gnarbot.gnar.members.Level;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.Arrays;
@@ -17,7 +17,7 @@ public abstract class CommandExecutor {
 
     private String usage = "No usage provided.";
 
-    private BotPermission botPermission = BotPermission.USER;
+    private Level level = Level.USER;
 
     private String symbol;
 
@@ -90,15 +90,15 @@ public abstract class CommandExecutor {
     /**
      * @return The permission required to execute the command.
      */
-    public BotPermission getBotPermission() {
-        return botPermission;
+    public Level getLevel() {
+        return level;
     }
 
     /**
      * @param perm New permission required.
      */
-    public void setBotPermission(BotPermission perm) {
-        this.botPermission = perm;
+    public void setLevel(Level perm) {
+        this.level = perm;
     }
 
     /**
@@ -152,6 +152,6 @@ public abstract class CommandExecutor {
     public String toString() {
         return this.getClass()
                 .getSimpleName() + "(aliases=" + Arrays.toString(aliases) + ", desc=\"" + description + "\", " +
-                "usage=\"" + usage + "\", clearance=" + botPermission + ", shownInHelp=" + shownInHelp + ")";
+                "usage=\"" + usage + "\", clearance=" + level + ", shownInHelp=" + shownInHelp + ")";
     }
 }

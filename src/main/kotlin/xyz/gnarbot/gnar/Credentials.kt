@@ -9,8 +9,8 @@ object Credentials {
     private val jso = JSONObject(file.readText())
 
     private val token = jso.getJSONObject("token")
-    @JvmField val PRODUCTION = token.getString("production")
-    @JvmField val BETA = token.optString("beta")
+    @JvmField val PRODUCTION : String? = token.optString("production")
+    @JvmField val BETA : String? = token.optString("beta")
 
     private val marvel = jso.optJSONObject("marvel")
     @JvmField val MARVEL_PU: String? = marvel.optString("pu")

@@ -5,14 +5,14 @@ import org.apache.commons.lang3.text.WordUtils
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.members.BotPermission
+import xyz.gnarbot.gnar.members.Level
 import xyz.gnarbot.gnar.utils.Note
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 @Command(
         aliases = arrayOf("progress"),
-        botPermission = BotPermission.BOT_MASTER,
+        level = Level.BOT_MASTER,
         showInHelp = false
 )
 class ProgressionCommand : CommandExecutor() {

@@ -1,6 +1,6 @@
 package xyz.gnarbot.gnar.commands.handlers;
 
-import xyz.gnarbot.gnar.members.BotPermission;
+import xyz.gnarbot.gnar.members.Level;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -38,5 +38,5 @@ public @interface Command {
     /**
      * @return The permission required for this command.
      */
-    BotPermission botPermission() default BotPermission.USER;
+    Level level() default Level.USER;
 }

@@ -2,12 +2,12 @@ package xyz.gnarbot.gnar.commands.executors.test;
 
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.members.BotPermission;
+import xyz.gnarbot.gnar.members.Level;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 
-@Command(aliases = "wow", botPermission = BotPermission.BOT_MASTER, showInHelp = false)
+@Command(aliases = "wow", level = Level.BOT_MASTER, showInHelp = false)
 public class TestCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {

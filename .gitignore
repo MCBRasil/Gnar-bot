@@ -1,17 +1,5 @@
 .idea/
 
-data/administrators.json
-data/credentials.json
-data/blocked.json
+data/*.json
 
 target/
-
-dependency-reduced-pom.xml
-*.jar
-_DATA/tokens.properties
-*.properties
-data/tokens.properties
-*.properties
-*.iml
-*.json
-data/tokens.properties

@@ -4,12 +4,12 @@ import com.google.inject.Inject
 import net.dv8tion.jda.core.EmbedBuilder
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.members.BotPermission
+import xyz.gnarbot.gnar.members.Level
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 import java.util.*
 
-@Command(aliases = arrayOf("queue", "list"), botPermission = BotPermission.USER)
+@Command(aliases = arrayOf("queue", "list"), level = Level.USER)
 class QueueCommand : MusicExecutor() {
 
     @Inject lateinit private var manager: MusicManager

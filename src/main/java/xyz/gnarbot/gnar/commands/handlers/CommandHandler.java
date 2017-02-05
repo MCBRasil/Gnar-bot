@@ -53,7 +53,7 @@ public class CommandHandler {
 
         if (cmd == null) return;
 
-        if (cmd.getBotPermission().getValue() > author.getBotPermission().getValue()) {
+        if (cmd.getLevel().getValue() > author.getLevel().getValue()) {
             note.error("Insufficient bot permission.");
             return;
         }

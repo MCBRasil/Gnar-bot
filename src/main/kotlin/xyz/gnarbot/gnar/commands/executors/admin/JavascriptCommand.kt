@@ -2,7 +2,7 @@ package xyz.gnarbot.gnar.commands.executors.admin
 
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.members.BotPermission
+import xyz.gnarbot.gnar.members.Level
 import xyz.gnarbot.gnar.utils.Note
 import javax.script.ScriptEngineManager
 import javax.script.ScriptException
@@ -10,7 +10,7 @@ import javax.script.ScriptException
 @Command(
         aliases = arrayOf("js", "runjs"),
         description = "Run JavaScript commands.",
-        botPermission = BotPermission.BOT_MASTER,
+        level = Level.BOT_MASTER,
         showInHelp = false
 )
 class JavascriptCommand : CommandExecutor() {

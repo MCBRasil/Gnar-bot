@@ -3,7 +3,7 @@ package xyz.gnarbot.gnar.members
 /**
  * Clearance levels for [Person] for use by the bot.
  */
-enum class BotPermission(val value: Int, val title: String) {
+enum class Level(val value: Int, val title: String) {
     /** Highest level clearance. */
     BOT_MASTER(4, "Bot Master"),
 
@@ -21,5 +21,4 @@ enum class BotPermission(val value: Int, val title: String) {
 
     /** Clearance for other Discord bots. */
     BOT(-1, "Bot"),
-
 }

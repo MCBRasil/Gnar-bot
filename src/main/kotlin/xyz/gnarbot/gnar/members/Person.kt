@@ -15,14 +15,14 @@ import xyz.gnarbot.gnar.servers.Host
 class Person(var host: Host, private var member: Member) : User by member.user, Member by member {
     val isBotMaster: Boolean = Bot.admins.contains(member.user.id)
 
-    val botPermission: BotPermission
+    val level: Level
         get() = when {
-            isBotMaster -> BotPermission.BOT_MASTER
-            isBot -> BotPermission.BOT
-            member == host.guild.owner -> BotPermission.SERVER_OWNER
-            hasRole("DJ") -> BotPermission.DJ
-            hasRole("Bot Commander") -> BotPermission.BOT_COMMANDER
-            else -> BotPermission.USER
+            isBotMaster -> Level.BOT_MASTER
+            isBot -> Level.BOT
+            member == host.guild.owner -> Level.SERVER_OWNER
+            hasRole("DJ") -> Level.DJ
+            hasRole("Bot Commander") -> Level.BOT_COMMANDER
+            else -> Level.USER
         }
 
     fun requestPrivateChannel(): PrivateChannel {
@@ -73,6 +73,6 @@ class Person(var host: Host, private var member: Member) : User by member.user, 
      * @return String representation of the member.
      */
     override fun toString(): String {
-        return "Member(id=$id, name=\"$name\", guild=\"${host.guild.name}\", clearance=$botPermission)"
+        return "Member(id=$id, name=\"$name\", guild=\"${host.guild.name}\", clearance=$level)"
     }
 }

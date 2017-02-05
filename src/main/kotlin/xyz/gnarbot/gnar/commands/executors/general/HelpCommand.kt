@@ -4,7 +4,7 @@ import net.dv8tion.jda.core.EmbedBuilder
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.members.BotPermission
+import xyz.gnarbot.gnar.members.Level
 import xyz.gnarbot.gnar.utils.Note
 import java.util.*
 
@@ -48,8 +48,8 @@ class HelpCommand : CommandExecutor() {
         eb.setDescription("This is all of GN4R-Bot's currently registered commands on the __**${host.guild.name}**__ guild.\n\n")
         eb.setColor(Bot.color)
 
-        for (perm in BotPermission.values()) {
-            val sectionCount = cmds.count { it.botPermission == perm && it.isShownInHelp }
+        for (perm in Level.values()) {
+            val sectionCount = cmds.count { it.level == perm && it.isShownInHelp }
 
             if (sectionCount < 1) continue
 
@@ -61,7 +61,7 @@ class HelpCommand : CommandExecutor() {
             val rows = sectionCount / 3
 
             for (cmd in cmds) {
-                if (cmd.botPermission != perm || !cmd.isShownInHelp) continue
+                if (cmd.level != perm || !cmd.isShownInHelp) continue
 
                 count++
 
