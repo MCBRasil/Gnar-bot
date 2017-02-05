@@ -64,7 +64,7 @@ public class WhoIsCommand extends CommandExecutor {
         metaBuilder.add("  Nick: **[" + (nickname != null ? nickname : "None") + "]()**");
         metaBuilder.add("  Game: **[" + (game != null ? game.getName() : "None") + "]()**");
         metaBuilder.add("  Bot: **[" + String.valueOf(person.isBot()).toUpperCase() + "]()**");
-        metaBuilder.add("  Clearance: **[" + person.getLevel().toString().replaceAll("_", " ") + "]()**");
+        metaBuilder.add("  Level: **[" + person.getLevel().toString().replaceAll("_", " ") + "]()**");
         metaBuilder.add("\n");
 
         mainBuilder.append(metaBuilder.toString());

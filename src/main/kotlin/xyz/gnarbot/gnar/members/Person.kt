@@ -73,6 +73,6 @@ class Person(var host: Host, private var member: Member) : User by member.user, 
      * @return String representation of the member.
      */
     override fun toString(): String {
-        return "Member(id=$id, name=\"$name\", guild=\"${host.guild.name}\", clearance=$level)"
+        return "Member(id=$id, name=\"$name\", guild=\"${host.guild.name}\", level=$level)"
     }
 }

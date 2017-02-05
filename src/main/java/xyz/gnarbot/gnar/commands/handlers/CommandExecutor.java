@@ -152,6 +152,6 @@ public abstract class CommandExecutor {
     public String toString() {
         return this.getClass()
                 .getSimpleName() + "(aliases=" + Arrays.toString(aliases) + ", desc=\"" + description + "\", " +
-                "usage=\"" + usage + "\", clearance=" + level + ", shownInHelp=" + shownInHelp + ")";
+                "usage=\"" + usage + "\", level=" + level + ", shownInHelp=" + shownInHelp + ")";
     }
 }
