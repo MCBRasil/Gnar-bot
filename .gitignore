@@ -7,3 +7,11 @@ data/blocked.json
 target/
 
 dependency-reduced-pom.xml
+*.jar
+_DATA/tokens.properties
+*.properties
+data/tokens.properties
+*.properties
+*.iml
+*.json
+data/tokens.properties
