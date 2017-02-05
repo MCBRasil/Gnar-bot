@@ -3,3 +3,6 @@
 data/*.json
 
 target/
+*.json
+*.iml
+*.jar
