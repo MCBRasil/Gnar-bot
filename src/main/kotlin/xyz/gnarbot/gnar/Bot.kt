@@ -78,19 +78,18 @@ object Bot {
         LOG.info("There are ${admins.size} administrators registered for the bot.")
 
         for (id in 0..numShards - 1) {
-            val jda = JDABuilder(AccountType.BOT).run {
+            val jda = JDABuilder(AccountType.BOT).apply {
                 if (numShards > 1) useSharding(id, numShards)
 
                 setToken(token)
                 setAutoReconnect(true)
-                setGame(Game.of("Shard: $id | _help"))
+                setGame(Game.of("[$id] _help | _invite"))
 
-                buildBlocking()
-            }
+            }.buildBlocking()
 
             jda.selfUser.manager.setName("Gnar").queue()
 
-            shards += Shard(id, jda)
+            shards.add(Shard(id, jda))
 
             LOG.info("Built shard $id.")
         }
