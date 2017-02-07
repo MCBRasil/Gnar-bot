@@ -17,6 +17,17 @@ import java.util.*;
 public class Adventure {
     private static HashMap<User, Adventure> adventures = new HashMap<>();
 
+    public static void removeAdventure(User u){
+        if (adventures.containsKey(u)){
+            if (adventures.get(u).isAdventureActive()) {
+                adventures.get(u).setAdventureActive(false);
+                adventures.values().remove(adventures.get(u));
+                adventures.keySet().remove(u);
+                adventures.put(u, null);
+            }
+        }
+    }
+
     private static int lastID = 0;
 
     private Random random;
@@ -60,6 +71,16 @@ public class Adventure {
 
     private String gender = "";
 
+    private boolean adventureActive = true;
+
+    public boolean isAdventureActive() {
+        return adventureActive;
+    }
+
+    public void setAdventureActive(boolean adventureActive) {
+        this.adventureActive = adventureActive;
+    }
+
     public Adventure(User u, Note note) {
 
         adventures.put(u, this);
@@ -72,7 +93,6 @@ public class Adventure {
         state = STATE.WAITING_FOR_NAME;
         stateRelation = "waitname";
         logAction("Started your adventure...");
-        System.out.println("Started new Text Adventure for " + u.getName() + " (ID: " + gameID.toString() + ")");
         sendMessage(note, "***A new adventure begins... This is the story of... `_________`***\n" + "\n" + "\n       " +
                 "" + "                 :warning:      **Response Required!**      :warning:" + "\n  :bulb: :bulb: " +
                 ":bulb:  " + "    **What is your name, hero?**      :bulb: :bulb: :bulb:   " + "\n ➜ *To answer " +
@@ -81,13 +101,12 @@ public class Adventure {
     }
 
     public static boolean hasAdventure(User u) {
-        return adventures.containsKey(u);
+        return adventures.containsKey(u) && adventures.get(u) != null && adventures.get(u).isAdventureActive();
     }
 
     public static Adventure getAdventure(User u, Note n) {
-
-        if (adventures.containsKey(u)) {
-            return adventures.get(u);
+        if (adventures.containsKey(u) && adventures.get(u) != null) {
+            return adventures.get(u).isAdventureActive() ? adventures.get(u) : new Adventure(u, n);
         } else {
             return new Adventure(u, n);
         }
@@ -100,8 +119,6 @@ public class Adventure {
     public void logAction(String action) {
         actionList.add("(" + new SimpleDateFormat("HH:mm:ss.SSS").format(new Date(System.currentTimeMillis())) + ") "
                 + action);
-        System.out.println("(" + new SimpleDateFormat("HH:mm:ss.SSS").format(new Date(System.currentTimeMillis())) +
-                ") " + action);
     }
 
     public String getPlayerIcon() {
