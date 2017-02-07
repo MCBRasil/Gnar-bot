@@ -91,8 +91,11 @@ public class Shard {
         return "Shard(id=" + id + ", guilds=" + jda.getGuilds().size() + ")";
     }
 
+    /**
+     * Shuts down the shard.
+     */
     public void shutdown() {
-        jda.shutdown();
+        jda.shutdown(false);
         hosts.clear();
     }
 }

@@ -7,6 +7,7 @@ import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceMan
 import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import net.dv8tion.jda.core.AccountType
+import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.JDABuilder
 import net.dv8tion.jda.core.entities.Game
 import net.dv8tion.jda.core.utils.SimpleLog
@@ -72,30 +73,33 @@ object Bot {
         if (initialized) throw IllegalStateException("Bot instance have already been initialized.")
         initialized = true
 
-        LOG.info("Initializing Bot.")
+        LOG.info("Initializing the Discord bot.")
         LOG.info("Requesting $numShards shards.")
 
         LOG.info("There are ${admins.size} administrators registered for the bot.")
+        LOG.info("There are ${blocked.size} blocked users registered for the bot.")
 
         for (id in 0..numShards - 1) {
-            val jda = JDABuilder(AccountType.BOT).apply {
-                if (numShards > 1) useSharding(id, numShards)
-
-                setToken(token)
-                setAutoReconnect(true)
-                setGame(Game.of("[$id] _help | _invite"))
-
-            }.buildBlocking()
+            val jda = makeJDA(token, numShards, id)
 
             jda.selfUser.manager.setName("Gnar").queue()
 
             shards.add(Shard(id, jda))
 
-            LOG.info("Built shard $id.")
+            LOG.info("Shard [$id] is initialized.")
         }
 
-        LOG.info("Bot is now connecting to Discord.")
+        LOG.info("Bot is now connected to Discord.")
         Utils.setLeagueInfo()
+    }
+
+    fun makeJDA(token: String, numShards: Int, id: Int) : JDA {
+        return JDABuilder(AccountType.BOT).apply {
+            if (numShards > 1) useSharding(id, numShards)
+            setToken(token)
+            setAutoReconnect(true)
+            setGame(Game.of("$id | _help"))
+        }.buildBlocking()
     }
 
     /**
@@ -103,9 +107,11 @@ object Bot {
      */
     fun stop() {
         shards.forEach(Shard::shutdown)
+        shards.clear()
         initialized = false
+        System.gc()
 
-        LOG.info("Bot is now disconnecting from Discord.")
+        LOG.info("Bot is now disconnected from Discord.")
     }
 
 }

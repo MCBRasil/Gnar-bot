@@ -130,14 +130,6 @@
 			<artifactId>lavaplayer</artifactId>
 			<version>1.2.0</version>
 		</dependency>
-
-		<!--SLF4J-->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.22</version>
-		</dependency>
-
 	</dependencies>
 
 	<build>
