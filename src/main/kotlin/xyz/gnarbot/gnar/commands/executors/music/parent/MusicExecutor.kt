@@ -67,6 +67,12 @@ abstract class MusicExecutor : CommandExecutor() {
 
                 var added = 0
                 for (track in tracks) {
+
+                    if (mng.scheduler.queue.size >= 20) {
+                        note.info("Ignored ${tracks.size - added} songs as the queue can not exceed 20 songs.")
+                        break
+                    }
+
                     mng.scheduler.queue(track)
                     added++
                 }
