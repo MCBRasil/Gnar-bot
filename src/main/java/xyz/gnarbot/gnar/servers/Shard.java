@@ -2,6 +2,7 @@ package xyz.gnarbot.gnar.servers;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
+import org.json.JSONObject;
 import xyz.gnarbot.gnar.commands.handlers.CommandRegistry;
 import xyz.gnarbot.gnar.servers.listeners.GuildCountListener;
 import xyz.gnarbot.gnar.servers.listeners.ShardListener;
@@ -89,6 +90,24 @@ public class Shard {
     @Override
     public String toString() {
         return "Shard(id=" + id + ", guilds=" + jda.getGuilds().size() + ")";
+    }
+
+    /**
+     * @return JSON data on the shard.
+     */
+    public JSONObject jsonResponse() {
+        JSONObject jso = new JSONObject();
+
+        jso.put("id", id)
+                .put("status", jda.getStatus())
+                .put("requests", hosts.values().stream()
+                        .mapToInt(it -> it.getCommandHandler().getRequests())
+                        .sum())
+                .put("textChannel", jda.getTextChannels().size())
+                .put("users", jda.getUsers().size())
+                .put("guilds", jda.getGuilds().size());
+
+        return jso;
     }
 
     /**

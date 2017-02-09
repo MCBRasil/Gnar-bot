@@ -9,6 +9,7 @@
 	<version>2.2</version>
 
 	<properties>
+		<pippo.version>1.1.0</pippo.version>
 		<kotlin.version>1.0.6</kotlin.version>
 		<jar.mainClass>xyz.gnarbot.gnar.MainBot</jar.mainClass>
 	</properties>
@@ -24,6 +25,24 @@
 	</repositories>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>ro.pippo</groupId>
+			<artifactId>pippo-core</artifactId>
+			<version>${pippo.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ro.pippo</groupId>
+			<artifactId>pippo-jetty</artifactId>
+			<version>${pippo.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.22</version>
+		</dependency>
+
 
 		<!--KOTLIN-->
 		<dependency>
