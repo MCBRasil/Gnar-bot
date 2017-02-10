@@ -26,6 +26,7 @@
 
 	<dependencies>
 
+		<!--WEB SERVER: API-->
 		<dependency>
 			<groupId>ro.pippo</groupId>
 			<artifactId>pippo-core</artifactId>
@@ -33,10 +34,14 @@
 		</dependency>
 		<dependency>
 			<groupId>ro.pippo</groupId>
+			<artifactId>pippo-gson</artifactId>
+			<version>${pippo.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ro.pippo</groupId>
 			<artifactId>pippo-jetty</artifactId>
 			<version>${pippo.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
@@ -140,7 +145,7 @@
 		<dependency>
 			<groupId>com.sedmelluq</groupId>
 			<artifactId>lavaplayer</artifactId>
-			<version>1.2.9</version>
+			<version>1.2.3</version>
 		</dependency>
 	</dependencies>
 

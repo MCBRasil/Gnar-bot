@@ -1,9 +1,8 @@
 package xyz.gnarbot.gnar.api
 
-import org.json.JSONArray
-import org.json.JSONObject
 import ro.pippo.core.Application
 import ro.pippo.core.Pippo
+import ro.pippo.gson.GsonEngine
 import xyz.gnarbot.gnar.Bot
 
 class APIPortal : Application()
@@ -16,28 +15,20 @@ class APIPortal : Application()
 
     override fun onInit()
     {
+        registerContentTypeEngine(GsonEngine::class.java)
+
         GET("/api/shards(/)?") {
-            val jso = JSONObject()
-
-            jso.put("all", Bot.jsonResponse())
-
-            val jsa = JSONArray()
-            Bot.shards.forEach { jsa.put(it.jsonResponse()) }
-            jso.put("shards", jsa)
-
-            it.text().send(jso)
+            it.json().send(Bot.info)
         }
 
         GET("/api/shards/{id}(/)?") {
             val id = it.getParameter("id").toInt(0)
 
-            val jso = if (id >= Bot.shards.size || id < 0) {
-                JSONObject().put("message", "Shard not found.")
+            if (id >= Bot.shards.size || id < 0) {
+                it.json().send("""{"message": "Shard id not found."}""")
             } else {
-                Bot.shards[id].jsonResponse()
+                it.json().send(Bot.shards[id].info)
             }
-
-            it.text().send(jso)
         }
     }
 }

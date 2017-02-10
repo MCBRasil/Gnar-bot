@@ -2,7 +2,6 @@ package xyz.gnarbot.gnar.servers;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
-import org.json.JSONObject;
 import xyz.gnarbot.gnar.commands.handlers.CommandRegistry;
 import xyz.gnarbot.gnar.servers.listeners.GuildCountListener;
 import xyz.gnarbot.gnar.servers.listeners.ShardListener;
@@ -95,19 +94,8 @@ public class Shard {
     /**
      * @return JSON data on the shard.
      */
-    public JSONObject jsonResponse() {
-        JSONObject jso = new JSONObject();
-
-        jso.put("id", id)
-                .put("status", jda.getStatus())
-                .put("requests", hosts.values().stream()
-                        .mapToInt(it -> it.getCommandHandler().getRequests())
-                        .sum())
-                .put("textChannels", jda.getTextChannels().size())
-                .put("users", jda.getUsers().size())
-                .put("guilds", jda.getGuilds().size());
-
-        return jso;
+    public ShardInfo getInfo() {
+        return new ShardInfo(this);
     }
 
     /**
@@ -116,6 +104,57 @@ public class Shard {
     public void shutdown() {
         jda.shutdown(false);
         hosts.clear();
+    }
+
+    public static class ShardInfo {
+        private int requests;
+        private final int id;
+        private final JDA.Status status;
+        private final int guilds;
+        private final int users;
+        private final int textChannels;
+        private final int voiceChannels;
+
+        public ShardInfo(Shard shard) {
+            id = shard.id;
+            status = shard.jda.getStatus();
+            guilds = shard.jda.getGuilds().size();
+            users = shard.jda.getUsers().size();
+            textChannels = shard.jda.getTextChannels().size();
+            voiceChannels = shard.jda.getVoiceChannels().size();
+
+            for (Host host : shard.hosts.values()) {
+                requests += host.getCommandHandler().getRequests();
+            }
+        }
+
+        public int getRequests() {
+            return requests;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public JDA.Status getStatus() {
+            return status;
+        }
+
+        public int getGuilds() {
+            return guilds;
+        }
+
+        public int getUsers() {
+            return users;
+        }
+
+        public int getTextChannels() {
+            return textChannels;
+        }
+
+        public int getVoiceChannels() {
+            return voiceChannels;
+        }
     }
 }
 
