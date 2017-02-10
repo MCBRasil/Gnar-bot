@@ -18,6 +18,7 @@ class ResetCommand : MusicExecutor() {
         manager.scheduler.queue.clear()
         manager.player.destroy()
         host.guild.audioManager.sendingHandler = null
+        host.guild.audioManager.closeAudioConnection()
         host.musicManager = null
 
         val _manager = host.musicManager

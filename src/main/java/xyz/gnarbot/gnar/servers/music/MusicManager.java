@@ -10,10 +10,12 @@ public class MusicManager {
      * Audio player for the guild.
      */
     public final AudioPlayer player;
+
     /**
      * Track scheduler for the player.
      */
     public final TrackScheduler scheduler;
+
     /**
      * Wrapper around AudioPlayer to use it as an AudioSendHandler.
      */
