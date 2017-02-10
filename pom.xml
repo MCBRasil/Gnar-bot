@@ -70,7 +70,7 @@
 		<dependency>
 			<groupId>net.dv8tion</groupId>
 			<artifactId>JDA</artifactId>
-			<version>3.0.BETA2_123</version>
+			<version>3.0.BETA2_126</version>
 		</dependency>
 
 		<!--CHATTERBOT-->
@@ -122,13 +122,6 @@
 			<version>3.5</version>
 		</dependency>
 
-		<!--JRAW-->
-		<dependency>
-			<groupId>net.dean.jraw</groupId>
-			<artifactId>JRAW</artifactId>
-			<version>0.9.0</version>
-		</dependency>
-
 		<!--APACHECOMMONSIO-->
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -147,7 +140,7 @@
 		<dependency>
 			<groupId>com.sedmelluq</groupId>
 			<artifactId>lavaplayer</artifactId>
-			<version>1.2.0</version>
+			<version>1.2.8</version>
 		</dependency>
 	</dependencies>
 

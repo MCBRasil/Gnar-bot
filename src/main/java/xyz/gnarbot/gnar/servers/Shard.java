@@ -103,7 +103,7 @@ public class Shard {
                 .put("requests", hosts.values().stream()
                         .mapToInt(it -> it.getCommandHandler().getRequests())
                         .sum())
-                .put("textChannel", jda.getTextChannels().size())
+                .put("textChannels", jda.getTextChannels().size())
                 .put("users", jda.getUsers().size())
                 .put("guilds", jda.getGuilds().size());
 
