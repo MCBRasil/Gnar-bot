@@ -27,7 +27,7 @@ class QueueCommand : MusicExecutor() {
 
         val eb = EmbedBuilder()
 
-        eb.setTitle("Music")
+        eb.setTitle("Music", null)
 
         manager.player.playingTrack?.let {
             if (it.sourceManager.sourceName.contains("youtube")) {

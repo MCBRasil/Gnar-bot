@@ -56,7 +56,7 @@ class BotInfoCommand : CommandExecutor() {
 
         val eb = EmbedBuilder()
 
-        eb.setTitle("Bot Information")
+        eb.setTitle("Bot Information", null)
         eb.setThumbnail(note.jda.selfUser.avatarUrl)
         eb.setColor(Bot.color)
 

@@ -44,7 +44,7 @@ class HelpCommand : CommandExecutor() {
         val cmds = registry.uniqueExecutors
 
         val eb = EmbedBuilder()
-        eb.setTitle("Gnar Documentation")
+        eb.setTitle("Gnar Documentation", null)
         eb.setDescription("This is all of GN4R-Bot's currently registered commands on the __**${host.guild.name}**__ guild.\n\n")
         eb.setColor(Bot.color)
 

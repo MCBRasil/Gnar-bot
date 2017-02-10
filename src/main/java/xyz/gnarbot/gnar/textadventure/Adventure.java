@@ -137,7 +137,7 @@ public class Adventure {
     public void sendMessage(Note n, String message) {
         this.lastMessage = message;
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
+        eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
                 .addBlankField(true)
                 .setDescription(message)
                 .setColor(getDefaultMessageColor());
@@ -155,7 +155,7 @@ public class Adventure {
     public void sendMessage(Note n, String message, Color color) {
         this.lastMessage = message;
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
+        eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
                 .addBlankField(true)
                 .setDescription(message)
                 .setColor(color);
@@ -173,7 +173,7 @@ public class Adventure {
     public void sendMessage(Note n, String message, String url) {
         this.lastMessage = message;
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
+        eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
                 .addBlankField(true)
                 .setDescription(message)
                 .setColor(getDefaultMessageColor());
@@ -189,7 +189,7 @@ public class Adventure {
     public void sendMessage(Note n, String message, String url, Color color) {
         this.lastMessage = message;
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
+        eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
                 .addBlankField(true)
                 .setDescription(message)
                 .setColor(color);
@@ -204,7 +204,7 @@ public class Adventure {
 
     public void sendInformativeMessage(Note n, String message) {
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
+        eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
                 .addBlankField(true)
                 .setDescription(message)
                 .setThumbnail(getPlayerIcon())
@@ -219,7 +219,7 @@ public class Adventure {
     public void sendLastMessage(Note n, String extra) {
 
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("*Sending last sent message...*")
+        eb.setTitle("Sending last sent message...", null)
                 .addBlankField(true)
                 .setDescription(lastMessage)
                 .setThumbnail(getPlayerIcon())

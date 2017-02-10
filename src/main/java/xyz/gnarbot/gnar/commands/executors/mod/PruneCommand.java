@@ -1,9 +1,9 @@
 package xyz.gnarbot.gnar.commands.executors.mod;
 
 import com.google.inject.Inject;
-import net.dv8tion.jda.core.MessageHistory;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageHistory;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Level;
@@ -35,7 +35,7 @@ public class PruneCommand extends CommandExecutor {
         }
 
         try {
-            note.delete();
+            note.delete().queue();
 
             MessageHistory history = note.getChannel().getHistory();
 

@@ -49,7 +49,7 @@ public class Event {
 
     public void sendMessage(Note n, String message) {
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
+        eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
                 .addBlankField(true)
                 .setDescription(message)
                 .setColor(new Color(39, 255, 9));
@@ -62,7 +62,7 @@ public class Event {
 
     public void sendMessage(Note n, String message, String imageurl) {
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("**" + n.getAuthor().getName() + "'s Adventure**")
+        eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
                 .addBlankField(true)
                 .setDescription(message)
                 .setColor(new Color(39, 255, 9));

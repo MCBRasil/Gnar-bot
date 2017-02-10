@@ -20,7 +20,7 @@ public class TestEmbedCommand extends CommandExecutor {
         String s = StringUtils.join(args, " ");
         Random r = new Random();
         String[] parts = s.split(":newsection:");
-        eb.setTitle("**Message from " + note.getAuthor().getName() + "**");
+        eb.setTitle("Message from " + note.getAuthor().getName(), null);
         eb.setDescription(parts[0]);
         parts[0] = "";
         if (parts.length > 1) {

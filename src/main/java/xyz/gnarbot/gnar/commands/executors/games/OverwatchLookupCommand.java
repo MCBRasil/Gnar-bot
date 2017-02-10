@@ -85,7 +85,7 @@ public class OverwatchLookupCommand extends CommandExecutor {
             joiner.add("Region: **__[" + region.toUpperCase() + "](http://masteroverwatch.com/leaderboards/pc/" + region + "/mode/ranked/category/skillrating)__**");
 
             eb.setDescription(joiner.toString());
-            eb.setTitle("**Overwatch Stats: " + tag + "**");
+            eb.setTitle("Overwatch Stats: " + tag, null);
 
             JSONObject overall = jso.optJSONObject("stats");
 

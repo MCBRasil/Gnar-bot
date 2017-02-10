@@ -22,7 +22,7 @@ class MathCommand : CommandExecutor() {
         val exp = StringUtils.join(args, ' ')
         val eb = EmbedBuilder()
 
-        eb.setTitle("Math")
+        eb.setTitle("Math", null)
         eb.addField("Expressions", "**[${exp.fastSplit(';').map(String::trim).joinToString("\n")}]()**", true)
         eb.setColor(Bot.color)
 

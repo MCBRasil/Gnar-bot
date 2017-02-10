@@ -37,7 +37,7 @@ public class DeleteMessageCommand extends CommandExecutor {
         try {
             if (list.size() < 2) {
                 for (Message msg : list) {
-                    msg.deleteMessage().queue();
+                    msg.delete().queue();
                 }
 
                 Note info = note.info("Deleted the message.\nDeleting this message in **5** seconds.").get();

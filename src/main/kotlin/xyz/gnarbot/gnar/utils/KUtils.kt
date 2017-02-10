@@ -37,7 +37,7 @@ fun String.fastSplit(char: Char): List<String> {
 fun makeEmbed(title: String?, msg: String?, color: Color? = Bot.color, thumb: String? = null, img: String? = null, author: Person? = null): MessageEmbed {
     return EmbedBuilder().run {
         setDescription(msg)
-        setTitle(title)
+        setTitle(title, null)
         setColor(color)
 
         if (author != null) {

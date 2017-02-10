@@ -30,7 +30,7 @@ class ShardInfoCommand : CommandExecutor() {
             eb.addField("Shard ${it.id}", sj.toString(), true)
         }
 
-        eb.setTitle("Shard Information")
+        eb.setTitle("Shard Information", null)
         eb.setColor(Bot.color)
 
         note.channel.sendMessage(eb.build()).queue()
