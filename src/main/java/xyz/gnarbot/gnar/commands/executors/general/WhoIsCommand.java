@@ -23,8 +23,10 @@ public class WhoIsCommand extends CommandExecutor {
 
         // SEARCH USERS
         Person person = null;
-        if (note.getMentionedUsers().size() > 0) {
-            person = note.getMentionedUsers().get(0);
+
+        List<Person> mentioned = note.getMentionedUsers();
+        if (mentioned.size() > 0) {
+            person = mentioned.get(0);
         } else { // Real Name > Nick Name > Contains
             String query = StringUtils.join(args, " ");
 

@@ -23,15 +23,15 @@ class JoinCommand : MusicExecutor() {
 
         val name = args.joinToString(" ")
 
-        val chan = host.guild.getVoiceChannelsByName(name, true).firstOrNull() ?: host.guild.getVoiceChannelById(name)
+        val chan = host.getVoiceChannelsByName(name, true).firstOrNull() ?: host.getVoiceChannelById(name)
 
         if (chan == null) {
             note.error("Channel `$name` does not exist.")
             return
         }
-        host.guild.audioManager.sendingHandler = manager.sendHandler
+        host.audioManager.sendingHandler = manager.sendHandler
         try {
-            host.guild.audioManager.openAudioConnection(chan)
+            host.audioManager.openAudioConnection(chan)
             note.replyMusic("Joined channel `${chan.name}`.")
         } catch (e: NullPointerException){
             note.error("Couldn't join the channel for some reason! Try another one!")

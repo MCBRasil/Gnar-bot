@@ -17,7 +17,7 @@ public class ServersSharedCommand extends CommandExecutor {
         String servers = "";
 
         for (Shard shard : Bot.INSTANCE.getShards()) {
-            for (Guild g : shard.getJDA().getGuilds()) {
+            for (Guild g : shard.getGuilds()) {
                 if (g.getMembers().contains(note.getAuthor())) {
                     total++;
                     servers += "    **Server:** " + g.getName() + "\n";

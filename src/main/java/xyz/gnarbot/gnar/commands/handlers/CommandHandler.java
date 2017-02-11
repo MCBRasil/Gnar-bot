@@ -4,7 +4,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.members.Person;
@@ -54,7 +53,7 @@ public class CommandHandler {
         if (cmd == null) return;
 
         if (cmd.getLevel().getValue() > author.getLevel().getValue()) {
-            note.error("Insufficient bot permission.");
+            note.error("Insufficient bot level. Requires `" + cmd.getLevel().getTitle() + "` or higher.");
             return;
         }
 
@@ -91,8 +90,7 @@ public class CommandHandler {
 
             bind(MusicManager.class).toInstance(host.getMusicManager());
 
-            bind(Guild.class).toInstance(host.getGuild());
-            bind(JDA.class).toInstance(host.getShard().getJDA());
+            bind(JDA.class).toInstance(host.getShard());
         }
     }
 }

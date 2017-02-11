@@ -16,7 +16,7 @@ import java.util.List;
 @Command(aliases = "pbot")
 public class PandoraBotCommand extends CommandExecutor {
     @Inject
-    public Host host;
+    private Host host;
 
     private ChatterBotFactory factory = new ChatterBotFactory();
 

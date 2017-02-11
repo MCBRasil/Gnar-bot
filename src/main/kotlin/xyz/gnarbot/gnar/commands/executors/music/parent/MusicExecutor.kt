@@ -55,7 +55,7 @@ abstract class MusicExecutor : CommandExecutor() {
 
                 var msg = "Added `${track.info.title}` to queue."
 
-                if (mng.player.playingTrack == null && note.host.guild.audioManager.isConnected) {
+                if (mng.player.playingTrack == null && note.host.audioManager.isConnected) {
                     msg += "\nThe player has started playing."
                 }
 

@@ -41,13 +41,13 @@ public class DeleteMessageCommand extends CommandExecutor {
                 }
 
                 Note info = note.info("Deleted the message.\nDeleting this message in **5** seconds.").get();
-                info.delete(5);
+                info.optDelete(5);
             } else {
                 note.getTextChannel().deleteMessages(list).queue();
 
                 Note info = note.info("Attempted to delete **[" + list.size()
                         + "]()** messages.\nDeleting this message in **5** seconds.").get();
-                info.delete(5);
+                info.optDelete(5);
             }
         } catch (InterruptedException | ExecutionException e) {
             note.error("Delete queue was interrupted.");

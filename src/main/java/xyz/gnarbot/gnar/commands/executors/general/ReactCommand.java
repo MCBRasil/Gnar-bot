@@ -31,7 +31,7 @@ public class ReactCommand extends CommandExecutor {
             try {
                 note.info("Reacted to the message with " + note.getEmotes().size() + " emotes. :smile:")
                         .get()
-                        .delete(5);
+                        .optDelete(5);
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
@@ -47,7 +47,7 @@ public class ReactCommand extends CommandExecutor {
             }
             if (suc) {
                 try {
-                    note.info("Reacted to the message with " + (args.size() - 1) + " emotes. :smile:").get().delete(5);
+                    note.info("Reacted to the message with " + (args.size() - 1) + " emotes. :smile:").get().optDelete(5);
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }

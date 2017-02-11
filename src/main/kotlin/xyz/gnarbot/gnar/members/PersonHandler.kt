@@ -17,10 +17,8 @@ class PersonHandler(private val host: Host) {
     val registry = WeakHashMap<String, Person>()
 
     fun getUser(name: String): Person? {
-        val list = host.guild.getMembersByName(name, true)
-
+        val list = host.getMembersByName(name, true)
         if (list.isEmpty()) return null
-
         return asPerson(list.first())
     }
 
@@ -46,11 +44,11 @@ class PersonHandler(private val host: Host) {
         var person = registry[user.id]
 
         if (person == null) {
-            registry.put(user.id, Person(host, host.guild.getMember(user)))
+            registry.put(user.id, Person(host, host.getMember(user)))
             person = registry[user.id]
         }
 
-        return person!!
+        return person!!.check()
     }
 
 //    /**

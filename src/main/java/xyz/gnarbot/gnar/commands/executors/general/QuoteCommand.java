@@ -54,7 +54,7 @@ public class QuoteCommand extends CommandExecutor {
 
             Bot.INSTANCE.getScheduler().schedule(()-> {
                         for (Message m2 : toDelete) {
-                            m2.deleteMessage().queue();
+                            m2.delete().queue();
                         }
                     }, 5, TimeUnit.SECONDS);
 

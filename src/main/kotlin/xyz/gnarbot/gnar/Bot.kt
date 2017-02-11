@@ -121,16 +121,14 @@ object Bot {
     val info : BotInfo get() = BotInfo(this)
 
     class BotInfo(bot: Bot) {
-        @Transient val jdas = bot.shards.map { it.jda }
-
-        val requests = bot.shards.flatMap { it.hosts }.map { it.commandHandler.requests }.sum()
+        val requests = bot.shards.flatMap { it.hosts.values }.sumBy { it.commandHandler.requests }
         val totalShards = bot.shards.size
-        val guilds = jdas.map { it.guilds.size }.sum()
-        val users = jdas.map { it.users.size }.sum()
-        val textChannels = jdas.map { it.textChannels.size }.sum()
-        val voiceChannels = jdas.map { it.voiceChannels.size }.sum()
+        val guilds = bot.shards.sumBy { it.guilds.size }
+        val users = bot.shards.sumBy { it.users.size }
+        val textChannels = bot.shards.sumBy { it.textChannels.size }
+        val voiceChannels = bot.shards.sumBy { it.voiceChannels.size }
 
-        val shards = Bot.shards.map(Shard::getInfo)
+        val shards = Bot.shards.map(Shard::info)
 
         val date = Date()
     }

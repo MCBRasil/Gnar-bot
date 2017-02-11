@@ -2,6 +2,7 @@ package xyz.gnarbot.gnar.utils
 
 import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.entities.Message
+import net.dv8tion.jda.core.exceptions.PermissionException
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.members.Person
 import xyz.gnarbot.gnar.servers.Host
@@ -114,8 +115,17 @@ class Note(val host: Host, private val message: Message) : Message by message {
 
     fun edit(msg: String) = editMessage(msg).submit().toNote()
 
-    fun delete(seconds: Long) {
-        Bot.scheduler.schedule({ delete().queue() }, seconds, TimeUnit.SECONDS)
+    fun optDelete(): Boolean {
+        try {
+            message.delete().queue()
+            return true
+        } catch(e: PermissionException) {
+            return false
+        }
+    }
+
+    fun optDelete(seconds: Long) {
+        Bot.scheduler.schedule({ optDelete() }, seconds, TimeUnit.SECONDS)
     }
 
     /**

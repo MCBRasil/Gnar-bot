@@ -9,7 +9,6 @@ import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("skip"), level = Level.DJ)
 class SkipCommand : MusicExecutor() {
-
     @Inject lateinit var manager: MusicManager
 
     override fun execute(note: Note, args: List<String>) {

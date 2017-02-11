@@ -28,11 +28,9 @@ class BotInfoCommand : CommandExecutor() {
         var others = 0
 
         for (shard in Bot.shards) {
-            val jda = shard.jda
+            guilds += shard.guilds.size
 
-            guilds += jda.guilds.size
-
-            for (g in jda.guilds) {
+            for (g in shard.guilds) {
                 for (u in g.members) {
                     when (u.onlineStatus) {
                         OnlineStatus.ONLINE -> online++
@@ -43,16 +41,15 @@ class BotInfoCommand : CommandExecutor() {
                 }
             }
 
-            users += jda.users.size
-            textChannels += jda.textChannels.size
+            users += shard.users.size
+            textChannels += shard.textChannels.size
         }
 
         val commandSize = registry.uniqueExecutors.count { it -> it.isShownInHelp }
 
         val requests = Bot.shards
-                .flatMap { it.hosts }
-                .map { it.commandHandler.requests }
-                .sum()
+                .flatMap { it.hosts.values }
+                .sumBy { it.commandHandler.requests }
 
         val eb = EmbedBuilder()
 

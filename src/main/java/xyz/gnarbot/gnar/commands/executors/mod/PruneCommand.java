@@ -35,7 +35,7 @@ public class PruneCommand extends CommandExecutor {
         }
 
         try {
-            note.delete().queue();
+            note.optDelete();
 
             MessageHistory history = note.getChannel().getHistory();
 
@@ -69,7 +69,7 @@ public class PruneCommand extends CommandExecutor {
             Note info = note.info("Attempted to delete **[" + msgs.size() + "]()** messages.\nDeleting this message in **5** seconds.")
                     .get();
 
-            info.delete(5);
+            info.optDelete(5);
         } catch (NumberFormatException e) {
             note.error("Improper arguments supplies, must be a number.");
         } catch (InterruptedException | ExecutionException e) {

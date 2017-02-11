@@ -30,7 +30,7 @@ class GraphCommand : CommandExecutor() {
         val end = now.toEpochSecond()
         val width = 1000
         val height = 1000
-        val joins = ArrayList(host.guild.members)
+        val joins = ArrayList(host.members)
         Collections.sort(joins) { a, b -> a.joinDate.compareTo(b.joinDate) }
 
         val buffer = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE)
@@ -61,8 +61,8 @@ class GraphCommand : CommandExecutor() {
         graphic.drawString("0 - ${joins.size} Users", 20, 30)
         graphic.drawString(MiscUtil.getCreationTime(host.id).format(DateTimeFormatter.RFC_1123_DATE_TIME), 20, 60)
         graphic.drawString(now.format(DateTimeFormatter.RFC_1123_DATE_TIME), 20, 90)
-        graphic.drawString("Server: ${host.guild.name}", 20, 120)
-        graphic.drawString("Owner: ${host.guild.owner.effectiveName}", 20, 150)
+        graphic.drawString("Server: ${host.name}", 20, 120)
+        graphic.drawString("Owner: ${host.owner.effectiveName}", 20, 150)
 
         val f = File("plot.png")
 

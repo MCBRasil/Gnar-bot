@@ -22,10 +22,10 @@ class ShardInfoCommand : CommandExecutor() {
 
             val sj = StringJoiner("\n")
 
-            sj.add("Status: **[${it.jda.status}]()**")
-            sj.add("Hosts: **[${it.jda.guilds.size}]()**")
-            sj.add("Users: **[${it.jda.users.size}]()**")
-            sj.add("Requests: **[${it.hosts.sumBy { it.commandHandler.requests }}]()**")
+            sj.add("Status: **[${it.status}]()**")
+            sj.add("Hosts: **[${it.guilds.size}]()**")
+            sj.add("Users: **[${it.users.size}]()**")
+            sj.add("Requests: **[${it.hosts.values.sumBy { it.commandHandler.requests }}]()**")
 
             eb.addField("Shard ${it.id}", sj.toString(), true)
         }

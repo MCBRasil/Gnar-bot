@@ -42,8 +42,8 @@ public class GuildCountListener extends ListenerAdapter {
     public void update() {
         int count = 0;
 
-        for (Shard s : Bot.INSTANCE.getShards()) {
-            count += s.getJDA().getGuilds().size();
+        for (Shard shard : Bot.INSTANCE.getShards()) {
+            count += shard.getGuilds().size();
         }
 
         updateServerCount(count);
