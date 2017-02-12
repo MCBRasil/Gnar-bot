@@ -1,9 +1,6 @@
 package xyz.gnarbot.gnar.members
 
-import net.dv8tion.jda.core.entities.Member
-import net.dv8tion.jda.core.entities.PrivateChannel
-import net.dv8tion.jda.core.entities.Role
-import net.dv8tion.jda.core.entities.User
+import net.dv8tion.jda.core.entities.*
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.servers.Host
 
@@ -32,6 +29,11 @@ class Person(var host: Host, private var member: Member) : Member by member, Use
         }
         return this
     }
+
+    val voiceChannel : VoiceChannel?
+        get() {
+            return host.voiceChannels.firstOrNull { it.members.contains(member) }
+        }
 
     /** @return The current JDA instance. */
     override fun getJDA() = member.jda!!

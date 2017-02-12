@@ -2,6 +2,7 @@ package xyz.gnarbot.gnar.servers.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import xyz.gnarbot.gnar.servers.Host;
 
 public class MusicManager {
     public final AudioPlayerManager playerManager;
@@ -26,10 +27,10 @@ public class MusicManager {
      *
      * @param playerManager Audio player playerManager to use for creating the player.
      */
-    public MusicManager(AudioPlayerManager playerManager) {
+    public MusicManager(Host host, AudioPlayerManager playerManager) {
         this.playerManager = playerManager;
         player = playerManager.createPlayer();
-        scheduler = new TrackScheduler(player);
+        scheduler = new TrackScheduler(host, player);
         sendHandler = new AudioPlayerSendHandler(player);
         player.addListener(scheduler);
     }

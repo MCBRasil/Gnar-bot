@@ -15,14 +15,8 @@ class ResetCommand : MusicExecutor() {
     @Inject lateinit var manager: MusicManager
 
     override fun execute(note: Note, args: List<String>) {
-        manager.scheduler.queue.clear()
-        manager.player.destroy()
-        host.audioManager.sendingHandler = null
-        host.audioManager.closeAudioConnection()
-        host.musicManager = null
+        host.resetMusicManager()
 
-        val _manager = host.musicManager
-        host.audioManager.sendingHandler = _manager?.sendHandler
         note.replyMusic("The player has been completely reset.")
     }
 }

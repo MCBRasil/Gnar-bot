@@ -21,11 +21,19 @@ class Host(val shard: Shard, private var guild : Guild) : Guild by guild {
     var musicManager: MusicManager? = null
         get() {
             if (field == null) {
-                this.musicManager = MusicManager(Bot.playerManager)
+                this.musicManager = MusicManager(this, Bot.playerManager)
                 field!!.player.volume = 35
             }
             return field
         }
+
+    fun resetMusicManager() {
+        musicManager!!.scheduler.queue.clear()
+        musicManager!!.player.destroy()
+        audioManager.closeAudioConnection()
+        audioManager.sendingHandler = null
+        musicManager = null
+    }
 
     init {
         this.personHandler = PersonHandler(this)

@@ -1,9 +1,12 @@
 package xyz.gnarbot.gnar.servers.listeners;
 
 
+import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
-import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
+import net.dv8tion.jda.core.events.guild.voice.GenericGuildVoiceEvent;
+import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
+import net.dv8tion.jda.core.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import xyz.gnarbot.gnar.Bot;
@@ -44,7 +47,29 @@ public class ShardListener extends ListenerAdapter {
     }
 
     @Override
-    public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
-        super.onGuildVoiceJoin(event);
+    public void onGenericGuildVoice(GenericGuildVoiceEvent event) {
+        if (event instanceof GuildVoiceLeaveEvent || event instanceof GuildVoiceMoveEvent) {
+            if (event.getMember().getUser() == event.getJDA().getSelfUser()) return;
+
+            Host host = shard.getHost(event.getGuild());
+
+            if (host == null) return;
+
+            Channel botChannel = host.getPersonHandler().getMe().getVoiceChannel();
+
+            Channel channelLeft;
+
+            if (event instanceof GuildVoiceLeaveEvent) {
+                channelLeft = ((GuildVoiceLeaveEvent) event).getChannelLeft();
+            } else {
+                channelLeft = ((GuildVoiceMoveEvent) event).getChannelLeft();
+            }
+
+            if (botChannel == null || channelLeft != botChannel) return;
+
+            if (botChannel.getMembers().size() == 1) {
+                host.resetMusicManager();
+            }
+        }
     }
 }

@@ -12,7 +12,6 @@ import xyz.gnarbot.gnar.commands.executors.games.OverwatchLookupCommand;
 import xyz.gnarbot.gnar.commands.executors.general.*;
 import xyz.gnarbot.gnar.commands.executors.media.*;
 import xyz.gnarbot.gnar.commands.executors.mod.*;
-import xyz.gnarbot.gnar.commands.executors.music.JoinCommand;
 import xyz.gnarbot.gnar.commands.executors.music.NowPlayingCommand;
 import xyz.gnarbot.gnar.commands.executors.music.PlayCommand;
 import xyz.gnarbot.gnar.commands.executors.music.QueueCommand;
@@ -123,7 +122,6 @@ public class CommandRegistry {
         register(TextToBrickCommand.class);
 
         //MUSIC COMMAND
-        register(JoinCommand.class);
         register(LeaveCommand.class);
         register(PlayCommand.class);
         register(PauseCommand.class);

@@ -16,6 +16,8 @@ class PersonHandler(private val host: Host) {
      */
     val registry : MutableMap<String, Person> = WeakHashMap()
 
+    val me : Person get() = asPerson(host.jda.selfUser)
+
     fun getUser(name: String): Person? {
         val list = host.getMembersByName(name, true)
         if (list.isEmpty()) return null

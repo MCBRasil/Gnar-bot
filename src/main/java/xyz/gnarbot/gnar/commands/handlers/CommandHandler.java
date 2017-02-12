@@ -5,6 +5,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.SelfUser;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.members.Person;
 import xyz.gnarbot.gnar.members.PersonHandler;
@@ -26,7 +27,7 @@ public class CommandHandler {
 
     public CommandHandler(Host host) {
         this.host = host;
-        this.injector =  Guice.createInjector(new CommandModule());
+        this.injector = Guice.createInjector(new CommandModule());
     }
 
     /**
@@ -60,9 +61,10 @@ public class CommandHandler {
         try {
             requests++;
             cmd.syncExecute(injector, note, args);
-
         } catch (RuntimeException e) {
             note.error("**Exception**: " + e.getMessage());
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
     }
@@ -82,15 +84,18 @@ public class CommandHandler {
     public class CommandModule extends AbstractModule {
         @Override
         protected void configure() {
+            // INSTANCES
+            bind(SelfUser.class).toInstance(host.getShard().getSelfUser());
             bind(Host.class).toInstance(host);
             bind(Shard.class).toInstance(host.getShard());
 
             bind(CommandHandler.class).toInstance(CommandHandler.this);
             bind(PersonHandler.class).toInstance(host.getPersonHandler());
 
-            bind(MusicManager.class).toInstance(host.getMusicManager());
+            bind(JDA.class).toInstance(host.getJDA());
 
-            bind(JDA.class).toInstance(host.getShard());
+            // PROVIDERS
+            bind(MusicManager.class).toProvider(host::getMusicManager);
         }
     }
 }

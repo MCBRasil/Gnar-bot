@@ -1,9 +1,11 @@
 package xyz.gnarbot.gnar.commands.handlers;
 
+import com.google.inject.Inject;
 import com.google.inject.Injector;
 import xyz.gnarbot.gnar.members.Level;
 import xyz.gnarbot.gnar.utils.Note;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,9 +34,18 @@ public abstract class CommandExecutor {
      * @param note Note wrapper.
      * @param args Command arguments.
      */
-    public synchronized void syncExecute(Injector injector, Note note, List<String> args) {
+    public synchronized void syncExecute(Injector injector, Note note, List<String> args) throws IllegalAccessException {
         if (injector != null && inject) injector.injectMembers(this);
+
         execute(note, args);
+
+        // CLEAN UP
+        for (Field field : getClass().getDeclaredFields()) {
+            if (field.isAnnotationPresent(Inject.class)) {
+                field.setAccessible(true);
+                field.set(this, null);
+            }
+        }
     }
 
     /**
