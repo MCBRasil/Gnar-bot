@@ -19,15 +19,19 @@ class MathCommand : CommandExecutor() {
             return
         }
 
-        val exp = StringUtils.join(args, ' ')
+        val exp = ExpressionBuilder()
+
+        val lines = StringUtils.join(args, ' ').fastSplit(';')
         val eb = EmbedBuilder()
 
+        lines.forEach { exp.addLine(it) }
+
         eb.setTitle("Math", null)
-        eb.addField("Expressions", "**[${exp.fastSplit(';').map(String::trim).joinToString("\n")}]()**", true)
+        eb.addField("Expressions", "**[${lines.map(String::trim).joinToString("\n")}]()**", true)
         eb.setColor(Bot.color)
 
         try {
-            val results = ExpressionBuilder(exp)
+            val results = exp
                     .build()
                     .evalList()
 
