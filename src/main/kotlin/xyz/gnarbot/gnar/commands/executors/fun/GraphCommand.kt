@@ -21,7 +21,7 @@ class GraphCommand : CommandExecutor() {
     @Inject
     lateinit var host: Host
 
-    override fun execute(note: Note, args: MutableList<String>) {
+    override fun execute(note: Note, args: List<String>) {
         note.channel.sendFile(drawPlot(note.creationTime as OffsetDateTime), null)
     }
 

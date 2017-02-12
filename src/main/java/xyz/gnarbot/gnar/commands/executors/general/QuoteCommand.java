@@ -52,7 +52,7 @@ public class QuoteCommand extends CommandExecutor {
             Message m = note.getChannel().sendMessage(KUtils.makeEmbed("Quote Messages", "Sent quotes to the " + targetChannel.getName() + " channel!")).complete();
             toDelete.add(m);
 
-            Bot.INSTANCE.getScheduler().schedule(()-> {
+            Bot.INSTANCE.getScheduler().schedule(() -> {
                         for (Message m2 : toDelete) {
                             m2.delete().queue();
                         }

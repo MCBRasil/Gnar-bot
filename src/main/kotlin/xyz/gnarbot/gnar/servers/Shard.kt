@@ -14,7 +14,7 @@ import java.util.logging.Logger
  * Individual shard instances of the bot.
  */
 class Shard (val id: Int, private val jda: JDA) : JDA by jda {
-    val hosts = WeakHashMap<String, Host>()
+    val hosts : MutableMap<String, Host> = WeakHashMap()
 
     val commandRegistry = CommandRegistry()
 
@@ -37,7 +37,7 @@ class Shard (val id: Int, private val jda: JDA) : JDA by jda {
      */
     fun getHost(guild: Guild?): Host? {
         if (guild == null) return null
-        return hosts.getOrPut(guild.id) { Host(this, guild) }.check()
+        return hosts.getOrPut(guild.id) { Host(this, guild) }.ensure()
     }
 
     /**

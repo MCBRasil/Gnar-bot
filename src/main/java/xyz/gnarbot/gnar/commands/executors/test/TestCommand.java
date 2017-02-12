@@ -7,7 +7,7 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 
-@Command(aliases = "wow", level = Level.BOT_MASTER, showInHelp = false)
+@Command(aliases = "wow", level = Level.BOT_CREATOR, showInHelp = false)
 public class TestCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {

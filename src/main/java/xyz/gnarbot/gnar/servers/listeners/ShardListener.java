@@ -1,6 +1,9 @@
 package xyz.gnarbot.gnar.servers.listeners;
 
 
+import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
+import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
+import net.dv8tion.jda.core.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import xyz.gnarbot.gnar.Bot;
@@ -25,5 +28,23 @@ public class ShardListener extends ListenerAdapter {
             Host host = shard.getHost(event.getGuild());
             if (host != null) host.handleMessage(event.getMessage());
         }
+    }
+
+    @Override
+    public void onGuildLeave(GuildLeaveEvent event) {
+        shard.getHosts().remove(event.getGuild().getId());
+    }
+
+    @Override
+    public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
+        Host host = shard.getHost(event.getGuild());
+        if (host != null) {
+            host.getPersonHandler().removeUser(event.getMember());
+        }
+    }
+
+    @Override
+    public void onGuildVoiceJoin(GuildVoiceJoinEvent event) {
+        super.onGuildVoiceJoin(event);
     }
 }

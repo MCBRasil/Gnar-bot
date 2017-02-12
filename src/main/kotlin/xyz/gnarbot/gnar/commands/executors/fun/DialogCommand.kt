@@ -11,7 +11,7 @@ import java.util.*
         usage = "-words...",
         description = "Make some of that Windows ASCII art!")
 class DialogCommand : CommandExecutor() {
-    override fun execute(note: Note, args: MutableList<String>) {
+    override fun execute(note: Note, args: List<String>) {
         val joiner = StringJoiner("\n", "```", "```")
         joiner.add("﻿ ___________________________ ")
         joiner.add("| Dialog          [_][☐][✕]|")

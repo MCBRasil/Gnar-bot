@@ -12,11 +12,11 @@ import java.util.concurrent.TimeUnit
 
 @Command(
         aliases = arrayOf("progress"),
-        level = Level.BOT_MASTER,
+        level = Level.BOT_CREATOR,
         showInHelp = false
 )
 class ProgressionCommand : CommandExecutor() {
-    override fun execute(note: Note, args: MutableList<String>) {
+    override fun execute(note: Note, args: List<String>) {
         val joiner = StringJoiner("\n", "```", "```")
         joiner.add("﻿ ___________________________ ")
         joiner.add("| Progression     [_][☐][✕]|")

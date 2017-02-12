@@ -10,14 +10,14 @@ import javax.script.ScriptException
 @Command(
         aliases = arrayOf("js", "runjs"),
         description = "Run JavaScript commands.",
-        level = Level.BOT_MASTER,
+        level = Level.BOT_CREATOR,
         showInHelp = false
 )
 class JavascriptCommand : CommandExecutor() {
     val blocked = arrayListOf("leave", "delete", "Guilds", "Token", "Channels", "voice",
             "remove", "ByName", "ById", "Controller", "Manager", "Permissions")
 
-    override fun execute(note: Note, args: MutableList<String>) {
+    override fun execute(note: Note, args: List<String>) {
         val engine = ScriptEngineManager().getEngineByName("javascript")
 
         engine.put("jda", note.jda)

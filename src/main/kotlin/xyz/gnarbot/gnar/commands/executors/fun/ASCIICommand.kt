@@ -15,7 +15,7 @@ import java.util.*
         description = "ASCII text art!"
 )
 class ASCIICommand : CommandExecutor() {
-    override fun execute(note: Note, args: MutableList<String>) {
+    override fun execute(note: Note, args: List<String>) {
         if (args.isEmpty()) {
             note.error("Please provide a query.")
             return

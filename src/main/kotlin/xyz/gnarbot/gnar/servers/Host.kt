@@ -32,7 +32,7 @@ class Host(val shard: Shard, private var guild : Guild) : Guild by guild {
         this.commandHandler = CommandHandler(this)
     }
 
-    fun check() : Host {
+    fun ensure() : Host {
         val _guild = shard.getGuildById(id)
         if (_guild != guild) {
             guild = _guild

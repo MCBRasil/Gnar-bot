@@ -11,11 +11,11 @@ import java.util.*
 @Command(
         aliases = arrayOf("shards", "shard", "shardinfo"),
         description = "Get shard information.",
-        level = Level.BOT_MASTER,
+        level = Level.BOT_CREATOR,
         showInHelp = false
 )
 class ShardInfoCommand : CommandExecutor() {
-    override fun execute(note: Note, args: MutableList<String>) {
+    override fun execute(note: Note, args: List<String>) {
         val eb = EmbedBuilder()
 
         Bot.shards.forEach {

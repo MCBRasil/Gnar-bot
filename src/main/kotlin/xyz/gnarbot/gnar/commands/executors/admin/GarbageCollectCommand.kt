@@ -9,11 +9,11 @@ import xyz.gnarbot.gnar.utils.Note
 @Command(
         aliases = arrayOf("gc"),
         description = "Run JavaScript commands.",
-        level = Level.BOT_MASTER,
+        level = Level.BOT_CREATOR,
         showInHelp = false
 )
 class GarbageCollectCommand : CommandExecutor() {
-    override fun execute(note: Note, args: MutableList<String>) {
+    override fun execute(note: Note, args: List<String>) {
         System.gc()
 
         note.info("Garbage collection request sent to JVM.")

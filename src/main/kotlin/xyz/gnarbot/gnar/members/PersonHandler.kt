@@ -14,7 +14,7 @@ class PersonHandler(private val host: Host) {
      *
      * @return The wrapper mapping registry.
      */
-    val registry = WeakHashMap<String, Person>()
+    val registry : MutableMap<String, Person> = WeakHashMap()
 
     fun getUser(name: String): Person? {
         val list = host.getMembersByName(name, true)
@@ -48,14 +48,14 @@ class PersonHandler(private val host: Host) {
             person = registry[user.id]
         }
 
-        return person!!.check()
+        return person!!.ensure()
     }
 
-//    /**
-//     * Remove the user from the registry.
-//     */
-//    fun removeUser(member: Member) {
-//        registry.remove(member)
-//    }
+    /**
+     * Remove the user from the registry.
+     */
+    fun removeUser(member: Member) {
+        registry.remove(member.user.id)
+    }
 }
 
