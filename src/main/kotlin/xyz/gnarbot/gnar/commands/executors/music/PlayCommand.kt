@@ -48,28 +48,27 @@ class PlayCommand : MusicExecutor() {
                 || args[0].contains("twitch.tv")
                 || args[0].contains("soundcloud.com")) {
             loadAndPlay(note, manager, args[0])
-            return
+        } else {
+            val query = args.joinToString("+")
+
+            val results = YouTube.search(query, 1)
+
+            if (results.isEmpty()) {
+                note.error("No YouTube results returned for `${query.replace('+', ' ')}`.")
+                return
+            }
+
+            val result = results[0]
+            val videoID = result.id
+            val url = "https://www.youtube.com/watch?v=$videoID"
+
+            loadAndPlay(note, manager, url)
         }
-
-        val query = args.joinToString("+")
-
-        val results = YouTube.search(query, 1)
-
-        if (results.isEmpty()) {
-            note.error("No YouTube results returned for `${query.replace('+', ' ')}`.")
-            return
-        }
-
-        val result = results[0]
-        val videoID = result.id
-        val url = "https://www.youtube.com/watch?v=$videoID"
-
+        
         if (botChannel == null) {
             host.audioManager.sendingHandler = manager.sendHandler
             host.audioManager.openAudioConnection(userChannel)
             note.replyMusic("Joined channel `${userChannel.name}`.")
         }
-
-        loadAndPlay(note, manager, url)
     }
 }
