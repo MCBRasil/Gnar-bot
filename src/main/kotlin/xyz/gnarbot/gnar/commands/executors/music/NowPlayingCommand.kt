@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.commands.executors.music
 
 import com.google.inject.Inject
+import net.dv8tion.jda.core.EmbedBuilder
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.servers.music.MusicManager
@@ -19,10 +20,22 @@ class NowPlayingCommand : MusicExecutor() {
             return
         }
 
-        val title = track.info.title
+        val eb = EmbedBuilder()
+
+        eb.setTitle("Now Playing", null)
+        if (track.sourceManager.sourceName.contains("youtube")) {
+            eb.setDescription("__[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__")
+        } else {
+            eb.setDescription("__[${track.info.title}]()__")
+        }
+
         val position = getTimestamp(track.position)
         val duration = getTimestamp(track.duration)
 
-        note.replyMusic("**Playing:** $title\n**Time:** `[$position / $duration]`")
+        eb.addField("Time", "**[$position / $duration]**", true)
+
+        eb.setColor(color)
+
+        note.channel.sendMessage(eb.build()).queue()
     }
 }

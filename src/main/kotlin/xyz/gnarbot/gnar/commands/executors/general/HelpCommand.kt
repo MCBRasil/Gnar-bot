@@ -97,6 +97,8 @@ class HelpCommand : CommandExecutor() {
 
         builder.append("**Latest News:**\n")
         builder.append(" - Music player now running LIVE. Report any bugs to us!\n")
+        builder.append(" - The website is a work in progress, check it out!\n")
+        builder.append(" - To try out music, join a channel and type `_play -url|search YT`!\n")
 
         builder.append("\n")
 

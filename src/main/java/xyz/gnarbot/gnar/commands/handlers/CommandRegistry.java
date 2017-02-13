@@ -122,11 +122,12 @@ public class CommandRegistry {
         register(TextToBrickCommand.class);
 
         //MUSIC COMMAND
-        register(LeaveCommand.class);
         register(PlayCommand.class);
+        register(LeaveCommand.class);
         register(PauseCommand.class);
         register(StopCommand.class);
         register(SkipCommand.class);
+        register(ShuffleCommand.class);
         register(NowPlayingCommand.class);
         register(QueueCommand.class);
         register(RestartCommand.class);
