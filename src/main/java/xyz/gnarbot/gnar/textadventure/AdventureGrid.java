@@ -175,7 +175,7 @@ public class AdventureGrid {
             Bot.INSTANCE.getScheduler().schedule(() ->
             {
                 if (!mapFile.delete()) {
-                    Bot.getLOG().warn("Unable to delete map file.");
+                    Bot.getLOGGER().warn("Unable to delete map file.");
                 }
                 mapFile.deleteOnExit();
             }, 10, TimeUnit.SECONDS);

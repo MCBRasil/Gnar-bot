@@ -4,12 +4,12 @@ import com.google.inject.Inject
 import net.dv8tion.jda.core.EmbedBuilder
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.members.Level
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 import java.util.*
 
-@Command(aliases = arrayOf("queue", "list"), level = Level.USER)
+@Command(aliases = arrayOf("queue", "list"),
+        description = "Shows the music that's currently queued.")
 class QueueCommand : MusicExecutor() {
 
     @Inject lateinit private var manager: MusicManager
@@ -45,6 +45,11 @@ class QueueCommand : MusicExecutor() {
                 sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__")
             } else {
                 sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}]()__")
+            }
+
+            if (trackCount >= 10) {
+                sj.add("... and **${queue.size - trackCount}** more tracks.")
+                break
             }
         }
 

@@ -10,8 +10,9 @@ import net.dv8tion.jda.core.AccountType
 import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.JDABuilder
 import net.dv8tion.jda.core.entities.Game
-import net.dv8tion.jda.core.utils.SimpleLog
 import org.json.JSONArray
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import xyz.gnarbot.gnar.api.APIPortal
 import xyz.gnarbot.gnar.servers.Shard
 import xyz.gnarbot.gnar.utils.Utils
@@ -26,7 +27,7 @@ import kotlin.jvm.JvmStatic as static
 object Bot {
     @static val color = Color(0, 80, 175)
 
-    @static val LOG = SimpleLog.getLog("Bot")!!
+    @static val LOGGER : Logger = LoggerFactory.getLogger("Bot")
 
     @static val token = "_" //default token
 
@@ -72,14 +73,17 @@ object Bot {
      * @param numShards Number of shards to request.
      */
     fun start(token: String, numShards: Int) {
+
+        val api = APIPortal().apply { start() }
+
         if (initialized) throw IllegalStateException("Bot instance have already been initialized.")
         initialized = true
 
-        LOG.info("Initializing the Discord bot.")
-        LOG.info("Requesting $numShards shards.")
+        LOGGER.info("Initializing the Discord bot.")
+        LOGGER.info("Requesting $numShards shards.")
 
-        LOG.info("There are ${admins.size} administrators registered for the bot.")
-        LOG.info("There are ${blocked.size} blocked users registered for the bot.")
+        LOGGER.info("There are ${admins.size} administrators registered for the bot.")
+        LOGGER.info("There are ${blocked.size} blocked users registered for the bot.")
 
         for (id in 0..numShards - 1) {
             val jda = makeJDA(token, numShards, id)
@@ -88,13 +92,14 @@ object Bot {
 
             shards.add(Shard(id, jda))
 
-            LOG.info("Shard [$id] is initialized.")
+            LOGGER.info("Shard [$id] is initialized.")
         }
 
-        LOG.info("Bot is now connected to Discord.")
-        Utils.setLeagueInfo()
+        LOGGER.info("Bot is now connected to Discord.")
 
-        APIPortal().start()
+        api.registerRoutes()
+
+        Utils.setLeagueInfo()
     }
 
     fun makeJDA(token: String, numShards: Int, id: Int) : JDA {
@@ -115,7 +120,7 @@ object Bot {
         initialized = false
         System.gc()
 
-        LOG.info("Bot is now disconnected from Discord.")
+        LOGGER.info("Bot is now disconnected from Discord.")
     }
 
     val info : BotInfo get() = BotInfo(this)

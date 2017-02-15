@@ -69,10 +69,10 @@ public class GuildCountListener extends ListenerAdapter {
                     .asString()
                     .getStatusText();
 
-            Bot.getLOG().info("Successfully updated Abal server count to " + i + ".");
-            Bot.getLOG().info("Response code: " + response);
+            Bot.getLOGGER().info("Successfully updated Abal server count to " + i + ".");
+            Bot.getLOGGER().info("Response code: " + response);
         } catch (UnirestException e) {
-            Bot.getLOG().warn("Failed updating Abal server count to " + i + ".");
+            Bot.getLOGGER().warn("Failed updating Abal server count to " + i + ".");
             e.printStackTrace();
         }
     }
@@ -93,10 +93,10 @@ public class GuildCountListener extends ListenerAdapter {
                     .asString()
                     .getStatusText();
 
-            Bot.getLOG().info("Successfully updated Carbonitex server count to " + i + ".");
-            Bot.getLOG().info("Response code: " + response);
+            Bot.getLOGGER().info("Successfully updated Carbonitex server count to " + i + ".");
+            Bot.getLOGGER().info("Response code: " + response);
         } catch (UnirestException e) {
-            Bot.getLOG().warn("Failed updating Carbonitex server count to " + i + ".");
+            Bot.getLOGGER().warn("Failed updating Carbonitex server count to " + i + ".");
             e.printStackTrace();
         }
     }

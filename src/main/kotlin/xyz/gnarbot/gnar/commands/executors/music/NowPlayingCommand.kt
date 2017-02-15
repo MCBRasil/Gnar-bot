@@ -7,7 +7,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("nowplaying", "np"))
+@Command(aliases = arrayOf("nowplaying", "np"), description = "Shows what's currently playing.")
 class NowPlayingCommand : MusicExecutor() {
 
     @Inject lateinit private var manager: MusicManager

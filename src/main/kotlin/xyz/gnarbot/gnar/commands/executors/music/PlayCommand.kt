@@ -9,7 +9,9 @@ import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 import xyz.gnarbot.gnar.utils.YouTube
 
-@Command(aliases = arrayOf("play"))
+@Command(aliases = arrayOf("play"),
+        usage = "-(url|YT search)",
+        description = "Joins and play music in a channel.")
 class PlayCommand : MusicExecutor() {
     @Inject lateinit private var selfUser : SelfUser
     @Inject lateinit private var host : Host
@@ -41,13 +43,13 @@ class PlayCommand : MusicExecutor() {
             return
         }
 
-        if (args[0].contains("https://")
+        val url = if (args[0].contains("https://")
                 || args[0].contains("http://")
                 && args[0].contains("yout")
                 || args[0].contains("vimeo")
                 || args[0].contains("twitch.tv")
                 || args[0].contains("soundcloud.com")) {
-            loadAndPlay(note, manager, args[0])
+            args[0]
         } else {
             val query = args.joinToString("+")
 
@@ -60,9 +62,7 @@ class PlayCommand : MusicExecutor() {
 
             val result = results[0]
             val videoID = result.id
-            val url = "https://www.youtube.com/watch?v=$videoID"
-
-            loadAndPlay(note, manager, url)
+            "https://www.youtube.com/watch?v=$videoID"
         }
         
         if (botChannel == null) {
@@ -70,5 +70,7 @@ class PlayCommand : MusicExecutor() {
             host.audioManager.openAudioConnection(userChannel)
             note.replyMusic("Joined channel `${userChannel.name}`.")
         }
+
+        loadAndPlay(note, manager, url)
     }
 }

@@ -7,6 +7,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
 import xyz.gnarbot.gnar.utils.fastSplit
+import xyz.hexav.aje.AJEException
 import xyz.hexav.aje.ExpressionBuilder
 import java.awt.Color
 import java.util.*
@@ -36,7 +37,7 @@ class MathCommand : CommandExecutor() {
                     .evalList()
 
             eb.addField("Result", "**[${Arrays.toString(results)}]()**", true)
-        } catch (e: RuntimeException) {
+        } catch (e: AJEException) {
             eb.addField("Error", "**[${e.message!!}]()**", true)
             eb.setColor(Color.RED)
         }

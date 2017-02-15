@@ -7,8 +7,6 @@ import xyz.gnarbot.gnar.servers.listeners.GuildCountListener
 import xyz.gnarbot.gnar.servers.listeners.ShardListener
 import xyz.gnarbot.gnar.servers.listeners.UserListener
 import java.util.*
-import java.util.logging.Level
-import java.util.logging.Logger
 
 /**
  * Individual shard instances of the bot.
@@ -23,7 +21,7 @@ class Shard (val id: Int, private val jda: JDA) : JDA by jda {
         jda.addEventListener(UserListener())
         jda.addEventListener(GuildCountListener.INSTANCE)
 
-        Logger.getLogger("org.apache.http.client.protocol.ResponseProcessCookies").level = Level.OFF
+        //Logger.getLogger("org.apache.http.client.protocol.ResponseProcessCookies").level = Level.OFF
     }
 
     /**

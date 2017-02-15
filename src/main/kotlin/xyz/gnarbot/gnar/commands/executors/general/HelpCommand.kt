@@ -16,8 +16,6 @@ class HelpCommand : CommandExecutor() {
         val registry = host.shard.commandRegistry
 
         if (args.isNotEmpty()) {
-
-
             val cmd: CommandExecutor? = registry.getCommand(args[0])
 
             if (cmd == null) {
@@ -53,12 +51,13 @@ class HelpCommand : CommandExecutor() {
 
             if (sectionCount < 1) continue
 
-            eb.addField("", "__**${perm.title}** $sectionCount __", false)
+            eb.addField("", "__**${perm.title}** — ${sectionCount}__\n${perm.message}", false)
 
             var joiner = StringJoiner("\n")
             var count = 0
 
-            val rows = sectionCount / 3
+            val columns = 3
+            val rows = sectionCount / columns
 
             for (cmd in cmds) {
                 if (cmd.level != perm || !cmd.isShownInHelp) continue
@@ -86,19 +85,14 @@ class HelpCommand : CommandExecutor() {
 
         val builder = StringBuilder()
 
-        builder.append("To view a command's description, do `${Bot.token}help [command]`.\n\n")
-        //builder.append("You can also chat and execute commands with Gnar privately, try it!\n\n")
-
-        builder.append("**DJ** commands requires a role named exactly __[DJ]()__.\n")
-        builder.append("**Bot Commander** commands requires a role named exactly __[Bot Commander]()__.\n")
-        builder.append("**Server Owner** commands requires you to be the __[server owner]()__ to execute.\n")
-
-        builder.append("\n")
+        builder.append("To view a command's description, do `${Bot.token}help [command]`.\n")
+        builder.append("__The commands that requires a named role must be created by you and assigned to a member in your guild.__\n\n")
 
         builder.append("**Latest News:**\n")
         builder.append(" - Music player now running LIVE. Report any bugs to us!\n")
         builder.append(" - The website is a work in progress, check it out!\n")
         builder.append(" - To try out music, join a channel and type `_play -url|search YT`!\n")
+        builder.append(" - Insufficient permission messages now show the requirements.\n")
 
         builder.append("\n")
 

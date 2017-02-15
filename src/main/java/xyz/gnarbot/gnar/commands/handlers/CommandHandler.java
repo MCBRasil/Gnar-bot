@@ -54,7 +54,7 @@ public class CommandHandler {
         if (cmd == null) return;
 
         if (cmd.getLevel().getValue() > author.getLevel().getValue()) {
-            note.error("Insufficient bot level. Requires `" + cmd.getLevel().getTitle() + "` or higher.");
+            note.error("Insufficient bot level.\n" + cmd.getLevel().getMessage());
             return;
         }
 

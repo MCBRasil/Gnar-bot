@@ -7,7 +7,9 @@ import xyz.gnarbot.gnar.members.Level
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("repeat"), level = Level.DJ)
+@Command(aliases = arrayOf("repeat"),
+        level = Level.DJ,
+        description = "Set if the music player should repeat.")
 class RepeatCommand : MusicExecutor() {
 
     @Inject lateinit var manager: MusicManager

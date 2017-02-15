@@ -1,20 +1,21 @@
 package xyz.gnarbot.gnar.api
 
+import org.slf4j.LoggerFactory
 import ro.pippo.core.Application
 import ro.pippo.core.Pippo
 import ro.pippo.gson.GsonEngine
 import xyz.gnarbot.gnar.Bot
 
-class APIPortal : Application()
-{
+class APIPortal : Application() {
+    val LOGGER = LoggerFactory.getLogger("APIPortal")
+
     fun start() {
         val pippo = Pippo(this)
-        pippo.server.port = 3001
-        pippo.start()
+        pippo.start(3001)
+        LOGGER.info("Opened API web portal on port ${pippo.server.port}.\n\n\n")
     }
 
-    override fun onInit()
-    {
+    fun registerRoutes() {
         registerContentTypeEngine(GsonEngine::class.java)
 
         GET("/api/shards(/)?") {
@@ -30,5 +31,7 @@ class APIPortal : Application()
                 it.json().send(Bot.shards[id].info)
             }
         }
+
+        LOGGER.info("Registered API routes.")
     }
 }
