@@ -40,7 +40,7 @@ public class ReactCommand extends CommandExecutor {
             boolean suc = false;
             for (String r : args) {
                 if (!r.equalsIgnoreCase("")) {
-                    if (Utils.sendReactionAutoEncode(note, r)) {
+                    if (Utils.sendReactionAutoEncode(msg, r)) {
                         suc = true;
                     }
                 }
