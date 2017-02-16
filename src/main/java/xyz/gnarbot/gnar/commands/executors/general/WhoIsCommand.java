@@ -78,7 +78,7 @@ public class WhoIsCommand extends CommandExecutor {
                 .filter(role -> !mainBuilder.toString().contains(role.getId()))
                 .forEach(role -> mainBuilder.append("- **[").append(role.getName()).append("]()**").append('\n'));
 
-        note.replyEmbedRaw("Who is " + person.getName() + "?", mainBuilder.toString()
+        note.respond("Who is " + person.getName() + "?", mainBuilder.toString()
                 .replaceAll("null", "None"), Bot.getColor(), person.getAvatarUrl());
     }
 }

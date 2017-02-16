@@ -31,7 +31,7 @@ public class YodaTalkCommand extends CommandExecutor {
 
             String result = response.getBody();
 
-            note.replyEmbedRaw("Yoda-Speak", "**[" + result + "]()**", Bot.getColor(), "https://upload.wikimedia" +
+            note.respond("Yoda-Speak", "**[" + result + "]()**", Bot.getColor(), "https://upload.wikimedia" +
                     ".org/wikipedia/en/9/9b/Yoda_Empire_Strikes_Back.png");
         } catch (UnirestException e) {
             e.printStackTrace();

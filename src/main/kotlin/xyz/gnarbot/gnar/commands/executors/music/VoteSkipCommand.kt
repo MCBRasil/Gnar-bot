@@ -14,9 +14,6 @@ class VoteSkipCommand : MusicExecutor() {
     @Inject lateinit var host : Host
     @Inject lateinit var manager : MusicManager
 
-    lateinit var hostCopy : Host
-    lateinit var managerCopy : MusicManager
-
     override fun execute(note: Note, args: List<String>) {
         if (note.author.voiceChannel !== null && manager.player.playingTrack !== null) {
             if (note.author.voiceState.isDeafened){
@@ -32,40 +29,42 @@ class VoteSkipCommand : MusicExecutor() {
                 return
             }
             if ((manager.player.playingTrack.duration - manager.player.playingTrack.position) <= 30){
-                note.error("By the time the vote finishes, the song will be over!").get().optDelete(10)
+                note.error("By the time the vote finishes, the song will be over!")
                 return
             }
             manager.setLastVoteTime(System.currentTimeMillis())
-            hostCopy = host
-            managerCopy = manager
-            manager.votingToSkip = true
-            var msg = note.replyMusic("[" + note.author.name +
+            manager.isVotingToSkip = true
+            val msg = note.replyMusic("[" + note.author.name +
                     "]() has voted to **skip** the current track! " +
                     "React with :thumbsup: or :thumbsdown:!\n" +
                     "Whichever has the most votes in 30 seconds will win!").get()
             msg.optDelete(35)
             msg.addReaction("👍").queue()
             msg.addReaction("👎").queue()
+
+            val hostCopy = host
+            val managerCopy = manager
             Bot.scheduler.schedule({
-                checkVictory(note, msg)
+                checkVictory(note, msg, hostCopy, managerCopy)
             }, 30, TimeUnit.SECONDS)
-        }else{
-            note.error("You're not in the Music Channel!\n*or there isn't a song playing...*").get().optDelete(5)
+        } else {
+            note.error("You're not in the Music Channel!\n*or there isn't a song playing...*")
         }
     }
 
-    fun checkVictory(note: Note, msg: Note){
-        var msg2 = note.channel.getMessageById(msg.id).complete()
-        if (msg2.reactions.get(0).count > msg2.reactions.get(1).count) {
-            msg.replyMusic("The vote has passed! " + (msg2.reactions.get(0).count - 1)+ " to " + (msg2.reactions.get(1).count - 1)+"!\nThe song has been skipped!").get().optDelete(15)
-            if (managerCopy.scheduler.queue.isEmpty()) {
-                hostCopy.resetMusicManager()
+    fun checkVictory(note: Note, msg: Note, host: Host, manager: MusicManager){
+        val _msg = note.channel.getMessageById(msg.id).complete()
+
+        if (_msg.reactions[0].count > _msg.reactions[1].count) {
+            msg.replyMusic("The vote has passed! " + (_msg.reactions[0].count - 1)+ " to " + (_msg.reactions[1].count - 1)+"!\nThe song has been skipped!")
+            if (manager.scheduler.queue.isEmpty()) {
+                host.resetMusicManager()
             } else {
-                managerCopy.scheduler.nextTrack()
+                manager.scheduler.nextTrack()
             }
         } else {
-            msg.replyMusic("The vote has failed!\nThe song will stay!").get().optDelete(15)
+            msg.replyMusic("The vote has failed!\nThe song will stay!")
         }
-        managerCopy.votingToSkip = false
+        manager.isVotingToSkip = false
     }
 }

@@ -158,7 +158,7 @@ public class AdventureGrid {
             ImageBuilder builder = new ImageBuilder();
             File mapFile = builder.runBuilder();
             if (mapFile == null) {
-                n.replyEmbedRaw("Error", "Couldn't create map file. Notify @Gatt#9711 please.", Color.RED);
+                n.respond("Error", "Couldn't create map file. Notify @Gatt#9711 please.", Color.RED);
                 return;
             }
 

@@ -14,11 +14,12 @@ class Person(var host: Host, private var member: Member) : Member by member, Use
 
     val level: Level
         get() = when {
-            isBotMaster -> Level.BOT_CREATOR
             isBot -> Level.BOT
+
+            isBotMaster -> Level.BOT_CREATOR
             member == host.owner -> Level.SERVER_OWNER
-            hasRole("DJ") -> Level.DJ
             hasRole("Bot Commander") -> Level.BOT_COMMANDER
+            hasRole("DJ") -> Level.DJ
             else -> Level.USER
         }
 

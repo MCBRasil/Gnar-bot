@@ -34,6 +34,6 @@ public class LeetifyCommand extends CommandExecutor {
             s = s.replaceAll(entry.getKey(), entry.getValue());
         }
 
-        note.replyEmbedRaw("Leet It", s);
+        note.respond("Leet It", s);
     }
 }

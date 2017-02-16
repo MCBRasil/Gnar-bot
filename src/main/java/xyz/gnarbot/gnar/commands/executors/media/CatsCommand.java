@@ -43,7 +43,7 @@ public class CatsCommand extends CommandExecutor {
 
             String catURL = doc.getElementsByTagName("url").item(0).getTextContent();
 
-            note.replyEmbed("Random Cat Pictures", null, Bot.getColor(), null, catURL);
+            note.respond("Random Cat Pictures", null, Bot.getColor(), null, catURL);
         } catch (Exception e) {
             note.error("Unable to find cats to sooth the darkness of your soul.");
             e.printStackTrace();

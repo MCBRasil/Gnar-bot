@@ -16,7 +16,7 @@ import java.util.*
 class MathCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
         if (args.isEmpty()) {
-            note.replyEmbedRaw("Error", "Please provide a math expression.", Color.RED)
+            note.respond("Error", "Please provide a math expression.", Color.RED)
             return
         }
 

@@ -55,7 +55,7 @@ public class Rule34Command extends CommandExecutor {
 
                 url = att2.getValue();
 
-                note.replyRaw("http:" + url);
+                note.reply("http:" + url);
             } catch (Exception e) {
                 note.error("Please refer to rule 35.");
             }

@@ -21,7 +21,7 @@ public class RollCommand extends CommandExecutor {
                     return;
                 }
 
-                note.replyEmbedRaw("Roll a Number",
+                note.respond("Roll a Number",
                         "You rolled __**[" + new Random().nextInt(Integer.valueOf(args.get(0))) +
                                 "]()**__ from range **[0 to " + args.get(0) + "]()**.");
             } else {

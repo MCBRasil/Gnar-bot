@@ -67,7 +67,7 @@ class ProgressionCommand : CommandExecutor() {
         }
 
         try {
-            val msg = note.replyRaw(list[0])
+            val msg = note.reply(list[0])
 
             list.forEachIndexed { i, s ->
                 Bot.scheduler.schedule({

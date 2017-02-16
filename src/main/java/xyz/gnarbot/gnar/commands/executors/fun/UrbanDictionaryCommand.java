@@ -40,7 +40,7 @@ public class UrbanDictionaryCommand extends CommandExecutor {
 
             String logo = "https://s3.amazonaws.com/mashape-production-logos/apis/53aa4f67e4b0a9b1348da532_medium";
 
-            note.replyEmbedRaw("Urban Dictionary", sj.toString(), Bot.getColor(), logo);
+            note.respond("Urban Dictionary", sj.toString(), Bot.getColor(), logo);
         } catch (Exception e) { note.error("Could not find that word, rip u"); }
     }
 

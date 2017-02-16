@@ -24,6 +24,6 @@ public class EightBallCommand extends CommandExecutor {
             return;
         }
 
-        note.replyEmbedRaw("8-Ball", "**[" + responses[random.nextInt(responses.length)] + ".]()**");
+        note.respond("8-Ball", "**[" + responses[random.nextInt(responses.length)] + ".]()**");
     }
 }

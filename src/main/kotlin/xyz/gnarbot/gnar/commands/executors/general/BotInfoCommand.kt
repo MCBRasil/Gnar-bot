@@ -57,27 +57,25 @@ class BotInfoCommand : CommandExecutor() {
         eb.setThumbnail(note.jda.selfUser.avatarUrl)
         eb.setColor(Bot.color)
 
-        var joiner = StringJoiner("\n")
-
         eb.addField("Usage", "Requests: **[$requests]()**\nShards: **[" + Bot.shards.size + "]()**", true)
         eb.addField("Guilds", "Servers: **[$guilds]()**\nChannels: **[$textChannels]()**", true)
 
-        joiner.add("Total: **[$users]()**")
-        joiner.add("Online: **[$online]()**")
-        joiner.add("Offline: **[$offline]()**")
-        joiner.add("Inactive: **[$inactive]()**")
-        joiner.add("Others: **[$others]()**")
-
+        var joiner = StringJoiner("\n").apply {
+            add("Total: **[$users]()**")
+            add("Online: **[$online]()**")
+            add("Offline: **[$offline]()**")
+            add("Inactive: **[$inactive]()**")
+            add("Others: **[$others]()**")
+        }
         eb.addField("Users", joiner.toString(), true)
 
-        joiner = StringJoiner("\n")
-
-        joiner.add("Creators: **[Avarel](https://github.com/Avarel)** and **[Maeyrl](https://github.com/maeyrl)**")
-        joiner.add("Contributor: **[Gatt](https://github.com/RealGatt)**")
-        joiner.add("Website: **[gnarbot.xyz](https://gnarbot.xyz)**")
-        joiner.add("Commands: **[$commandSize]()**")
-        joiner.add("Library: **[JDA 3" + "](https://github.com/DV8FromTheWorld/JDA)**")
-
+        joiner = StringJoiner("\n").apply {
+            add("Creators: **[Avarel](https://github.com/Avarel)** and **[Maeyrl](https://github.com/maeyrl)**")
+            add("Contributor: **[Gatt](https://github.com/RealGatt)**")
+            add("Website: **[gnarbot.xyz](https://gnarbot.xyz)**")
+            add("Commands: **[$commandSize]()**")
+            add("Library: **[JDA 3" + "](https://github.com/DV8FromTheWorld/JDA)**")
+        }
         eb.addField("Others", joiner.toString(), true)
 
         note.channel.sendMessage(eb.build()).queue()

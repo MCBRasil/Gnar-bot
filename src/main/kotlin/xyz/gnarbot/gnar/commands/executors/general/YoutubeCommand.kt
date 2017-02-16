@@ -52,7 +52,7 @@ class YoutubeCommand : CommandExecutor() {
                     .setColor(Color(141, 20, 0))
 
             note.channel.sendMessage(eb.build()).queue()
-            note.replyRaw("**First Video:** $firstUrl")
+            note.reply("**First Video:** $firstUrl")
         } catch (e: JSONException) {
             note.error("Unable to get YouTube results.")
             e.printStackTrace()

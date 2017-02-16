@@ -70,7 +70,7 @@ public class ChampDataCommand extends CommandExecutor {
             spellInfo += "\n    **" + fuckTits + "**: " + j.get("name");
         }
 
-        note.replyRaw(spellInfo);
+        note.reply(spellInfo);
     }
 
 }

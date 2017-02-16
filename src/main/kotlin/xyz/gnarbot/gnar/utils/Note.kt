@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
  * @see Message
  * @see Host
  */
-class Note(val host: Host, private val message: Message) : Message by message {
+class Note(val host: Host, private var message: Message) : Message by message {
     /**
      * The author of this Message as a [Person] instance.
      *
@@ -33,21 +33,12 @@ class Note(val host: Host, private val message: Message) : Message by message {
     override fun getMentionedUsers(): List<Person> = message.mentionedUsers.map { host.personHandler.asPerson(it) }
 
     /**
-     * Stylized quick-reply to a message.
-     *
-     * @param msg The text to send.
-     * @return The Message created by this function.
-     */
-    @Deprecated("Use one of the embeds, it has style you fucks.")
-    fun reply(msg: String) = channel.sendMessage("__**${message.author.name}__ ›** $msg").submit().toNote()
-
-    /**
      * Quick-reply to a message.
      *
      * @param msg The text to send.
      * @return The Message created by this function.
      */
-    fun replyRaw(msg: String) = channel.sendMessage(msg).submit().toNote()
+    fun reply(msg: String) = channel.sendMessage(msg).submit().toNote()
 
     /**
      * Send an embeded message.
@@ -56,28 +47,11 @@ class Note(val host: Host, private val message: Message) : Message by message {
      * @return The Message created by this function.
      */
     @JvmOverloads
-    fun replyEmbed(title: String? = null,
-                   msg: String?,
-                   color: Color? = Bot.color,
-                   thumb: String? = null,
-                   img: String? = null): Future<Note> {
-        return channel.sendMessage(makeEmbed(title, msg, color, thumb, img, author))
-                .submit()
-                .toNote()
-    }
-
-    /**
-     * Send an embeded message.
-     *
-     * @param msg The text to send.
-     * @return The Message created by this function.
-     */
-    @JvmOverloads
-    fun replyEmbedRaw(title: String? = null,
-                      msg: String?,
-                      color: Color? = Bot.color,
-                      thumb: String? = null,
-                      img: String? = null): Future<Note> {
+    fun respond(title: String? = null,
+                msg: String?,
+                color: Color? = Bot.color,
+                thumb: String? = null,
+                img: String? = null): Future<Note> {
         return channel.sendMessage(makeEmbed(title, msg, color, thumb, img))
                 .submit()
                 .toNote()

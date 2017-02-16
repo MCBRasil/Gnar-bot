@@ -1,14 +1,20 @@
 package xyz.gnarbot.gnar.servers
 
-import net.dv8tion.jda.core.entities.Guild
-import net.dv8tion.jda.core.entities.Message
-import net.dv8tion.jda.core.entities.User
+import net.dv8tion.jda.core.JDA
+import net.dv8tion.jda.core.Region
+import net.dv8tion.jda.core.entities.*
 import net.dv8tion.jda.core.exceptions.PermissionException
+import net.dv8tion.jda.core.managers.AudioManager
+import net.dv8tion.jda.core.managers.GuildController
+import net.dv8tion.jda.core.managers.GuildManager
+import net.dv8tion.jda.core.managers.GuildManagerUpdatable
+import net.dv8tion.jda.core.requests.RestAction
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.CommandHandler
 import xyz.gnarbot.gnar.members.Person
 import xyz.gnarbot.gnar.members.PersonHandler
 import xyz.gnarbot.gnar.servers.music.MusicManager
+import java.time.OffsetDateTime
 
 /**
  * Represents a bot on each [Guild].
@@ -38,6 +44,8 @@ class Host(val shard: Shard, private var guild : Guild) : Guild by guild {
     init {
         this.personHandler = PersonHandler(this)
         this.commandHandler = CommandHandler(this)
+
+        audioManager.closeAudioConnection()
     }
 
     fun ensure() : Host {
@@ -142,4 +150,58 @@ class Host(val shard: Shard, private var guild : Guild) : Guild by guild {
         val person = personHandler.asPerson(message.author)
         commandHandler.callCommand(message, message.content, person)
     }
+
+
+
+    override fun checkVerification(): Boolean = this.guild.checkVerification()
+    override fun delete(): RestAction<Void> = this.guild.delete()
+    override fun delete(p0: String): RestAction<Void> = this.guild.delete(p0)
+    override fun getAfkChannel(): VoiceChannel = this.guild.afkChannel
+    override fun getAfkTimeout(): Guild.Timeout = this.guild.afkTimeout
+    override fun getAudioManager(): AudioManager = this.guild.audioManager
+    override fun getController(): GuildController = this.guild.controller
+    override fun getCreationTime(): OffsetDateTime = this.guild.creationTime
+    override fun getDefaultNotificationLevel(): Guild.NotificationLevel = this.guild.defaultNotificationLevel
+    override fun getEmoteById(p0: String): Emote = this.guild.getEmoteById(p0)
+    override fun getEmotes(): List<Emote> = this.guild.emotes
+    override fun getEmotesByName(p0: String, p1: Boolean): List<Emote> = this.guild.getEmotesByName(p0, p1)
+    override fun getIconId(): String = this.guild.iconId
+    override fun getIconUrl(): String = this.guild.iconUrl
+    override fun getId(): String = this.guild.id
+    override fun getInvites(): RestAction<List<Invite>> = this.guild.invites
+    override fun getJDA(): JDA = this.guild.jda
+    override fun getManager(): GuildManager = this.guild.manager
+    override fun getManagerUpdatable(): GuildManagerUpdatable = this.guild.managerUpdatable
+    override fun getMember(p0: User): Member = this.guild.getMember(p0)
+    override fun getMemberById(p0: String): Member = this.guild.getMemberById(p0)
+    override fun getMembers(): List<Member> = this.guild.members
+    override fun getMembersByEffectiveName(p0: String, p1: Boolean): List<Member> = this.guild.getMembersByEffectiveName(p0, p1)
+    override fun getMembersByName(p0: String, p1: Boolean): List<Member> = this.guild.getMembersByName(p0, p1)
+    override fun getMembersByNickname(p0: String, p1: Boolean): List<Member> = this.guild.getMembersByNickname(p0, p1)
+    override fun getMembersWithRoles(vararg p0: Role): List<Member> = this.guild.getMembersWithRoles(*p0)
+    override fun getMembersWithRoles(p0: MutableCollection<Role>?): MutableList<Member> = this.guild.getMembersWithRoles(p0)
+    override fun getName(): String = this.guild.name
+    override fun getOwner(): Member = this.guild.owner
+    override fun getPublicChannel(): TextChannel = this.guild.publicChannel
+    override fun getPublicRole(): Role = this.guild.publicRole
+    override fun getRegion(): Region = this.guild.region
+    override fun getRequiredMFALevel(): Guild.MFALevel = this.guild.requiredMFALevel
+    override fun getRoleById(p0: String): Role = this.guild.getRoleById(p0)
+    override fun getRoles(): List<Role> = this.guild.roles
+    override fun getRolesByName(p0: String, p1: Boolean): List<Role> = this.guild.getRolesByName(p0, p1)
+    override fun getSelfMember(): Member = this.guild.selfMember
+    override fun getSplashId(): String = this.guild.splashId
+    override fun getSplashUrl(): String = this.guild.splashUrl
+    override fun getTextChannelById(p0: String): TextChannel = this.guild.getTextChannelById(p0)
+    override fun getTextChannels(): List<TextChannel> = this.guild.textChannels
+    override fun getTextChannelsByName(p0: String, p1: Boolean): List<TextChannel> = this.guild.getTextChannelsByName(p0, p1)
+    override fun getVerificationLevel(): Guild.VerificationLevel = this.guild.verificationLevel
+    override fun getVoiceChannelById(p0: String): VoiceChannel = this.guild.getVoiceChannelById(p0)
+    override fun getVoiceChannels(): List<VoiceChannel> = this.guild.voiceChannels
+    override fun getVoiceChannelsByName(p0: String, p1: Boolean): List<VoiceChannel> = this.guild.getVoiceChannelsByName(p0, p1)
+    override fun getVoiceStates(): List<GuildVoiceState> = this.guild.voiceStates
+    override fun getWebhooks(): RestAction<List<Webhook>> = this.guild.webhooks
+    override fun isAvailable(): Boolean = this.guild.isAvailable
+    override fun isMember(p0: User): Boolean = this.guild.isMember(p0)
+    override fun leave(): RestAction<Void> = this.guild.leave()
 }

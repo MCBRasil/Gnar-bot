@@ -66,7 +66,7 @@ class DialogCommand : CommandExecutor() {
         joiner.add(" ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾ ")
 
         try {
-            note.replyEmbedRaw(null, joiner.toString())
+            note.respond(null, joiner.toString())
         } catch (e: UnsupportedOperationException) {
             note.error("Message was too long or something... no memes for you.")
         }

@@ -25,20 +25,21 @@ public class MusicManager {
     /**
      * Boolean to check whether there is a vote to skip the song or not
      */
-    public boolean votingToSkip = false;
+    private boolean votingToSkip = false;
 
     public boolean isVotingToSkip() {
         return votingToSkip;
     }
 
     public void setVotingToSkip(boolean votingToSkip) {
+        System.out.println("changed voting status");
         this.votingToSkip = votingToSkip;
     }
 
 	/**
 	 * Voting Cooldown
 	 */
-	public Long lastVoteTime = 0l;
+	public Long lastVoteTime = 0L;
 
 	public Long getLastVoteTime() {
 		return lastVoteTime;

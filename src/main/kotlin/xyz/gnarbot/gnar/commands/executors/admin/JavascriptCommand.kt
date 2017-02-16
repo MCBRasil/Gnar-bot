@@ -40,7 +40,7 @@ class JavascriptCommand : CommandExecutor() {
         }
 
         if (result != null) {
-            note.replyEmbed("Java Script", "Running `$script`.\n\n**Result:**\n\n" + result.toString())
+            note.respond("Java Script", "Running `$script`.\n\n**Result:**\n\n" + result.toString())
         }
     }
 }

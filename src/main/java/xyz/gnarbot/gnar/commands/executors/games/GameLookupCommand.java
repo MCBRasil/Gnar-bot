@@ -48,7 +48,7 @@ public class GameLookupCommand extends CommandExecutor {
             joiner.add("Score: **[" + score + "]()**");
             joiner.add("Description: **[" + desc + "]()**");
 
-            note.replyEmbedRaw(title, joiner.toString(), Bot.getColor(), jso.optString("thumb"));
+            note.respond(title, joiner.toString(), Bot.getColor(), jso.optString("thumb"));
         } catch (Exception e) {
             e.printStackTrace();
         }

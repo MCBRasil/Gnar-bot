@@ -46,7 +46,7 @@ public class MarvelComics extends CommandExecutor {
 
             JSONObject thumb = (JSONObject) j.get("thumbnail");
 
-            note.replyEmbedRaw("Marvel Characters",
+            note.respond("Marvel Characters",
                     StringUtils.capitalize(s.toLowerCase().replaceAll("\\+", " ")),
                     Color.RED, null, thumb.optString("path") + "." + thumb.optString("extension"));
         } catch (Exception e) {

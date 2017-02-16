@@ -50,7 +50,7 @@ public class ExplosmCommand extends CommandExecutor {
 
             String logo = "http://explosm.net/img/logo.png";
 
-            note.replyEmbedRaw("Cyanide and Happiness", "No: **" + rand + "**\n", Bot.getColor(), logo, url);
+            note.respond("Cyanide and Happiness", "No: **" + rand + "**\n", Bot.getColor(), logo, url);
         } catch (Exception e) {
             note.error("Unable to grab Cyanide and Happiness comic.");
             e.printStackTrace();

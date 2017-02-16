@@ -73,7 +73,7 @@ public class MemeCommand extends CommandExecutor {
                     }
                 }
 
-                msg.replyEmbed("Meme List (Page " + page + "/" + pages + ")", sj.toString());
+                msg.respond("Meme List (Page " + page + "/" + pages + ")", sj.toString());
                 return;
             }
 
@@ -103,7 +103,7 @@ public class MemeCommand extends CommandExecutor {
                     .getObject()
                     .getJSONObject("data");
 
-            msg.replyEmbed("Meme Generator", null, Bot.getColor(), null, response.getString("url"));
+            msg.respond("Meme Generator", null, Bot.getColor(), null, response.getString("url"));
 
         } catch (Exception e) {
             msg.error("**Please supply more arguments. Example Usage:**\n\n" +

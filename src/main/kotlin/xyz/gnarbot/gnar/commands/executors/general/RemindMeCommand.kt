@@ -29,7 +29,7 @@ class RemindMeCommand : CommandExecutor() {
             }
 
             if (time > 0) {
-                note.replyEmbedRaw("Reminder Scheduled", "I'll be reminding you in __$time ${timeUnit.toString().toLowerCase()}__.")
+                note.respond("Reminder Scheduled", "I'll be reminding you in __$time ${timeUnit.toString().toLowerCase()}__.")
 
                 Bot.scheduler.schedule({
                     note.author.requestPrivateChannel()

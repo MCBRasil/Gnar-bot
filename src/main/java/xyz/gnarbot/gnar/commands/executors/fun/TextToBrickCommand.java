@@ -27,6 +27,6 @@ public class TextToBrickCommand extends CommandExecutor {
                 sb.append(a);
             }
         }
-        note.replyEmbedRaw("Text to Brick", sb.toString(), Bot.getColor());
+        note.respond("Text to Brick", sb.toString(), Bot.getColor());
     }
 }

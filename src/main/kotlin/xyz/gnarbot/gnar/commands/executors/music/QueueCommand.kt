@@ -24,18 +24,20 @@ class QueueCommand : MusicExecutor() {
 
         var trackCount = 0
         var queueLength = 0L
-        var messageLength = 0
 
         val eb = EmbedBuilder()
 
         eb.setTitle("Music", null)
 
         manager.player.playingTrack?.let {
-            if (it.sourceManager.sourceName.contains("youtube")) {
-                eb.addField("Now Playing", "`[${getTimestamp(it.duration)}]` __[${it.info.title}](https://youtube.com/watch?v=${it.info.identifier})__", false)
+
+            val str : String = if (it.sourceManager.sourceName.contains("youtube")) {
+                "`[${getTimestamp(it.duration)}]` __[${it.info.title}](https://youtube.com/watch?v=${it.info.identifier})__"
             } else {
-                eb.addField("Now Playing", "`[${getTimestamp(it.duration)}]` __[${it.info.title}]()__", false)
+                "`[${getTimestamp(it.duration)}]` __[${it.info.title}]()__"
             }
+
+            eb.addField("Now Playing", str, false)
         }
 
         val sj = StringJoiner("\n")
@@ -43,12 +45,12 @@ class QueueCommand : MusicExecutor() {
             queueLength += track.duration
             trackCount++
             if (track.sourceManager.sourceName.contains("youtube")){
-                messageLength += sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__").length()
+                sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__")
             } else {
-                messageLength += sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}]()__").length()
+                sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}]()__")
             }
 
-            if (messageLength >= 900) {
+            if (sj.length() >= 900) {
                 sj.add("... and **${queue.size - trackCount}** more tracks.")
                 break
             }

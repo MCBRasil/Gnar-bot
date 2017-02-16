@@ -25,7 +25,7 @@ public class ExplosmRCGCommand extends CommandExecutor {
 
             String logo = "http://explosm.net/img/logo.png";
 
-            note.replyEmbedRaw("Cyanide and Happiness", "**Random Comic Generator**", Bot.getColor(), logo, url);
+            note.respond("Cyanide and Happiness", "**Random Comic Generator**", Bot.getColor(), logo, url);
         } catch (Exception e) {
             note.error("Unable to grab random Cyanide and Happiness comic.");
             e.printStackTrace();

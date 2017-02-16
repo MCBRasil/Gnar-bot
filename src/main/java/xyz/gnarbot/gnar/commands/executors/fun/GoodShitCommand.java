@@ -10,7 +10,7 @@ import java.util.List;
 public class GoodShitCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
-        note.replyRaw("\uD83D\uDC4C\uD83D\uDC40\uD83D\uDC4C\uD83D\uDC40\uD83D\uDC4C\uD83D\uDC40\uD83D\uDC4C\uD83D" +
+        note.reply("\uD83D\uDC4C\uD83D\uDC40\uD83D\uDC4C\uD83D\uDC40\uD83D\uDC4C\uD83D\uDC40\uD83D\uDC4C\uD83D" +
                 "\uDC40\uD83D\uDC4C\uD83D\uDC40 good shit go౦ԁ sHit\uD83D\uDC4C thats ✔ some " +
                 "good\uD83D\uDC4C\uD83D\uDC4Cshit " +
                 "right\uD83D\uDC4C\uD83D\uDC4Cthere\uD83D\uDC4C\uD83D\uDC4C\uD83D\uDC4C right✔there ✔✔if i do ƽaү so " +

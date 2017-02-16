@@ -37,7 +37,7 @@ public class YesNoPoll extends Poll {
         final Note repliedMessage;
 
         try {
-            repliedMessage = n.replyRaw(":pushpin: *A new poll has been started by* **" + startingPerson.getName() +
+            repliedMessage = n.reply(":pushpin: *A new poll has been started by* **" + startingPerson.getName() +
                     "** `(Poll ID: " + getPollid() + ")`\n\n" + ":paperclip: Question:\n" + "        ╚ " + question +
                     "\n\n" + ":clock1: Time Left:\n" + "        ╚ " + minutes + " minute(s) 0 second(s)\n\n" + "     " +
                     "  " + " ╠ ❌ - No  [0 Votes]\n" + "        ╚ ✅ - Yes [0 Votes]")
@@ -97,7 +97,7 @@ public class YesNoPoll extends Poll {
                         .get(0)
                         .getCount() - 1) + " Votes]").queue();
 
-                repliedMessage.replyRaw(":exclamation: Poll `#" + getPollid() + "` by " + startingPerson.getName() + " " +
+                repliedMessage.reply(":exclamation: Poll `#" + getPollid() + "` by " + startingPerson.getName() + " " +
                         "has " + "finished! Check above for the results!");
 
                 startingPerson.getPrivateChannel()

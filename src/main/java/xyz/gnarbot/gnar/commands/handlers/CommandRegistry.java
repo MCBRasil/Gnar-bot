@@ -134,6 +134,8 @@ public class CommandRegistry {
         register(RepeatCommand.class);
         register(ResetCommand.class);
         register(VoteSkipCommand.class);
+
+        //register(new JSCommandExecutor(new File("data/scripting/javascript/firstJSCommand.js")));
     }
 
 
@@ -167,6 +169,12 @@ public class CommandRegistry {
 
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void register(CommandExecutor jsc) {
+        for (String alias : jsc.getAliases()) {
+            registerCommand(alias, jsc);
         }
     }
 

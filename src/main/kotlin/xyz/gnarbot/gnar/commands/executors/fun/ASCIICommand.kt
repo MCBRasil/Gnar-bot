@@ -35,7 +35,7 @@ class ASCIICommand : CommandExecutor() {
 
             val builder = "```\n${getText(element)}```"
 
-            note.replyEmbedRaw("ASCII Text", builder)
+            note.respond("ASCII Text", builder)
         } catch (e: Exception) {
             note.error("Unable to generate ASCII art.")
             e.printStackTrace()

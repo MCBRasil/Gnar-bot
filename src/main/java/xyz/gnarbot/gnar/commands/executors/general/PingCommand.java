@@ -16,7 +16,7 @@ public class PingCommand extends CommandExecutor {
         OffsetDateTime sentTime = note.getCreationTime();
         OffsetDateTime responseTime = OffsetDateTime.now();
 
-        note.replyEmbedRaw("Response Time", Math.abs(sentTime.until(responseTime, ChronoUnit.MILLIS)) + "ms", Bot
+        note.respond("Response Time", Math.abs(sentTime.until(responseTime, ChronoUnit.MILLIS)) + "ms", Bot
                 .getColor());
     }
 }

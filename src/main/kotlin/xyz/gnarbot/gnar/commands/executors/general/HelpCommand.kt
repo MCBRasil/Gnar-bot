@@ -28,13 +28,14 @@ class HelpCommand : CommandExecutor() {
                     .map { it.key }
 
             val joiner = StringJoiner("\n").apply {
+                add("Aliases: **[${aliases.joinToString(", ")}]()**")
                 add("Description: **[${cmd.description}]()**")
                 if (!cmd.usage.isNullOrBlank())
                     add("Usage: **[${Bot.token}${args[0].toLowerCase()} ${cmd.usage}]()**")
-                add("Aliases: **[${aliases.joinToString(", ")}]()**")
+                add("Level: **[${cmd.level.title}]()**")
             }
 
-            note.replyEmbedRaw("Command Information", joiner.toString())
+            note.respond("Command Information", joiner.toString())
 
             return
         }

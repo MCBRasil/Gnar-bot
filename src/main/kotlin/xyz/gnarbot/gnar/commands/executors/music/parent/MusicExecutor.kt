@@ -6,6 +6,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.servers.music.MusicManager
+import xyz.gnarbot.gnar.servers.music.TrackScheduler
 import xyz.gnarbot.gnar.utils.Note
 import java.awt.Color
 import java.time.Duration
@@ -22,7 +23,7 @@ abstract class MusicExecutor : CommandExecutor() {
     //abstract fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager)
 
     protected fun Note.replyMusic(msg: String) : Future<Note> {
-        return this.replyEmbedRaw("Music", msg, color)
+        return this.respond("Music", msg, color)
     }
 
     protected fun getTimestamp(milliseconds: Long): String {
@@ -41,7 +42,7 @@ abstract class MusicExecutor : CommandExecutor() {
         mng.playerManager.loadItemOrdered(mng, trackUrl, object : AudioLoadResultHandler {
             override fun trackLoaded(track: AudioTrack) {
 
-                if (mng.scheduler.queue.size >= 20) {
+                if (mng.scheduler.queue.size >= TrackScheduler.QUEUE_LIMIT) {
                     note.error("The queue can not exceed 20 songs.")
                     return
                 }
@@ -68,7 +69,7 @@ abstract class MusicExecutor : CommandExecutor() {
                 var added = 0
                 for (track in tracks) {
 
-                    if (mng.scheduler.queue.size >= 20) {
+                    if (mng.scheduler.queue.size >= TrackScheduler.QUEUE_LIMIT) {
                         note.info("Ignored ${tracks.size - added} songs as the queue can not exceed 20 songs.")
                         break
                     }
