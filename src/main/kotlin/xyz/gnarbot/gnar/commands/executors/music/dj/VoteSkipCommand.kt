@@ -57,7 +57,7 @@ class VoteSkipCommand : MusicExecutor() {
     fun checkVictory(note: Note, msg: Note){
         var msg2 = note.channel.getMessageById(msg.id).complete()
         if (msg2.reactions.get(0).count > msg2.reactions.get(1).count) {
-            msg.replyMusic("The vote has passed! " + msg2.reactions.get(0).count + " to " + msg2.reactions.get(1).count +"!\nThe song has been skipped!").get().optDelete(15)
+            msg.replyMusic("The vote has passed! " + (msg2.reactions.get(0).count - 1)+ " to " + (msg2.reactions.get(1).count - 1)+"!\nThe song has been skipped!").get().optDelete(15)
             if (managerCopy.scheduler.queue.isEmpty()) {
                 hostCopy.resetMusicManager()
             } else {
