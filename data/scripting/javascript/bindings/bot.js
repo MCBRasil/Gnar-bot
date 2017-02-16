@@ -1,0 +1,82 @@
+var meta = {
+    aliases: [],
+    usage: '',
+    description: '',
+    inject: false,
+    shownInHelp: true,
+    level: Level.USER
+};
+
+var Level = {
+    BOT_CREATOR: 4,
+    SERVER_OWNER: 3,
+    BOT_COMMANDER: 2,
+    DJ: 1,
+    USER: 0,
+    BOT: -1
+};
+
+var host = {
+    // Guild stubs
+    getName: function() {},
+    getIconId: function() {},
+    getIconUrl: function() {},
+    getSplashId: function() {},
+    getSplashUrl: function() {},
+    getAfkChannel: function() {},
+    getOwner: function() {},
+    getAfkTimeout: function() {},
+    getRegion: function() {},
+    isMember: function() {},
+    getSelfMember: function() {},
+    getMember: function() {},
+    getMemberById: function() {},
+    getMembers: function() {},
+    getMembersByName: function() {},
+    getMembersByNickname: function() {},
+    getMembersByEffectiveName: function() {},
+    getMembersWithRoles: function() {},
+    getTextChannelById: function() {},
+    getTextChannels: function() {},
+    getTextChannelsByName: function() {},
+    getVoiceChannelById: function() {},
+    getVoiceChannels: function() {},
+    getVoiceChannelsByName: function() {},
+    getRoleById: function() {},
+    getRoles: function() {},
+    getRolesByName: function() {},
+    getEmoteById: function() {},
+    getEmotes: function() {},
+    getEmotesByName: function() {},
+    getPublicRole: function() {},
+    getPublicChannel: function() {},
+    getManager: function() {},
+    getManagerUpdatable: function() {},
+    getController: function() {},
+    leave: function() {},
+    getInvites: function() {},
+    getWebhooks: function() {},
+    getVoiceStates: function() {},
+    getVerificationLevel: function() {},
+    getDefaultNotificationLevel: function() {},
+    getAudioManager: function() {},
+    getJDA: function() {},
+    getRequiredMFALevel: function() {},
+    checkVerification: function() {},
+    isAvailable: function() {},
+
+    // Host stubs
+    getShard: function() {},
+    getPersonHandler: function() {},
+    getCommandHandler: function() {},
+    getMusicManager: function() {},
+    resetMusicManager: function() {},
+    ensure: function() {},
+    ban: function(person) {},
+    unban: function(person) {},
+    kick: function(person) {},
+    mute: function(person) {},
+    unmute: function(person) {},
+    handleMessage: function(message) {}
+};
+
