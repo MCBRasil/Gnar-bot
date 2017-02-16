@@ -14,12 +14,27 @@ class VoteSkipCommand : MusicExecutor() {
     @Inject lateinit var host : Host
     @Inject lateinit var manager : MusicManager
 
+    lateinit var hostCopy : Host
+    lateinit var managerCopy : MusicManager
+
     override fun execute(note: Note, args: List<String>) {
         if (note.author.voiceChannel !== null && manager.player.playingTrack !== null && !note.author.voiceState.isDeafened) {
-            if ((manager.player.playingTrack.duration - manager.player.playingTrack.position) <= 30){
-                note.error("By the time the vote finishes, the song will be over!")
+            if (manager.isVotingToSkip){
+                note.error("There is already a vote going on!").get().optDelete(10)
                 return
             }
+            if ((System.currentTimeMillis() - manager.getLastVoteTime()) < 30000){
+                note.error("You must wait 30 seconds before starting a new vote!")
+                return
+            }
+            if ((manager.player.playingTrack.duration - manager.player.playingTrack.position) <= 30){
+                note.error("By the time the vote finishes, the song will be over!").get().optDelete(10)
+                return
+            }
+            manager.setLastVoteTime(System.currentTimeMillis())
+            hostCopy = host
+            managerCopy = manager
+            manager.votingToSkip = true
             var msg = note.replyMusic("[" + note.author.name +
                     "]() has voted to **skip** the current track! " +
                     "React with :thumbsup: or :thumbsdown:!\n" +
@@ -37,18 +52,16 @@ class VoteSkipCommand : MusicExecutor() {
 
     fun checkVictory(note: Note, msg: Note){
         var msg2 = note.channel.getMessageById(msg.id).complete()
-        System.out.println("Reactions count: " + msg2.reactions.size)
         if (msg2.reactions.get(0).count > msg2.reactions.get(1).count) {
-            System.out.println("victory")
             msg.replyMusic("The vote has passed! " + msg2.reactions.get(0).count + " to " + msg2.reactions.get(1).count +"!\nThe song has been skipped!").get().optDelete(15)
-            if (manager.scheduler.queue.isEmpty()) {
-                host.resetMusicManager()
+            if (managerCopy.scheduler.queue.isEmpty()) {
+                hostCopy.resetMusicManager()
             } else {
-                manager.scheduler.nextTrack()
+                managerCopy.scheduler.nextTrack()
             }
         } else {
-            System.out.println("loss")
             msg.replyMusic("The vote has failed!\nThe song will stay!").get().optDelete(15)
         }
+        managerCopy.votingToSkip = false
     }
 }

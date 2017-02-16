@@ -23,7 +23,33 @@ public class MusicManager {
     public final AudioPlayerSendHandler sendHandler;
 
     /**
-     * Creates a player and a track scheduler.
+     * Boolean to check whether there is a vote to skip the song or not
+     */
+    public boolean votingToSkip = false;
+
+    public boolean isVotingToSkip() {
+        return votingToSkip;
+    }
+
+    public void setVotingToSkip(boolean votingToSkip) {
+        this.votingToSkip = votingToSkip;
+    }
+
+	/**
+	 * Voting Cooldown
+	 */
+	public Long lastVoteTime = 0l;
+
+	public Long getLastVoteTime() {
+		return lastVoteTime;
+	}
+
+	public void setLastVoteTime(Long lastVoteTime) {
+		this.lastVoteTime = lastVoteTime;
+	}
+
+	/**
+	 * Creates a player and a track scheduler.
      *
      * @param playerManager Audio player playerManager to use for creating the player.
      */
