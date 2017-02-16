@@ -24,6 +24,7 @@ class QueueCommand : MusicExecutor() {
 
         var trackCount = 0
         var queueLength = 0L
+        var messageLength = 0
 
         val eb = EmbedBuilder()
 
@@ -42,12 +43,12 @@ class QueueCommand : MusicExecutor() {
             queueLength += track.duration
             trackCount++
             if (track.sourceManager.sourceName.contains("youtube")){
-                sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__")
+                messageLength += sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__").length()
             } else {
-                sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}]()__")
+                messageLength += sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}]()__").length()
             }
 
-            if (trackCount >= 10) {
+            if (messageLength >= 900) {
                 sj.add("... and **${queue.size - trackCount}** more tracks.")
                 break
             }
