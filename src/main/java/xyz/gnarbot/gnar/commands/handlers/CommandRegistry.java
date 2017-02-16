@@ -133,6 +133,7 @@ public class CommandRegistry {
         register(RestartCommand.class);
         register(RepeatCommand.class);
         register(ResetCommand.class);
+        register(VoteSkipCommand.class);
     }
 
 
