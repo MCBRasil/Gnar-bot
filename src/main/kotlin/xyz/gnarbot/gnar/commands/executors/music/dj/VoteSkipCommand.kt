@@ -15,7 +15,7 @@ class VoteSkipCommand : MusicExecutor() {
     @Inject lateinit var manager : MusicManager
 
     override fun execute(note: Note, args: List<String>) {
-        if (note.author.voiceChannel !== null && manager.player.playingTrack !== null) {
+        if (note.author.voiceChannel !== null && manager.player.playingTrack !== null && !note.author.voiceState.isDeafened) {
             if ((manager.player.playingTrack.duration - manager.player.playingTrack.position) <= 30){
                 note.error("By the time the vote finishes, the song will be over!")
                 return
