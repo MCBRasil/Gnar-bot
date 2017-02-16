@@ -18,7 +18,11 @@ class VoteSkipCommand : MusicExecutor() {
     lateinit var managerCopy : MusicManager
 
     override fun execute(note: Note, args: List<String>) {
-        if (note.author.voiceChannel !== null && manager.player.playingTrack !== null && !note.author.voiceState.isDeafened) {
+        if (note.author.voiceChannel !== null && manager.player.playingTrack !== null) {
+            if (note.author.voiceState.isDeafened){
+                note.error("You actually have to be listening to the song to start a vote... Tsk tsk...").get().optDelete(10)
+                return
+            }
             if (manager.isVotingToSkip){
                 note.error("There is already a vote going on!").get().optDelete(10)
                 return
