@@ -1,7 +1,7 @@
 package xyz.gnarbot.gnar.members
 
 /**
- * Level levels for [Person] for use by the bot.
+ * Level levels for [HostUser] for use by the bot.
  */
 enum class Level(val value: Int, val title: String, val message: String) {
     /** Highest level level. */

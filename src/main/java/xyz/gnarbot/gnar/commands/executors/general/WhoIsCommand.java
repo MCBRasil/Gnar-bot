@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.members.Person;
+import xyz.gnarbot.gnar.members.HostUser;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
@@ -22,32 +22,32 @@ public class WhoIsCommand extends CommandExecutor {
         }
 
         // SEARCH USERS
-        Person person = null;
+        HostUser hostUser = null;
 
-        List<Person> mentioned = note.getMentionedUsers();
+        List<HostUser> mentioned = note.getMentionedUsers();
         if (mentioned.size() > 0) {
-            person = mentioned.get(0);
+            hostUser = mentioned.get(0);
         } else { // Real Name > Nick Name > Contains
             String query = StringUtils.join(args, " ");
 
             for (Member m : note.getGuild().getMembersByName(query, true)) {
-                person = new Person(note.getHost(), m);
+                hostUser = new HostUser(note.getHost(), m);
             }
-            if (person == null) {
+            if (hostUser == null) {
                 for (Member m : note.getGuild().getMembersByNickname(query, true)) {
-                    person = new Person(note.getHost(), m);
+                    hostUser = new HostUser(note.getHost(), m);
                 }
             }
-            if (person == null) { // JUST IN CASE
+            if (hostUser == null) { // JUST IN CASE
                 for (Member m : note.getGuild().getMembers()) {
                     if (m.getUser().getName().toLowerCase().contains(query.toLowerCase())) {
-                        person = new Person(note.getHost(), m);
+                        hostUser = new HostUser(note.getHost(), m);
                     }
                 }
             }
         }
 
-        if (person == null) {
+        if (hostUser == null) {
             note.error("You did not mention a valid user.");
             return;
         }
@@ -55,30 +55,30 @@ public class WhoIsCommand extends CommandExecutor {
         StringBuilder mainBuilder = new StringBuilder();
 
 
-        String nickname = note.getGuild().getMember(person).getNickname();
-        Game game = note.getGuild().getMember(person).getGame();
+        String nickname = note.getGuild().getMember(hostUser).getNickname();
+        Game game = note.getGuild().getMember(hostUser).getGame();
 
         StringJoiner metaBuilder = new StringJoiner("\n");
-        metaBuilder.add("Name: **[" + person.getName() + "#" + person.getDiscriminator() + "]()**");
-        metaBuilder.add("ID: **[" + person.getId() + "]()**");
+        metaBuilder.add("Name: **[" + hostUser.getName() + "#" + hostUser.getDiscriminator() + "]()**");
+        metaBuilder.add("ID: **[" + hostUser.getId() + "]()**");
         metaBuilder.add("");
         metaBuilder.add("__**General**__");
         metaBuilder.add("Nick: **[" + (nickname != null ? nickname : "None") + "]()**");
         metaBuilder.add("Game: **[" + (game != null ? game.getName() : "None") + "]()**");
-        metaBuilder.add("Bot: **[" + String.valueOf(person.isBot()).toUpperCase() + "]()**");
-        metaBuilder.add("Level: **[" + person.getLevel().toString().replaceAll("_", " ") + "]()**");
+        metaBuilder.add("Bot: **[" + String.valueOf(hostUser.isBot()).toUpperCase() + "]()**");
+        metaBuilder.add("Level: **[" + hostUser.getLevel().toString().replaceAll("_", " ") + "]()**");
         metaBuilder.add("\n");
 
         mainBuilder.append(metaBuilder.toString());
 
         mainBuilder.append("__**Roles**__").append('\n');
 
-        person.getRoles()
+        hostUser.getRoles()
                 .stream()
                 .filter(role -> !mainBuilder.toString().contains(role.getId()))
                 .forEach(role -> mainBuilder.append("- **[").append(role.getName()).append("]()**").append('\n'));
 
-        note.respond("Who is " + person.getName() + "?", mainBuilder.toString()
-                .replaceAll("null", "None"), Bot.getColor(), person.getAvatarUrl());
+        note.respond("Who is " + hostUser.getName() + "?", mainBuilder.toString()
+                .replaceAll("null", "None"), Bot.getColor(), hostUser.getAvatarUrl());
     }
 }

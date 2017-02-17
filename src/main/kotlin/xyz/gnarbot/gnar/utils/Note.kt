@@ -4,7 +4,7 @@ import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.entities.Message
 import net.dv8tion.jda.core.exceptions.PermissionException
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.members.Person
+import xyz.gnarbot.gnar.members.HostUser
 import xyz.gnarbot.gnar.servers.Host
 import java.awt.Color
 import java.util.concurrent.CompletableFuture
@@ -19,18 +19,18 @@ import java.util.concurrent.TimeUnit
  */
 class Note(val host: Host, private var message: Message) : Message by message {
     /**
-     * The author of this Message as a [Person] instance.
+     * The author of this Message as a [HostUser] instance.
      *
      * @return Message author as User.
      */
-    override fun getAuthor(): Person = host.personHandler.asPerson(message.author)
+    override fun getAuthor(): HostUser = host.usersHandler.asPerson(message.author)
 
     /**
-     * Get mentioned users of this Message as [Person] instances.
+     * Get mentioned users of this Message as [HostUser] instances.
      *
-     * @return Immutable list of mentioned [Person] instances.
+     * @return Immutable list of mentioned [HostUser] instances.
      */
-    override fun getMentionedUsers(): List<Person> = message.mentionedUsers.map { host.personHandler.asPerson(it) }
+    override fun getMentionedUsers(): List<HostUser> = message.mentionedUsers.map { host.usersHandler.asPerson(it) }
 
     /**
      * Quick-reply to a message.

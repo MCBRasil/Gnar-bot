@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Command(aliases = {"quote", "quotemsg"},
-        usage = "-msg_id [-channel_in_#_format]",
+        usage = "-msg_id [#channel]",
         description = "Quote somebody else..")
 public class QuoteCommand extends CommandExecutor {
     @Override
@@ -36,7 +36,7 @@ public class QuoteCommand extends CommandExecutor {
                     Message msg = note.getChannel().getMessageById(id).complete();
                     targetChannel.sendMessage(
                             KUtils.makeEmbed(null, msg.getContent(), Bot.getColor(), null, null,
-                                    note.getHost().getPersonHandler().asPerson(msg.getAuthor()))).queue();
+                                    note.getHost().getUsersHandler().asPerson(msg.getAuthor()))).queue();
                 } catch (Exception e) {
                     try {
                         Message m = note.error("Could not find a message with the ID " + id + " within this channel.").get();

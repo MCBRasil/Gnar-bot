@@ -7,8 +7,8 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.SelfUser;
 import xyz.gnarbot.gnar.Bot;
-import xyz.gnarbot.gnar.members.Person;
-import xyz.gnarbot.gnar.members.PersonHandler;
+import xyz.gnarbot.gnar.members.HostUser;
+import xyz.gnarbot.gnar.members.UsersHandler;
 import xyz.gnarbot.gnar.servers.Host;
 import xyz.gnarbot.gnar.servers.Shard;
 import xyz.gnarbot.gnar.servers.music.MusicManager;
@@ -37,7 +37,7 @@ public class CommandHandler {
      * @param content String content of the message.
      * @param author Author of the message.
      */
-    public void callCommand(Message message, String content, Person author) {
+    public void callCommand(Message message, String content, HostUser author) {
         if (!content.startsWith(Bot.getToken())) return;
 
         // Tokenize the message.
@@ -90,7 +90,7 @@ public class CommandHandler {
             bind(Shard.class).toInstance(host.getShard());
 
             bind(CommandHandler.class).toInstance(CommandHandler.this);
-            bind(PersonHandler.class).toInstance(host.getPersonHandler());
+            bind(UsersHandler.class).toInstance(host.getUsersHandler());
 
             bind(JDA.class).toInstance(host.getJDA());
 

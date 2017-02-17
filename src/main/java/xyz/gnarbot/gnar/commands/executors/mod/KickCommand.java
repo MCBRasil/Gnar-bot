@@ -5,7 +5,7 @@ import net.dv8tion.jda.core.utils.PermissionUtil;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Level;
-import xyz.gnarbot.gnar.members.Person;
+import xyz.gnarbot.gnar.members.HostUser;
 import xyz.gnarbot.gnar.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
@@ -19,8 +19,8 @@ public class KickCommand extends CommandExecutor {
     public void execute(Note note, List<String> args) {
         Host host = note.getHost();
 
-        Person author = note.getAuthor();
-        Person target = null;
+        HostUser author = note.getAuthor();
+        HostUser target = null;
 
         if (!PermissionUtil.checkPermission(note.getTextChannel(), author, Permission.KICK_MEMBERS)) {
             note.error("You do not have permission to kick.");
@@ -30,7 +30,7 @@ public class KickCommand extends CommandExecutor {
         if (note.getMentionedChannels().size() >= 1) {
             target = note.getMentionedUsers().get(0);
         } else if (args.size() >= 1) {
-            target = note.getHost().getPersonHandler().getUser(args.get(0));
+            target = note.getHost().getUsersHandler().getUser(args.get(0));
         }
 
         if (target == null) {

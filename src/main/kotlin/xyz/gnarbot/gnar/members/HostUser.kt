@@ -9,7 +9,7 @@ import xyz.gnarbot.gnar.servers.Host
  *
  * @see Member
  */
-class Person(var host: Host, private var member: Member) : Member by member, User by member.user {
+class HostUser(var host: Host, private var member: Member) : Member by member, User by member.user {
     val isBotMaster = Bot.admins.contains(id)
 
     val level: Level
@@ -22,14 +22,6 @@ class Person(var host: Host, private var member: Member) : Member by member, Use
             hasRole("DJ") -> Level.DJ
             else -> Level.USER
         }
-
-    fun ensure() : Person {
-        val _member = host.getMemberById(id)
-        if (_member != member) {
-            member = _member
-        }
-        return this
-    }
 
     val voiceChannel : VoiceChannel?
         get() {

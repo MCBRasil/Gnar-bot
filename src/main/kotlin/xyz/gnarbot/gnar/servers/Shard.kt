@@ -35,7 +35,7 @@ class Shard (val id: Int, private val jda: JDA) : JDA by jda {
      */
     fun getHost(guild: Guild?): Host? {
         if (guild == null) return null
-        return hosts.getOrPut(guild.id) { Host(this, guild) }.ensure()
+        return hosts.getOrPut(guild.id) { Host(this, guild) }
     }
 
     /**
@@ -57,6 +57,8 @@ class Shard (val id: Int, private val jda: JDA) : JDA by jda {
         jda.shutdown(false)
         hosts.clear()
     }
+
+    // TODO add a reset for guilds
 
     class ShardInfo(shard: Shard) {
         val requests: Int = shard.hosts.values.map { it.commandHandler.requests }.sum()

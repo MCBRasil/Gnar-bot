@@ -1,7 +1,7 @@
 package xyz.gnarbot.gnar.commands.executors.polls;
 
 import xyz.gnarbot.gnar.Bot;
-import xyz.gnarbot.gnar.members.Person;
+import xyz.gnarbot.gnar.members.HostUser;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.concurrent.ExecutionException;
@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 public class YesNoPoll extends Poll {
 
-    private Person startingPerson;
+    private HostUser startingHostUser;
 
     private ScheduledFuture runTask;
 
@@ -33,11 +33,11 @@ public class YesNoPoll extends Poll {
     public void startPoll() {
 
         System.out.println(n.getAuthor().getName() + " created a new poll");
-        startingPerson = n.getAuthor();
+        startingHostUser = n.getAuthor();
         final Note repliedMessage;
 
         try {
-            repliedMessage = n.reply(":pushpin: *A new poll has been started by* **" + startingPerson.getName() +
+            repliedMessage = n.reply(":pushpin: *A new poll has been started by* **" + startingHostUser.getName() +
                     "** `(Poll ID: " + getPollid() + ")`\n\n" + ":paperclip: Question:\n" + "        ╚ " + question +
                     "\n\n" + ":clock1: Time Left:\n" + "        ╚ " + minutes + " minute(s) 0 second(s)\n\n" + "     " +
                     "  " + " ╠ ❌ - No  [0 Votes]\n" + "        ╚ ✅ - Yes [0 Votes]")
@@ -67,7 +67,7 @@ public class YesNoPoll extends Poll {
                             minutesInst--;
                         }
                         if (String.valueOf(seconds).contains("5") || String.valueOf(seconds).contains("0")) {
-                            repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingPerson
+                            repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingHostUser
                                     .getName() + "** `(Poll ID: " + getPollid() + ")`\n\n" + ":paperclip: " +
                                     "Question:\n" + "        ╚ " + question + "\n\n" + ":clock1: Time Left:\n" + "   " +
                                     "     ╚ " + minutesInst + " minute(s) " + seconds + " second(s)\n\n" + ":gem: " +
@@ -87,7 +87,7 @@ public class YesNoPoll extends Poll {
             {
                 System.out.println("lmao");
 
-                repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingPerson.getName() +
+                repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingHostUser.getName() +
                         "**" + " `(Poll ID: " + getPollid() + ")`\n\n" + ":paperclip: Question:\n" + "        ╚ " +
                         question + "\n\n" + ":clock1: Time Left:\n" + "        ╚ **Voting Over**\n\n" + ":gem: " +
                         "Votes:\n" + "        " + "╠ ❌ - No  [" + (repliedMessage
@@ -97,10 +97,10 @@ public class YesNoPoll extends Poll {
                         .get(0)
                         .getCount() - 1) + " Votes]").queue();
 
-                repliedMessage.reply(":exclamation: Poll `#" + getPollid() + "` by " + startingPerson.getName() + " " +
+                repliedMessage.reply(":exclamation: Poll `#" + getPollid() + "` by " + startingHostUser.getName() + " " +
                         "has " + "finished! Check above for the results!");
 
-                startingPerson.getPrivateChannel()
+                startingHostUser.getPrivateChannel()
                         .sendMessage(":exclamation: Your poll in <#" + n.getChannel()
                                 .getId() + "> has ended! Go check it's results!");
 
