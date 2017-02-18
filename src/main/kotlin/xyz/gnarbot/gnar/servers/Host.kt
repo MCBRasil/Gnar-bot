@@ -1,28 +1,22 @@
 package xyz.gnarbot.gnar.servers
 
-import net.dv8tion.jda.core.JDA
-import net.dv8tion.jda.core.Region
-import net.dv8tion.jda.core.entities.*
+import net.dv8tion.jda.core.entities.Guild
+import net.dv8tion.jda.core.entities.Member
+import net.dv8tion.jda.core.entities.Message
+import net.dv8tion.jda.core.entities.User
 import net.dv8tion.jda.core.exceptions.PermissionException
-import net.dv8tion.jda.core.managers.AudioManager
-import net.dv8tion.jda.core.managers.GuildController
-import net.dv8tion.jda.core.managers.GuildManager
-import net.dv8tion.jda.core.managers.GuildManagerUpdatable
-import net.dv8tion.jda.core.requests.RestAction
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.CommandHandler
-import xyz.gnarbot.gnar.members.HostUser
-import xyz.gnarbot.gnar.members.UsersHandler
+import xyz.gnarbot.gnar.members.PeopleHandler
+import xyz.gnarbot.gnar.members.Person
 import xyz.gnarbot.gnar.servers.music.MusicManager
-import xyz.gnarbot.gnar.utils.reference.GuildReference
-import java.time.OffsetDateTime
 
 /**
  * Represents a bot on each [Guild].
  * @see Guild
  */
 class Host(val shard: Shard, private var guild : Guild) : Guild by guild {
-    val usersHandler: UsersHandler = UsersHandler(this)
+    val peopleHandler: PeopleHandler = PeopleHandler(this)
     val commandHandler: CommandHandler = CommandHandler(this)
 
     var musicManager: MusicManager? = null
@@ -42,14 +36,21 @@ class Host(val shard: Shard, private var guild : Guild) : Guild by guild {
         musicManager = null
     }
 
-//    fun ensure() : Host {
-//        val _guild = shard.getGuildById(id)
-//        if (_guild != guild) {
-//            guild = _guild
-//        }
-//        afkChannel
-//        return this
-//    }
+    fun getMember(name : String, searchNickname: Boolean = false) : Member? {
+        for (member in getMembersByName(name, true)) {
+            return member
+        }
+        if (searchNickname) {
+            for (member in getMembersByNickname(name, true)) {
+                return member
+            }
+        }
+        return null
+    }
+
+    fun getPerson(name : String, searchNickname: Boolean = false) : Person? {
+        return getMember(name, searchNickname)?.let { peopleHandler.asPerson(it) }
+    }
 
     //    @Deprecated("Useless")
     //    /** Load JSON instance from the Host's storage. */
@@ -71,9 +72,9 @@ class Host(val shard: Shard, private var guild : Guild) : Guild by guild {
      * Attempt to ban the member from the guild.
      * @return If the bot had permission.
      */
-    fun ban(hostUser: HostUser): Boolean {
+    fun ban(person: Person): Boolean {
         try {
-            controller.ban(hostUser as User, 2).queue()
+            controller.ban(person as User, 2).queue()
             return true
         } catch (e: PermissionException) {
             return false
@@ -85,9 +86,9 @@ class Host(val shard: Shard, private var guild : Guild) : Guild by guild {
      * Attempt to un-ban the member from the guild.
      * @return If the bot had permission.
      */
-    fun unban(hostUser: HostUser): Boolean {
+    fun unban(person: Person): Boolean {
         try {
-            controller.unban(hostUser).queue()
+            controller.unban(person).queue()
             return true
         } catch (e: PermissionException) {
             return false
@@ -99,9 +100,9 @@ class Host(val shard: Shard, private var guild : Guild) : Guild by guild {
      * Attempt to kick the member from the guild.
      * @return If the bot had permission.
      */
-    fun kick(hostUser: HostUser): Boolean {
+    fun kick(person: Person): Boolean {
         try {
-            controller.kick(hostUser).queue()
+            controller.kick(person).queue()
             return true
         } catch (e: PermissionException) {
             return false
@@ -113,9 +114,9 @@ class Host(val shard: Shard, private var guild : Guild) : Guild by guild {
      * Attempt to mute the member in the guild.
      * @return If the bot had permission.
      */
-    fun mute(hostUser: HostUser): Boolean {
+    fun mute(person: Person): Boolean {
         try {
-            controller.setMute(hostUser, true).queue()
+            controller.setMute(person, true).queue()
             return true
         } catch (e: PermissionException) {
             return false
@@ -127,9 +128,9 @@ class Host(val shard: Shard, private var guild : Guild) : Guild by guild {
      * Attempt to unmute the member in the guild.
      * @return If the bot had permission.
      */
-    fun unmute(hostUser: HostUser): Boolean {
+    fun unmute(person: Person): Boolean {
         try {
-            controller.setMute(hostUser, false).queue()
+            controller.setMute(person, false).queue()
             return true
         } catch (e: PermissionException) {
             return false
@@ -142,7 +143,7 @@ class Host(val shard: Shard, private var guild : Guild) : Guild by guild {
     override fun toString(): String = "Host(id=${guild.id}, shard=${shard.id}, guild=${guild.name})"
 
     fun handleMessage(message: Message) {
-        val person = usersHandler.asPerson(message.author)
+        val person = peopleHandler.asPerson(message.author)
         commandHandler.callCommand(message, message.content, person)
     }
 

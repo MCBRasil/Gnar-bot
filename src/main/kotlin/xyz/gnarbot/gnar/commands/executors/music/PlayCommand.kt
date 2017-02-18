@@ -18,7 +18,7 @@ class PlayCommand : MusicExecutor() {
     @Inject lateinit private var manager : MusicManager
 
     override fun execute(note: Note, args: List<String>) {
-        val botChannel = host.usersHandler.asPerson(selfUser).voiceChannel
+        val botChannel = host.peopleHandler.asPerson(selfUser).voiceChannel
         val userChannel = note.author.voiceChannel
 
         if (botChannel != null && botChannel != userChannel) {

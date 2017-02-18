@@ -1,19 +1,23 @@
 package xyz.gnarbot.gnar.commands.executors.general;
 
+import com.google.inject.Inject;
 import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Role;
 import org.apache.commons.lang3.StringUtils;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.members.HostUser;
+import xyz.gnarbot.gnar.members.Person;
+import xyz.gnarbot.gnar.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
-import java.util.StringJoiner;
 
 @Command(aliases = {"whois", "infoof", "infoon", "user"}, usage = "-@user", description = "Get information on a user.")
 public class WhoIsCommand extends CommandExecutor {
+    @Inject
+    private Host host;
+
     @Override
     public void execute(Note note, List<String> args) {
         if (args.isEmpty()) {
@@ -22,63 +26,42 @@ public class WhoIsCommand extends CommandExecutor {
         }
 
         // SEARCH USERS
-        HostUser hostUser = null;
+        final Person person;
 
-        List<HostUser> mentioned = note.getMentionedUsers();
+        List<Person> mentioned = note.getMentionedUsers();
         if (mentioned.size() > 0) {
-            hostUser = mentioned.get(0);
-        } else { // Real Name > Nick Name > Contains
-            String query = StringUtils.join(args, " ");
-
-            for (Member m : note.getGuild().getMembersByName(query, true)) {
-                hostUser = new HostUser(note.getHost(), m);
-            }
-            if (hostUser == null) {
-                for (Member m : note.getGuild().getMembersByNickname(query, true)) {
-                    hostUser = new HostUser(note.getHost(), m);
-                }
-            }
-            if (hostUser == null) { // JUST IN CASE
-                for (Member m : note.getGuild().getMembers()) {
-                    if (m.getUser().getName().toLowerCase().contains(query.toLowerCase())) {
-                        hostUser = new HostUser(note.getHost(), m);
-                    }
-                }
-            }
+            person = mentioned.get(0);
+        } else {
+            person = host.getPerson(StringUtils.join(args, " "), true);
         }
 
-        if (hostUser == null) {
+        if (person == null) {
             note.error("You did not mention a valid user.");
             return;
         }
 
-        StringBuilder mainBuilder = new StringBuilder();
+        String nickname = note.getGuild().getMember(person).getNickname();
+        Game game = note.getGuild().getMember(person).getGame();
 
+        note.embed()
+                .title("Who is " + person.getName() + "?")
+                .setThumbnail(person.getAvatarUrl())
+                .setColor(Bot.getColor())
+                .description(sb -> {
+                    sb.append("Name: **[");
+                    sb.append(person.getName()).append("#").append(person.getDiscriminator()).append("]()**\n");
+                    sb.append("ID: **[").append(person.getId()).append("]()**\n\n");
+                    sb.append("__**General**__\n");
+                    sb.append("Nick: **[").append(nickname != null ? nickname : "None").append("]()**\n");
+                    sb.append("Game: **[").append(game != null ? game.getName() : "None").append("]()**\n");
+                    sb.append("Bot: **[").append(String.valueOf(person.isBot()).toUpperCase()).append("]()**\n");
+                    sb.append("Level: **[").append(person.getLevel().toString().replaceAll("_", " ")).append("]()**\n\n");
+                    sb.append("__**Roles**__").append('\n');
 
-        String nickname = note.getGuild().getMember(hostUser).getNickname();
-        Game game = note.getGuild().getMember(hostUser).getGame();
-
-        StringJoiner metaBuilder = new StringJoiner("\n");
-        metaBuilder.add("Name: **[" + hostUser.getName() + "#" + hostUser.getDiscriminator() + "]()**");
-        metaBuilder.add("ID: **[" + hostUser.getId() + "]()**");
-        metaBuilder.add("");
-        metaBuilder.add("__**General**__");
-        metaBuilder.add("Nick: **[" + (nickname != null ? nickname : "None") + "]()**");
-        metaBuilder.add("Game: **[" + (game != null ? game.getName() : "None") + "]()**");
-        metaBuilder.add("Bot: **[" + String.valueOf(hostUser.isBot()).toUpperCase() + "]()**");
-        metaBuilder.add("Level: **[" + hostUser.getLevel().toString().replaceAll("_", " ") + "]()**");
-        metaBuilder.add("\n");
-
-        mainBuilder.append(metaBuilder.toString());
-
-        mainBuilder.append("__**Roles**__").append('\n');
-
-        hostUser.getRoles()
-                .stream()
-                .filter(role -> !mainBuilder.toString().contains(role.getId()))
-                .forEach(role -> mainBuilder.append("- **[").append(role.getName()).append("]()**").append('\n'));
-
-        note.respond("Who is " + hostUser.getName() + "?", mainBuilder.toString()
-                .replaceAll("null", "None"), Bot.getColor(), hostUser.getAvatarUrl());
+                    for (Role role : person.getRoles()) {
+                        sb.append("• **[").append(role.getName()).append("]()**").append('\n');
+                    }
+                })
+                .respond();
     }
 }

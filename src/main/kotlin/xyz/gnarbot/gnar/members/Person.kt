@@ -9,17 +9,27 @@ import xyz.gnarbot.gnar.servers.Host
  *
  * @see Member
  */
-class HostUser(var host: Host, private var member: Member) : Member by member, User by member.user {
+class Person(var host: Host, private var member: Member) : Member by member, User by member.user {
     val isBotMaster = Bot.admins.contains(id)
 
     val level: Level
         get() = when {
+            // BOT
             isBot -> Level.BOT
 
+            // BOT MASTER
             isBotMaster -> Level.BOT_CREATOR
+
+            // SERVER OWNER
             member == host.owner -> Level.SERVER_OWNER
+
+            // BOT COMMANDER
             hasRole("Bot Commander") -> Level.BOT_COMMANDER
+
+            // DJ
             hasRole("DJ") -> Level.DJ
+
+            // USERS
             else -> Level.USER
         }
 

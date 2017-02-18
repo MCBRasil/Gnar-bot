@@ -5,7 +5,7 @@ package xyz.gnarbot.gnar.utils
 import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.entities.MessageEmbed
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.members.HostUser
+import xyz.gnarbot.gnar.members.Person
 import java.awt.Color
 import java.io.File
 import java.util.*
@@ -34,7 +34,7 @@ fun String.fastSplit(char: Char): List<String> {
 }
 
 @JvmOverloads
-fun makeEmbed(title: String?, msg: String?, color: Color? = Bot.color, thumb: String? = null, img: String? = null, author: HostUser? = null): MessageEmbed {
+fun makeEmbed(title: String?, msg: String?, color: Color? = Bot.color, thumb: String? = null, img: String? = null, author: Person? = null): MessageEmbed {
     return EmbedBuilder().run {
         setDescription(msg)
         setTitle(title, null)

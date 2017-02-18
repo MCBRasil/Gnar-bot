@@ -3,7 +3,6 @@ package xyz.gnarbot.gnar
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager
-import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
 import net.dv8tion.jda.core.AccountType
@@ -41,7 +40,7 @@ object Bot {
         registerSourceManager(YoutubeAudioSourceManager())
         registerSourceManager(SoundCloudAudioSourceManager())
         registerSourceManager(VimeoAudioSourceManager())
-        registerSourceManager(TwitchStreamAudioSourceManager())
+        //registerSourceManager(TwitchStreamAudioSourceManager())
     }
 
     /** @return Sharded JDA instances of the bot.*/
@@ -73,7 +72,6 @@ object Bot {
      * @param numShards Number of shards to request.
      */
     fun start(token: String, numShards: Int) {
-
         val api = APIPortal().apply { start() }
 
         if (initialized) throw IllegalStateException("Bot instance have already been initialized.")

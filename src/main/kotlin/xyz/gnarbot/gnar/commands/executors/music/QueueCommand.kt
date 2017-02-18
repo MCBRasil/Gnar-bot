@@ -32,9 +32,9 @@ class QueueCommand : MusicExecutor() {
         manager.player.playingTrack?.let {
 
             val str : String = if (it.sourceManager.sourceName.contains("youtube")) {
-                "`[${getTimestamp(it.duration)}]` __[${it.info.title}](https://youtube.com/watch?v=${it.info.identifier})__"
+                "__[${it.info.title}](https://youtube.com/watch?v=${it.info.identifier})__"
             } else {
-                "`[${getTimestamp(it.duration)}]` __[${it.info.title}]()__"
+                "__[${it.info.title}]()__"
             }
 
             eb.addField("Now Playing", str, false)
@@ -44,11 +44,14 @@ class QueueCommand : MusicExecutor() {
         for (track in queue) {
             queueLength += track.duration
             trackCount++
-            if (track.sourceManager.sourceName.contains("youtube")){
-                sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__")
+
+            val str = if (track.sourceManager.sourceName.contains("youtube")){
+                "**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__"
             } else {
-                sj.add("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}]()__")
+                "**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}]()__"
             }
+
+            sj.add(str)
 
             if (sj.length() >= 900) {
                 sj.add("... and **${queue.size - trackCount}** more tracks.")

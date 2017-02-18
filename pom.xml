@@ -9,7 +9,8 @@
     <version>2.2</version>
 
     <properties>
-        <JDA.version>3.0.BETA2_128</JDA.version>
+        <JDA.version>3.0.BETA2_129</JDA.version>
+        <lavaplayer.version>1.2.10</lavaplayer.version>
         <pippo.version>1.1.0</pippo.version>
         <kotlin.version>1.0.6</kotlin.version>
         <jar.mainClass>xyz.gnarbot.gnar.MainBot</jar.mainClass>
@@ -56,6 +57,12 @@
             <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -146,7 +153,7 @@
         <dependency>
             <groupId>com.sedmelluq</groupId>
             <artifactId>lavaplayer</artifactId>
-            <version>1.2.3</version>
+            <version>${lavaplayer.version}</version>
         </dependency>
     </dependencies>
 

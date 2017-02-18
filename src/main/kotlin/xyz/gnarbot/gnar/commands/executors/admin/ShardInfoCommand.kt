@@ -1,12 +1,10 @@
 package xyz.gnarbot.gnar.commands.executors.admin
 
-import net.dv8tion.jda.core.EmbedBuilder
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.members.Level
 import xyz.gnarbot.gnar.utils.Note
-import java.util.*
 
 @Command(
         aliases = arrayOf("shards", "shard", "shardinfo"),
@@ -16,23 +14,18 @@ import java.util.*
 )
 class ShardInfoCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
-        val eb = EmbedBuilder()
+        note.embed().apply {
+            title("Shard Information")
+            setColor(Bot.color)
 
-        Bot.shards.forEach {
-
-            val sj = StringJoiner("\n")
-
-            sj.add("Status: **[${it.status}]()**")
-            sj.add("Hosts: **[${it.guilds.size}]()**")
-            sj.add("Users: **[${it.users.size}]()**")
-            sj.add("Requests: **[${it.hosts.values.sumBy { it.commandHandler.requests }}]()**")
-
-            eb.addField("Shard ${it.id}", sj.toString(), true)
-        }
-
-        eb.setTitle("Shard Information", null)
-        eb.setColor(Bot.color)
-
-        note.channel.sendMessage(eb.build()).queue()
+            Bot.shards.forEach {
+                field("Shard ${it.id}", true) {
+                    "Status: **[${it.status}]()**\n" +
+                    "Hosts: **[${it.guilds.size}]()**\n" +
+                    "Users: **[${it.users.size}]()**\n" +
+                    "Requests: **[${it.hosts.values.sumBy { it.commandHandler.requests }}]()**\n"
+                }
+            }
+        }.respond()
     }
 }

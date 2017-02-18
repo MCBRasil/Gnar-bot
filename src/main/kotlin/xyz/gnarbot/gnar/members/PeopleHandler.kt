@@ -6,19 +6,19 @@ import xyz.gnarbot.gnar.servers.Host
 import java.util.*
 
 /**
- * Handle JDA's [Member] & [HostUser] instances.
+ * Handle JDA's [Member] & [Person] instances.
  */
-class UsersHandler(private val host: Host) {
+class PeopleHandler(private val host: Host) {
     /**
      * Returns the wrapper mapping registry.
      *
      * @return The wrapper mapping registry.
      */
-    val registry : MutableMap<String, HostUser> = WeakHashMap()
+    val registry : MutableMap<String, Person> = WeakHashMap()
 
-    val me : HostUser get() = asPerson(host.jda.selfUser)
+    val me : Person get() = asPerson(host.jda.selfUser)
 
-    fun getUser(name: String): HostUser? {
+    fun getUser(name: String): Person? {
         val list = host.getMembersByName(name, true)
         if (list.isEmpty()) return null
         return asPerson(list.first())
@@ -31,7 +31,7 @@ class UsersHandler(private val host: Host) {
      *
      * @return User instance.
      */
-    fun asPerson(member: Member): HostUser {
+    fun asPerson(member: Member): Person {
         return asPerson(member.user)
     }
 
@@ -42,11 +42,11 @@ class UsersHandler(private val host: Host) {
      *
      * @return User instance.
      */
-    fun asPerson(user: User): HostUser {
+    fun asPerson(user: User): Person {
         var person = registry[user.id]
 
         if (person == null) {
-            registry.put(user.id, HostUser(host, host.getMember(user)))
+            registry.put(user.id, Person(host, host.getMember(user)))
             person = registry[user.id]
         }
 

@@ -6,7 +6,7 @@ import net.dv8tion.jda.core.utils.PermissionUtil;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Level;
-import xyz.gnarbot.gnar.members.HostUser;
+import xyz.gnarbot.gnar.members.Person;
 import xyz.gnarbot.gnar.servers.Host;
 import xyz.gnarbot.gnar.utils.Note;
 
@@ -18,8 +18,8 @@ public class UnbanCommand extends CommandExecutor {
     public void execute(Note note, List<String> args) {
         Host host = note.getHost();
 
-        HostUser author = note.getAuthor();
-        HostUser target = null;
+        Person author = note.getAuthor();
+        Person target = null;
 
         if (!PermissionUtil.checkPermission(note.getTextChannel(), author, Permission.BAN_MEMBERS)) {
             note.error("You do not have permission to manage bans.");
@@ -30,13 +30,13 @@ public class UnbanCommand extends CommandExecutor {
 
         for (User user : bans) {
             if (user.getId().equals(args.get(0))) {
-                target = host.getUsersHandler().asPerson(user);
+                target = host.getPeopleHandler().asPerson(user);
                 break;
             }
         }
 
         if (args.size() >= 1) {
-            target = note.getHost().getUsersHandler().getUser(args.get(0));
+            target = note.getHost().getPeopleHandler().getUser(args.get(0));
         }
         if (target == null) {
             note.error("Could not find user.");
