@@ -43,14 +43,7 @@ class PeopleHandler(private val host: Host) {
      * @return User instance.
      */
     fun asPerson(user: User): Person {
-        var person = registry[user.id]
-
-        if (person == null) {
-            registry.put(user.id, Person(host, host.getMember(user)))
-            person = registry[user.id]
-        }
-
-        return person!!
+        return registry.getOrPut(user.id) { Person(host, host.getMember(user)) }
     }
 
     /**

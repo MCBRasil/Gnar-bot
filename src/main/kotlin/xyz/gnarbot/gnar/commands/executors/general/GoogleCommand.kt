@@ -1,6 +1,5 @@
 package xyz.gnarbot.gnar.commands.executors.general
 
-import net.dv8tion.jda.core.EmbedBuilder
 import org.jsoup.Jsoup
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.Command
@@ -9,7 +8,6 @@ import xyz.gnarbot.gnar.utils.Note
 import java.io.IOException
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
-import java.util.*
 
 @Command(aliases = arrayOf("google"), usage = "-query...", description = "Who needs browsers!?")
 class GoogleCommand : CommandExecutor() {
@@ -22,7 +20,7 @@ class GoogleCommand : CommandExecutor() {
         try {
             val query = args.joinToString(" ")
 
-            val blocks = Jsoup.connect("http://www.google.com/search?q=%s${URLEncoder.encode(query, StandardCharsets.UTF_8.displayName())}")
+            val blocks = Jsoup.connect("http://www.google.com/search?q=${URLEncoder.encode(query, StandardCharsets.UTF_8.displayName())}")
                     .userAgent("Gnar")
                     .get()
                     .select(".g")
@@ -32,35 +30,34 @@ class GoogleCommand : CommandExecutor() {
                 return
             }
 
-            val sj = StringJoiner("\n")
+            note.embed {
+                setAuthor("Google Results", "https://www.google.com/", "https://www.google.com/favicon.ico")
+                setColor(Bot.color)
+                setThumbnail("http://gnarbot.xyz/img/Google.jpg")
 
-            var count = 0
+                description {
+                    var count = 0
 
-            for (block in blocks) {
-                if (count >= 3) break
+                    for (block in blocks) {
+                        if (count >= 3) break
 
-                val list = block.select(".r>a")
-                if (list.isEmpty()) break
+                        val list = block.select(".r>a")
+                        if (list.isEmpty()) break
 
-                val entry = list[0]
-                val title = entry.text()
-                val url = entry.absUrl("href").replace(")", "\\)")
-                var desc: String? = null
+                        val entry = list[0]
+                        val title = entry.text()
+                        val url = entry.absUrl("href").replace(")", "\\)")
+                        var desc: String? = null
 
-                val st = block.select(".st")
-                if (!st.isEmpty()) desc = st[0].text()
+                        val st = block.select(".st")
+                        if (!st.isEmpty()) desc = st[0].text()
 
-                sj.add("\n**[$title]($url)**\n$desc")
+                        append('\n').appendln(link(title, url)).appendln(desc)
 
-                count++
+                        count++
+                    }
+                }
             }
-
-            val eb = EmbedBuilder().setAuthor("Google Results", "https://www.google.com/", "https://www.google.com/favicon.ico")
-                    .setThumbnail("http://gnarbot.xyz/img/Google.jpg")
-                    .setDescription(sj.toString())
-                    .setColor(Bot.color)
-
-            note.channel.sendMessage(eb.build()).queue()
         } catch (e: IOException) {
             note.error("Caught an exception while trying to Google stuff.")
             e.printStackTrace()

@@ -43,8 +43,7 @@ public class WhoIsCommand extends CommandExecutor {
         String nickname = note.getGuild().getMember(person).getNickname();
         Game game = note.getGuild().getMember(person).getGame();
 
-        note.embed()
-                .title("Who is " + person.getName() + "?")
+        note.embed("Who is " + person.getName() + "?")
                 .setThumbnail(person.getAvatarUrl())
                 .setColor(Bot.getColor())
                 .description(sb -> {

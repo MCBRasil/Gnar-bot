@@ -14,18 +14,17 @@ import xyz.gnarbot.gnar.utils.Note
 )
 class ShardInfoCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
-        note.embed().apply {
-            title("Shard Information")
+        note.embed("Shard Information") {
             setColor(Bot.color)
 
             Bot.shards.forEach {
                 field("Shard ${it.id}", true) {
-                    "Status: **[${it.status}]()**\n" +
-                    "Hosts: **[${it.guilds.size}]()**\n" +
-                    "Users: **[${it.users.size}]()**\n" +
-                    "Requests: **[${it.hosts.values.sumBy { it.commandHandler.requests }}]()**\n"
+                    append("Status: ").appendln(highlight(it.status))
+                    append("Hosts: ").appendln(highlight(it.guilds.size))
+                    append("Users: ").appendln(highlight(it.users.size))
+                    append("Requests: ").appendln(highlight(it.hosts.values.sumBy { it.commandHandler.requests }))
                 }
             }
-        }.respond()
+        }
     }
 }

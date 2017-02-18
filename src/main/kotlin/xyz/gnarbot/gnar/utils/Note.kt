@@ -3,6 +3,7 @@ package xyz.gnarbot.gnar.utils
 import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.entities.Message
 import net.dv8tion.jda.core.entities.MessageEmbed
+import net.dv8tion.jda.core.entities.User
 import net.dv8tion.jda.core.exceptions.PermissionException
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.members.Person
@@ -60,7 +61,12 @@ class Note(val host: Host, private var message: Message) : Message by message {
                 .toNote()
     }
 
-    fun embed() : EmbedAction = EmbedAction(this)
+    @JvmOverloads
+    fun embed(title: String? = null) : EmbedDSL = EmbedDSL(this).setTitle(title)
+
+    inline fun embed(title: String? = null, value: EmbedDSL.() -> Unit) : Future<Note> {
+        return embed(title).apply { value(this) }.respond().toNote()
+    }
 
     /**
      * Send a standard info message.
@@ -70,7 +76,7 @@ class Note(val host: Host, private var message: Message) : Message by message {
      */
     fun info(msg: String): Future<Note> {
         val eb = EmbedBuilder()
-                .setAuthor("Info", null, "http://gnarbot.xyz/img/Info.png")
+                .setAuthor("Info", null, "https://gnarbot.xyz/assets/img/info.png")
                 .setDescription(msg)
                 .setColor(Bot.color)
 
@@ -85,7 +91,7 @@ class Note(val host: Host, private var message: Message) : Message by message {
      */
     fun error(msg: String): Future<Note> {
         val eb = EmbedBuilder()
-                .setAuthor("Error", null, "http://gnarbot.xyz/img/Error.png")
+                .setAuthor("Error", null, "https://gnarbot.xyz/assets/img/error.png")
                 .setDescription(msg)
                 .setColor(Color.RED)
 
@@ -112,108 +118,125 @@ class Note(val host: Host, private var message: Message) : Message by message {
      */
     override fun toString() = "Note(id=$id, author=${author.name}, content=\"$content\")"
 
-    private fun Future<Message>.toNote(): Future<Note> = object : CompletableFuture<Note>() {
+    fun Future<Message>.toNote(): Future<Note> = object : CompletableFuture<Note>() {
         override fun get(timeout: Long, unit: TimeUnit) = Note(host, this@toNote.get(timeout, unit))
         override fun get(): Note = Note(host, this@toNote.get())
     }
 
-    class EmbedAction(private val note: Note) : EmbedBuilder() {
+    @Suppress("NOTHING_TO_INLINE")
+    class EmbedDSL(private val message: Message) : EmbedBuilder() {
+        inline fun description(value: StringBuilder.() -> Unit) : EmbedDSL {
+            val sb = StringBuilder()
+            value(sb)
+            super.setDescription(sb.toString())
+            return this
+        }
 
+        // USE FOR JAVA
+        fun description(value: Consumer<StringBuilder>) : EmbedDSL {
+            val sb = StringBuilder()
+            value.accept(sb)
+            super.setDescription(sb.toString())
+            return this
+        }
 
-        fun title(title: String?) : EmbedAction {
+        inline fun field(name: String?, inline: Boolean, value: Any): EmbedDSL {
+            super.addField(name, value.toString(), inline)
+            return this
+        }
+
+        inline fun field(name: String?, inline: Boolean, value: StringBuilder.() -> Unit): EmbedDSL {
+            val sb = StringBuilder()
+            value(sb)
+            super.addField(name, sb.toString(), inline)
+            return this
+        }
+
+        // USE FOR JAVA
+        fun field(name: String?, inline: Boolean, value: Consumer<StringBuilder>): EmbedDSL {
+            val sb = StringBuilder()
+            value.accept(sb)
+            super.addField(name, sb.toString(), inline)
+            return this
+        }
+
+        fun respond() : Future<Message> {
+            return message.channel.sendMessage(build()).submit()
+        }
+
+        inline fun highlight(string : String)  = b("[$string]()")
+        inline fun highlight(any: Any)  = highlight(any.toString())
+
+        inline fun b(string : String) = "**$string**"
+        inline fun b(any: Any) = b(any.toString())
+        inline fun i(string : String) = "*$string*"
+        inline fun i(any: Any) = i(any.toString())
+        inline fun u(string : String) = "__${string}__"
+        inline fun u(any: Any) = u(any.toString())
+
+        inline fun link(string : String, url : String? = null) = "[$string]${if (url != null) "($url)" else "()"}"
+        inline fun link(any: Any, url : String? = null) = "[$any]${if (url != null) "($url)" else "()"}"
+
+        fun setTitle(title: String?) : EmbedDSL {
             return setTitle(title, null)
         }
 
-        inline fun description(value: StringBuilder.() -> Unit) : EmbedAction {
-            val sb = StringBuilder()
-            value(sb)
-            super.setDescription(sb.toString())
-            return this
-        }
-
-        // USE FOR JAVA
-        fun description(value: Consumer<StringBuilder>) : EmbedAction {
-            val sb = StringBuilder()
-            value.accept(sb)
-            super.setDescription(sb.toString())
-            return this
-        }
-
-        inline fun field(name: String?, inline: Boolean, value: StringBuilder.() -> Unit): EmbedAction {
-            val sb = StringBuilder()
-            value(sb)
-            super.addField(name, sb.toString(), inline)
-            return this
-        }
-
-        // USE FOR JAVA
-        fun field(name: String?, inline: Boolean, value: Consumer<StringBuilder>): EmbedAction {
-            val sb = StringBuilder()
-            value.accept(sb)
-            super.addField(name, sb.toString(), inline)
-            return this
-        }
-
-
-
-        fun respond() {
-            note.channel.sendMessage(build()).queue()
-        }
-
-
-
-
-        override fun setTitle(title: String?, url: String?) : EmbedAction {
+        override fun setTitle(title: String?, url: String?) : EmbedDSL {
             super.setTitle(title, url)
             return this
         }
 
-        override fun setDescription(desc: String?) : EmbedAction {
+        override fun setDescription(desc: String?) : EmbedDSL {
             super.setDescription(desc)
             return this
         }
 
-        override fun setTimestamp(temporal : TemporalAccessor?) : EmbedAction {
+        override fun setTimestamp(temporal : TemporalAccessor?) : EmbedDSL {
             super.setTimestamp(temporal)
             return this
         }
 
-        override fun setColor(color: Color?) : EmbedAction {
+        override fun setColor(color: Color?) : EmbedDSL {
             super.setColor(color)
             return this
         }
 
-        override fun setThumbnail(url: String?) : EmbedAction {
+        override fun setThumbnail(url: String?) : EmbedDSL {
             super.setThumbnail(url)
             return this
         }
 
-        override fun setImage(url: String?) : EmbedAction {
+        override fun setImage(url: String?) : EmbedDSL {
             super.setImage(url)
             return this
         }
 
-        override fun setAuthor(name : String, url : String, iconUrl: String) : EmbedAction {
+        fun setAuthor(user : User) : EmbedDSL {
+            super.setAuthor(user.name, null, user.avatarUrl)
+            return this
+        }
+
+        override fun setAuthor(name : String, url : String, iconUrl: String) : EmbedDSL {
             super.setAuthor(name, url, iconUrl)
             return this
         }
 
-        override fun setFooter(text : String, iconUrl : String) : EmbedAction {
+        override fun setFooter(text : String, iconUrl : String) : EmbedDSL {
             super.setFooter(text, iconUrl)
             return this
         }
 
-        override fun addField(field : MessageEmbed.Field) : EmbedAction {
+        override fun addField(field : MessageEmbed.Field) : EmbedDSL {
             super.addField(field)
             return this
         }
 
-        override fun addField(name: String, value: String, inline: Boolean) : EmbedAction {
+        override fun addField(name: String, value: String, inline: Boolean) : EmbedDSL {
             super.addField(name, value, inline)
             return this
         }
 
-        override fun addBlankField(inline: Boolean) : EmbedAction {
+        override fun addBlankField(inline: Boolean) : EmbedDSL {
             super.addBlankField(inline)
             return this
         }
