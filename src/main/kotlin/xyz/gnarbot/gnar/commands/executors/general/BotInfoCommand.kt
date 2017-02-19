@@ -2,11 +2,15 @@ package xyz.gnarbot.gnar.commands.executors.general
 
 import com.google.inject.Inject
 import net.dv8tion.jda.core.OnlineStatus
+import net.dv8tion.jda.core.entities.VoiceChannel
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.servers.Shard
 import xyz.gnarbot.gnar.utils.Note
+import java.util.*
+
+
 
 @Command(aliases = arrayOf("info", "botinfo"), description = "Show information about GN4R-BOT.")
 class BotInfoCommand : CommandExecutor() {
@@ -58,6 +62,15 @@ class BotInfoCommand : CommandExecutor() {
                 .flatMap { it.hosts.values }
                 .sumBy { it.commandHandler.requests }
 
+        var voiceConnections = ArrayList<VoiceChannel>()
+        for (jda in Bot.shards)
+            for (guild in jda.getGuilds())
+                if (guild.getSelfMember().getVoiceState().getChannel() != null)
+                    voiceConnections.add(guild.getSelfMember().getVoiceState().getChannel())
+
+        var totalPrivateChats = 0
+        Bot.shards.iterator().forEach { totalPrivateChats += it.privateChannels.size }
+
         note.embed("Bot Information") {
             setColor(Bot.color)
 
@@ -74,6 +87,11 @@ class BotInfoCommand : CommandExecutor() {
                 append("Offline: ").appendln(highlight(offline))
                 append("Inactive: ").appendln(highlight(inactive))
                 append("**Wrappers:** ").appendln(highlight(activePersons))
+            }
+
+            field("Connections", true) {
+                append("Total Connections: ").appendln(highlight(voiceConnections.size))
+                append("Private Chats: ").appendln(highlight(totalPrivateChats))
             }
 
             field("Others", true) {
