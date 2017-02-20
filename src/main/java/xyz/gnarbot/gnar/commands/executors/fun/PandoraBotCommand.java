@@ -8,7 +8,7 @@ import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.servers.Host;
+import xyz.gnarbot.gnar.servers.Servlet;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 @Command(aliases = "pbot")
 public class PandoraBotCommand extends CommandExecutor {
     @Inject
-    private Host host;
+    private Servlet servlet;
 
     private ChatterBotFactory factory = new ChatterBotFactory();
 

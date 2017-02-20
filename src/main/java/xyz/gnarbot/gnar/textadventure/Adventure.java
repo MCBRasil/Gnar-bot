@@ -16,70 +16,30 @@ import java.util.*;
 
 public class Adventure {
     private static HashMap<User, Adventure> adventures = new HashMap<>();
-
-    public static void removeAdventure(User u){
-        if (adventures.containsKey(u)){
-            if (adventures.get(u).isAdventureActive()) {
-                adventures.get(u).setAdventureActive(false);
-                adventures.values().remove(adventures.get(u));
-                adventures.keySet().remove(u);
-                adventures.put(u, null);
-            }
-        }
-    }
-
     private static int lastID = 0;
-
     private Random random;
-
     private User user;
-
     private UUID gameID;
-
     private Color defaultMessageColor = new Color(39, 255, 9);
-
     private String lastResponse;
-
     private Long startTime;
-
     private ArrayList<Area> areas = new ArrayList<>();
-
     private ArrayList<String> actionList = new ArrayList<>();
-
     private String heroName;
+    private Adventure.STATE state;
 
 
 	/* -------------------------------------------------- */
-
-    private Adventure.STATE state;
-
     private String stateRelation;
-
     private String lastMessage;
-
     private Message lastSentMessage;
-
     private Inventory inventory = null;
-
     private Area currentArea, startArea;
-
     private int areasFound = 0;
-
     private Event currentEvent;
-
     private AdventureGrid grid;
-
     private String gender = "";
-
     private boolean adventureActive = true;
-
-    public boolean isAdventureActive() {
-        return adventureActive;
-    }
-
-    public void setAdventureActive(boolean adventureActive) {
-        this.adventureActive = adventureActive;
-    }
 
     public Adventure(User u, Note note) {
 
@@ -100,6 +60,17 @@ public class Adventure {
                 .getName() + " the Great`*", Bot.getColor());
     }
 
+    public static void removeAdventure(User u) {
+        if (adventures.containsKey(u)) {
+            if (adventures.get(u).isAdventureActive()) {
+                adventures.get(u).setAdventureActive(false);
+                adventures.values().remove(adventures.get(u));
+                adventures.keySet().remove(u);
+                adventures.put(u, null);
+            }
+        }
+    }
+
     public static boolean hasAdventure(User u) {
         return adventures.containsKey(u) && adventures.get(u) != null && adventures.get(u).isAdventureActive();
     }
@@ -114,6 +85,14 @@ public class Adventure {
 
     public static int getLastID() {
         return lastID;
+    }
+
+    public boolean isAdventureActive() {
+        return adventureActive;
+    }
+
+    public void setAdventureActive(boolean adventureActive) {
+        this.adventureActive = adventureActive;
     }
 
     public void logAction(String action) {

@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import net.dv8tion.jda.core.entities.SelfUser
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.servers.Host
+import xyz.gnarbot.gnar.servers.Servlet
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 import xyz.gnarbot.gnar.utils.YouTube
@@ -13,12 +13,12 @@ import xyz.gnarbot.gnar.utils.YouTube
         usage = "-(url|YT search)",
         description = "Joins and play music in a channel.")
 class PlayCommand : MusicExecutor() {
-    @Inject lateinit private var selfUser : SelfUser
-    @Inject lateinit private var host : Host
-    @Inject lateinit private var manager : MusicManager
+    @Inject lateinit private var selfUser: SelfUser
+    @Inject lateinit private var servlet: Servlet
+    @Inject lateinit private var manager: MusicManager
 
     override fun execute(note: Note, args: List<String>) {
-        val botChannel = host.peopleHandler.asPerson(selfUser).voiceChannel
+        val botChannel = servlet.peopleHandler.asPerson(selfUser).voiceChannel
         val userChannel = note.author.voiceChannel
 
         if (botChannel != null && botChannel != userChannel) {
@@ -64,10 +64,10 @@ class PlayCommand : MusicExecutor() {
             val videoID = result.id
             "https://www.youtube.com/watch?v=$videoID"
         }
-        
+
         if (botChannel == null) {
-            host.audioManager.sendingHandler = manager.sendHandler
-            host.audioManager.openAudioConnection(userChannel)
+            servlet.audioManager.sendingHandler = manager.sendHandler
+            servlet.audioManager.openAudioConnection(userChannel)
             note.replyMusic("Joined channel `${userChannel.name}`.")
         }
 

@@ -2,14 +2,14 @@ package xyz.gnarbot.gnar.members
 
 import net.dv8tion.jda.core.entities.*
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.servers.Host
+import xyz.gnarbot.gnar.servers.Servlet
 
 /**
  * Bot's wrapper class for JDA's [Member].
  *
  * @see Member
  */
-class Person(var host: Host, private var member: Member) : Member by member, User by member.user {
+class Person(var servlet: Servlet, private var member: Member) : Member by member, User by member.user {
     val isBotMaster = Bot.admins.contains(id)
 
     val level: Level
@@ -21,7 +21,7 @@ class Person(var host: Host, private var member: Member) : Member by member, Use
             isBotMaster -> Level.BOT_CREATOR
 
             // SERVER OWNER
-            member == host.owner -> Level.SERVER_OWNER
+            member == servlet.owner -> Level.SERVER_OWNER
 
             // BOT COMMANDER
             hasRole("Bot Commander") -> Level.BOT_COMMANDER
@@ -33,9 +33,9 @@ class Person(var host: Host, private var member: Member) : Member by member, Use
             else -> Level.USER
         }
 
-    val voiceChannel : VoiceChannel?
+    val voiceChannel: VoiceChannel?
         get() {
-            return host.voiceChannels.firstOrNull { it.members.contains(member) }
+            return servlet.voiceChannels.firstOrNull { it.members.contains(member) }
         }
 
     /** @return The current JDA instance. */
@@ -78,6 +78,6 @@ class Person(var host: Host, private var member: Member) : Member by member, Use
      * @return String representation of the member.
      */
     override fun toString(): String {
-        return "Member(id=$id, name=\"$name\", guild=\"${host.name}\", level=$level)"
+        return "Member(id=$id, name=\"$name\", guild=\"${servlet.name}\", level=$level)"
     }
 }

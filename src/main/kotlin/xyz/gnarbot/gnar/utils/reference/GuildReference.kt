@@ -3,7 +3,6 @@ package xyz.gnarbot.gnar.utils.reference
 import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.Region
 import net.dv8tion.jda.core.entities.*
-import net.dv8tion.jda.core.entities.impl.GuildImpl
 import net.dv8tion.jda.core.managers.AudioManager
 import net.dv8tion.jda.core.managers.GuildController
 import net.dv8tion.jda.core.managers.GuildManager
@@ -11,7 +10,7 @@ import net.dv8tion.jda.core.managers.GuildManagerUpdatable
 import net.dv8tion.jda.core.requests.RestAction
 import java.time.OffsetDateTime
 
-class GuildReference(guild : Guild) : Guild {
+class GuildReference(guild: Guild) : Guild {
     var delegate: Guild = guild
         get() {
             val _new = field.jda.getGuildById(field.id)

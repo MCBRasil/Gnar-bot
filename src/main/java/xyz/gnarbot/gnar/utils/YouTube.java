@@ -46,7 +46,8 @@ public class YouTube {
 
         for (Element results : document.select("#page > #content #results")) {
             for (Element result : results.select(".yt-lockup-video")) {
-                if (!result.hasAttr("data-ad-impressions") && result.select(".standalone-ypc-badge-renderer-label").isEmpty()) {
+                if (!result.hasAttr("data-ad-impressions") && result.select(".standalone-ypc-badge-renderer-label")
+                        .isEmpty()) {
                     Result res = extractTrackFromResultEntry(result);
                     if (res != null) {
                         tracks.add(res);

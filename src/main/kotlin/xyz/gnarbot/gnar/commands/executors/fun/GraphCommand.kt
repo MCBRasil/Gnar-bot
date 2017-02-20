@@ -5,7 +5,7 @@ import net.dv8tion.jda.core.utils.MiscUtil
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.servers.Host
+import xyz.gnarbot.gnar.servers.Servlet
 import xyz.gnarbot.gnar.utils.Note
 import java.awt.*
 import java.awt.image.BufferedImage
@@ -19,18 +19,18 @@ import javax.imageio.ImageIO
 @Command(aliases = arrayOf("gusers"), description = "Fancy server stats ya uuuuuurdd mi?", showInHelp = false)
 class GraphCommand : CommandExecutor() {
     @Inject
-    lateinit var host: Host
+    lateinit var servlet: Servlet
 
     override fun execute(note: Note, args: List<String>) {
         note.channel.sendFile(drawPlot(note.creationTime as OffsetDateTime), null)
     }
 
     fun drawPlot(now: OffsetDateTime): File {
-        val start = MiscUtil.getCreationTime(host.id).toEpochSecond()
+        val start = MiscUtil.getCreationTime(servlet.id).toEpochSecond()
         val end = now.toEpochSecond()
         val width = 1000
         val height = 1000
-        val joins = ArrayList(host.members)
+        val joins = ArrayList(servlet.members)
         Collections.sort(joins) { a, b -> a.joinDate.compareTo(b.joinDate) }
 
         val buffer = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE)
@@ -59,10 +59,10 @@ class GraphCommand : CommandExecutor() {
         graphic.font = Font("Century Gothic", Font.PLAIN, 24)
 
         graphic.drawString("0 - ${joins.size} Users", 20, 30)
-        graphic.drawString(MiscUtil.getCreationTime(host.id).format(DateTimeFormatter.RFC_1123_DATE_TIME), 20, 60)
+        graphic.drawString(MiscUtil.getCreationTime(servlet.id).format(DateTimeFormatter.RFC_1123_DATE_TIME), 20, 60)
         graphic.drawString(now.format(DateTimeFormatter.RFC_1123_DATE_TIME), 20, 90)
-        graphic.drawString("Server: ${host.name}", 20, 120)
-        graphic.drawString("Owner: ${host.owner.effectiveName}", 20, 150)
+        graphic.drawString("Server: ${servlet.name}", 20, 120)
+        graphic.drawString("Owner: ${servlet.owner.effectiveName}", 20, 150)
 
         val f = File("plot.png")
 

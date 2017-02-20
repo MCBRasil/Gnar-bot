@@ -1,6 +1,5 @@
 package xyz.gnarbot.gnar.commands.executors.general
 
-import net.dv8tion.jda.core.EmbedBuilder
 import org.apache.commons.lang3.StringUtils
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.Command
@@ -20,28 +19,26 @@ class MathCommand : CommandExecutor() {
             return
         }
 
-        val exp = ExpressionBuilder()
+        note.embed {
+            setTitle("Math", null)
+            setColor(Bot.color)
 
-        val lines = StringUtils.join(args, ' ').fastSplit(';')
-        val eb = EmbedBuilder()
+            val exp = ExpressionBuilder()
+            val lines = StringUtils.join(args, ' ').fastSplit(';')
+            lines.forEach { exp.addLine(it) }
 
-        lines.forEach { exp.addLine(it) }
+            field("Expressions", true, "**[${lines.map(String::trim).joinToString("\n")}]()**")
 
-        eb.setTitle("Math", null)
-        eb.addField("Expressions", "**[${lines.map(String::trim).joinToString("\n")}]()**", true)
-        eb.setColor(Bot.color)
+            try {
+                val results = exp
+                        .build()
+                        .evalList()
 
-        try {
-            val results = exp
-                    .build()
-                    .evalList()
-
-            eb.addField("Result", "**[${Arrays.toString(results)}]()**", true)
-        } catch (e: AJEException) {
-            eb.addField("Error", "**[${e.message!!}]()**", true)
-            eb.setColor(Color.RED)
+                field("Result", true, "**[${Arrays.toString(results)}]()**")
+            } catch (e: AJEException) {
+                field("Error", true, "**[${e.message!!}]()**")
+                setColor(Color.RED)
+            }
         }
-
-        note.channel.sendMessage(eb.build()).queue()
     }
 }

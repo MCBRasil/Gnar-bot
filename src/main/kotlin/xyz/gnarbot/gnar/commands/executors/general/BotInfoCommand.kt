@@ -2,26 +2,25 @@ package xyz.gnarbot.gnar.commands.executors.general
 
 import com.google.inject.Inject
 import net.dv8tion.jda.core.OnlineStatus
-import net.dv8tion.jda.core.entities.VoiceChannel
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.servers.Shard
 import xyz.gnarbot.gnar.utils.Note
-import java.util.*
-
 
 
 @Command(aliases = arrayOf("info", "botinfo"), description = "Show information about GN4R-BOT.")
 class BotInfoCommand : CommandExecutor() {
 
-    @Inject lateinit var shard : Shard
+    @Inject lateinit var shard: Shard
 
     override fun execute(note: Note, args: List<String>) {
         val registry = shard.commandRegistry
 
-        var uptimeMinutes = Bot.uptime / 1000 / 60
+        var uptimeMinutes = Bot.uptime / 1000 / 60 / 60
         if (uptimeMinutes == 0L) uptimeMinutes = 1L
+
+        var voiceConnections = 0
 
         var textChannels = 0
         var voiceChannels = 0
@@ -37,49 +36,45 @@ class BotInfoCommand : CommandExecutor() {
         for (shard in Bot.shards) {
             guilds += shard.guilds.size
 
-            for (g in shard.guilds) {
-                for (u in g.members) {
-                    when (u.onlineStatus) {
+            for (guild in shard.guilds) {
+                for (member in guild.members) {
+                    when (member.onlineStatus) {
                         OnlineStatus.ONLINE -> online++
                         OnlineStatus.OFFLINE -> offline++
                         OnlineStatus.IDLE -> inactive++
                         else -> {}
                     }
                 }
+
+                if (guild.selfMember.voiceState.channel != null) {
+                    voiceConnections++
+                }
             }
 
-            shard.hosts.values.forEach { activePersons += it.peopleHandler.registry.size }
+            shard.servlets.values.forEach { activePersons += it.peopleHandler.registry.size }
 
             users += shard.users.size
             textChannels += shard.textChannels.size
             voiceChannels += shard.voiceChannels.size
-            activeHosts += shard.hosts.size
+            activeHosts += shard.servlets.size
         }
 
         val commandSize = registry.uniqueExecutors.count { it -> it.isShownInHelp }
 
         val requests = Bot.shards
-                .flatMap { it.hosts.values }
+                .flatMap { it.servlets.values }
                 .sumBy { it.commandHandler.requests }
-
-        var voiceConnections = ArrayList<VoiceChannel>()
-        for (jda in Bot.shards)
-            for (guild in jda.getGuilds())
-                if (guild.getSelfMember().getVoiceState().getChannel() != null)
-                    voiceConnections.add(guild.getSelfMember().getVoiceState().getChannel())
-
-        var totalPrivateChats = 0
-        Bot.shards.iterator().forEach { totalPrivateChats += it.privateChannels.size }
 
         note.embed("Bot Information") {
             setColor(Bot.color)
 
             field("Requests", true, requests)
-            field("Requests Per Minutes", true, requests / uptimeMinutes)
+            field("Requests Per Hour", true, requests / uptimeMinutes)
             field("Text Channels", true, textChannels)
             field("Voice Channels", true, voiceChannels)
             field("Guilds", true, guilds)
-            field("Host Wrappers", true, activeHosts)
+            field("Guild Servlets", true, activeHosts)
+            field("Voice Connections", true, voiceConnections)
 
             field("Users", true) {
                 append("Total: ").appendln(highlight(users))
@@ -87,11 +82,6 @@ class BotInfoCommand : CommandExecutor() {
                 append("Offline: ").appendln(highlight(offline))
                 append("Inactive: ").appendln(highlight(inactive))
                 append("**Wrappers:** ").appendln(highlight(activePersons))
-            }
-
-            field("Connections", true) {
-                append("Total Connections: ").appendln(highlight(voiceConnections.size))
-                append("Private Chats: ").appendln(highlight(totalPrivateChats))
             }
 
             field("Others", true) {

@@ -12,10 +12,10 @@ import xyz.gnarbot.gnar.members.Person
 import xyz.gnarbot.gnar.servers.music.MusicManager
 
 /**
- * Represents a bot on each [Guild].
+ * Represents a bot that serves on each [Guild] and wraps around it.
  * @see Guild
  */
-class Host(val shard: Shard, private var guild : Guild) : Guild by guild {
+class Servlet(val shard: Shard, private var guild: Guild) : Guild by guild {
     val peopleHandler: PeopleHandler = PeopleHandler(this)
     val commandHandler: CommandHandler = CommandHandler(this)
 
@@ -36,7 +36,7 @@ class Host(val shard: Shard, private var guild : Guild) : Guild by guild {
         musicManager = null
     }
 
-    fun getMember(name : String, searchNickname: Boolean = false) : Member? {
+    fun getMember(name: String, searchNickname: Boolean = false): Member? {
         for (member in getMembersByName(name, true)) {
             return member
         }
@@ -48,7 +48,7 @@ class Host(val shard: Shard, private var guild : Guild) : Guild by guild {
         return null
     }
 
-    fun getPerson(name : String, searchNickname: Boolean = false) : Person? {
+    fun getPerson(name: String, searchNickname: Boolean = false): Person? {
         return getMember(name, searchNickname)?.let { peopleHandler.asPerson(it) }
     }
 

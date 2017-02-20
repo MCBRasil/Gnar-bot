@@ -24,7 +24,7 @@ public class QuoteCommand extends CommandExecutor {
         }
 
         TextChannel targetChannel = note.getTextChannel();
-        if (note.getMentionedChannels().size() > 0){
+        if (note.getMentionedChannels().size() > 0) {
             targetChannel = note.getMentionedChannels().get(0);
         }
 
@@ -36,12 +36,13 @@ public class QuoteCommand extends CommandExecutor {
                     Message msg = note.getChannel().getMessageById(id).complete();
                     targetChannel.sendMessage(
                             KUtils.makeEmbed(null, msg.getContent(), Bot.getColor(), null, null,
-                                    note.getHost().getPeopleHandler().asPerson(msg.getAuthor()))).queue();
+                                    note.getServlet().getPeopleHandler().asPerson(msg.getAuthor()))).queue();
                 } catch (Exception e) {
                     try {
-                        Message m = note.error("Could not find a message with the ID " + id + " within this channel.").get();
+                        Message m = note.error("Could not find a message with the ID " + id + " within this channel.")
+                                .get();
                         toDelete.add(m);
-                    } catch (Exception ignore){}
+                    } catch (Exception ignore) {}
                 }
             }
         }
@@ -49,14 +50,17 @@ public class QuoteCommand extends CommandExecutor {
         toDelete.add(note);
 
         try {
-            Message m = note.getChannel().sendMessage(KUtils.makeEmbed("Quote Messages", "Sent quotes to the " + targetChannel.getName() + " channel!")).complete();
+            Message m = note.getChannel()
+                    .sendMessage(KUtils.makeEmbed("Quote Messages",
+                            "Sent quotes to the " + targetChannel.getName() + " channel!"))
+                    .complete();
             toDelete.add(m);
 
             Bot.INSTANCE.getScheduler().schedule(() -> {
-                        for (Message m2 : toDelete) {
-                            m2.delete().queue();
-                        }
-                    }, 5, TimeUnit.SECONDS);
+                for (Message m2 : toDelete) {
+                    m2.delete().queue();
+                }
+            }, 5, TimeUnit.SECONDS);
 
         } catch (Exception ignore) {}
     }

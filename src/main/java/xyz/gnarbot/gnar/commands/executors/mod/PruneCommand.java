@@ -7,7 +7,7 @@ import net.dv8tion.jda.core.entities.MessageHistory;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Level;
-import xyz.gnarbot.gnar.servers.Host;
+import xyz.gnarbot.gnar.servers.Servlet;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
         level = Level.BOT_COMMANDER)
 public class PruneCommand extends CommandExecutor {
     @Inject
-    public Host host;
+    public Servlet servlet;
 
     @Override
     public void execute(Note note, List<String> args) {

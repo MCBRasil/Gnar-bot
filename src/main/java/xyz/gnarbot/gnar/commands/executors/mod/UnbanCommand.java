@@ -7,7 +7,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Level;
 import xyz.gnarbot.gnar.members.Person;
-import xyz.gnarbot.gnar.servers.Host;
+import xyz.gnarbot.gnar.servers.Servlet;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 public class UnbanCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
-        Host host = note.getHost();
+        Servlet servlet = note.getServlet();
 
         Person author = note.getAuthor();
         Person target = null;
@@ -30,20 +30,20 @@ public class UnbanCommand extends CommandExecutor {
 
         for (User user : bans) {
             if (user.getId().equals(args.get(0))) {
-                target = host.getPeopleHandler().asPerson(user);
+                target = servlet.getPeopleHandler().asPerson(user);
                 break;
             }
         }
 
         if (args.size() >= 1) {
-            target = note.getHost().getPeopleHandler().getUser(args.get(0));
+            target = note.getServlet().getPeopleHandler().getUser(args.get(0));
         }
         if (target == null) {
             note.error("Could not find user.");
             return;
         }
 
-        if (!host.unban(target)) {
+        if (!servlet.unban(target)) {
             note.error("Gnar does not have permission to manage bans.");
             return;
         }

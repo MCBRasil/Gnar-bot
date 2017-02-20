@@ -22,7 +22,7 @@ class JavascriptCommand : CommandExecutor() {
 
         engine.put("jda", note.jda)
         engine.put("message", note)
-        engine.put("host", note.host)
+        engine.put("host", note.servlet)
         engine.put("channel", note.channel)
 
         val script = args.joinToString(" ")

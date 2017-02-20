@@ -9,10 +9,10 @@ import xyz.gnarbot.gnar.servers.listeners.UserListener
 import java.util.*
 
 /**
- * Individual shard instances of the bot.
+ * Individual shard instances of [JDA] of the bot that contains all the [Servlet] for each guild.
  */
-class Shard (val id: Int, private val jda: JDA) : JDA by jda {
-    val hosts : MutableMap<String, Host> = WeakHashMap()
+class Shard(val id: Int, private val jda: JDA) : JDA by jda {
+    val servlets: MutableMap<String, Servlet> = WeakHashMap()
 
     val commandRegistry = CommandRegistry()
 
@@ -24,25 +24,29 @@ class Shard (val id: Int, private val jda: JDA) : JDA by jda {
         //Logger.getLogger("org.apache.http.client.protocol.ResponseProcessCookies").level = Level.OFF
     }
 
+    fun getHost(id: String?) {
+
+    }
+
     /**
      * Lazily get a Host instance from a Guild instance.
-
+     *
      * @param guild JDA Guild.
-     * *
+     *
      * @return Host instance of Guild.
-     * *
-     * @see Host
+     *
+     * @see Servlet
      */
-    fun getHost(guild: Guild?): Host? {
+    fun getHost(guild: Guild?): Servlet? {
         if (guild == null) return null
-        return hosts.getOrPut(guild.id) { Host(this, guild) }
+        return servlets.getOrPut(guild.id) { Servlet(this, guild) }
     }
 
     /**
      * @return The string representation of the shard.
      */
     override fun toString(): String {
-        return "Shard(id=" + id + ", guilds=" + jda.guilds.size + ")"
+        return "Shard(id=$id, guilds=${jda.guilds.size})"
     }
 
     /**
@@ -55,13 +59,20 @@ class Shard (val id: Int, private val jda: JDA) : JDA by jda {
      */
     override fun shutdown() {
         jda.shutdown(false)
-        hosts.clear()
+        servlets.clear()
     }
 
-    // TODO add a reset for guilds
+    fun reset(id: String?) = reset(getGuildById(id))
+
+    fun reset(guild: Guild?) {
+        if (guild == null) return
+        if (!servlets.contains(guild.id)) return
+
+        servlets[guild.id] = Servlet(this, guild)
+    }
 
     class ShardInfo(shard: Shard) {
-        val requests: Int = shard.hosts.values.map { it.commandHandler.requests }.sum()
+        val requests: Int = shard.servlets.values.map { it.commandHandler.requests }.sum()
         val id: Int = shard.id
         val status: JDA.Status = shard.status
         val guilds: Int = shard.guilds.size

@@ -6,7 +6,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Level;
 import xyz.gnarbot.gnar.members.Person;
-import xyz.gnarbot.gnar.servers.Host;
+import xyz.gnarbot.gnar.servers.Servlet;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 public class BanCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
-        Host host = note.getHost();
+        Servlet servlet = note.getServlet();
 
         Person author = note.getAuthor();
         Person target = null;
@@ -28,7 +28,7 @@ public class BanCommand extends CommandExecutor {
         if (note.getMentionedChannels().size() >= 1) {
             target = note.getMentionedUsers().get(0);
         } else if (args.size() >= 1) {
-            target = note.getHost().getPeopleHandler().getUser(args.get(0));
+            target = note.getServlet().getPeopleHandler().getUser(args.get(0));
         }
 
         if (target == null) {
@@ -40,7 +40,7 @@ public class BanCommand extends CommandExecutor {
             return;
         }
 
-        if (!host.ban(target)) {
+        if (!servlet.ban(target)) {
             note.error("Gnar does not have permission to ban.");
             return;
         }

@@ -22,7 +22,7 @@ abstract class MusicExecutor : CommandExecutor() {
 
     //abstract fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager)
 
-    protected fun Note.replyMusic(msg: String) : Future<Note> {
+    protected fun Note.replyMusic(msg: String): Future<Note> {
         return this.respond("Music", msg, color)
     }
 
@@ -56,7 +56,7 @@ abstract class MusicExecutor : CommandExecutor() {
 
                 var msg = "Added `${track.info.title}` to queue."
 
-                if (mng.player.playingTrack == null && note.host.audioManager.isConnected) {
+                if (mng.player.playingTrack == null && note.servlet.audioManager.isConnected) {
                     msg += "\nThe player has started playing."
                 }
 

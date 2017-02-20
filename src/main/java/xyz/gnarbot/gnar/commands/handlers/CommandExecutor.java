@@ -30,9 +30,10 @@ public abstract class CommandExecutor {
     /**
      * Synchronized method to inject dependencies and then run the
      * {@link CommandExecutor#execute(Note, List)} method.
+     *
      * @param injector Dependency injector.
-     * @param note Note wrapper.
-     * @param args Command arguments.
+     * @param note     Note wrapper.
+     * @param args     Command arguments.
      */
     public synchronized void syncExecute(Injector injector, Note note, List<String> args) throws IllegalAccessException {
         if (injector != null && inject) injector.injectMembers(this);

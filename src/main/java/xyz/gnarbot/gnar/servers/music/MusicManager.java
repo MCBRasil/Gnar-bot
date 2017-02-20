@@ -2,7 +2,7 @@ package xyz.gnarbot.gnar.servers.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import xyz.gnarbot.gnar.servers.Host;
+import xyz.gnarbot.gnar.servers.Servlet;
 
 public class MusicManager {
     public final AudioPlayerManager playerManager;
@@ -21,11 +21,27 @@ public class MusicManager {
      * Wrapper around AudioPlayer to use it as an AudioSendHandler.
      */
     public final AudioPlayerSendHandler sendHandler;
-
+    /**
+     * Voting Cooldown
+     */
+    public Long lastVoteTime = 0L;
     /**
      * Boolean to check whether there is a vote to skip the song or not
      */
     private boolean votingToSkip = false;
+
+    /**
+     * Creates a player and a track scheduler.
+     *
+     * @param playerManager Audio player playerManager to use for creating the player.
+     */
+    public MusicManager(Servlet servlet, AudioPlayerManager playerManager) {
+        this.playerManager = playerManager;
+        player = playerManager.createPlayer();
+        scheduler = new TrackScheduler(servlet, player);
+        sendHandler = new AudioPlayerSendHandler(player);
+        player.addListener(scheduler);
+    }
 
     public boolean isVotingToSkip() {
         return votingToSkip;
@@ -36,29 +52,11 @@ public class MusicManager {
         this.votingToSkip = votingToSkip;
     }
 
-	/**
-	 * Voting Cooldown
-	 */
-	public Long lastVoteTime = 0L;
+    public Long getLastVoteTime() {
+        return lastVoteTime;
+    }
 
-	public Long getLastVoteTime() {
-		return lastVoteTime;
-	}
-
-	public void setLastVoteTime(Long lastVoteTime) {
-		this.lastVoteTime = lastVoteTime;
-	}
-
-	/**
-	 * Creates a player and a track scheduler.
-     *
-     * @param playerManager Audio player playerManager to use for creating the player.
-     */
-    public MusicManager(Host host, AudioPlayerManager playerManager) {
-        this.playerManager = playerManager;
-        player = playerManager.createPlayer();
-        scheduler = new TrackScheduler(host, player);
-        sendHandler = new AudioPlayerSendHandler(player);
-        player.addListener(scheduler);
+    public void setLastVoteTime(Long lastVoteTime) {
+        this.lastVoteTime = lastVoteTime;
     }
 }

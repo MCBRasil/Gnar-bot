@@ -9,7 +9,7 @@ import net.dv8tion.jda.core.entities.SelfUser;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.members.PeopleHandler;
 import xyz.gnarbot.gnar.members.Person;
-import xyz.gnarbot.gnar.servers.Host;
+import xyz.gnarbot.gnar.servers.Servlet;
 import xyz.gnarbot.gnar.servers.Shard;
 import xyz.gnarbot.gnar.servers.music.MusicManager;
 import xyz.gnarbot.gnar.utils.Note;
@@ -19,14 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandHandler {
-    private final Host host;
+    private final Servlet servlet;
     private final Injector injector;
 
     public List<String> disabled = new ArrayList<>();
     private int requests = 0;
 
-    public CommandHandler(Host host) {
-        this.host = host;
+    public CommandHandler(Servlet servlet) {
+        this.servlet = servlet;
         this.injector = Guice.createInjector(new CommandModule());
     }
 
@@ -35,7 +35,7 @@ public class CommandHandler {
      *
      * @param message Message object.
      * @param content String content of the message.
-     * @param author Author of the message.
+     * @param author  Author of the message.
      */
     public void callCommand(Message message, String content, Person author) {
         if (!content.startsWith(Bot.getToken())) return;
@@ -47,9 +47,9 @@ public class CommandHandler {
 
         List<String> args = tokens.subList(1, tokens.size());
 
-        Note note = new Note(host, message);
+        Note note = new Note(servlet, message);
 
-        CommandExecutor cmd = host.getShard().getCommandRegistry().getCommand(label);
+        CommandExecutor cmd = servlet.getShard().getCommandRegistry().getCommand(label);
 
         if (cmd == null) return;
 
@@ -85,17 +85,17 @@ public class CommandHandler {
         @Override
         protected void configure() {
             // INSTANCES
-            bind(SelfUser.class).toInstance(host.getShard().getSelfUser());
-            bind(Host.class).toInstance(host);
-            bind(Shard.class).toInstance(host.getShard());
+            bind(SelfUser.class).toInstance(servlet.getShard().getSelfUser());
+            bind(Servlet.class).toInstance(servlet);
+            bind(Shard.class).toInstance(servlet.getShard());
 
             bind(CommandHandler.class).toInstance(CommandHandler.this);
-            bind(PeopleHandler.class).toInstance(host.getPeopleHandler());
+            bind(PeopleHandler.class).toInstance(servlet.getPeopleHandler());
 
-            bind(JDA.class).toInstance(host.getJDA());
+            bind(JDA.class).toInstance(servlet.getJDA());
 
             // PROVIDERS
-            bind(MusicManager.class).toProvider(host::getMusicManager);
+            bind(MusicManager.class).toProvider(servlet::getMusicManager);
         }
     }
 }

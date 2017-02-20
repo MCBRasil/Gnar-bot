@@ -8,7 +8,7 @@ import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Person;
-import xyz.gnarbot.gnar.servers.Host;
+import xyz.gnarbot.gnar.servers.Servlet;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 @Command(aliases = {"whois", "infoof", "infoon", "user"}, usage = "-@user", description = "Get information on a user.")
 public class WhoIsCommand extends CommandExecutor {
     @Inject
-    private Host host;
+    private Servlet servlet;
 
     @Override
     public void execute(Note note, List<String> args) {
@@ -32,7 +32,7 @@ public class WhoIsCommand extends CommandExecutor {
         if (mentioned.size() > 0) {
             person = mentioned.get(0);
         } else {
-            person = host.getPerson(StringUtils.join(args, " "), true);
+            person = servlet.getPerson(StringUtils.join(args, " "), true);
         }
 
         if (person == null) {
@@ -54,7 +54,9 @@ public class WhoIsCommand extends CommandExecutor {
                     sb.append("Nick: **[").append(nickname != null ? nickname : "None").append("]()**\n");
                     sb.append("Game: **[").append(game != null ? game.getName() : "None").append("]()**\n");
                     sb.append("Bot: **[").append(String.valueOf(person.isBot()).toUpperCase()).append("]()**\n");
-                    sb.append("Level: **[").append(person.getLevel().toString().replaceAll("_", " ")).append("]()**\n\n");
+                    sb.append("Level: **[")
+                            .append(person.getLevel().toString().replaceAll("_", " "))
+                            .append("]()**\n\n");
                     sb.append("__**Roles**__").append('\n');
 
                     for (Role role : person.getRoles()) {

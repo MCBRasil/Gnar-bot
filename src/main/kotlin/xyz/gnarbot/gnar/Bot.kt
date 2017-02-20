@@ -26,7 +26,7 @@ import kotlin.jvm.JvmStatic as static
 object Bot {
     @static val color = Color(0, 80, 175)
 
-    @static val LOGGER : Logger = LoggerFactory.getLogger("Bot")
+    @static val LOGGER: Logger = LoggerFactory.getLogger("Bot")
 
     @static val token = "_" //default token
 
@@ -100,7 +100,7 @@ object Bot {
         Utils.setLeagueInfo()
     }
 
-    fun makeJDA(token: String, numShards: Int, id: Int) : JDA {
+    fun makeJDA(token: String, numShards: Int, id: Int): JDA {
         return JDABuilder(AccountType.BOT).apply {
             if (numShards > 1) useSharding(id, numShards)
             setToken(token)
@@ -121,10 +121,10 @@ object Bot {
         LOGGER.info("Bot is now disconnected from Discord.")
     }
 
-    val info : BotInfo get() = BotInfo(this)
+    val info: BotInfo get() = BotInfo(this)
 
     class BotInfo(bot: Bot) {
-        val requests = bot.shards.flatMap { it.hosts.values }.sumBy { it.commandHandler.requests }
+        val requests = bot.shards.flatMap { it.servlets.values }.sumBy { it.commandHandler.requests }
         val totalShards = bot.shards.size
         val guilds = bot.shards.sumBy { it.guilds.size }
         val users = bot.shards.sumBy { it.users.size }

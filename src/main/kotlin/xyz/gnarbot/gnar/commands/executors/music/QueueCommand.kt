@@ -31,7 +31,7 @@ class QueueCommand : MusicExecutor() {
 
         manager.player.playingTrack?.let {
 
-            val str : String = if (it.sourceManager.sourceName.contains("youtube")) {
+            val str: String = if (it.sourceManager.sourceName.contains("youtube")) {
                 "__[${it.info.title}](https://youtube.com/watch?v=${it.info.identifier})__"
             } else {
                 "__[${it.info.title}]()__"
@@ -45,7 +45,7 @@ class QueueCommand : MusicExecutor() {
             queueLength += track.duration
             trackCount++
 
-            val str = if (track.sourceManager.sourceName.contains("youtube")){
+            val str = if (track.sourceManager.sourceName.contains("youtube")) {
                 "**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__"
             } else {
                 "**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}]()__"

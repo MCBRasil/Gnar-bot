@@ -20,7 +20,7 @@ public class AdventureCommand extends CommandExecutor {
 
         if (args.size() > 0) {
             switch (args.get(0).toLowerCase()) {
-                case "quit":{
+                case "quit": {
                     note.info("Poof! Your adventure has been lost to the winds of Azaroth.");
                     Adventure.removeAdventure(note.getAuthor());
                     return;

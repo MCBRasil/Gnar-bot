@@ -4,7 +4,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
-import xyz.gnarbot.gnar.servers.Host;
+import xyz.gnarbot.gnar.servers.Servlet;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -14,7 +14,7 @@ import java.util.Queue;
 public class TrackScheduler extends AudioEventAdapter {
     public static int QUEUE_LIMIT = 30;
 
-    private final Host host;
+    private final Servlet servlet;
     private final AudioPlayer player;
 
     private final Queue<AudioTrack> queue;
@@ -24,8 +24,8 @@ public class TrackScheduler extends AudioEventAdapter {
     /**
      * @param player The audio player this scheduler uses
      */
-    public TrackScheduler(Host host, AudioPlayer player) {
-        this.host = host;
+    public TrackScheduler(Servlet servlet, AudioPlayer player) {
+        this.servlet = servlet;
         this.player = player;
         this.queue = new LinkedList<>();
     }
@@ -68,7 +68,7 @@ public class TrackScheduler extends AudioEventAdapter {
                 player.startTrack(lastTrack.makeClone(), false);
             } else {
                 if (queue.isEmpty()) {
-                    host.resetMusicManager();
+                    servlet.resetMusicManager();
                     return;
                 }
                 nextTrack();

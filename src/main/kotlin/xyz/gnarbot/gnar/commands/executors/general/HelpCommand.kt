@@ -11,7 +11,7 @@ import java.util.*
 @Command(aliases = arrayOf("help", "guide"), usage = "~command", description = "Display GN4R's list of commands.")
 class HelpCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
-        val host = note.host
+        val host = note.servlet
 
         val registry = host.shard.commandRegistry
 

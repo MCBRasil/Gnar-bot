@@ -2,24 +2,24 @@ package xyz.gnarbot.gnar.members
 
 import net.dv8tion.jda.core.entities.Member
 import net.dv8tion.jda.core.entities.User
-import xyz.gnarbot.gnar.servers.Host
+import xyz.gnarbot.gnar.servers.Servlet
 import java.util.*
 
 /**
  * Handle JDA's [Member] & [Person] instances.
  */
-class PeopleHandler(private val host: Host) {
+class PeopleHandler(private val servlet: Servlet) {
     /**
      * Returns the wrapper mapping registry.
      *
      * @return The wrapper mapping registry.
      */
-    val registry : MutableMap<String, Person> = WeakHashMap()
+    val registry: MutableMap<String, Person> = WeakHashMap()
 
-    val me : Person get() = asPerson(host.jda.selfUser)
+    val me: Person get() = asPerson(servlet.jda.selfUser)
 
     fun getUser(name: String): Person? {
-        val list = host.getMembersByName(name, true)
+        val list = servlet.getMembersByName(name, true)
         if (list.isEmpty()) return null
         return asPerson(list.first())
     }
@@ -43,7 +43,7 @@ class PeopleHandler(private val host: Host) {
      * @return User instance.
      */
     fun asPerson(user: User): Person {
-        return registry.getOrPut(user.id) { Person(host, host.getMember(user)) }
+        return registry.getOrPut(user.id) { Person(servlet, servlet.getMember(user)) }
     }
 
     /**

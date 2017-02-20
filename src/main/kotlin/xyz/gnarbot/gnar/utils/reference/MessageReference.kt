@@ -6,13 +6,13 @@ import net.dv8tion.jda.core.entities.*
 import net.dv8tion.jda.core.requests.RestAction
 import java.time.OffsetDateTime
 
-class MessageReference(message : Message) : Message {
+class MessageReference(message: Message) : Message {
     var reference: Message = message
 
     fun update() {
         reference = reference.channel.getMessageById(reference.id).complete()
     }
-    
+
     override fun addReaction(p0: String): RestAction<Void> = reference.addReaction(p0)
     override fun addReaction(p0: Emote): RestAction<Void> = reference.addReaction(p0)
     override fun clearReactions(): RestAction<Void> = reference.clearReactions()
@@ -20,6 +20,7 @@ class MessageReference(message : Message) : Message {
     @Suppress("DEPRECATION")
     @Deprecated(message = "Deprecated in Java", replaceWith = ReplaceWith("delete"))
     override fun deleteMessage(): RestAction<Void> = reference.deleteMessage()
+
     override fun editMessage(p0: String): RestAction<Message> = reference.editMessage(p0)
     override fun editMessage(p0: Message): RestAction<Message> = reference.editMessage(p0)
     override fun getAttachments(): List<Message.Attachment> = reference.attachments
