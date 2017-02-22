@@ -12,9 +12,13 @@ public class CoinFlipCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (new Random().nextInt(2) == 0) {
-            note.respond("Coin Flip", "**[Heads!]()**");
+            note.embed("Coin Flip")
+                    .setDescription("Heads!")
+                    .queue();
         } else {
-            note.respond("Coin Flip", "**[Tails!]()**");
+            note.embed("Coin Flip")
+                    .setDescription("Tails!")
+                    .queue();
         }
     }
 }

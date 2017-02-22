@@ -91,6 +91,6 @@ class BotInfoCommand : CommandExecutor() {
                 appendln("Commands: **[$commandSize]()**")
                 appendln("Library: **[JDA 3](https://github.com/DV8FromTheWorld/JDA)**")
             }
-        }
+        }.queue()
     }
 }

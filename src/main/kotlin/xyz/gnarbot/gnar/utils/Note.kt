@@ -61,11 +61,14 @@ class Note(val servlet: Servlet, private var message: Message) : Message by mess
                 .toNote()
     }
 
-    @JvmOverloads
     fun embed(title: String? = null): EmbedDSL = EmbedDSL(this).setTitle(title)
 
-    inline fun embed(title: String? = null, value: EmbedDSL.() -> Unit): Future<Note> {
-        return embed(title).apply { value(this) }.respond().toNote()
+    fun embed(title: String? = null, block: Consumer<EmbedDSL>) : EmbedDSL {
+        return embed(title).apply { block.accept(this) }
+    }
+
+    inline fun embed(title: String? = null, value: EmbedDSL.() -> Unit): EmbedDSL {
+        return embed(title).apply { value(this) }
     }
 
     /**
@@ -81,6 +84,9 @@ class Note(val servlet: Servlet, private var message: Message) : Message by mess
                 .setColor(Bot.color)
 
         return channel.sendMessage(eb.build()).submit().toNote()
+//        return embed("Info") {
+//            setAuthor("Info", null, "https://gnarbot.xyz/assets/img/info.png")
+//        }
     }
 
     /**
@@ -125,6 +131,11 @@ class Note(val servlet: Servlet, private var message: Message) : Message by mess
 
     @Suppress("NOTHING_TO_INLINE")
     class EmbedDSL(private val message: Message) : EmbedBuilder() {
+
+        init {
+            setColor(Bot.color)
+        }
+
         inline fun description(value: StringBuilder.() -> Unit): EmbedDSL {
             val sb = StringBuilder()
             value(sb)
@@ -160,6 +171,19 @@ class Note(val servlet: Servlet, private var message: Message) : Message by mess
             return this
         }
 
+        fun queue() {
+            return message.channel.sendMessage(build()).queue()
+        }
+
+        fun submit(): Future<Message> {
+            return message.channel.sendMessage(build()).submit()
+        }
+
+        fun complete(): Message {
+            return message.channel.sendMessage(build()).complete()
+        }
+
+        @Deprecated("Use submit or queue instead." ,  ReplaceWith("submit"))
         fun respond(): Future<Message> {
             return message.channel.sendMessage(build()).submit()
         }
@@ -212,16 +236,16 @@ class Note(val servlet: Servlet, private var message: Message) : Message by mess
         }
 
         fun setAuthor(user: User): EmbedDSL {
-            super.setAuthor(user.name, null, user.avatarUrl)
+            super.setAuthor(user.name, user.avatarUrl, user.avatarUrl)
             return this
         }
 
-        override fun setAuthor(name: String, url: String, iconUrl: String): EmbedDSL {
+        override fun setAuthor(name: String, url: String?, iconUrl: String): EmbedDSL {
             super.setAuthor(name, url, iconUrl)
             return this
         }
 
-        override fun setFooter(text: String, iconUrl: String): EmbedDSL {
+        override fun setFooter(text: String, iconUrl: String?): EmbedDSL {
             super.setFooter(text, iconUrl)
             return this
         }

@@ -25,6 +25,6 @@ class ShardInfoCommand : CommandExecutor() {
                     append("Requests: ").appendln(highlight(it.servlets.values.sumBy { it.commandHandler.requests }))
                 }
             }
-        }
+        }.queue()
     }
 }

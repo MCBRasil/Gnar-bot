@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar.commands.executors.music.dj
+package xyz.gnarbot.gnar.commands.executors.music
 
 import com.google.inject.Inject
 import xyz.gnarbot.gnar.Bot

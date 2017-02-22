@@ -11,10 +11,10 @@ import java.util.List;
 public class InviteBotCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
-        String tempLink = "https://discordapp.com/oauth2/authorize?client_id=201492375653056512&scope=bot&permissions" +
-                "=8";
+        String link = "https://discordapp.com/oauth2/authorize?client_id=201492375653056512&scope=bot&permissions=8";
 
-        note.respond("Want some Gnar?!", "__**[Click to invite Gnar to your server.](" + tempLink + ")**__",
-                Bot.getColor());
+        note.embed("Get Gnar on your server!")
+                .setDescription("__**[Click to invite Gnar to your server.](" + link + ")**__")
+                .queue();
     }
 }

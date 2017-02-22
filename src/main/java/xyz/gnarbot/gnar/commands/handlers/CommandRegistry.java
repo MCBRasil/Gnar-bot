@@ -15,6 +15,7 @@ import xyz.gnarbot.gnar.commands.executors.mod.*;
 import xyz.gnarbot.gnar.commands.executors.music.NowPlayingCommand;
 import xyz.gnarbot.gnar.commands.executors.music.PlayCommand;
 import xyz.gnarbot.gnar.commands.executors.music.QueueCommand;
+import xyz.gnarbot.gnar.commands.executors.music.VoteSkipCommand;
 import xyz.gnarbot.gnar.commands.executors.music.dj.*;
 import xyz.gnarbot.gnar.commands.executors.polls.PollCommand;
 import xyz.gnarbot.gnar.commands.executors.test.TestCommand;

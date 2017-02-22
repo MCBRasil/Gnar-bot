@@ -9,18 +9,19 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 
-@Command(aliases = {"shared", "serversshared"}, description = "Shows servers you share with the bot.")
+@Deprecated
+@Command(aliases = {"shared", "serversshared"}, description = "Shows servers you share with the bot.", showInHelp = false)
 public class ServersSharedCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         int total = 0;
-        String servers = "";
+        StringBuilder servers = new StringBuilder();
 
         for (Shard shard : Bot.INSTANCE.getShards()) {
             for (Guild g : shard.getGuilds()) {
                 if (g.getMembers().contains(note.getAuthor())) {
                     total++;
-                    servers += "    **Server:** " + g.getName() + "\n";
+                    servers.append("    **Server:** ").append(g.getName()).append("\n");
                 }
             }
         }

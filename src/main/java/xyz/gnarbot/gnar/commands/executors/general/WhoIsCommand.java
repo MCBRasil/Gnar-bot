@@ -63,6 +63,6 @@ public class WhoIsCommand extends CommandExecutor {
                         sb.append("• **[").append(role.getName()).append("]()**").append('\n');
                     }
                 })
-                .respond();
+                .queue();
     }
 }
