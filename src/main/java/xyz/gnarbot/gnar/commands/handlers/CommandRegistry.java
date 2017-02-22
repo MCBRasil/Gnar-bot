@@ -145,7 +145,6 @@ public class CommandRegistry {
             throw new IllegalStateException("@Command annotation not found for class: " + cls.getName());
         }
 
-
         try {
             CommandExecutor cmd = cls.newInstance();
 
@@ -182,16 +181,15 @@ public class CommandRegistry {
 
     /**
      * Register the CommandExecutor instance into the registry.
-     *
-     * @param label Invoking key.
+     *  @param label Invoking key.
      * @param cmd   CommandExecutor instance.
      */
-    public CommandExecutor registerCommand(String label, CommandExecutor cmd) {
+    public void registerCommand(String label, CommandExecutor cmd) {
         label = label.toLowerCase();
         if (commandMap.containsKey(label)) {
             throw new IllegalStateException("Command " + label + " is already registered.");
         }
-        return commandMap.put(label, cmd);
+        commandMap.put(label, cmd);
     }
 
     /**
@@ -241,6 +239,6 @@ public class CommandRegistry {
                 .filter(commandExecutor -> commandExecutor.getClass() == cls)
                 .findFirst();
 
-        return cmd.isPresent() ? cmd.get() : null;
+        return cmd.orElse(null);
     }
 }
