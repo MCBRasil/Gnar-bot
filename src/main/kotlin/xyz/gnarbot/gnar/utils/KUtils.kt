@@ -62,30 +62,18 @@ fun makeEmbed(title: String?, msg: String?, color: Color? = Bot.color, thumb: St
     }
 }
 
-fun MessageChannel.sendNote(servlet: Servlet, channel: MessageChannel, message: Message) : RestAction<Note> {
-    val route = Route.Messages.SEND_MESSAGE.compile(channel.id)
-    val json = (message as MessageImpl).toJSONObject()
-    return object : RestAction<Note>(servlet.jda, route, json) {
-        override fun handleResponse(response: Response, request: Request<Any?>?) {
-            if (response.isOk) {
-                val msg = EntityBuilder.get(jda).createMessage(response.`object`, channel, false)
-                request?.onSuccess(Note(servlet, msg))
-            } else {
-                request?.onFailure(response)
-            }
-        }
-    }
+fun MessageChannel.sendNote(servlet: Servlet, embed: MessageEmbed) : RestAction<Note> {
+    val message = MessageBuilder().setEmbed(embed).build()
+    return sendNote(servlet, message)
 }
 
-fun MessageChannel.sendNote(servlet: Servlet, channel: MessageChannel, embed: MessageEmbed) : RestAction<Note> {
-    val message = MessageBuilder().setEmbed(embed).build()
-
-    val route = Route.Messages.SEND_MESSAGE.compile(channel.id)
+fun MessageChannel.sendNote(servlet: Servlet, message: Message) : RestAction<Note> {
+    val route = Route.Messages.SEND_MESSAGE.compile(id)
     val json = (message as MessageImpl).toJSONObject()
-    return object : RestAction<Note>(servlet.jda, route, json) {
+    return object : RestAction<Note>(jda, route, json) {
         override fun handleResponse(response: Response, request: Request<Any?>?) {
             if (response.isOk) {
-                val msg = EntityBuilder.get(jda).createMessage(response.`object`, channel, false)
+                val msg = EntityBuilder.get(jda).createMessage(response.`object`, this@sendNote, false)
                 request?.onSuccess(Note(servlet, msg))
             } else {
                 request?.onFailure(response)

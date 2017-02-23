@@ -2,6 +2,7 @@ package xyz.gnarbot.gnar.servers
 
 import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.entities.Guild
+import xyz.gnarbot.gnar.api.data.ShardInfo
 import xyz.gnarbot.gnar.commands.handlers.CommandRegistry
 import xyz.gnarbot.gnar.servers.listeners.GuildCountListener
 import xyz.gnarbot.gnar.servers.listeners.ShardListener
@@ -78,14 +79,5 @@ class Shard(val id: Int, private val jda: JDA) : JDA by jda {
         servlets[guild.id] = getHost(guild.id)!!
     }
 
-    class ShardInfo(shard: Shard) {
-        val requests: Int = shard.servlets.values.map { it.commandHandler.requests }.sum()
-        val id: Int = shard.id
-        val status: JDA.Status = shard.status
-        val guilds: Int = shard.guilds.size
-        val users: Int = shard.users.size
-        val textChannels: Int = shard.textChannels.size
-        val voiceChannels: Int = shard.voiceChannels.size
-    }
 }
 

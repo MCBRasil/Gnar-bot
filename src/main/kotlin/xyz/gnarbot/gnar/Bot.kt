@@ -13,10 +13,10 @@ import org.json.JSONArray
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import xyz.gnarbot.gnar.api.APIPortal
+import xyz.gnarbot.gnar.api.data.BotInfo
 import xyz.gnarbot.gnar.servers.Shard
 import xyz.gnarbot.gnar.utils.Utils
 import java.awt.Color
-import java.util.*
 import java.util.concurrent.Executors
 import kotlin.jvm.JvmStatic as static
 
@@ -123,16 +123,4 @@ object Bot {
 
     val info: BotInfo get() = BotInfo(this)
 
-    class BotInfo(bot: Bot) {
-        val requests = bot.shards.flatMap { it.servlets.values }.sumBy { it.commandHandler.requests }
-        val totalShards = bot.shards.size
-        val guilds = bot.shards.sumBy { it.guilds.size }
-        val users = bot.shards.sumBy { it.users.size }
-        val textChannels = bot.shards.sumBy { it.textChannels.size }
-        val voiceChannels = bot.shards.sumBy { it.voiceChannels.size }
-
-        val shards = Bot.shards.map(Shard::info)
-
-        val date = Date()
-    }
 }
