@@ -30,15 +30,18 @@ public class PandoraBotCommand extends CommandExecutor {
             if (bot == null) {
                 bot = factory.create(ChatterBotType.PANDORABOTS, "b0dafd24ee35a477");
                 session = bot.createSession();
-                note.info("Pandora-Bot session created for the server.");
+                note.info("Pandora-Bot session created for the server.").queue();
             }
 
             String input = StringUtils.join(args, " ");
 
             String output = session.think(input);
-            note.info("**[PandoraBot]** ─ `" + output + "`");
+            note.embed("PandoraBot")
+                    .description(output)
+                    .rest().queue();
+
         } catch (Exception e) {
-            note.error("PandoraBot has encountered an exception. Resetting PandoraBot.");
+            note.error("PandoraBot has encountered an exception. Resetting PandoraBot.").queue();
             bot = null;
         }
     }

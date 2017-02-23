@@ -9,7 +9,7 @@ import xyz.gnarbot.gnar.servers.Servlet
  *
  * @see Member
  */
-class Person(var servlet: Servlet, private var member: Member) : Member by member, User by member.user {
+class Client(var servlet: Servlet, private var member: Member) : Member by member, User by member.user {
     val isBotMaster = Bot.admins.contains(id)
 
     val level: Level

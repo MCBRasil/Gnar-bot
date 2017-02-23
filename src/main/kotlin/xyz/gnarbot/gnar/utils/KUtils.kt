@@ -3,9 +3,19 @@
 package xyz.gnarbot.gnar.utils
 
 import net.dv8tion.jda.core.EmbedBuilder
+import net.dv8tion.jda.core.MessageBuilder
+import net.dv8tion.jda.core.entities.EntityBuilder
+import net.dv8tion.jda.core.entities.Message
+import net.dv8tion.jda.core.entities.MessageChannel
 import net.dv8tion.jda.core.entities.MessageEmbed
+import net.dv8tion.jda.core.entities.impl.MessageImpl
+import net.dv8tion.jda.core.requests.Request
+import net.dv8tion.jda.core.requests.Response
+import net.dv8tion.jda.core.requests.RestAction
+import net.dv8tion.jda.core.requests.Route
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.members.Person
+import xyz.gnarbot.gnar.members.Client
+import xyz.gnarbot.gnar.servers.Servlet
 import java.awt.Color
 import java.io.File
 import java.util.*
@@ -34,7 +44,7 @@ fun String.fastSplit(char: Char): List<String> {
 }
 
 @JvmOverloads
-fun makeEmbed(title: String?, msg: String?, color: Color? = Bot.color, thumb: String? = null, img: String? = null, author: Person? = null): MessageEmbed {
+fun makeEmbed(title: String?, msg: String?, color: Color? = Bot.color, thumb: String? = null, img: String? = null, author: Client? = null): MessageEmbed {
     return EmbedBuilder().run {
         setDescription(msg)
         setTitle(title, null)
@@ -49,5 +59,37 @@ fun makeEmbed(title: String?, msg: String?, color: Color? = Bot.color, thumb: St
         setImage(img)
 
         build()
+    }
+}
+
+fun MessageChannel.sendNote(servlet: Servlet, channel: MessageChannel, message: Message) : RestAction<Note> {
+    val route = Route.Messages.SEND_MESSAGE.compile(channel.id)
+    val json = (message as MessageImpl).toJSONObject()
+    return object : RestAction<Note>(servlet.jda, route, json) {
+        override fun handleResponse(response: Response, request: Request<Any?>?) {
+            if (response.isOk) {
+                val msg = EntityBuilder.get(jda).createMessage(response.`object`, channel, false)
+                request?.onSuccess(Note(servlet, msg))
+            } else {
+                request?.onFailure(response)
+            }
+        }
+    }
+}
+
+fun MessageChannel.sendNote(servlet: Servlet, channel: MessageChannel, embed: MessageEmbed) : RestAction<Note> {
+    val message = MessageBuilder().setEmbed(embed).build()
+
+    val route = Route.Messages.SEND_MESSAGE.compile(channel.id)
+    val json = (message as MessageImpl).toJSONObject()
+    return object : RestAction<Note>(servlet.jda, route, json) {
+        override fun handleResponse(response: Response, request: Request<Any?>?) {
+            if (response.isOk) {
+                val msg = EntityBuilder.get(jda).createMessage(response.`object`, channel, false)
+                request?.onSuccess(Note(servlet, msg))
+            } else {
+                request?.onFailure(response)
+            }
+        }
     }
 }

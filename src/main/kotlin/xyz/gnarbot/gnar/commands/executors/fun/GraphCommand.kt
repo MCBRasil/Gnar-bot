@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.imageio.ImageIO
 
+@Deprecated("Out of service for now")
 @Command(aliases = arrayOf("gusers"), description = "Fancy server stats ya uuuuuurdd mi?", showInHelp = false)
 class GraphCommand : CommandExecutor() {
     @Inject

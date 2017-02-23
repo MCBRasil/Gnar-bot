@@ -1,7 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.media;
 
 import org.w3c.dom.Document;
-import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -32,7 +31,7 @@ public class CatsCommand extends CommandExecutor {
 
                         break;
                     default:
-                        note.error("Not a valid picture type. `[png, jpg, gif]`");
+                        note.error("Not a valid picture type. `[png, jpg, gif]`").queue();
                         return;
                 }
             } else {
@@ -41,11 +40,14 @@ public class CatsCommand extends CommandExecutor {
                         .openStream());
             }
 
-            String catURL = doc.getElementsByTagName("url").item(0).getTextContent();
+            String url = doc.getElementsByTagName("url").item(0).getTextContent();
 
-            note.respond("Random Cat Pictures", null, Bot.getColor(), null, catURL);
+            note.embed("Random Cat Pictures")
+                    .image(url)
+                    .rest().queue();
+
         } catch (Exception e) {
-            note.error("Unable to find cats to sooth the darkness of your soul.");
+            note.error("Unable to find cats to sooth the darkness of your soul.").queue();
             e.printStackTrace();
         }
     }

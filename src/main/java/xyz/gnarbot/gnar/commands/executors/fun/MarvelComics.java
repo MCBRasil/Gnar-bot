@@ -46,11 +46,14 @@ public class MarvelComics extends CommandExecutor {
 
             JSONObject thumb = (JSONObject) j.get("thumbnail");
 
-            note.respond("Marvel Characters",
-                    StringUtils.capitalize(s.toLowerCase().replaceAll("\\+", " ")),
-                    Color.RED, null, thumb.optString("path") + "." + thumb.optString("extension"));
+            note.embed("Marvel Characters")
+                    .description(StringUtils.capitalize(s.toLowerCase().replaceAll("\\+", " ")))
+                    .color(Color.RED)
+                    .image(thumb.optString("path") + "." + thumb.optString("extension"))
+                    .rest().queue();
+
         } catch (Exception e) {
-            note.error("Couldn't find that Marvel character.");
+            note.error("Couldn't find that Marvel character.").queue();
         }
     }
 }

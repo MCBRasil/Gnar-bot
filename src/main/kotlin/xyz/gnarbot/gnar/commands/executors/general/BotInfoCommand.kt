@@ -17,8 +17,8 @@ class BotInfoCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
         val registry = shard.commandRegistry
 
-        var uptimeMinutes = Bot.uptime / 1000 / 60 / 60
-        if (uptimeMinutes == 0L) uptimeMinutes = 1L
+        var uptime_hour = Bot.uptime / 1000 / 60 / 60
+        if (uptime_hour == 0L) uptime_hour = 1L
 
         var voiceConnections = 0
 
@@ -51,7 +51,7 @@ class BotInfoCommand : CommandExecutor() {
                 }
             }
 
-            shard.servlets.values.forEach { activePersons += it.peopleHandler.registry.size }
+            shard.servlets.values.forEach { activePersons += it.clientHandler.registry.size }
 
             users += shard.users.size
             textChannels += shard.textChannels.size
@@ -66,30 +66,32 @@ class BotInfoCommand : CommandExecutor() {
                 .sumBy { it.commandHandler.requests }
 
         note.embed("Bot Information") {
-            setColor(Bot.color)
+            color(Bot.color)
 
             field("Requests", true, requests)
-            field("Requests Per Hour", true, requests / uptimeMinutes)
+            field("Requests Per Hour", true, requests / uptime_hour)
+            field("Website", true, link("gnarbot.xyz", "https://gnarbot.xyz"))
+
             field("Text Channels", true, textChannels)
             field("Voice Channels", true, voiceChannels)
+            field("Voice Connections", true, voiceConnections)
+
             field("Guilds", true, guilds)
             field("Guild Servlets", true, activeHosts)
-            field("Voice Connections", true, voiceConnections)
+            field("Member Clients", true, activePersons)
 
             field("Users", true) {
                 append("Total: ").appendln(highlight(users))
                 append("Online: ").appendln(highlight(online))
                 append("Offline: ").appendln(highlight(offline))
                 append("Inactive: ").appendln(highlight(inactive))
-                append("**Wrappers:** ").appendln(highlight(activePersons))
             }
 
             field("Others", true) {
                 appendln("Creators: **[Avarel](https://github.com/Avarel)** and **[Maeyrl](https://github.com/maeyrl)**")
                 appendln("Contributor: **[Gatt](https://github.com/RealGatt)**")
-                appendln("Website: **[gnarbot.xyz](https://gnarbot.xyz)**")
                 appendln("Commands: **[$commandSize]()**")
-                appendln("Library: **[JDA 3](https://github.com/DV8FromTheWorld/JDA)**")
+                appendln("Library: Java **[JDA 3](https://github.com/DV8FromTheWorld/JDA)**")
             }
         }.queue()
     }

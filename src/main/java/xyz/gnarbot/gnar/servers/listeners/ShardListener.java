@@ -42,7 +42,7 @@ public class ShardListener extends ListenerAdapter {
     public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
         Servlet servlet = shard.getHost(event.getGuild());
         if (servlet != null) {
-            servlet.getPeopleHandler().removeUser(event.getMember());
+            servlet.getClientHandler().removeUser(event.getMember());
         }
     }
 
@@ -55,7 +55,7 @@ public class ShardListener extends ListenerAdapter {
 
             if (servlet == null) return;
 
-            Channel botChannel = servlet.getPeopleHandler().getMe().getVoiceChannel();
+            Channel botChannel = servlet.getClientHandler().getSelfClient().getVoiceChannel();
 
             Channel channelLeft;
 

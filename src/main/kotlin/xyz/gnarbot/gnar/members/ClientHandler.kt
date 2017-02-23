@@ -6,19 +6,19 @@ import xyz.gnarbot.gnar.servers.Servlet
 import java.util.*
 
 /**
- * Handle JDA's [Member] & [Person] instances.
+ * Handle JDA's [Member] & [Client] instances.
  */
-class PeopleHandler(private val servlet: Servlet) {
+class ClientHandler(private val servlet: Servlet) {
     /**
      * Returns the wrapper mapping registry.
      *
      * @return The wrapper mapping registry.
      */
-    val registry: MutableMap<String, Person> = WeakHashMap()
+    val registry: MutableMap<String, Client> = WeakHashMap()
 
-    val me: Person get() = asPerson(servlet.jda.selfUser)
+    val selfClient: Client get() = asPerson(servlet.jda.selfUser)
 
-    fun getUser(name: String): Person? {
+    fun getUser(name: String): Client? {
         val list = servlet.getMembersByName(name, true)
         if (list.isEmpty()) return null
         return asPerson(list.first())
@@ -31,7 +31,7 @@ class PeopleHandler(private val servlet: Servlet) {
      *
      * @return User instance.
      */
-    fun asPerson(member: Member): Person {
+    fun asPerson(member: Member): Client {
         return asPerson(member.user)
     }
 
@@ -42,8 +42,8 @@ class PeopleHandler(private val servlet: Servlet) {
      *
      * @return User instance.
      */
-    fun asPerson(user: User): Person {
-        return registry.getOrPut(user.id) { Person(servlet, servlet.getMember(user)) }
+    fun asPerson(user: User): Client {
+        return registry.getOrPut(user.id) { Client(servlet, servlet.getMember(user)) }
     }
 
     /**

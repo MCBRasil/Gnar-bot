@@ -1,13 +1,11 @@
 package xyz.gnarbot.gnar.commands.executors.general
 
-import net.dv8tion.jda.core.EmbedBuilder
 import org.json.JSONException
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
 import xyz.gnarbot.gnar.utils.YouTube
 import java.awt.Color
-import java.util.*
 
 @Command(aliases = arrayOf("youtube"), usage = "-query...", description = "Search and get a YouTube video.")
 class YoutubeCommand : CommandExecutor() {
@@ -26,32 +24,30 @@ class YoutubeCommand : CommandExecutor() {
                 note.error("No search results for `$query`.")
                 return
             }
-
-            val sj = StringJoiner("\n")
-
             var firstUrl: String? = null
 
-            for (result in results) {
+            note.embed {
+                author("YouTube Results", "https://www.youtube.com", "https://s.ytimg.com/yts/img/favicon_144-vflWmzoXw.png")
+                thumbnail("https://gnarbot.xyz/assets/img/youtube.png")
+                color(Color(141, 20, 0))
 
-                val title = result.title
-                val desc = result.description
-                val videoID = result.id
-                val url = "https://www.youtube.com/watch?v=$videoID"
+                description {
+                    for (result in results) {
 
-                if (firstUrl == null) {
-                    firstUrl = url
+                        val title = result.title
+                        val desc = result.description
+                        val videoID = result.id
+                        val url = "https://www.youtube.com/watch?v=$videoID"
+
+                        if (firstUrl == null) {
+                            firstUrl = url
+                        }
+
+                        appendln(b(link(title, url))).appendln(desc)
+                    }
                 }
+            }.queue()
 
-                sj.add("\n**[$title]($url)**\n$desc")
-            }
-
-            val eb = EmbedBuilder()
-                    .setAuthor("YouTube Results", "https://www.youtube.com", "https://s.ytimg.com/yts/img/favicon_144-vflWmzoXw.png")
-                    .setThumbnail("https://s.ytimg.com/yts/img/favicon_144-vflWmzoXw.png")
-                    .setDescription(sj.toString())
-                    .setColor(Color(141, 20, 0))
-
-            note.channel.sendMessage(eb.build()).queue()
             note.reply("**First Video:** $firstUrl")
         } catch (e: JSONException) {
             note.error("Unable to get YouTube results.")

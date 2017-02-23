@@ -12,7 +12,6 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 @Command(aliases = {"prune", "delmessages", "delmsgs"},
         usage = "-amount -words...",
@@ -25,12 +24,12 @@ public class PruneCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (!note.getAuthor().hasPermission(Permission.MESSAGE_MANAGE)) {
-            note.error("You don't have the `Manage Messages` permission!");
+            note.error("You don't have the `Manage Messages` permission!").queue();
             return;
         }
 
         if (args.isEmpty()) {
-            note.error("Insufficient amount of arguments.");
+            note.error("Insufficient amount of arguments.").queue();
             return;
         }
 
@@ -43,7 +42,7 @@ public class PruneCommand extends CommandExecutor {
             amount = Math.min(amount, 100);
 
             if (amount < 2) {
-                note.error("You need to delete 2 or more messages to use this command.");
+                note.error("You need to delete 2 or more messages to use this command.").queue();
                 return;
             }
 
@@ -66,14 +65,10 @@ public class PruneCommand extends CommandExecutor {
 
             note.getTextChannel().deleteMessages(msgs).queue();
 
-            Note info = note.info("Attempted to delete **[" + msgs.size() + "]()** messages.\nDeleting this message in **5** seconds.")
-                    .get();
-
-            info.optDelete(5);
+            note.info("Attempted to delete **[" + msgs.size() + "]()** messages.\nDeleting this message in **5** seconds.")
+                    .complete().optDelete(5);
         } catch (NumberFormatException e) {
-            note.error("Improper arguments supplies, must be a number.");
-        } catch (InterruptedException | ExecutionException e) {
-            note.error("Delete queue was interrupted.");
+            note.error("Improper arguments supplies, must be a number.").queue();
         }
     }
 }

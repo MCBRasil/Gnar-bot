@@ -27,7 +27,7 @@ public class ChampDataCommand extends CommandExecutor {
             }
         }
 
-        JSONObject jso = (JSONObject) Utils.information.get(maybe);
+        JSONObject jso = Utils.information.getJSONObject(maybe);
 
         JSONArray spells = jso.getJSONArray("spells");
 
@@ -70,7 +70,7 @@ public class ChampDataCommand extends CommandExecutor {
             spellInfo += "\n    **" + fuckTits + "**: " + j.get("name");
         }
 
-        note.reply(spellInfo);
+        note.reply(spellInfo).queue();
     }
 
 }

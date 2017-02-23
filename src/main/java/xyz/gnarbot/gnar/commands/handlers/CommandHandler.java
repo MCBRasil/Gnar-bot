@@ -7,8 +7,8 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.SelfUser;
 import xyz.gnarbot.gnar.Bot;
-import xyz.gnarbot.gnar.members.PeopleHandler;
-import xyz.gnarbot.gnar.members.Person;
+import xyz.gnarbot.gnar.members.Client;
+import xyz.gnarbot.gnar.members.ClientHandler;
 import xyz.gnarbot.gnar.servers.Servlet;
 import xyz.gnarbot.gnar.servers.Shard;
 import xyz.gnarbot.gnar.servers.music.MusicManager;
@@ -37,7 +37,7 @@ public class CommandHandler {
      * @param content String content of the message.
      * @param author  Author of the message.
      */
-    public void callCommand(Message message, String content, Person author) {
+    public void callCommand(Message message, String content, Client author) {
         if (!content.startsWith(Bot.getToken())) return;
 
         // Tokenize the message.
@@ -54,7 +54,7 @@ public class CommandHandler {
         if (cmd == null) return;
 
         if (cmd.getLevel().getValue() > author.getLevel().getValue()) {
-            note.error("Insufficient bot level.\n" + cmd.getLevel().getMessage());
+            note.error("Insufficient bot level.\n" + cmd.getLevel().getRequireText());
             return;
         }
 
@@ -62,7 +62,7 @@ public class CommandHandler {
             requests++;
             cmd.syncExecute(injector, note, args);
         } catch (RuntimeException e) {
-            note.error("**Exception**: " + e.getMessage());
+            note.error("**Exception**: " + e.getMessage()).queue();
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -90,7 +90,7 @@ public class CommandHandler {
             bind(Shard.class).toInstance(servlet.getShard());
 
             bind(CommandHandler.class).toInstance(CommandHandler.this);
-            bind(PeopleHandler.class).toInstance(servlet.getPeopleHandler());
+            bind(ClientHandler.class).toInstance(servlet.getClientHandler());
 
             bind(JDA.class).toInstance(servlet.getJDA());
 

@@ -8,7 +8,7 @@ import xyz.gnarbot.gnar.utils.makeEmbed
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-@Command(aliases = arrayOf("remindme", "remind"), usage = "(#) (unit) (msg)")
+@Command(aliases = arrayOf("remindme", "remind"), usage = "# -time_unit -msg")
 class RemindMeCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
         if (args.size >= 3) {
@@ -17,19 +17,20 @@ class RemindMeCommand : CommandExecutor() {
             val time = try {
                 args[0].toInt()
             } catch (e: NumberFormatException) {
-                note.error("The time number was not an integer.")
+                note.error("The time number was not an integer.").queue()
                 return
             }
 
             val timeUnit = try {
                 TimeUnit.valueOf(args[1].toUpperCase())
             } catch (e: IllegalArgumentException) {
-                note.error("The specified time unit was invalid. \n`${Arrays.toString(TimeUnit.values())}`")
+                note.error("The specified time unit was invalid. \n`${Arrays.toString(TimeUnit.values())}`").queue()
                 return
             }
 
+            // todo change to new embed
             if (time > 0) {
-                note.respond("Reminder Scheduled", "I'll be reminding you in __$time ${timeUnit.toString().toLowerCase()}__.")
+                note.respond("Reminder Scheduled", "I'll be reminding you in __$time ${timeUnit.toString().toLowerCase()}__.").queue()
 
                 Bot.scheduler.schedule({
                     note.author.requestPrivateChannel()
@@ -37,10 +38,10 @@ class RemindMeCommand : CommandExecutor() {
                 }, time.toLong(), timeUnit)
 
             } else {
-                note.error("Number must be more than 0.")
+                note.error("Number must be more than 0.").queue()
             }
         } else {
-            note.error("Insufficient amount of arguments. `(#) (unit) (msg)`")
+            note.error("Insufficient amount of arguments. `(#) (unit) (msg)`").queue()
         }
     }
 }

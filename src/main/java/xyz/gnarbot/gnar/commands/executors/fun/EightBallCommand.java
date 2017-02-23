@@ -20,10 +20,12 @@ public class EightBallCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (args.isEmpty()) {
-            note.error("Ask the 8-ball something.");
+            note.error("Ask the 8-ball something.").queue();
             return;
         }
 
-        note.respond("8-Ball", "**[" + responses[random.nextInt(responses.length)] + ".]()**");
+        note.embed("8-Ball")
+                .description(responses[random.nextInt(responses.length)])
+                .rest().queue();
     }
 }

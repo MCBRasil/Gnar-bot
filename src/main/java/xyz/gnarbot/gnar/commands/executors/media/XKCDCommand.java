@@ -2,7 +2,6 @@ package xyz.gnarbot.gnar.commands.executors.media;
 
 import com.mashape.unirest.http.Unirest;
 import org.json.JSONObject;
-import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -28,7 +27,7 @@ public class XKCDCommand extends CommandExecutor {
                         input = Integer.valueOf(args.get(0));
 
                         if (input > max || input < 1) {
-                            note.error("xkcd does not have a comic for that number.");
+                            note.error("xkcd does not have a comic for that number.").queue();
                         }
 
                         rand = input;
@@ -36,7 +35,7 @@ public class XKCDCommand extends CommandExecutor {
                         if (args.get(0).equalsIgnoreCase("latest")) {
                             rand = max;
                         } else {
-                            note.error("You didn't enter a proper number.");
+                            note.error("You didn't enter a proper number.").queue();
                             return;
                         }
                     }
@@ -55,13 +54,17 @@ public class XKCDCommand extends CommandExecutor {
 
                     String logo = "http://imgs.xkcd.com/static/terrible_small_logo.png";
 
-                    note.respond(title, "No: " + num, Bot.getColor(), logo, url);
+                    note.embed(title)
+                            .description("No: " + num)
+                            .thumbnail(logo)
+                            .image(url)
+                            .rest().queue();
 
                     return;
                 }
             }
 
-            note.error("Unable to grab xkcd comic.");
+            note.error("Unable to grab xkcd comic.").queue();
         } catch (Exception e) {
             e.printStackTrace();
         }

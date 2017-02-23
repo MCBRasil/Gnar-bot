@@ -14,6 +14,10 @@ class ShuffleCommand : MusicExecutor() {
 
     override fun execute(note: Note, args: List<String>) {
         manager.scheduler.shuffle()
-        note.replyMusic("Player has been shuffled.")
+
+        note.embed("Shuffle Queue") {
+            color(musicColor)
+            description("Player has been shuffled")
+        }.queue()
     }
 }

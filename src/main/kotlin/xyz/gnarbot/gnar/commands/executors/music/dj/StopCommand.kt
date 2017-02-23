@@ -16,6 +16,10 @@ class StopCommand : MusicExecutor() {
         manager.scheduler.queue.clear()
         manager.player.stopTrack()
         manager.player.isPaused = false
-        note.replyMusic("Playback has been completely stopped and the queue has been cleared.")
+
+        note.embed("Stop Playback") {
+            color(musicColor)
+            description("Playback has been completely stopped and the queue has been cleared.")
+        }.queue()
     }
 }

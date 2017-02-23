@@ -19,10 +19,13 @@ class PauseCommand : MusicExecutor() {
 
         manager.player.isPaused = !manager.player.isPaused
 
-        if (manager.player.isPaused) {
-            note.replyMusic("The player has been paused.")
-        } else {
-            note.replyMusic("The player has resumed playing.")
-        }
+        note.embed("Playback Control") {
+            color(musicColor)
+            description(if (manager.player.isPaused) {
+                "The player has been paused."
+            } else {
+                "The player has resumed playing."
+            })
+        }.queue()
     }
 }

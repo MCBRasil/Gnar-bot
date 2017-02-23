@@ -22,8 +22,9 @@ public class GameLookupCommand extends CommandExecutor {
         try {
             String query = StringUtils.join(args, "+");
 
-            HttpResponse<JsonNode> response = Unirest.get("https://videogamesrating.p.mashape.com/get" +
-                    ".php?count=5&game=" + query)
+            HttpResponse<JsonNode> response = Unirest.get("https://videogamesrating.p.mashape.com/get.php")
+                    .queryString("count", 5)
+                    .queryString("game", query)
                     .header("X-Mashape-Key", Credentials.MASHAPE)
                     .header("Accept", "application/json")
                     .asJson();
@@ -31,7 +32,7 @@ public class GameLookupCommand extends CommandExecutor {
             JSONArray jsa = response.getBody().getArray();
 
             if (jsa.length() == 0) {
-                note.error("No game found with that title.");
+                note.error("No game found with that title.").queue();
                 return;
             }
 

@@ -11,7 +11,6 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
-import java.util.StringJoiner;
 
 @Command(aliases = "ub")
 public class UrbanDictionaryCommand extends CommandExecutor {
@@ -30,18 +29,24 @@ public class UrbanDictionaryCommand extends CommandExecutor {
 
             JSONArray words = json.getJSONArray("list");
 
+            if (words.length() < 1) {
+                note.error("Could not find that word, rip u");
+                return;
+            }
+
             JSONObject word = words.getJSONObject(0);
 
-            StringJoiner sj = new StringJoiner("\n");
+            note.embed("Urban Dictionary")
+                    .color(Bot.getColor())
+                    .thumbnail("https://s3.amazonaws.com/mashape-production-logos/apis/53aa4f67e4b0a9b1348da532_medium")
+                    .field("Word", true, "[" + word.getString("word") + "](" + word.getString("permalink") + ")")
+                    .field("Definition", true, word.optString("definition"))
+                    .field("Example", true, word.optString("example"))
+                    .rest().queue();
 
-            sj.add("Word: **[" + word.get("word") + "](" + word.get("permalink") + ")" + "**\n\n");
-            sj.add("Definition: \n**[" + word.get("definition") + "]()**\n\n");
-            sj.add("Example: \n**[" + word.get("example") + "]()**");
-
-            String logo = "https://s3.amazonaws.com/mashape-production-logos/apis/53aa4f67e4b0a9b1348da532_medium";
-
-            note.respond("Urban Dictionary", sj.toString(), Bot.getColor(), logo);
-        } catch (Exception e) { note.error("Could not find that word, rip u"); }
+        } catch (Exception e) {
+            note.error("Could not find that word, rip u").queue();
+        }
     }
 
 }

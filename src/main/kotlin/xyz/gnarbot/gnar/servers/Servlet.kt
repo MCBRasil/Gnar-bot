@@ -7,8 +7,8 @@ import net.dv8tion.jda.core.entities.User
 import net.dv8tion.jda.core.exceptions.PermissionException
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.CommandHandler
-import xyz.gnarbot.gnar.members.PeopleHandler
-import xyz.gnarbot.gnar.members.Person
+import xyz.gnarbot.gnar.members.Client
+import xyz.gnarbot.gnar.members.ClientHandler
 import xyz.gnarbot.gnar.servers.music.MusicManager
 
 /**
@@ -16,8 +16,10 @@ import xyz.gnarbot.gnar.servers.music.MusicManager
  * @see Guild
  */
 class Servlet(val shard: Shard, private var guild: Guild) : Guild by guild {
-    val peopleHandler: PeopleHandler = PeopleHandler(this)
+    val clientHandler: ClientHandler = ClientHandler(this)
     val commandHandler: CommandHandler = CommandHandler(this)
+
+    val selfClient: Client get() = clientHandler.selfClient
 
     var musicManager: MusicManager? = null
         get() {
@@ -36,7 +38,7 @@ class Servlet(val shard: Shard, private var guild: Guild) : Guild by guild {
         musicManager = null
     }
 
-    fun getMember(name: String, searchNickname: Boolean = false): Member? {
+    fun getMemberByName(name: String, searchNickname: Boolean = false): Member? {
         for (member in getMembersByName(name, true)) {
             return member
         }
@@ -48,8 +50,8 @@ class Servlet(val shard: Shard, private var guild: Guild) : Guild by guild {
         return null
     }
 
-    fun getPerson(name: String, searchNickname: Boolean = false): Person? {
-        return getMember(name, searchNickname)?.let { peopleHandler.asPerson(it) }
+    fun getPersonByName(name: String, searchNickname: Boolean = false): Client? {
+        return getMemberByName(name, searchNickname)?.let { clientHandler.asPerson(it) }
     }
 
     //    @Deprecated("Useless")
@@ -72,9 +74,9 @@ class Servlet(val shard: Shard, private var guild: Guild) : Guild by guild {
      * Attempt to ban the member from the guild.
      * @return If the bot had permission.
      */
-    fun ban(person: Person): Boolean {
+    fun ban(client: Client): Boolean {
         try {
-            controller.ban(person as User, 2).queue()
+            controller.ban(client as User, 2).queue()
             return true
         } catch (e: PermissionException) {
             return false
@@ -86,9 +88,9 @@ class Servlet(val shard: Shard, private var guild: Guild) : Guild by guild {
      * Attempt to un-ban the member from the guild.
      * @return If the bot had permission.
      */
-    fun unban(person: Person): Boolean {
+    fun unban(client: Client): Boolean {
         try {
-            controller.unban(person).queue()
+            controller.unban(client).queue()
             return true
         } catch (e: PermissionException) {
             return false
@@ -100,9 +102,9 @@ class Servlet(val shard: Shard, private var guild: Guild) : Guild by guild {
      * Attempt to kick the member from the guild.
      * @return If the bot had permission.
      */
-    fun kick(person: Person): Boolean {
+    fun kick(client: Client): Boolean {
         try {
-            controller.kick(person).queue()
+            controller.kick(client).queue()
             return true
         } catch (e: PermissionException) {
             return false
@@ -114,9 +116,9 @@ class Servlet(val shard: Shard, private var guild: Guild) : Guild by guild {
      * Attempt to mute the member in the guild.
      * @return If the bot had permission.
      */
-    fun mute(person: Person): Boolean {
+    fun mute(client: Client): Boolean {
         try {
-            controller.setMute(person, true).queue()
+            controller.setMute(client, true).queue()
             return true
         } catch (e: PermissionException) {
             return false
@@ -128,9 +130,9 @@ class Servlet(val shard: Shard, private var guild: Guild) : Guild by guild {
      * Attempt to unmute the member in the guild.
      * @return If the bot had permission.
      */
-    fun unmute(person: Person): Boolean {
+    fun unmute(client: Client): Boolean {
         try {
-            controller.setMute(person, false).queue()
+            controller.setMute(client, false).queue()
             return true
         } catch (e: PermissionException) {
             return false
@@ -142,8 +144,13 @@ class Servlet(val shard: Shard, private var guild: Guild) : Guild by guild {
      */
     override fun toString(): String = "Host(id=${guild.id}, shard=${shard.id}, guild=${guild.name})"
 
+    fun shutdown() {
+        clientHandler.registry.clear()
+        resetMusicManager()
+    }
+
     fun handleMessage(message: Message) {
-        val person = peopleHandler.asPerson(message.author)
+        val person = clientHandler.asPerson(message.author)
         commandHandler.callCommand(message, message.content, person)
     }
 

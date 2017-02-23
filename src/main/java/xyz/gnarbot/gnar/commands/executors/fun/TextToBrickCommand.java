@@ -13,7 +13,7 @@ public class TextToBrickCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (args.isEmpty()) {
-            note.error("Please provide a query.");
+            note.error("Please provide a query.").queue();
             return;
         }
         StringBuilder sb = new StringBuilder();
@@ -27,6 +27,6 @@ public class TextToBrickCommand extends CommandExecutor {
                 sb.append(a);
             }
         }
-        note.respond("Text to Brick", sb.toString(), Bot.getColor());
+        note.respond("Text to Brick", sb.toString(), Bot.getColor()).queue();
     }
 }

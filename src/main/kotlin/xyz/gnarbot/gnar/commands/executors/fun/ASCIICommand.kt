@@ -17,7 +17,7 @@ import java.util.*
 class ASCIICommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
         if (args.isEmpty()) {
-            note.error("Please provide a query.")
+            note.error("Please provide a query.").queue()
             return
         }
 
@@ -25,7 +25,7 @@ class ASCIICommand : CommandExecutor() {
             val query = StringUtils.join(args, "+")
 
             if (query.length > 15) {
-                note.error("The query has too many characters. `15 at most.`")
+                note.error("The query has too many characters. `15 at most.`").queue()
                 return
             }
 
@@ -33,11 +33,12 @@ class ASCIICommand : CommandExecutor() {
 
             val element = document.getElementsByTag("body")[0]
 
-            val builder = "```\n${getText(element)}```"
+            note.embed("ASCII Text") {
+                description("```\n${getText(element)}```")
+            }.queue()
 
-            note.respond("ASCII Text", builder)
         } catch (e: Exception) {
-            note.error("Unable to generate ASCII art.")
+            note.error("Unable to generate ASCII art.").queue()
             e.printStackTrace()
         }
 

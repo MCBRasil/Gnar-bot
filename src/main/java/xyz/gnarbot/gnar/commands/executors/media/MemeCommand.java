@@ -6,13 +6,15 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.Credentials;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 @Command(aliases = "meme",
         usage = "-meme_name | _top | _bottom",
@@ -38,7 +40,7 @@ public class MemeCommand extends CommandExecutor {
     }
 
     @Override
-    public void execute(Note msg, List<String> args) {
+    public void execute(Note note, List<String> args) {
         try {
             if (args.get(0).equalsIgnoreCase("list")) {
                 int page = 1;
@@ -46,18 +48,16 @@ public class MemeCommand extends CommandExecutor {
                 try {
                     if (args.get(1) != null) {
                         page = Integer.valueOf(args.get(1));
+                        if (page <= 0) { page = 1; }
                     }
                 } catch (Exception ignore) {}
 
-                if (page == 0) { page = 1; }
+                Set<String> names = map.keySet();
 
-                List<String> names = new ArrayList<>(map.keySet());
-
-                StringJoiner sj = new StringJoiner("\n");
 
                 int pages;
 
-                if (names.size() % 10 == 0) {
+                if (map.keySet().size() % 10 == 0) {
                     pages = names.size() / 10;
                 } else {
                     pages = names.size() / 10 + 1;
@@ -65,15 +65,19 @@ public class MemeCommand extends CommandExecutor {
 
                 if (page > pages) page = pages;
 
-                int i = 0;
-                for (String g : names) {
-                    i++;
-                    if (i < 10 * page + 1 && i > 10 * page - 10) {
-                        sj.add("**#" + i + "** [" + g + "]()");
-                    }
-                }
+                int _page = page;
+                note.embed("Meme List (Page " + page + "/" + pages + ")")
+                        .description(sb -> {
+                            int i = 0;
+                            for (String g : names) {
+                                i++;
+                                if (i < 10 * _page + 1 && i > 10 * _page - 10) {
+                                    sb.append("**#").append(i).append("** [").append(g).append("]()").append('\n');
+                                }
+                            }
+                        })
+                        .rest().queue();
 
-                msg.respond("Meme List (Page " + page + "/" + pages + ")", sj.toString());
                 return;
             }
 
@@ -103,13 +107,16 @@ public class MemeCommand extends CommandExecutor {
                     .getObject()
                     .getJSONObject("data");
 
-            msg.respond("Meme Generator", null, Bot.getColor(), null, response.getString("url"));
+            note.embed("Meme Generator")
+                    .image(response.optString("url"))
+                    .rest().queue();
 
         } catch (Exception e) {
-            msg.error("**Please supply more arguments. Example Usage:**\n\n" +
+            note.error(
+                    "**Please supply more arguments. Example Usage:**\n\n" +
                     "[_meme Spongegar | Top Text | Bottom Text]()\n\n" +
                     "**For a list of memes, type:**\n\n" +
-                    "[_meme list (page #)]()");
+                    "[_meme list (page #)]()").queue();
         }
     }
 

@@ -1,13 +1,12 @@
 package xyz.gnarbot.gnar.commands.executors.general;
 
 import com.google.inject.Inject;
-import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Role;
 import org.apache.commons.lang3.StringUtils;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.members.Person;
+import xyz.gnarbot.gnar.members.Client;
 import xyz.gnarbot.gnar.servers.Servlet;
 import xyz.gnarbot.gnar.utils.Note;
 
@@ -21,48 +20,43 @@ public class WhoIsCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (args.isEmpty()) {
-            note.error("You did not mention a user.");
+            note.error("You did not mention a user.").queue();
             return;
         }
 
         // SEARCH USERS
-        final Person person;
+        final Client client;
 
-        List<Person> mentioned = note.getMentionedUsers();
+        List<Client> mentioned = note.getMentionedUsers();
         if (mentioned.size() > 0) {
-            person = mentioned.get(0);
+            client = mentioned.get(0);
         } else {
-            person = servlet.getPerson(StringUtils.join(args, " "), true);
+            client = servlet.getPersonByName(StringUtils.join(args, " "), true);
         }
 
-        if (person == null) {
-            note.error("You did not mention a valid user.");
+        if (client == null) {
+            note.error("You did not mention a valid user.").queue();
             return;
         }
 
-        String nickname = note.getGuild().getMember(person).getNickname();
-        Game game = note.getGuild().getMember(person).getGame();
 
-        note.embed("Who is " + person.getName() + "?")
-                .setThumbnail(person.getAvatarUrl())
-                .setColor(Bot.getColor())
-                .description(sb -> {
-                    sb.append("Name: **[");
-                    sb.append(person.getName()).append("#").append(person.getDiscriminator()).append("]()**\n");
-                    sb.append("ID: **[").append(person.getId()).append("]()**\n\n");
-                    sb.append("__**General**__\n");
-                    sb.append("Nick: **[").append(nickname != null ? nickname : "None").append("]()**\n");
-                    sb.append("Game: **[").append(game != null ? game.getName() : "None").append("]()**\n");
-                    sb.append("Bot: **[").append(String.valueOf(person.isBot()).toUpperCase()).append("]()**\n");
-                    sb.append("Level: **[")
-                            .append(person.getLevel().toString().replaceAll("_", " "))
-                            .append("]()**\n\n");
-                    sb.append("__**Roles**__").append('\n');
+        note.embed("Who is " + client.getName() + "?")
+                .thumbnail(client.getAvatarUrl())
+                .color(Bot.getColor())
+                .field("Name", true, client.getName())
+                .field("Nickname", true, client.getNickname() != null ? client.getNickname() : "No nickname.")
 
-                    for (Role role : person.getRoles()) {
-                        sb.append("• **[").append(role.getName()).append("]()**").append('\n');
+                .field("ID", true, client.getId())
+                .field("Game", true, client.getGame() != null ? client.getGame().getName() : "No game.")
+
+                .field("Level", true, client.getLevel().getTitle())
+                .field("Discriminator", true, client.getDiscriminator())
+
+                .field("Roles", false, sb -> {
+                    for (Role role : client.getRoles()) {
+                        sb.append("• ").append(role.getName()).append('\n');
                     }
                 })
-                .queue();
+                .rest().queue();
     }
 }

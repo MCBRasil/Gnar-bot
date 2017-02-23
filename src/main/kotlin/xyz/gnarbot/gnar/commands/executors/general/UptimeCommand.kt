@@ -13,6 +13,8 @@ class UptimeCommand : CommandExecutor() {
         val h = m / 60
         val d = h / 24
 
-        note.respond("Bot Uptime", "$d days, ${h % 24} hours, ${m % 60} minutes and ${s % 60} seconds")
+        note.embed("Bot Uptime") {
+            description("$d days, ${h % 24} hours, ${m % 60} minutes and ${s % 60} seconds")
+        }.queue()
     }
 }

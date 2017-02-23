@@ -34,7 +34,7 @@ public class PoopCommand extends CommandExecutor {
             try {
                 poopArt.setCharAt(7 + i, poop.charAt(i));
             } catch (IndexOutOfBoundsException e) {
-                note.error("Poop is too big. Constipation occurred.");
+                note.error("Poop is too big. Constipation occurred.").queue();
                 return;
             }
         }
@@ -42,6 +42,8 @@ public class PoopCommand extends CommandExecutor {
         joiner.add(poopArt);
         joiner.add("░░░░░░░░░░░░░░░░░░░░░░░");
 
-        note.respond("Pooping Memes", joiner.toString());
+        note.embed("Pooping Memes")
+                .description(joiner.toString())
+                .rest().queue();
     }
 }

@@ -28,19 +28,19 @@ class JavascriptCommand : CommandExecutor() {
         val script = args.joinToString(" ")
 
         if (blocked.any { script.contains(it, true) }) {
-            note.error("JavaScript Eval Expression may be malicious, canceling.")
+            note.error("JavaScript Eval Expression may be malicious, canceling.").queue()
             return
         }
 
         val result: Any? = try {
             engine.eval(script)
         } catch (e: ScriptException) {
-            note.error("The error `$e` occurred while executing the JavaScript statement.")
+            note.error("The error `$e` occurred while executing the JavaScript statement.").queue()
             return
         }
 
         if (result != null) {
-            note.respond("Java Script", "Running `$script`.\n\n**Result:**\n\n" + result.toString())
+            note.respond("Java Script", "Running `$script`.\n\n**Result:**\n\n" + result.toString()).queue()
         }
     }
 }

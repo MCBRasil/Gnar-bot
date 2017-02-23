@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Command(aliases = {"leet"}, usage = "(string)", description = "Leet it!")
+@Command(aliases = {"leet"}, usage = "(string)", description = "Leet a string!")
 public class LeetifyCommand extends CommandExecutor {
     private static final Map<String, String> substitutions = new HashMap<String, String>() {{
         put("a", "4");
@@ -34,6 +34,8 @@ public class LeetifyCommand extends CommandExecutor {
             s = s.replaceAll(entry.getKey(), entry.getValue());
         }
 
-        note.respond("Leet It", s);
+        note.embed("Leet it")
+                .description(s)
+                .rest().queue();
     }
 }

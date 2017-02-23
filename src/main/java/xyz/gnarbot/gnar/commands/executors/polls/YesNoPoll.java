@@ -1,16 +1,15 @@
 package xyz.gnarbot.gnar.commands.executors.polls;
 
 import xyz.gnarbot.gnar.Bot;
-import xyz.gnarbot.gnar.members.Person;
+import xyz.gnarbot.gnar.members.Client;
 import xyz.gnarbot.gnar.utils.Note;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class YesNoPoll extends Poll {
 
-    private Person startingPerson;
+    private Client startingClient;
 
     private ScheduledFuture runTask;
 
@@ -33,83 +32,77 @@ public class YesNoPoll extends Poll {
     public void startPoll() {
 
         System.out.println(n.getAuthor().getName() + " created a new poll");
-        startingPerson = n.getAuthor();
+        startingClient = n.getAuthor();
         final Note repliedMessage;
 
-        try {
-            repliedMessage = n.reply(":pushpin: *A new poll has been started by* **" + startingPerson.getName() +
-                    "** `(Poll ID: " + getPollid() + ")`\n\n" + ":paperclip: Question:\n" + "        ╚ " + question +
-                    "\n\n" + ":clock1: Time Left:\n" + "        ╚ " + minutes + " minute(s) 0 second(s)\n\n" + "     " +
-                    "  " + " ╠ ❌ - No  [0 Votes]\n" + "        ╚ ✅ - Yes [0 Votes]")
-                    .get();
+        repliedMessage = n.reply(":pushpin: *A new poll has been started by* **" + startingClient.getName() +
+                "** `(Poll ID: " + getPollid() + ")`\n\n" + ":paperclip: Question:\n" + "        ╚ " + question +
+                "\n\n" + ":clock1: Time Left:\n" + "        ╚ " + minutes + " minute(s) 0 second(s)\n\n" + "     " +
+                "  " + " ╠ ❌ - No  [0 Votes]\n" + "        ╚ ✅ - Yes [0 Votes]")
+                .complete();
 
-            System.out.println(repliedMessage.getId());
-            repliedMessage.addReaction("❌");
+        System.out.println(repliedMessage.getId());
+        repliedMessage.addReaction("❌");
 
-            runTask = Bot.INSTANCE.getScheduler().scheduleAtFixedRate(new Runnable() {
-                int minutesInst = minutes;
+        runTask = Bot.INSTANCE.getScheduler().scheduleAtFixedRate(new Runnable() {
+            int minutesInst = minutes;
 
-                int seconds = 0;
+            int seconds = 0;
 
-                int timetaken = 0;
+            int timetaken = 0;
 
-                @Override
-                public void run() {
-                    System.out.println(timetaken);
-                    timetaken++;
-                    if (timetaken == 1) {
-                        repliedMessage.addReaction("✅");
+            @Override
+            public void run() {
+                System.out.println(timetaken);
+                timetaken++;
+                if (timetaken == 1) {
+                    repliedMessage.addReaction("✅");
+                }
+                if (minutesInst >= 0) {
+                    seconds--;
+                    if (seconds <= 0) {
+                        seconds = 60;
+                        minutesInst--;
                     }
-                    if (minutesInst >= 0) {
-                        seconds--;
-                        if (seconds <= 0) {
-                            seconds = 60;
-                            minutesInst--;
-                        }
-                        if (String.valueOf(seconds).contains("5") || String.valueOf(seconds).contains("0")) {
-                            repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingPerson
-                                    .getName() + "** `(Poll ID: " + getPollid() + ")`\n\n" + ":paperclip: " +
-                                    "Question:\n" + "        ╚ " + question + "\n\n" + ":clock1: Time Left:\n" + "   " +
-                                    "     ╚ " + minutesInst + " minute(s) " + seconds + " second(s)\n\n" + ":gem: " +
-                                    "Votes:\n" + "      " + "  ╠ ❌ - No  [" + (repliedMessage
-                                    .getReactions()
-                                    .get(0)
-                                    .getCount() - 1) + " Votes]\n" + "        ╚ ✅ - Yes [" + (repliedMessage
-                                    .getReactions()
-                                    .get(0)
-                                    .getCount() - 1) + " " + "Votes]").queue();
-                        }
+                    if (String.valueOf(seconds).contains("5") || String.valueOf(seconds).contains("0")) {
+                        repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingClient
+                                .getName() + "** `(Poll ID: " + getPollid() + ")`\n\n" + ":paperclip: " +
+                                "Question:\n" + "        ╚ " + question + "\n\n" + ":clock1: Time Left:\n" + "   " +
+                                "     ╚ " + minutesInst + " minute(s) " + seconds + " second(s)\n\n" + ":gem: " +
+                                "Votes:\n" + "      " + "  ╠ ❌ - No  [" + (repliedMessage
+                                .getReactions()
+                                .get(0)
+                                .getCount() - 1) + " Votes]\n" + "        ╚ ✅ - Yes [" + (repliedMessage
+                                .getReactions()
+                                .get(0)
+                                .getCount() - 1) + " " + "Votes]").queue();
                     }
                 }
-            }, 1, 1, TimeUnit.SECONDS);
+            }
+        }, 1, 1, TimeUnit.SECONDS);
 
-            Bot.INSTANCE.getScheduler().schedule(() ->
-            {
-                System.out.println("lmao");
+        Bot.INSTANCE.getScheduler().schedule(() ->
+        {
+            repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingClient.getName() +
+                    "**" + " `(Poll ID: " + getPollid() + ")`\n\n" + ":paperclip: Question:\n" + "        ╚ " +
+                    question + "\n\n" + ":clock1: Time Left:\n" + "        ╚ **Voting Over**\n\n" + ":gem: " +
+                    "Votes:\n" + "        " + "╠ ❌ - No  [" + (repliedMessage
+                    .getReactions()
+                    .get(0)
+                    .getCount() - 1) + " Votes]\n" + "        ╚ " + "✅ - Yes [" + (repliedMessage.getReactions()
+                    .get(0)
+                    .getCount() - 1) + " Votes]").queue();
 
-                repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingPerson.getName() +
-                        "**" + " `(Poll ID: " + getPollid() + ")`\n\n" + ":paperclip: Question:\n" + "        ╚ " +
-                        question + "\n\n" + ":clock1: Time Left:\n" + "        ╚ **Voting Over**\n\n" + ":gem: " +
-                        "Votes:\n" + "        " + "╠ ❌ - No  [" + (repliedMessage
-                        .getReactions()
-                        .get(0)
-                        .getCount() - 1) + " Votes]\n" + "        ╚ " + "✅ - Yes [" + (repliedMessage.getReactions()
-                        .get(0)
-                        .getCount() - 1) + " Votes]").queue();
+            repliedMessage.reply(":exclamation: Poll `#" + getPollid() + "` by " + startingClient.getName() + " " +
+                    "has " + "finished! Check above for the results!");
 
-                repliedMessage.reply(":exclamation: Poll `#" + getPollid() + "` by " + startingPerson.getName() + " " +
-                        "has " + "finished! Check above for the results!");
+            startingClient.getPrivateChannel()
+                    .sendMessage(":exclamation: Your poll in <#" + n.getChannel()
+                            .getId() + "> has ended! Go check it's results!");
 
-                startingPerson.getPrivateChannel()
-                        .sendMessage(":exclamation: Your poll in <#" + n.getChannel()
-                                .getId() + "> has ended! Go check it's results!");
+            runTask.cancel(true);
+        }, minutes * 60 + 5, TimeUnit.SECONDS);
 
-                runTask.cancel(true);
-            }, minutes * 60 + 5, TimeUnit.SECONDS);
-
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
     }
 
     public int getPollid() {

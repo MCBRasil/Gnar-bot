@@ -8,7 +8,6 @@ import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.Utils;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 //TODO REMOVE THE EDITZ
 @Command(aliases = "react",
@@ -18,7 +17,7 @@ public class ReactCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (args.size() < 2) {
-            note.error("Insufficient arguments. `" + this.getUsage() + "`");
+            note.error("Insufficient arguments. `" + this.getUsage() + "`").queue();
             return;
         }
         String msgid = args.get(0);
@@ -28,13 +27,9 @@ public class ReactCommand extends CommandExecutor {
                 msg.addReaction(em).queue();
             }
 
-            try {
-                note.info("Reacted to the message with " + note.getEmotes().size() + " emotes. :smile:")
-                        .get()
-                        .optDelete(5);
-            } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
-            }
+            note.info("Reacted to the message with " + note.getEmotes().size() + " emotes. :smile:")
+                    .complete()
+                    .optDelete(5);
         } else {
             args.set(0, "");
             boolean suc = false;
@@ -46,17 +41,13 @@ public class ReactCommand extends CommandExecutor {
                 }
             }
             if (suc) {
-                try {
-                    note.info("Reacted to the message with " + (args.size() - 1) + " emotes. :smile:")
-                            .get()
-                            .optDelete(5);
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
+                note.info("Reacted to the message with " + (args.size() - 1) + " emotes. :smile:")
+                        .complete()
+                        .optDelete(5);
                 return;
             }
 
-            note.error("No reactions detected, robot.");
+            note.error("No reactions detected, robot.").queue();
         }
     }
 }

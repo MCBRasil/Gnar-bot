@@ -67,15 +67,15 @@ class ProgressionCommand : CommandExecutor() {
         }
 
         try {
-            val msg = note.reply(list[0])
+            val msg = note.reply(list[0]).complete()
 
             list.forEachIndexed { i, s ->
                 Bot.scheduler.schedule({
-                    msg.get().edit(list[i])
+                    msg.editMessage(list[i]).queue()
                 }, i + 1L, TimeUnit.SECONDS)
             }
         } catch (e: UnsupportedOperationException) {
-            note.error("Message was too long or something... no memes for you.")
+            note.error("Message was too long or something... no memes for you.").queue()
         }
     }
 }

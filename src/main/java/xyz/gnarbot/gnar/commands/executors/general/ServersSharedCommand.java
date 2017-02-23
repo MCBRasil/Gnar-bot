@@ -26,6 +26,6 @@ public class ServersSharedCommand extends CommandExecutor {
             }
         }
 
-        note.reply("**Total Servers:** " + total + "\n**Servers:** \n" + servers);
+        note.reply("**Total Servers:** " + total + "\n**Servers:** \n" + servers).queue();
     }
 }

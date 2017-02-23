@@ -16,32 +16,30 @@ class HelpCommand : CommandExecutor() {
         val registry = host.shard.commandRegistry
 
         if (args.isNotEmpty()) {
-            val cmd: CommandExecutor? = registry.getCommand(args[0])
+            val target = if (args[0].startsWith('_')) args[0].substring(1) else args[0]
+
+            val cmd: CommandExecutor? = registry.getCommand(target)
 
             if (cmd == null) {
-                note.error("There is no command named `${args[0]}`. :cry:")
+                note.error("There is no command named `$target`. :cry:").queue()
                 return
             }
 
-            val aliases = registry.commandMap.entries
-                    .filter { it.value == cmd }
-                    .map { it.key }
+            note.embed("Command Information") {
+                color(Bot.color)
 
-            val joiner = StringJoiner("\n").apply {
-                add("Aliases: **[${aliases.joinToString(", ")}]()**")
-                add("Description: **[${cmd.description}]()**")
-                if (!cmd.usage.isNullOrBlank())
-                    add("Usage: **[${Bot.token}${args[0].toLowerCase()} ${cmd.usage}]()**")
-                add("Level: **[${cmd.level.title}]()**")
-            }
-
-            note.respond("Command Information", joiner.toString())
+                field("Aliases", true, cmd.aliases.joinToString(separator = ", ${Bot.token}", prefix = Bot.token))
+                field("Usage", true, "${Bot.token}${cmd.aliases[0].toLowerCase()} ${cmd.usage}")
+                field("Level", true, cmd.level.title)
+                field("Description", false, cmd.description)
+            }.queue()
 
             return
         }
 
         val cmds = registry.uniqueExecutors
 
+        // todo change to new embed
         val eb = EmbedBuilder()
         eb.setTitle("Gnar Documentation", null)
         eb.setDescription("This is all of GN4R-Bot's currently registered commands on the __**${host.name}**__ guild.\n\n")
@@ -52,7 +50,7 @@ class HelpCommand : CommandExecutor() {
 
             if (sectionCount < 1) continue
 
-            eb.addField("", "__**${perm.title}** — ${sectionCount}__\n${perm.message}", false)
+            eb.addField("", "__**${perm.title}** — ${sectionCount}__\n${perm.requireText}", false)
 
             var joiner = StringJoiner("\n")
             var count = 0
@@ -108,6 +106,6 @@ class HelpCommand : CommandExecutor() {
 
         note.author.requestPrivateChannel().sendMessage(embed)?.queue()
 
-        note.info("Gnar's guide has been directly messaged to you.")
+        note.info("Gnar's guide has been directly messaged to you.").queue()
     }
 }

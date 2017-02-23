@@ -11,7 +11,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class AdventureGrid {
@@ -165,9 +164,9 @@ public class AdventureGrid {
             Bot.INSTANCE.getScheduler().schedule(() ->
             {
                 try {
-                    Note m = n.info("Sending your map!").get();
+                    Note m = n.info("Sending your map!").complete();
                     n.getChannel().sendFile(mapFile, m).queue();
-                } catch (IOException | ExecutionException | InterruptedException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }, 1, TimeUnit.SECONDS);

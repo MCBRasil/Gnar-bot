@@ -24,8 +24,8 @@ class Shard(val id: Int, private val jda: JDA) : JDA by jda {
         //Logger.getLogger("org.apache.http.client.protocol.ResponseProcessCookies").level = Level.OFF
     }
 
-    fun getHost(id: String?) {
-
+    fun getHost(id: String?) : Servlet? {
+        return getHost(getGuildById(id))
     }
 
     /**
@@ -54,11 +54,19 @@ class Shard(val id: Int, private val jda: JDA) : JDA by jda {
      */
     val info: ShardInfo get() = ShardInfo(this)
 
+
+
     /**
      * Shuts down the shard.
      */
     override fun shutdown() {
         jda.shutdown(false)
+        clearServlets()
+        commandRegistry.commandMap.clear()
+    }
+
+    fun clearServlets() {
+        servlets.values.forEach(Servlet::shutdown)
         servlets.clear()
     }
 
@@ -66,9 +74,8 @@ class Shard(val id: Int, private val jda: JDA) : JDA by jda {
 
     fun reset(guild: Guild?) {
         if (guild == null) return
-        if (!servlets.contains(guild.id)) return
-
-        servlets[guild.id] = Servlet(this, guild)
+        servlets[guild.id]?.shutdown()
+        servlets[guild.id] = getHost(guild.id)!!
     }
 
     class ShardInfo(shard: Shard) {

@@ -19,7 +19,7 @@ public class QuoteCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (args.isEmpty()) {
-            note.error("Provide a message id.");
+            note.error("Provide a message id.").queue();
             return;
         }
 
@@ -36,11 +36,11 @@ public class QuoteCommand extends CommandExecutor {
                     Message msg = note.getChannel().getMessageById(id).complete();
                     targetChannel.sendMessage(
                             KUtils.makeEmbed(null, msg.getContent(), Bot.getColor(), null, null,
-                                    note.getServlet().getPeopleHandler().asPerson(msg.getAuthor()))).queue();
+                                    note.getServlet().getClientHandler().asPerson(msg.getAuthor()))).queue();
                 } catch (Exception e) {
                     try {
                         Message m = note.error("Could not find a message with the ID " + id + " within this channel.")
-                                .get();
+                                .complete();
                         toDelete.add(m);
                     } catch (Exception ignore) {}
                 }

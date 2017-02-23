@@ -16,6 +16,10 @@ class RepeatCommand : MusicExecutor() {
 
     override fun execute(note: Note, args: List<String>) {
         manager.scheduler.isRepeating = !manager.scheduler.isRepeating
-        note.replyMusic("Music player was set to __${if (manager.scheduler.isRepeating) "repeat" else "not repeat"}__.")
+
+        note.embed("Repeat Queue") {
+            color(musicColor)
+            description("Music player was set to __${if (manager.scheduler.isRepeating) "repeat" else "not repeat"}__.")
+        }.queue()
     }
 }

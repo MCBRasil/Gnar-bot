@@ -6,6 +6,7 @@ import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
+import java.awt.Color
 
 @Command(aliases = arrayOf("nowplaying", "np"), description = "Shows what's currently playing.")
 class NowPlayingCommand : MusicExecutor() {
@@ -34,7 +35,7 @@ class NowPlayingCommand : MusicExecutor() {
 
         eb.addField("Time", "**[$position / $duration]**", true)
 
-        eb.setColor(color)
+        eb.setColor(Color(0, 221, 88))
 
         note.channel.sendMessage(eb.build()).queue()
     }

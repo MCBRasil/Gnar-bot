@@ -25,15 +25,13 @@ public class Rule34Command extends CommandExecutor {
             String tag = "";
             try {
                 for (String s : args) {
-                    if (s.equals("_rule")) continue;
                     if (tag.equals("")) {
                         tag += ("&tags=" + s);
                     } else {
                         tag += ("+" + s);
                     }
                 }
-            } catch (Exception ignore) {
-            }
+            } catch (Exception ignore) {}
 
             try {
 
@@ -55,12 +53,12 @@ public class Rule34Command extends CommandExecutor {
 
                 url = att2.getValue();
 
-                note.reply("http:" + url);
+                note.reply("http:" + url).queue();
             } catch (Exception e) {
-                note.error("Please refer to rule 35.");
+                note.error("Please refer to rule 35.").queue();
             }
         } else {
-            note.error("Sorry, you must have the role `Fucking Teemo` to use this command!");
+            note.error("Sorry, you must have the role `Fucking Teemo` to use this command!").queue();
         }
 
     }

@@ -18,12 +18,12 @@ public class OverwatchLookupCommand extends CommandExecutor {
 
     public void execute(Note note, java.util.List<String> args) {
         if (args.isEmpty()) {
-            note.error("Insufficient arguments. `" + getUsage() + "`.");
+            note.error("Insufficient arguments. `" + getUsage() + "`.").queue();
             return;
         }
 
         if (!args.get(0).matches("[a-zA-Z1-9]+(#|-)\\d+")) {
-            note.error("You did not enter a valid BattleTag `[BattleTag#0000]`.");
+            note.error("You did not enter a valid BattleTag `[BattleTag#0000]`.").queue();
             return;
         }
 
@@ -38,7 +38,7 @@ public class OverwatchLookupCommand extends CommandExecutor {
                     }
                 }
                 if (region == null) {
-                    note.error("Invalid region provided. `[us, eu, kr]`");
+                    note.error("Invalid region provided. `[us, eu, kr]`").queue();
                     return;
                 }
             }
@@ -56,7 +56,7 @@ public class OverwatchLookupCommand extends CommandExecutor {
                 jso = response.optJSONObject(region);
 
                 if (jso == null) {
-                    note.error("Unable to find Overwatch player `" + tag + "` in region `" + region.toUpperCase() + "`.");
+                    note.error("Unable to find Overwatch player `" + tag + "` in region `" + region.toUpperCase() + "`.").queue();
                     return;
                 }
             }
@@ -72,7 +72,7 @@ public class OverwatchLookupCommand extends CommandExecutor {
                 }
 
                 if (jso == null) {
-                    note.error("Unable to find Overwatch player `" + tag + "`.");
+                    note.error("Unable to find Overwatch player `" + tag + "`.").queue();
                     return;
                 }
             }
@@ -90,7 +90,7 @@ public class OverwatchLookupCommand extends CommandExecutor {
             JSONObject overall = jso.optJSONObject("stats");
 
             if (overall == null) {
-                note.error("Unable to find statistics for Overwatch player`" + tag + "`.");
+                note.error("Unable to find statistics for Overwatch player`" + tag + "`.").queue();
                 return;
             }
 
@@ -218,8 +218,7 @@ public class OverwatchLookupCommand extends CommandExecutor {
             note.getChannel().sendMessage(eb.build()).queue();
 
         } catch (Exception e) {
-            note.error(
-                    "User not found, make sure you are typing your name and Overwatch ID correctly.\n\n**Example:**\n\n[Avalon#11557]()");
+            note.error("User not found, make sure you are typing your name and Overwatch ID correctly.\n\n**Example:**\n\n[Avalon#11557]()").queue();
         }
     }
 }

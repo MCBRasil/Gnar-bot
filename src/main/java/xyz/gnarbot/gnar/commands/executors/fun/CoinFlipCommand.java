@@ -11,14 +11,8 @@ import java.util.Random;
 public class CoinFlipCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
-        if (new Random().nextInt(2) == 0) {
-            note.embed("Coin Flip")
-                    .setDescription("Heads!")
-                    .queue();
-        } else {
-            note.embed("Coin Flip")
-                    .setDescription("Tails!")
-                    .queue();
-        }
+        note.embed("Coin Flip")
+                .description(new Random().nextInt(2) == 0 ? "Heads" : "Tails!")
+                .rest().queue();
     }
 }

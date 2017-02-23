@@ -4,7 +4,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.commons.lang3.StringUtils;
-import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -16,7 +15,7 @@ public class YodaTalkCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (args.isEmpty()) {
-            note.error("At least put something. `:[`");
+            note.error("At least put something. `:[`").queue();
             return;
         }
 
@@ -31,8 +30,11 @@ public class YodaTalkCommand extends CommandExecutor {
 
             String result = response.getBody();
 
-            note.respond("Yoda-Speak", "**[" + result + "]()**", Bot.getColor(), "https://upload.wikimedia" +
-                    ".org/wikipedia/en/9/9b/Yoda_Empire_Strikes_Back.png");
+            note.embed("Yoda-Speak")
+                    .description(result)
+                    .thumbnail("https://upload.wikimedia.org/wikipedia/en/9/9b/Yoda_Empire_Strikes_Back.png")
+                    .rest().queue();
+
         } catch (UnirestException e) {
             e.printStackTrace();
         }

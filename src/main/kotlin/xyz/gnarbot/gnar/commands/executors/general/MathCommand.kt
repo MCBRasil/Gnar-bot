@@ -15,13 +15,13 @@ import java.util.*
 class MathCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
         if (args.isEmpty()) {
-            note.respond("Error", "Please provide a math expression.", Color.RED)
+            note.error("Please provide a math expression.").queue()
             return
         }
 
         note.embed {
-            setTitle("Math", null)
-            setColor(Bot.color)
+            title("Math", null)
+            color(Bot.color)
 
             val exp = ExpressionBuilder()
             val lines = StringUtils.join(args, ' ').fastSplit(';')
@@ -37,8 +37,8 @@ class MathCommand : CommandExecutor() {
                 field("Result", true, "**[${Arrays.toString(results)}]()**")
             } catch (e: AJEException) {
                 field("Error", true, "**[${e.message!!}]()**")
-                setColor(Color.RED)
+                color(Color.RED)
             }
-        }
+        }.queue()
     }
 }
