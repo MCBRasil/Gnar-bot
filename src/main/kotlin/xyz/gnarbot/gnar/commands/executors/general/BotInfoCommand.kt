@@ -77,8 +77,8 @@ class BotInfoCommand : CommandExecutor() {
             field("Voice Connections", true, voiceConnections)
 
             field("Guilds", true, guilds)
-            field("Guild Servlets", true, activeHosts)
-            field("Member Clients", true, activePersons)
+            field("Guild#Servlets", true, activeHosts)
+            field("Member#Clients", true, activePersons)
 
             field("Users", true) {
                 append("Total: ").appendln(highlight(users))
@@ -93,6 +93,6 @@ class BotInfoCommand : CommandExecutor() {
                 appendln("Commands: **[$commandSize]()**")
                 appendln("Library: Java **[JDA 3](https://github.com/DV8FromTheWorld/JDA)**")
             }
-        }.queue()
+        }.rest().queue()
     }
 }

@@ -90,6 +90,7 @@ public class CommandHandler {
             bind(Shard.class).toInstance(servlet.getShard());
 
             bind(CommandHandler.class).toInstance(CommandHandler.this);
+            bind(CommandRegistry.class).toInstance(servlet.getShard().getCommandRegistry());
             bind(ClientHandler.class).toInstance(servlet.getClientHandler());
 
             bind(JDA.class).toInstance(servlet.getJDA());

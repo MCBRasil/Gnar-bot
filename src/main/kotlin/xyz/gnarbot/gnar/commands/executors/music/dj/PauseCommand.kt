@@ -26,6 +26,6 @@ class PauseCommand : MusicExecutor() {
             } else {
                 "The player has resumed playing."
             })
-        }.queue()
+        }.rest().queue()
     }
 }

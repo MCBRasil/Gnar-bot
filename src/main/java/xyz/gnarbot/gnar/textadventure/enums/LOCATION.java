@@ -20,11 +20,11 @@ public enum LOCATION {
             "http://i.imgur" +
                     ".com/8PaBfXQ.png"), DEAD_END("Dead End", "brick-wall", "http://i.imgur.com/xFZvoIN.png");
 
-    private String id;
+    private final String id;
 
-    private String file;
+    private final String file;
 
-    private String url;
+    private final String url;
 
     LOCATION(String id, String file, String url) {
         this.id = id;

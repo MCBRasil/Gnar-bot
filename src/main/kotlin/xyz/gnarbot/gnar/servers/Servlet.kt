@@ -1,15 +1,19 @@
 package xyz.gnarbot.gnar.servers
 
-import net.dv8tion.jda.core.entities.Guild
-import net.dv8tion.jda.core.entities.Member
-import net.dv8tion.jda.core.entities.Message
-import net.dv8tion.jda.core.entities.User
+import net.dv8tion.jda.core.MessageBuilder
+import net.dv8tion.jda.core.entities.*
+import net.dv8tion.jda.core.entities.impl.MessageImpl
 import net.dv8tion.jda.core.exceptions.PermissionException
+import net.dv8tion.jda.core.requests.Request
+import net.dv8tion.jda.core.requests.Response
+import net.dv8tion.jda.core.requests.RestAction
+import net.dv8tion.jda.core.requests.Route
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.CommandHandler
 import xyz.gnarbot.gnar.members.Client
 import xyz.gnarbot.gnar.members.ClientHandler
 import xyz.gnarbot.gnar.servers.music.MusicManager
+import xyz.gnarbot.gnar.utils.Note
 
 /**
  * Represents a bot that serves on each [Guild] and wraps around it.
@@ -144,9 +148,17 @@ class Servlet(val shard: Shard, private var guild: Guild) : Guild by guild {
      */
     override fun toString(): String = "Host(id=${guild.id}, shard=${shard.id}, guild=${guild.name})"
 
-    fun shutdown() {
+    fun shutdown(interrupt: Boolean) : Boolean {
         clientHandler.registry.clear()
+
+        musicManager?.let {
+            if (!interrupt && it.player.playingTrack != null) {
+                return false
+            }
+        }
+
         resetMusicManager()
+        return true
     }
 
     fun handleMessage(message: Message) {
@@ -154,4 +166,23 @@ class Servlet(val shard: Shard, private var guild: Guild) : Guild by guild {
         commandHandler.callCommand(message, message.content, person)
     }
 
+    fun MessageChannel.sendNote(embed: MessageEmbed) : RestAction<Note> {
+        val message = MessageBuilder().setEmbed(embed).build()
+        return sendNote(message)
+    }
+
+    fun MessageChannel.sendNote(message: Message) : RestAction<Note> {
+        val route = Route.Messages.SEND_MESSAGE.compile(id)
+        val json = (message as MessageImpl).toJSONObject()
+        return object : RestAction<Note>(jda, route, json) {
+            override fun handleResponse(response: Response, request: Request<Any?>?) {
+                if (response.isOk) {
+                    val msg = EntityBuilder.get(jda).createMessage(response.`object`, this@sendNote, false)
+                    request?.onSuccess(Note(this@Servlet, msg))
+                } else {
+                    request?.onFailure(response)
+                }
+            }
+        }
+    }
 }

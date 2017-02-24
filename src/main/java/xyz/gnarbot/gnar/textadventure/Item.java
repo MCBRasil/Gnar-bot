@@ -3,9 +3,11 @@ package xyz.gnarbot.gnar.textadventure;
 public class Item {
     private static int lastID = 0;
 
-    private int id;
+    private final int id;
 
-    private String itemName, itemType, itemDescription;
+    private final String itemName;
+    private final String itemType;
+    private final String itemDescription;
 
     private int amount = 0;
 

@@ -14,7 +14,7 @@ import java.util.StringJoiner;
         usage = "-BattleTag#0000 ~region",
         description = "Look up Overwatch information about a player.")
 public class OverwatchLookupCommand extends CommandExecutor {
-    String[] regions = {"us", "eu", "kr"};
+    private final String[] regions = {"us", "eu", "kr"};
 
     public void execute(Note note, java.util.List<String> args) {
         if (args.isEmpty()) {

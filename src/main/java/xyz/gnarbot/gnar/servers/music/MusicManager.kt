@@ -67,7 +67,7 @@ class MusicManager(servlet: Servlet, val playerManager: AudioPlayerManager) {
                 note.embed("Music Queue") {
                     color(Color(0, 221, 88))
                     description(msg)
-                }.queue()
+                }.rest().queue()
             }
 
             override fun playlistLoaded(playlist: AudioPlaylist) {
@@ -88,7 +88,7 @@ class MusicManager(servlet: Servlet, val playerManager: AudioPlayerManager) {
                 note.embed("Music Queue") {
                     color(Color(0, 221, 88))
                     description("Added `$added` tracks to queue from playlist `${playlist.name}`.")
-                }.queue()
+                }.rest().queue()
             }
 
             override fun noMatches() {

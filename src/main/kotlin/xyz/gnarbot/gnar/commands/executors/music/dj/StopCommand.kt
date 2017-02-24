@@ -20,6 +20,6 @@ class StopCommand : MusicExecutor() {
         note.embed("Stop Playback") {
             color(musicColor)
             description("Playback has been completely stopped and the queue has been cleared.")
-        }.queue()
+        }.rest().queue()
     }
 }

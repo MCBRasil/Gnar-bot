@@ -20,6 +20,6 @@ class ResetCommand : MusicExecutor() {
         note.embed("Reset Music") {
             color(musicColor)
             description("The player was completely reset.")
-        }.queue()
+        }.rest().queue()
     }
 }

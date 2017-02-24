@@ -17,7 +17,10 @@ class QueueCommand : MusicExecutor() {
         val queue = manager.scheduler.queue
 
         if (queue.isEmpty()) {
-            note.replyMusic("The queue is currently empty.").queue()
+            note.embed("Queue") {
+                color(musicColor)
+                description("The queue is currently empty.")
+            }.rest().queue()
             return
         }
 
@@ -59,6 +62,6 @@ class QueueCommand : MusicExecutor() {
 
             field("Entries", true, trackCount)
             field("Queue Duration", true, getTimestamp(queueLength))
-        }.queue()
+        }.rest().queue()
     }
 }

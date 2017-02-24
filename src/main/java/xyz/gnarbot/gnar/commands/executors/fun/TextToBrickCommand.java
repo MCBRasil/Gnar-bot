@@ -1,7 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.fun;
 
 import org.apache.commons.lang3.StringUtils;
-import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -16,17 +15,20 @@ public class TextToBrickCommand extends CommandExecutor {
             note.error("Please provide a query.").queue();
             return;
         }
-        StringBuilder sb = new StringBuilder();
-        for (String a : StringUtils.join(args, " ").split("")) {
-            if (Character.isLetter(a.toLowerCase().charAt(0))) {
-                sb.append(":regional_indicator_").append(a.toLowerCase()).append(":");
-            } else {
-                if (a.equals(" ")) {
-                    sb.append(" ");
-                }
-                sb.append(a);
-            }
-        }
-        note.respond("Text to Brick", sb.toString(), Bot.getColor()).queue();
+
+        note.embed("Text to Brick")
+                .description(sb -> {
+                    for (String a : StringUtils.join(args, " ").split("")) {
+                        if (Character.isLetter(a.toLowerCase().charAt(0))) {
+                            sb.append(":regional_indicator_").append(a.toLowerCase()).append(":");
+                        } else {
+                            if (a.equals(" ")) {
+                                sb.append(" ");
+                            }
+                            sb.append(a);
+                        }
+                    }
+                })
+                .rest().queue();
     }
 }

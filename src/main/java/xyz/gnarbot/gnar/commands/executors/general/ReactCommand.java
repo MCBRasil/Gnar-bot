@@ -5,7 +5,6 @@ import net.dv8tion.jda.core.entities.Message;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
-import xyz.gnarbot.gnar.utils.Utils;
 
 import java.util.List;
 
@@ -20,8 +19,12 @@ public class ReactCommand extends CommandExecutor {
             note.error("Insufficient arguments. `" + this.getUsage() + "`").queue();
             return;
         }
+
         String msgid = args.get(0);
         Message msg = note.getChannel().getMessageById(msgid).complete();
+
+        //Note msg = new Note(note.getServlet(), msg);
+
         if (note.getEmotes().size() > 0) {
             for (Emote em : note.getEmotes()) {
                 msg.addReaction(em).queue();
@@ -31,15 +34,15 @@ public class ReactCommand extends CommandExecutor {
                     .complete()
                     .optDelete(5);
         } else {
-            args.set(0, "");
             boolean suc = false;
-            for (String r : args) {
-                if (!r.equalsIgnoreCase("")) {
-                    if (Utils.sendReactionAutoEncode(msg, r)) {
-                        suc = true;
-                    }
-                }
+
+            List<String> reactions = args.subList(1, args.size());
+
+            for (String r : reactions) {
+                msg.addReaction(r).queue();
+                suc = true;
             }
+
             if (suc) {
                 note.info("Reacted to the message with " + (args.size() - 1) + " emotes. :smile:")
                         .complete()
@@ -50,6 +53,19 @@ public class ReactCommand extends CommandExecutor {
             note.error("No reactions detected, robot.").queue();
         }
     }
+
+//    public static boolean sendReactionAutoEncode(Message message, String encodedEmoji) {
+//        try {
+//            Unirest.put("https://discordapp.com/api/v6/channels/" + message.getChannel()
+//                    .getId() + "/messages/" + message.getId() + "/reactions/" + URLEncoder.encode(encodedEmoji,
+//                    "UTF-8") + "/@me")
+//                    .header("Authorization", message.getJDA().getToken())
+//                    .asJsonAsync();
+//            return true;
+//        } catch (Exception e) {
+//            return false;
+//        }
+//    }
 }
 
 

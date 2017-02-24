@@ -18,7 +18,6 @@ class EmbedCreator(private val note: Note) {
     }
 
 
-
     fun title(title: String?): EmbedCreator {
         return title(title, null)
     }
@@ -49,9 +48,9 @@ class EmbedCreator(private val note: Note) {
     }
 
     // USE FOR JAVA
-    fun description(BLOCK: Consumer<StringBuilder>): EmbedCreator {
+    fun description(block: Consumer<StringBuilder>): EmbedCreator {
         val sb = StringBuilder()
-        BLOCK.accept(sb)
+        block.accept(sb)
         delegate.setDescription(sb.toString())
         return this
     }
@@ -59,7 +58,7 @@ class EmbedCreator(private val note: Note) {
 
 
 
-    inline fun field(name: String?, inline: Boolean = false, block: StringBuilder.() -> Unit): EmbedCreator {
+    inline fun field(name: String, inline: Boolean = false, block: StringBuilder.() -> Unit): EmbedCreator {
         val sb = StringBuilder()
         block(sb)
         delegate.addField(name, sb.toString(), inline)
@@ -87,7 +86,9 @@ class EmbedCreator(private val note: Note) {
 
 
     fun rest(): RestAction<Note> {
-        return note.channel.sendNote(note.servlet, build())
+        return note.servlet.run {
+            note.channel.sendNote(build())
+        }
     }
 
 

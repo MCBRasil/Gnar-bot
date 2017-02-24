@@ -15,11 +15,9 @@ import java.util.List;
 
 @Command(aliases = "pbot")
 public class PandoraBotCommand extends CommandExecutor {
+    private static final ChatterBotFactory factory = new ChatterBotFactory();
     @Inject
     private Servlet servlet;
-
-    private ChatterBotFactory factory = new ChatterBotFactory();
-
     private ChatterBot bot = null;
 
     private ChatterBotSession session = null;

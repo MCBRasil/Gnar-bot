@@ -1,8 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.music.parent
 
-import net.dv8tion.jda.core.requests.RestAction
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.utils.Note
 import java.awt.Color
 
 abstract class MusicExecutor : CommandExecutor() {
@@ -14,10 +12,6 @@ abstract class MusicExecutor : CommandExecutor() {
     }
 
     //abstract fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager)
-
-    protected fun Note.replyMusic(msg: String) : RestAction<Note> {
-        return this.respond("Music", msg, Color(0, 221, 88))
-    }
 
     protected fun getTimestamp(milliseconds: Long): String {
         val seconds = (milliseconds / 1000).toInt() % 60

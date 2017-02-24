@@ -15,6 +15,6 @@ class UptimeCommand : CommandExecutor() {
 
         note.embed("Bot Uptime") {
             description("$d days, ${h % 24} hours, ${m % 60} minutes and ${s % 60} seconds")
-        }.queue()
+        }.rest().queue()
     }
 }

@@ -7,6 +7,7 @@ import net.dv8tion.jda.core.requests.RestAction
 import java.time.OffsetDateTime
 
 class MessageReference(message: Message) : Message {
+
     var reference: Message = message
 
     fun update() {
@@ -23,6 +24,7 @@ class MessageReference(message: Message) : Message {
 
     override fun editMessage(p0: String): RestAction<Message> = reference.editMessage(p0)
     override fun editMessage(p0: Message): RestAction<Message> = reference.editMessage(p0)
+    override fun editMessage(p0: MessageEmbed?): RestAction<Message> = reference.editMessage(p0)
     override fun getAttachments(): List<Message.Attachment> = reference.attachments
     override fun getAuthor(): User = reference.author
     override fun getChannel(): MessageChannel = reference.channel

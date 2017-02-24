@@ -23,7 +23,7 @@ class RestartCommand : MusicExecutor() {
             note.embed("Restart Song") {
                 color(musicColor)
                 description("Restarting track: `${track.info.title}`.")
-            }.queue()
+            }.rest().queue()
 
             manager.player.playTrack(track.makeClone())
         } else {

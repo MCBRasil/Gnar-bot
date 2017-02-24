@@ -20,7 +20,7 @@ import java.util.TreeMap;
         usage = "-meme_name | _top | _bottom",
         description = "Create the dankest memes ever.")
 public class MemeCommand extends CommandExecutor {
-    private static Map<String, String> map = new TreeMap<>();
+    private static final Map<String, String> map = new TreeMap<>();
 
     static {
         try {

@@ -32,7 +32,7 @@ public class CommandRegistry {
     /**
      * The mapped registry of invoking key to the classes.
      */
-    private Map<String, CommandExecutor> commandMap = new LinkedHashMap<>();
+    private final Map<String, CommandExecutor> commandMap = new LinkedHashMap<>();
 
     public CommandRegistry() {
         register(HelpCommand.class);

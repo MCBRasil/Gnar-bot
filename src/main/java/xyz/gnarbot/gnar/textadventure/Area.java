@@ -9,18 +9,12 @@ import xyz.gnarbot.gnar.textadventure.events.FirstSwordLewdEvent;
 import java.util.Random;
 
 public class Area {
-    private LOCATION locationType;
-
+    private final LOCATION locationType;
+    private final Random random;
+    private final Adventure relatedAdventure;
     private int id;
-
     private boolean newLocation = true;
-
     private Event relatedEvent;
-
-    private Random random;
-
-    private Adventure relatedAdventure;
-
     private boolean discovered = false;
 
     private DIRECTION prevDirect;

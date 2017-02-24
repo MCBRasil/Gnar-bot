@@ -15,20 +15,19 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Adventure {
-    private static HashMap<User, Adventure> adventures = new HashMap<>();
-    private static int lastID = 0;
-    private Random random;
-    private User user;
-    private UUID gameID;
-    private Color defaultMessageColor = new Color(39, 255, 9);
+    private static final HashMap<User, Adventure> adventures = new HashMap<>();
+    private static final int lastID = 0;
+    private final Random random;
+    private final User user;
+    private final UUID gameID;
+    private final Color defaultMessageColor = new Color(39, 255, 9);
+    private final Long startTime;
+    private final ArrayList<Area> areas = new ArrayList<>();
+    private final ArrayList<String> actionList = new ArrayList<>();
+    private final AdventureGrid grid;
     private String lastResponse;
-    private Long startTime;
-    private ArrayList<Area> areas = new ArrayList<>();
-    private ArrayList<String> actionList = new ArrayList<>();
     private String heroName;
     private Adventure.STATE state;
-
-
 	/* -------------------------------------------------- */
     private String stateRelation;
     private String lastMessage;
@@ -37,7 +36,6 @@ public class Adventure {
     private Area currentArea, startArea;
     private int areasFound = 0;
     private Event currentEvent;
-    private AdventureGrid grid;
     private String gender = "";
     private boolean adventureActive = true;
 

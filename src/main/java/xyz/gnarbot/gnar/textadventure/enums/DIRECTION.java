@@ -4,9 +4,9 @@ public enum DIRECTION {
     NORTH("north", "up"), SOUTH("south", "down"), EAST("east", "right"), WEST("west", "left"), FIRSTMOVE("firstmove",
             "firstmove");
 
-    private String name;
+    private final String name;
 
-    private String alt;
+    private final String alt;
 
     DIRECTION(String name, String alt) {
         this.name = name;

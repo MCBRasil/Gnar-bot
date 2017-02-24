@@ -28,7 +28,7 @@ class JavascriptCommand : CommandExecutor() {
         val script = args.joinToString(" ")
 
         if (blocked.any { script.contains(it, true) }) {
-            note.error("JavaScript Eval Expression may be malicious, canceling.").queue()
+            note.error("JavaScript eval Expression may be malicious, canceling.").queue()
             return
         }
 

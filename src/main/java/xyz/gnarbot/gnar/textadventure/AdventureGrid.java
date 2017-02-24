@@ -15,9 +15,9 @@ import java.util.concurrent.TimeUnit;
 
 public class AdventureGrid {
 
-    private Area[][] xygrid = new Area[15][15];
+    private final Area[][] xygrid = new Area[15][15];
 
-    private Adventure relatedAdventure;
+    private final Adventure relatedAdventure;
 
     private int maxSize = 15; // Indicates the maximum and minimum x and y values (convert to negative for minimum)
 
@@ -215,7 +215,9 @@ public class AdventureGrid {
         public File runBuilder() {
             final File mapFile = new File("data/temp/adventures/maps/_map.png");
             if (!mapFile.exists()) {
-                mapFile.mkdirs();
+                if(!mapFile.mkdirs()) {
+                    return null;
+                }
             }
             try {
                 BufferedImage map = new BufferedImage(getMaxSize() * 64, (getMaxSize() * 64) + 200, BufferedImage

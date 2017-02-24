@@ -15,17 +15,16 @@ import xyz.gnarbot.gnar.utils.Note
 )
 class GarbageCollectCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
-        Bot.shards.forEach(Shard::clearServlets)
-        note.info("Removed references to wrappers.").queue()
+        note.embed("Garbage Collection") {
+            Bot.shards.forEach(Shard::clearServlets)
+            field("Wrappers", false, "Removed references to wrappers.")
 
-        note.info("Detected ${Bot.shards.flatMap { it.servlets.values }.sumBy { it.clientHandler.registry.size }} guild|servlet wrappers remaining.").queue()
-        note.info("Detected ${Bot.shards.sumBy { it.servlets.size }} member|client wrappers remaining.").queue()
+            field("Guild Servlets Remaining", true, Bot.shards.sumBy { it.servlets.size })
+            field("Member Clients Remaining", true, Bot.shards.flatMap { it.servlets.values }.sumBy { it.clientHandler.registry.size })
 
-        Bot.LOGGER.info("Garbage collection request sent to JVM.")
-
-        System.gc()
-
-        note.info("Garbage collection request sent to JVM.").queue()
-        Bot.LOGGER.info("Garbage collection request sent to JVM.")
+            System.gc()
+            field("GC Request", false, "Garbage collection request sent to JVM.")
+            Bot.LOGGER.info("Garbage collection request sent to JVM.")
+        }.rest().queue()
     }
 }

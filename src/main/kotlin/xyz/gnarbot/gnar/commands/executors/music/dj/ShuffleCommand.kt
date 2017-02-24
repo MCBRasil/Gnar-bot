@@ -18,6 +18,6 @@ class ShuffleCommand : MusicExecutor() {
         note.embed("Shuffle Queue") {
             color(musicColor)
             description("Player has been shuffled")
-        }.queue()
+        }.rest().queue()
     }
 }

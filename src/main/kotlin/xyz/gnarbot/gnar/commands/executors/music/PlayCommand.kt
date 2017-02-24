@@ -37,14 +37,14 @@ class PlayCommand : MusicExecutor() {
                 note.embed("Play Music") {
                     color(musicColor)
                     description("Music is now playing.")
-                }.queue()
+                }.rest().queue()
             } else if (manager.player.playingTrack != null) {
                 note.error("Music is already playing.").queue()
             } else if (manager.scheduler.queue.isEmpty()) {
                 note.embed("Empty Queue") {
                     color(musicColor)
                     description("There is no music queued right now. Add some songs with `play -song|url`.")
-                }.queue()
+                }.rest().queue()
             }
             return
         }
@@ -78,7 +78,7 @@ class PlayCommand : MusicExecutor() {
             note.embed("Music Playback") {
                 color(musicColor)
                 description("Joined channel `${userChannel.name}`.")
-            }.queue()
+            }.rest().queue()
         }
 
         manager.loadAndPlay(note, url)

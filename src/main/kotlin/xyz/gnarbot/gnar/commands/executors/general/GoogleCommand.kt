@@ -57,7 +57,7 @@ class GoogleCommand : CommandExecutor() {
                         count++
                     }
                 }
-            }.queue()
+            }.rest().queue()
         } catch (e: IOException) {
             note.error("Caught an exception while trying to Google stuff.").queue()
             e.printStackTrace()

@@ -16,9 +16,9 @@ public class TriviaQuestions {
             "League of Legends", "League of Legends Ults", "Pokemon", "Pokémon", "Slogans", "Star Wars", "U.S. " +
             "Capitals", "World Capitals", "World Flags", "World of Warcraft"};
 
-    private static ArrayList<String> questions = new ArrayList<>();
+    private static final ArrayList<String> questions = new ArrayList<>();
 
-    private static ArrayList<String> answers = new ArrayList<>();
+    private static final ArrayList<String> answers = new ArrayList<>();
 
     public static void init() {
         File f = new File("_DATA/trivia");

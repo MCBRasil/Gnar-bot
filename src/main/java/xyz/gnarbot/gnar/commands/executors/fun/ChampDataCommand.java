@@ -12,7 +12,7 @@ import java.util.List;
 
 @Command(aliases = "champdata")
 public class ChampDataCommand extends CommandExecutor {
-    public static String[] names = ChampQuoteCommand.names;
+    public static final String[] names = ChampQuoteCommand.names;
 
     @Override
     public void execute(Note note, List<String> args) {

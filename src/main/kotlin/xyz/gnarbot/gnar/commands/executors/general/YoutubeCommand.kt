@@ -46,7 +46,7 @@ class YoutubeCommand : CommandExecutor() {
                         appendln(b(link(title, url))).appendln(desc)
                     }
                 }
-            }.queue()
+            }.rest().queue()
 
             note.reply("**First Video:** $firstUrl")
         } catch (e: JSONException) {

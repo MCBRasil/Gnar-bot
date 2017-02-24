@@ -39,6 +39,6 @@ class MathCommand : CommandExecutor() {
                 field("Error", true, "**[${e.message!!}]()**")
                 color(Color.RED)
             }
-        }.queue()
+        }.rest().queue()
     }
 }

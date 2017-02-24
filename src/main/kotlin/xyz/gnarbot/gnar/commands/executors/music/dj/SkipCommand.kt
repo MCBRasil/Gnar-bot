@@ -23,6 +23,6 @@ class SkipCommand : MusicExecutor() {
         note.embed("Skip Current Track") {
             color(musicColor)
             description("The track was skipped.")
-        }.queue()
+        }.rest().queue()
     }
 }

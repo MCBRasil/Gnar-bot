@@ -40,7 +40,10 @@ class Note(val servlet: Servlet, private var message: Message) : Message by mess
      */
     fun reply(text: String): RestAction<Note> {
         val message = MessageBuilder().append(text).build()
-        return channel.sendNote(servlet, message)
+
+        return servlet.run {
+            channel.sendNote(message)
+        }
     }
 
     /**
@@ -60,18 +63,18 @@ class Note(val servlet: Servlet, private var message: Message) : Message by mess
             color(color)
             thumbnail(thumb)
             image(img)
-        }
+        }.rest()
     }
 
     @JvmOverloads
     fun embed(title: String? = null): EmbedCreator = EmbedCreator(this).title(title)
 
-    fun embed(title: String? = null, block: Consumer<EmbedCreator>): RestAction<Note> {
-        return channel.sendNote(servlet, embed(title).apply { block.accept(this) }.build())
+    fun embed(title: String? = null, block: Consumer<EmbedCreator>): EmbedCreator {
+        return embed(title).apply { block.accept(this) }
     }
 
-    inline fun embed(title: String? = null, value: EmbedCreator.() -> Unit): RestAction<Note> {
-        return embed(title).apply { value(this) }.rest()
+    inline fun embed(title: String? = null, value: EmbedCreator.() -> Unit): EmbedCreator {
+        return embed(title).apply { value(this) }
     }
 
     /**
@@ -81,10 +84,10 @@ class Note(val servlet: Servlet, private var message: Message) : Message by mess
      * @return The Message created by this function.
      */
     fun info(msg: String): RestAction<Note> {
-        return embed("Info") {
+        return embed {
             author("Info", null, "https://gnarbot.xyz/assets/img/info.png")
             description(msg)
-        }
+        }.rest()
     }
 
     /**
@@ -94,11 +97,11 @@ class Note(val servlet: Servlet, private var message: Message) : Message by mess
      * @return The Message created by this function.
      */
     fun error(msg: String): RestAction<Note> {
-        return embed("Info") {
+        return embed {
             author("Error", null, "https://gnarbot.xyz/assets/img/error.png")
             description(msg)
             color(Color.RED)
-        }
+        }.rest()
     }
 
     fun optDelete(): Boolean {

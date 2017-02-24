@@ -67,15 +67,18 @@ class Shard(val id: Int, private val jda: JDA) : JDA by jda {
     }
 
     fun clearServlets() {
-        servlets.values.forEach(Servlet::shutdown)
-        servlets.clear()
+        servlets.values.forEach {
+            if(it.shutdown(false)) {
+                servlets.remove(it.id)
+            }
+        }
     }
 
     fun reset(id: String?) = reset(getGuildById(id))
 
     fun reset(guild: Guild?) {
         if (guild == null) return
-        servlets[guild.id]?.shutdown()
+        servlets[guild.id]?.shutdown(true)
         servlets[guild.id] = getHost(guild.id)!!
     }
 

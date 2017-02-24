@@ -9,17 +9,12 @@ import java.util.concurrent.TimeUnit;
 
 public class YesNoPoll extends Poll {
 
+    private final Note n;
+    private final String question;
+    private final int minutes;
     private Client startingClient;
-
     private ScheduledFuture runTask;
-
     private int pollid;
-
-    private Note n;
-
-    private String question;
-
-    private int minutes;
 
     public YesNoPoll(Note n, final String question, int minutes) {
         this.n = n;

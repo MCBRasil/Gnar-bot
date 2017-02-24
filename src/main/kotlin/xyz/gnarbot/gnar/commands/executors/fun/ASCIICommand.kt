@@ -7,6 +7,7 @@ import org.jsoup.nodes.TextNode
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
+import xyz.gnarbot.gnar.utils.fastSplit
 import java.util.*
 
 @Command(
@@ -35,7 +36,7 @@ class ASCIICommand : CommandExecutor() {
 
             note.embed("ASCII Text") {
                 description("```\n${getText(element)}```")
-            }.queue()
+            }.rest().queue()
 
         } catch (e: Exception) {
             note.error("Unable to generate ASCII art.").queue()
@@ -57,7 +58,7 @@ class ASCIICommand : CommandExecutor() {
             text = cell.text()
         }
 
-        text?.split("\n")?.let {
+        text?.fastSplit('\n')?.let {
             val b = StringJoiner("\n")
 
             it.filterNot(String::isNullOrBlank)

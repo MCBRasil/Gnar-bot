@@ -20,6 +20,6 @@ class RepeatCommand : MusicExecutor() {
         note.embed("Repeat Queue") {
             color(musicColor)
             description("Music player was set to __${if (manager.scheduler.isRepeating) "repeat" else "not repeat"}__.")
-        }.queue()
+        }.rest().queue()
     }
 }

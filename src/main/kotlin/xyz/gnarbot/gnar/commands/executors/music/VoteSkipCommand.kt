@@ -33,13 +33,19 @@ class VoteSkipCommand : MusicExecutor() {
                 return
             }
 
-            // TODO change to new embed
             manager.lastVoteTime = System.currentTimeMillis()
             manager.isVotingToSkip = true
-            val msg = note.replyMusic("[" + note.author.name +
-                    "]() has voted to **skip** the current track! " +
-                    "React with :thumbsup: or :thumbsdown:!\n" +
-                    "Whichever has the most votes in 30 seconds will win!").complete()
+
+            val msg = note.embed("Vote Skip") {
+                description {
+                    color(musicColor)
+                    append(b(note.author.name))
+                    append(" has voted to **skip the current track!")
+                    appendln("React with :thumbsup: or :thumbsdown:")
+                    append("Whichever has the most votes in 30 seconds will win!")
+                }
+            }.rest().complete()
+
             msg.optDelete(35)
             msg.addReaction("👍").queue()
             msg.addReaction("👎").queue()
@@ -58,14 +64,28 @@ class VoteSkipCommand : MusicExecutor() {
         val _msg = note.channel.getMessageById(msg.id).complete()
 
         if (_msg.reactions[0].count > _msg.reactions[1].count) {
-            msg.replyMusic("The vote has passed! " + (_msg.reactions[0].count - 1) + " to " + (_msg.reactions[1].count - 1) + "!\nThe song has been skipped!").queue()
+            note.embed("Vote Skip") {
+                color(musicColor)
+                description {
+                    append("The vote has passed! ")
+                    append(_msg.reactions[0].count - 1).append(" to ").appendln(_msg.reactions[1].count - 1)
+                    append("The song has been skipped!")
+                }
+            }.rest().queue()
+
             if (manager.scheduler.queue.isEmpty()) {
                 servlet.resetMusicManager()
             } else {
                 manager.scheduler.nextTrack()
             }
         } else {
-            msg.replyMusic("The vote has failed!\nThe song will stay!").queue()
+            note.embed("Vote Skip") {
+                color(musicColor)
+                description {
+                    appendln("The vote has failed! ")
+                    append("The song will stay!")
+                }
+            }.rest().queue()
         }
         manager.isVotingToSkip = false
     }

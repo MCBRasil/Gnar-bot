@@ -3,7 +3,7 @@ package xyz.gnarbot.gnar.textadventure;
 import java.util.HashMap;
 
 public class Inventory {
-    private HashMap<Integer, Item> storage = new HashMap<>();
+    private final HashMap<Integer, Item> storage = new HashMap<>();
 
     private int inventorySize = 9;
 
