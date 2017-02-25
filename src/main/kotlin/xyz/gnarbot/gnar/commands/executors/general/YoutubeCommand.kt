@@ -11,7 +11,7 @@ import java.awt.Color
 class YoutubeCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
         if (args.isEmpty()) {
-            note.error("Gotta put something to search YouTube.")
+            note.error("Gotta put something to search YouTube.").queue()
             return
         }
 
@@ -21,7 +21,7 @@ class YoutubeCommand : CommandExecutor() {
             val results = YouTube.search(query, 3)
 
             if (results.isEmpty()) {
-                note.error("No search results for `$query`.")
+                note.error("No search results for `$query`.").queue()
                 return
             }
             var firstUrl: String? = null
@@ -48,12 +48,12 @@ class YoutubeCommand : CommandExecutor() {
                 }
             }.rest().queue()
 
-            note.reply("**First Video:** $firstUrl")
+            note.reply("**First Video:** $firstUrl").queue()
         } catch (e: JSONException) {
-            note.error("Unable to get YouTube results.")
+            note.error("Unable to get YouTube results.").queue()
             e.printStackTrace()
         } catch (e: NullPointerException) {
-            note.error("Unable to get YouTube results.")
+            note.error("Unable to get YouTube results.").queue()
             e.printStackTrace()
         }
 

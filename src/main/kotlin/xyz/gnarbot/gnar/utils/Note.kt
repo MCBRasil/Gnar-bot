@@ -23,14 +23,14 @@ class Note(val servlet: Servlet, private var message: Message) : Message by mess
      *
      * @return Message author as User.
      */
-    override fun getAuthor(): Client = servlet.clientHandler.asPerson(message.author)
+    override fun getAuthor(): Client = servlet.clientHandler.getClient(message.author)!!
 
     /**
      * Get mentioned users of this Message as [Client] instances.
      *
      * @return Immutable list of mentioned [Client] instances.
      */
-    override fun getMentionedUsers(): List<Client> = message.mentionedUsers.map { servlet.clientHandler.asPerson(it) }
+    override fun getMentionedUsers(): List<Client> = message.mentionedUsers.map { servlet.clientHandler.getClient(it)!! }
 
     /**
      * Quick-reply to a message.

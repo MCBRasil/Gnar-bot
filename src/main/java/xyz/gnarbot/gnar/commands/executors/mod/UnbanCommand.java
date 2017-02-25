@@ -30,13 +30,13 @@ public class UnbanCommand extends CommandExecutor {
 
         for (User user : bans) {
             if (user.getId().equals(args.get(0))) {
-                target = servlet.getClientHandler().asPerson(user);
+                target = servlet.getClientHandler().getClient(user);
                 break;
             }
         }
 
         if (args.size() >= 1) {
-            target = note.getServlet().getClientHandler().getUser(args.get(0));
+            target = note.getServlet().getClientHandler().getClientByName(args.get(0), true);
         }
         if (target == null) {
             note.error("Could not find user.").queue();

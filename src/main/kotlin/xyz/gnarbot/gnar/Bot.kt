@@ -106,6 +106,8 @@ object Bot {
             setToken(token)
             setAutoReconnect(true)
             setGame(Game.of("$id | _help"))
+            setAudioEnabled(true)
+            setEnableShutdownHook(true)
         }.buildBlocking()
     }
 

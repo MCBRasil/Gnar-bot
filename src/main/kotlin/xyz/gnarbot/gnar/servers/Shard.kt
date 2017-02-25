@@ -25,8 +25,8 @@ class Shard(val id: Int, private val jda: JDA) : JDA by jda {
         //Logger.getLogger("org.apache.http.client.protocol.ResponseProcessCookies").level = Level.OFF
     }
 
-    fun getHost(id: String?) : Servlet? {
-        return getHost(getGuildById(id))
+    fun getServlet(id: String?) : Servlet? {
+        return getServlet(getGuildById(id))
     }
 
     /**
@@ -38,7 +38,7 @@ class Shard(val id: Int, private val jda: JDA) : JDA by jda {
      *
      * @see Servlet
      */
-    fun getHost(guild: Guild?): Servlet? {
+    fun getServlet(guild: Guild?): Servlet? {
         if (guild == null) return null
         return servlets.getOrPut(guild.id) { Servlet(this, guild) }
     }
@@ -67,9 +67,11 @@ class Shard(val id: Int, private val jda: JDA) : JDA by jda {
     }
 
     fun clearServlets() {
-        servlets.values.forEach {
-            if(it.shutdown(false)) {
-                servlets.remove(it.id)
+        val iterator = servlets.iterator()
+        while (iterator.hasNext()) {
+            val it = iterator.next()
+            if(it.value.shutdown(false)) {
+                iterator.remove()
             }
         }
     }
@@ -79,7 +81,7 @@ class Shard(val id: Int, private val jda: JDA) : JDA by jda {
     fun reset(guild: Guild?) {
         if (guild == null) return
         servlets[guild.id]?.shutdown(true)
-        servlets[guild.id] = getHost(guild.id)!!
+        servlets[guild.id] = getServlet(guild.id)!!
     }
 
 }

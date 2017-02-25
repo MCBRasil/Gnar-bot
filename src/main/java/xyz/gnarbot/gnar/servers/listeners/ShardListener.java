@@ -28,7 +28,7 @@ public class ShardListener extends ListenerAdapter {
         }
 
         if (event.getMessage().getContent().startsWith(Bot.getToken())) {
-            Servlet servlet = shard.getHost(event.getGuild());
+            Servlet servlet = shard.getServlet(event.getGuild());
             if (servlet != null) servlet.handleMessage(event.getMessage());
         }
     }
@@ -40,7 +40,7 @@ public class ShardListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
-        Servlet servlet = shard.getHost(event.getGuild());
+        Servlet servlet = shard.getServlet(event.getGuild());
         if (servlet != null) {
             servlet.getClientHandler().removeUser(event.getMember());
         }
@@ -51,7 +51,7 @@ public class ShardListener extends ListenerAdapter {
         if (event instanceof GuildVoiceLeaveEvent || event instanceof GuildVoiceMoveEvent) {
             if (event.getMember().getUser() == event.getJDA().getSelfUser()) return;
 
-            Servlet servlet = shard.getHost(event.getGuild());
+            Servlet servlet = shard.getServlet(event.getGuild());
 
             if (servlet == null) return;
 

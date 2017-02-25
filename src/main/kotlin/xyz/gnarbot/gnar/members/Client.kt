@@ -78,6 +78,6 @@ class Client(var servlet: Servlet, private var member: Member) : Member by membe
      * @return String representation of the member.
      */
     override fun toString(): String {
-        return "Member(id=$id, name=\"$name\", guild=\"${servlet.name}\", level=$level)"
+        return "Client(id=$id, name=\"$name\", guild=\"${servlet.name}\", level=$level)"
     }
 }

@@ -16,12 +16,10 @@ class ClientHandler(private val servlet: Servlet) {
      */
     val registry: MutableMap<String, Client> = WeakHashMap()
 
-    val selfClient: Client get() = asPerson(servlet.jda.selfUser)
+    val selfClient: Client get() = getClient(servlet.jda.selfUser)!!
 
-    fun getUser(name: String): Client? {
-        val list = servlet.getMembersByName(name, true)
-        if (list.isEmpty()) return null
-        return asPerson(list.first())
+    fun getClientByName(name: String, searchNickname: Boolean): Client? {
+        return getClient(servlet.getMemberByName(name, searchNickname))
     }
 
     /**
@@ -31,8 +29,10 @@ class ClientHandler(private val servlet: Servlet) {
      *
      * @return User instance.
      */
-    fun asPerson(member: Member): Client {
-        return asPerson(member.user)
+    fun getClient(member: Member?): Client? {
+        if (member == null) return null
+        return registry.getOrPut(member.user.id) { Client(servlet, member) }
+
     }
 
     /**
@@ -42,8 +42,8 @@ class ClientHandler(private val servlet: Servlet) {
      *
      * @return User instance.
      */
-    fun asPerson(user: User): Client {
-        return registry.getOrPut(user.id) { Client(servlet, servlet.getMember(user)) }
+    fun getClient(user: User?): Client? {
+        return getClient(servlet.getMember(user))
     }
 
     /**

@@ -36,7 +36,7 @@ public class QuoteCommand extends CommandExecutor {
                     Message msg = note.getChannel().getMessageById(id).complete();
                     targetChannel.sendMessage(
                             KUtils.makeEmbed(null, msg.getContent(), Bot.getColor(), null, null,
-                                    note.getServlet().getClientHandler().asPerson(msg.getAuthor()))).queue();
+                                    note.getServlet().getClientHandler().getClient(msg.getAuthor()))).queue();
                 } catch (Exception e) {
                     try {
                         Message m = note.error("Could not find a message with the ID " + id + " within this channel.")

@@ -31,7 +31,7 @@ public class WhoIsCommand extends CommandExecutor {
         if (mentioned.size() > 0) {
             client = mentioned.get(0);
         } else {
-            client = servlet.getPersonByName(StringUtils.join(args, " "), true);
+            client = servlet.getClientByName(StringUtils.join(args, " "), true);
         }
 
         if (client == null) {

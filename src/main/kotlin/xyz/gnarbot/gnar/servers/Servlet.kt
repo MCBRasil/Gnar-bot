@@ -54,8 +54,30 @@ class Servlet(val shard: Shard, private var guild: Guild) : Guild by guild {
         return null
     }
 
-    fun getPersonByName(name: String, searchNickname: Boolean = false): Client? {
-        return getMemberByName(name, searchNickname)?.let { clientHandler.asPerson(it) }
+    fun getClientByName(name: String, searchNickname: Boolean): Client? {
+        return getClient(getMemberByName(name, searchNickname))
+    }
+
+    /**
+     * Lazily wrap users in a Member instance.
+     *
+     * @param member JDA member.
+     *
+     * @return User instance.
+     */
+    fun getClient(member: Member?): Client? {
+        return clientHandler.getClient(member)
+    }
+
+    /**
+     * Lazily wrap users in a Member instance.
+     *
+     * @param user JDA user.
+     *
+     * @return User instance.
+     */
+    fun getClient(user: User?): Client? {
+        return clientHandler.getClient(user)
     }
 
     //    @Deprecated("Useless")
@@ -162,7 +184,7 @@ class Servlet(val shard: Shard, private var guild: Guild) : Guild by guild {
     }
 
     fun handleMessage(message: Message) {
-        val person = clientHandler.asPerson(message.author)
+        val person = clientHandler.getClient(message.author)
         commandHandler.callCommand(message, message.content, person)
     }
 

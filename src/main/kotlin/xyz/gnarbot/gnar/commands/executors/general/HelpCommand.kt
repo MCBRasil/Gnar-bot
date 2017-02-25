@@ -69,10 +69,10 @@ class HelpCommand : CommandExecutor() {
             }
 
             field("News") {
-                append("• Music player now running LIVE. Report any bugs to us!\n")
-                append("• To try out music, join a channel and type `_play -url|search YT`!\n")
-                append("• The website is nearing completion!\n")2
-                append("• Many general commands got a new layout, check it out!.\n")
+                appendln("• Music player now running LIVE. Report any bugs to us!")
+                appendln("• To try out music, join a channel and type `_play -url|search YT`!")
+                appendln("• The website is nearing completion!")
+                appendln("• Many general commands got a new layout, check it out!.")
             }
 
             field("Contact") {

@@ -28,7 +28,7 @@ public class BanCommand extends CommandExecutor {
         if (note.getMentionedChannels().size() >= 1) {
             target = note.getMentionedUsers().get(0);
         } else if (args.size() >= 1) {
-            target = note.getServlet().getClientHandler().getUser(args.get(0));
+            target = note.getServlet().getClientHandler().getClientByName(args.get(0), false);
         }
 
         if (target == null) {
