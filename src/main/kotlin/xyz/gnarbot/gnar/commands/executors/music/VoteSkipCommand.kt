@@ -40,8 +40,8 @@ class VoteSkipCommand : MusicExecutor() {
                 description {
                     color(musicColor)
                     append(b(note.author.name))
-                    append(" has voted to **skip the current track!")
-                    appendln("React with :thumbsup: or :thumbsdown:")
+                    append(" has voted to **skip** the current track!")
+                    append("React with :thumbsup: or :thumbsdown:")
                     append("Whichever has the most votes in 30 seconds will win!")
                 }
             }.rest().complete()
