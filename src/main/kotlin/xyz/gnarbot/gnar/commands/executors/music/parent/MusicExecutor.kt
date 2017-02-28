@@ -7,9 +7,9 @@ abstract class MusicExecutor : CommandExecutor() {
 
     val musicColor = Color(0, 221, 88)
 
-    init {
-        symbol = "**♬**"
-    }
+//    init {
+//        symbol = "**♬**"
+//    }
 
     //abstract fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager)
 

@@ -16,15 +16,22 @@ public class RollCommand extends CommandExecutor {
         try {
             if (args.size() >= 1) {
                 if (!(Integer.valueOf(args.get(0)) > 0)) {
-                    note.error("Number need to be > 0.");
+                    note.error("Number need to be > 0.").queue();
                     return;
                 }
 
-                note.respond("Roll a Number",
-                        "You rolled __**[" + new Random().nextInt(Integer.valueOf(args.get(0))) +
-                                "]()**__ from range **[0 to " + args.get(0) + "]()**.");
+                note.embed("Roll a Number")
+                        .description(sb -> {
+                            sb.append("You rolled a **")
+                                    .append(new Random().nextInt(Integer.valueOf(args.get(0))))
+                                    .append("** from range **[0 to ")
+                                    .append(args.get(0))
+                                    .append("]**.");
+                        })
+                        .rest().queue();
+
             } else {
-                note.error("Insufficient amount of arguments.");
+                note.error("Insufficient amount of arguments.").queue();
             }
         } catch (Exception e) {
             note.error("Only numbers are allowed.\n\n**Example:**\n\n[_roll 10]()").queue();

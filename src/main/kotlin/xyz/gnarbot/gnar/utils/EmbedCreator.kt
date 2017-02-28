@@ -2,15 +2,17 @@ package xyz.gnarbot.gnar.utils
 
 import net.dv8tion.jda.core.EmbedBuilder
 import net.dv8tion.jda.core.entities.MessageEmbed
+import net.dv8tion.jda.core.entities.TextChannel
 import net.dv8tion.jda.core.entities.User
 import net.dv8tion.jda.core.requests.RestAction
 import xyz.gnarbot.gnar.Bot
+import xyz.gnarbot.gnar.servers.Servlet
 import java.awt.Color
 import java.time.temporal.TemporalAccessor
 import java.util.function.Consumer
 
 @Suppress("NOTHING_TO_INLINE")
-class EmbedCreator(private val note: Note) {
+class EmbedCreator(private val servlet: Servlet, private val textChannel: TextChannel) {
     val delegate = EmbedBuilder()
 
     init {
@@ -83,14 +85,11 @@ class EmbedCreator(private val note: Note) {
     }
 
 
-
-
     fun rest(): RestAction<Note> {
-        return note.servlet.run {
-            note.channel.sendNote(build())
+        return servlet.run {
+            textChannel.sendNote(build())
         }
     }
-
 
 
     fun timestamp(temporal: TemporalAccessor?): EmbedCreator {

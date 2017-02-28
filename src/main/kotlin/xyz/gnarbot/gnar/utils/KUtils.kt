@@ -28,7 +28,7 @@ fun String.fastSplit(delimiter: Char): List<String> {
             p = i + 1
         }
 
-        while (this[i + 1] == delimiter) {
+        while (i < this.length - 1 && this[i + 1] == delimiter) {
             i++
             p++
         }

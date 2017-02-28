@@ -1,12 +1,10 @@
 package xyz.gnarbot.gnar.commands.executors.music
 
 import com.google.inject.Inject
-import net.dv8tion.jda.core.EmbedBuilder
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
-import java.awt.Color
 
 @Command(aliases = arrayOf("nowplaying", "np"), description = "Shows what's currently playing.")
 class NowPlayingCommand : MusicExecutor() {
@@ -21,22 +19,17 @@ class NowPlayingCommand : MusicExecutor() {
             return
         }
 
-        val eb = EmbedBuilder()
+        note.embed("Now Playing") {
+            field("Now Playing", false, if (track.sourceManager.sourceName.contains("youtube")) {
+                "__[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__"
+            } else {
+                "__[${track.info.title}]()__"
+            })
 
-        eb.setTitle("Now Playing", null)
-        if (track.sourceManager.sourceName.contains("youtube")) {
-            eb.setDescription("__[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__")
-        } else {
-            eb.setDescription("__[${track.info.title}]()__")
-        }
+            val position = getTimestamp(track.position)
+            val duration = getTimestamp(track.duration)
 
-        val position = getTimestamp(track.position)
-        val duration = getTimestamp(track.duration)
-
-        eb.addField("Time", "**[$position / $duration]**", true)
-
-        eb.setColor(Color(0, 221, 88))
-
-        note.channel.sendMessage(eb.build()).queue()
+            field("Time", true, "**[$position / $duration]**")
+        }.rest().queue()
     }
 }

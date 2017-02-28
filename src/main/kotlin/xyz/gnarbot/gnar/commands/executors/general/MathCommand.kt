@@ -1,7 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.general
 
 import org.apache.commons.lang3.StringUtils
-import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
@@ -19,24 +18,21 @@ class MathCommand : CommandExecutor() {
             return
         }
 
-        note.embed {
-            title("Math", null)
-            color(Bot.color)
-
+        note.embed("Math") {
             val exp = ExpressionBuilder()
             val lines = StringUtils.join(args, ' ').fastSplit(';')
             lines.forEach { exp.addLine(it) }
 
-            field("Expressions", true, "**[${lines.map(String::trim).joinToString("\n")}]()**")
+            field("Expressions", true, b(lines.map(String::trim).joinToString("\n")))
 
             try {
                 val results = exp
                         .build()
                         .evalList()
 
-                field("Result", true, "**[${Arrays.toString(results)}]()**")
+                field("Result", true, b(Arrays.toString(results)))
             } catch (e: AJEException) {
-                field("Error", true, "**[${e.message!!}]()**")
+                field("Error", true, e.message)
                 color(Color.RED)
             }
         }.rest().queue()

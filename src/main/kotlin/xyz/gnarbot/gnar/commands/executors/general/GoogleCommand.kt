@@ -1,7 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.general
 
 import org.jsoup.Jsoup
-import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
@@ -32,7 +31,6 @@ class GoogleCommand : CommandExecutor() {
 
             note.embed {
                 author("Google Results", "https://www.google.com/", "https://www.google.com/favicon.ico")
-                color(Bot.color)
                 thumbnail("https://gnarbot.xyz/assets/img/google.png")
 
                 description {

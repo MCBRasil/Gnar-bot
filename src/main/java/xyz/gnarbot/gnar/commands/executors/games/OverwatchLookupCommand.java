@@ -18,7 +18,7 @@ public class OverwatchLookupCommand extends CommandExecutor {
 
     public void execute(Note note, java.util.List<String> args) {
         if (args.isEmpty()) {
-            note.error("Insufficient arguments. `" + getUsage() + "`.").queue();
+            note.error("Insufficient arguments. `" + meta().usage() + "`.").queue();
             return;
         }
 

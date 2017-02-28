@@ -10,18 +10,18 @@ import java.util.List;
 
 //TODO REMOVE THE EDITZ
 @Command(aliases = "react",
-        usage = "(messageid) (emoji)",
+        usage = "(message-id) (emoji...)",
         description = "Make GNAR react to something, against it's " + "will. You evil prick.")
 public class ReactCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (args.size() < 2) {
-            note.error("Insufficient arguments. `" + this.getUsage() + "`").queue();
+            note.error("Insufficient arguments. `" + meta().usage() + "`").queue();
             return;
         }
 
-        String msgid = args.get(0);
-        Message msg = note.getChannel().getMessageById(msgid).complete();
+        String msg_id = args.get(0);
+        Message msg = note.getChannel().getMessageById(msg_id).complete();
 
         //Note msg = new Note(note.getServlet(), msg);
 

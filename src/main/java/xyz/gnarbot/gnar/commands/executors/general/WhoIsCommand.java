@@ -3,7 +3,6 @@ package xyz.gnarbot.gnar.commands.executors.general;
 import com.google.inject.Inject;
 import net.dv8tion.jda.core.entities.Role;
 import org.apache.commons.lang3.StringUtils;
-import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Client;
@@ -42,7 +41,6 @@ public class WhoIsCommand extends CommandExecutor {
 
         note.embed("Who is " + client.getName() + "?")
                 .thumbnail(client.getAvatarUrl())
-                .color(Bot.getColor())
                 .field("Name", true, client.getName())
                 .field("Nickname", true, client.getNickname() != null ? client.getNickname() : "No nickname.")
 

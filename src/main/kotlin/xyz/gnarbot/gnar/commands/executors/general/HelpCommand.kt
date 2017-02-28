@@ -19,20 +19,20 @@ class HelpCommand : CommandExecutor() {
         if (args.isNotEmpty()) {
             val target = if (args[0].startsWith('_')) args[0].substring(1) else args[0]
 
-            val cmd: CommandExecutor? = registry.getCommand(target)
+            val cmd = registry.getCommand(target)
 
             if (cmd == null) {
                 note.error("There is no command named `$target`. :cry:").queue()
                 return
             }
 
-            note.embed("Command Information") {
-                color(Bot.color)
+            val meta = cmd.getAnnotation(Command::class.java)
 
-                field("Aliases", true, cmd.aliases.joinToString(separator = ", ${Bot.token}", prefix = Bot.token))
-                field("Usage", true, "${Bot.token}${cmd.aliases[0].toLowerCase()} ${cmd.usage}")
-                field("Level", true, cmd.level.title)
-                field("Description", false, cmd.description)
+            note.embed("Command Information") {
+                field("Aliases", true, meta.aliases.joinToString(separator = ", ${Bot.token}", prefix = Bot.token))
+                field("Usage", true, "${Bot.token}${meta.aliases[0].toLowerCase()} ${meta.usage}")
+                field("Level", true, meta.level.title)
+                field("Description", false, meta.description)
             }.rest().queue()
 
             return
@@ -44,25 +44,29 @@ class HelpCommand : CommandExecutor() {
             description("This is all of Gnar's currently registered commands.")
 
             for (level in Level.values()) {
-                val sectionCount = executors.count { it.level == level && it.isShownInHelp }
+                val filtered = executors.filter {
+                    val meta = it.getAnnotation(Command::class.java)
+                    meta.level == level && meta.showInHelp
+                }
+                val sectionCount = filtered.size
                 if (sectionCount < 1) continue
 
-                val pages = Lists.partition(executors.filter { it.level == level && it.isShownInHelp }, sectionCount / 3 + 1)
+                val pages = Lists.partition(filtered, sectionCount / 3 + 1)
 
-                field("", false, "__**${level.title}** — ${sectionCount}__\n${level.requireText}")
+                addBlankField(true)
+                field("${level.title} — $sectionCount", false, level.requireText)
 
                 for (page in pages) {
                     field("", true) {
-                        for (cmd in page) {
-                            cmd.symbol?.let { append(it).append(' ') }
-                            append("**[").append(Bot.token).append(cmd.aliases.first()).appendln("]()**")
-                        }
+                        page.map {
+                            it.getAnnotation(Command::class.java)
+                                    //meta.symbol?.let { append(it).append(' ') }
+                        }.forEach { append("**[").append(Bot.token).append(it.aliases[0]).appendln("]()**") }
                     }
                 }
             }
 
-
-
+            addBlankField(true)
             field("Additional Information") {
                 append("To view a command's description, do `").append(Bot.token).appendln("help [command]`.")
                 append("__The commands that requires a named role must be created by you and assigned to a member in your guild.__")

@@ -14,6 +14,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import xyz.gnarbot.gnar.api.APIPortal
 import xyz.gnarbot.gnar.api.data.BotInfo
+import xyz.gnarbot.gnar.commands.handlers.CommandRegistry
 import xyz.gnarbot.gnar.servers.Shard
 import xyz.gnarbot.gnar.utils.Utils
 import java.awt.Color
@@ -31,6 +32,8 @@ object Bot {
     @static val token = "_" //default token
 
     @static val files = BotFiles()
+
+    val commandRegistry = CommandRegistry()
 
     /** @returns If the bot is initialized. */
     var initialized = false
@@ -88,7 +91,7 @@ object Bot {
 
             jda.selfUser.manager.setName("Gnar").queue()
 
-            shards.add(Shard(id, jda))
+            shards.add(Shard(id, this, jda))
 
             LOGGER.info("Shard [$id] is initialized.")
         }

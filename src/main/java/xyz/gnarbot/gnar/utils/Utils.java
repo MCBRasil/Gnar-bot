@@ -35,7 +35,7 @@ public class Utils {
                 f.add(s.substring(p, i));
                 p = i + 1;
 
-                while (s.charAt(i + 1) == delimiter) {
+                while (i < s.length() - 1 && s.charAt(i + 1) == delimiter) {
                     i++;
                     p++;
                 }

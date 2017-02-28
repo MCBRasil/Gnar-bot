@@ -1,6 +1,5 @@
 package xyz.gnarbot.gnar.commands.handlers;
 
-import com.google.inject.Inject;
 import xyz.gnarbot.gnar.commands.executors.admin.GarbageCollectCommand;
 import xyz.gnarbot.gnar.commands.executors.admin.JavascriptCommand;
 import xyz.gnarbot.gnar.commands.executors.admin.ThrowError;
@@ -22,8 +21,10 @@ import xyz.gnarbot.gnar.commands.executors.test.TestEmbedCommand;
 import xyz.gnarbot.gnar.textadventure.AdventureCommand;
 import xyz.gnarbot.gnar.textadventure.StartAdventureCommand;
 
-import java.lang.reflect.Field;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Registry unique to each Shard.
@@ -32,7 +33,7 @@ public class CommandRegistry {
     /**
      * The mapped registry of invoking key to the classes.
      */
-    private final Map<String, CommandExecutor> commandMap = new LinkedHashMap<>();
+    private final Map<String, Class<? extends CommandExecutor>> commandMap = new LinkedHashMap<>();
 
     public CommandRegistry() {
         register(HelpCommand.class);
@@ -42,6 +43,7 @@ public class CommandRegistry {
         register(RemindMeCommand.class);
         register(GoogleCommand.class);
         register(YoutubeCommand.class);
+        register(UrbanDictionaryCommand.class);
         register(UptimeCommand.class);
         register(WhoIsCommand.class);
         register(BotInfoCommand.class);
@@ -67,9 +69,8 @@ public class CommandRegistry {
         register(TriviaAnswerCommand.class);
         register(TriviaCommand.class);
         //register(GraphCommand.class);
-        register(UrbanDictionaryCommand.class);
+
         register(ChampQuoteCommand.class);
-        register(CleverBotCommand.class);
         register(PandoraBotCommand.class);
         register(MemeCommand.class);
         //End Fun Commands
@@ -143,38 +144,39 @@ public class CommandRegistry {
             throw new IllegalStateException("@Command annotation not found for class: " + cls.getName());
         }
 
-        try {
-            CommandExecutor cmd = cls.newInstance();
-
-            Command annot = cls.getAnnotation(Command.class);
-
-            cmd.setAliases(annot.aliases());
-            cmd.setDescription(annot.description());
-            cmd.setLevel(annot.level());
-            cmd.setShownInHelp(annot.showInHelp());
-            cmd.setUsage(annot.usage());
-
-            for (Field field : cls.getDeclaredFields()) {
-                if (field.isAnnotationPresent(Inject.class)) {
-                    cmd.setInject(true);
-                    break;
-                }
-            }
-
-            for (String alias : cmd.getAliases()) {
-                registerCommand(alias, cmd);
-            }
-
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+        Command meta = cls.getAnnotation(Command.class);
+        for (String alias : meta.aliases()) {
+            registerCommand(alias, cls);
         }
-    }
 
-    public void register(CommandExecutor jsc) {
-        for (String alias : jsc.getAliases()) {
-            registerCommand(alias, jsc);
-        }
+//            CommandExecutor cmd = cls.newInstance();
+//
+//            Command meta = cls.getAnnotation(Command.class);
+//
+//            cmd.bot = Bot.INSTANCE;
+//            cmd.setAliases(meta.aliases());
+//            cmd.setDescription(meta.description());
+//            cmd.setLevel(meta.level());
+//            cmd.setShownInHelp(meta.showInHelp());
+//            cmd.setUsage(meta.usage());
+//
+//            for (Field field : cls.getDeclaredFields()) {
+//                if (field.isAnnotationPresent(Inject.class)) {
+//                    cmd.setInject(true);
+//                    break;
+//                }
+//            }
+//
+//            for (String alias : cmd.getAliases()) {
+//                registerCommand(alias, cmd);
+//            }
     }
+//
+//    public void register(Class<CommandExecutor> jsc) {
+//        for (String alias : jsc.getAliases()) {
+//            registerCommand(alias, jsc);
+//        }
+//    }
 
 
     /**
@@ -182,7 +184,7 @@ public class CommandRegistry {
      *  @param label Invoking key.
      * @param cmd   CommandExecutor instance.
      */
-    public void registerCommand(String label, CommandExecutor cmd) {
+    public void registerCommand(String label, Class<? extends CommandExecutor> cmd) {
         label = label.toLowerCase();
         if (commandMap.containsKey(label)) {
             throw new IllegalStateException("Command " + label + " is already registered.");
@@ -204,14 +206,14 @@ public class CommandRegistry {
      *
      * @return The command registry.
      */
-    public Map<String, CommandExecutor> getCommandMap() {
+    public Map<String, Class<? extends CommandExecutor>> getCommandMap() {
         return commandMap;
     }
 
     /**
      * @return Unique command executors.
      */
-    public Set<CommandExecutor> getUniqueExecutors() {
+    public Set<Class<? extends CommandExecutor>> getUniqueExecutors() {
         return new LinkedHashSet<>(commandMap.values());
     }
 
@@ -221,22 +223,21 @@ public class CommandRegistry {
      * @param key Invoking key.
      * @return CommandExecutor instance.
      */
-    public CommandExecutor getCommand(String key) {
+    public Class<? extends CommandExecutor> getCommand(String key) {
         return getCommandMap().get(key);
     }
-
-    /**
-     * Returns the CommandExecutor based on the class.
-     *
-     * @param cls CommandExecutor class.
-     * @return CommandExecutor instance.
-     */
-    public CommandExecutor getCommand(Class<? extends CommandExecutor> cls) {
-        Optional<CommandExecutor> cmd = commandMap.values()
-                .stream()
-                .filter(commandExecutor -> commandExecutor.getClass() == cls)
-                .findFirst();
-
-        return cmd.orElse(null);
-    }
+//    /**
+//     * Returns the CommandExecutor based on the class.
+//     *
+//     * @param cls CommandExecutor class.
+//     * @return CommandExecutor instance.
+//     */
+//    public CommandExecutor getCommand(Class<? extends CommandExecutor> cls) {
+//        Optional<CommandExecutor> cmd = commandMap.values()
+//                .stream()
+//                .filter(commandExecutor -> commandExecutor.getClass() == cls)
+//                .findFirst();
+//
+//        return cmd.orElse(null);
+//    }
 }

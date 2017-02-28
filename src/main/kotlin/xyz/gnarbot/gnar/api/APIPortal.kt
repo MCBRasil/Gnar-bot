@@ -1,5 +1,6 @@
 package xyz.gnarbot.gnar.api
 
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import ro.pippo.core.Application
 import ro.pippo.core.Pippo
@@ -7,7 +8,7 @@ import ro.pippo.gson.GsonEngine
 import xyz.gnarbot.gnar.Bot
 
 class APIPortal : Application() {
-    val LOGGER = LoggerFactory.getLogger("APIPortal")
+    val LOGGER: Logger = LoggerFactory.getLogger("APIPortal")
 
     fun start() {
         val pippo = Pippo(this)

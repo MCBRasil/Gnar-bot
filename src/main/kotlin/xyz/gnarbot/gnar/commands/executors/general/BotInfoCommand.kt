@@ -15,7 +15,7 @@ class BotInfoCommand : CommandExecutor() {
     @Inject lateinit var shard: Shard
 
     override fun execute(note: Note, args: List<String>) {
-        val registry = shard.commandRegistry
+        val registry = bot().commandRegistry
 
         var uptime_hour = Bot.uptime / 1000 / 60 / 60
         if (uptime_hour == 0L) uptime_hour = 1L
@@ -24,11 +24,11 @@ class BotInfoCommand : CommandExecutor() {
 
         var textChannels = 0
         var voiceChannels = 0
-        var activeHosts = 0 // wrapper
+        var servlets = 0 // wrapper
         var guilds = 0
 
         var users = 0
-        var activePersons = 0 // wrapper
+        var clients = 0 // wrapper
         var offline = 0
         var online = 0
         var inactive = 0
@@ -51,23 +51,21 @@ class BotInfoCommand : CommandExecutor() {
                 }
             }
 
-            shard.servlets.values.forEach { activePersons += it.clientHandler.registry.size }
+            shard.servlets.values.forEach { clients += it.clientHandler.registry.size }
 
             users += shard.users.size
             textChannels += shard.textChannels.size
             voiceChannels += shard.voiceChannels.size
-            activeHosts += shard.servlets.size
+            servlets += shard.servlets.size
         }
 
-        val commandSize = registry.uniqueExecutors.count { it -> it.isShownInHelp }
+        val commandSize = registry.uniqueExecutors.count { it -> it.getAnnotation(Command::class.java).showInHelp }
 
         val requests = Bot.shards
                 .flatMap { it.servlets.values }
                 .sumBy { it.commandHandler.requests }
 
         note.embed("Bot Information") {
-            color(Bot.color)
-
             field("Requests", true, requests)
             field("Requests Per Hour", true, requests / uptime_hour)
             field("Website", true, link("gnarbot.xyz", "https://gnarbot.xyz"))
@@ -77,8 +75,8 @@ class BotInfoCommand : CommandExecutor() {
             field("Voice Connections", true, voiceConnections)
 
             field("Guilds", true, guilds)
-            field("Guild#Servlets", true, activeHosts)
-            field("Member#Clients", true, activePersons)
+            field("Guild#Servlets", true, servlets)
+            field("Member#Clients", true, clients)
 
             field("Users", true) {
                 append("Total: ").appendln(highlight(users))
@@ -90,7 +88,7 @@ class BotInfoCommand : CommandExecutor() {
             field("Others", true) {
                 appendln("Creators: **[Avarel](https://github.com/Avarel)** and **[Maeyrl](https://github.com/maeyrl)**")
                 appendln("Contributor: **[Gatt](https://github.com/RealGatt)**")
-                appendln("Commands: **[$commandSize]()**")
+                appendln("Commands: **$commandSize**")
                 appendln("Library: Java **[JDA 3](https://github.com/DV8FromTheWorld/JDA)**")
             }
         }.rest().queue()

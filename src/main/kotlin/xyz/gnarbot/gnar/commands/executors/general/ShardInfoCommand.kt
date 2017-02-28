@@ -13,12 +13,10 @@ import xyz.gnarbot.gnar.utils.Note
 class ShardInfoCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
         note.embed("Shard Information") {
-            color(Bot.color)
-
             Bot.shards.forEach {
                 field("Shard ${it.id}", true) {
                     append("Status: ").appendln(b(it.status))
-                    append("Hosts: ").appendln(b(it.guilds.size))
+                    append("Guilds: ").appendln(b(it.guilds.size))
                     append("Users: ").appendln(b(it.users.size))
                     append("Requests: ").appendln(b(it.servlets.values.sumBy { it.commandHandler.requests }))
                 }

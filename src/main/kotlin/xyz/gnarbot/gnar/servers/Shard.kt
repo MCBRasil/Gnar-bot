@@ -2,8 +2,8 @@ package xyz.gnarbot.gnar.servers
 
 import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.entities.Guild
+import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.api.data.ShardInfo
-import xyz.gnarbot.gnar.commands.handlers.CommandRegistry
 import xyz.gnarbot.gnar.servers.listeners.GuildCountListener
 import xyz.gnarbot.gnar.servers.listeners.ShardListener
 import xyz.gnarbot.gnar.servers.listeners.UserListener
@@ -12,10 +12,8 @@ import java.util.*
 /**
  * Individual shard instances of [JDA] of the bot that contains all the [Servlet] for each guild.
  */
-class Shard(val id: Int, private val jda: JDA) : JDA by jda {
+class Shard(val id: Int, val bot: Bot, private val jda: JDA) : JDA by jda {
     val servlets: MutableMap<String, Servlet> = WeakHashMap()
-
-    val commandRegistry = CommandRegistry()
 
     init {
         jda.addEventListener(ShardListener(this))
@@ -40,7 +38,7 @@ class Shard(val id: Int, private val jda: JDA) : JDA by jda {
      */
     fun getServlet(guild: Guild?): Servlet? {
         if (guild == null) return null
-        return servlets.getOrPut(guild.id) { Servlet(this, guild) }
+        return servlets.getOrPut(guild.id) { Servlet(this, guild, bot) }
     }
 
     /**
@@ -63,7 +61,6 @@ class Shard(val id: Int, private val jda: JDA) : JDA by jda {
     override fun shutdown() {
         jda.shutdown(false)
         clearServlets()
-        commandRegistry.commandMap.clear()
     }
 
     fun clearServlets() {

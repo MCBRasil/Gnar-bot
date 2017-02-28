@@ -55,19 +55,19 @@ class Note(val servlet: Servlet, private var message: Message) : Message by mess
     @JvmOverloads
     fun respond(title: String? = null,
                 text: String?,
-                color: Color? = Bot.color,
+                color: Color? = null,
                 thumb: String? = null,
                 img: String? = null): RestAction<Note> {
         return embed(title) {
             description(text)
-            color(color)
+            color?.let { color(it) }
             thumbnail(thumb)
             image(img)
         }.rest()
     }
 
     @JvmOverloads
-    fun embed(title: String? = null): EmbedCreator = EmbedCreator(this).title(title)
+    fun embed(title: String? = null): EmbedCreator = EmbedCreator(servlet, textChannel).title(title)
 
     fun embed(title: String? = null, block: Consumer<EmbedCreator>): EmbedCreator {
         return embed(title).apply { block.accept(this) }

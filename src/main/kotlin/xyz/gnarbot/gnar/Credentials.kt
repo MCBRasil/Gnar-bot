@@ -1,12 +1,14 @@
 package xyz.gnarbot.gnar
 
 import org.json.JSONObject
+import org.json.JSONTokener
 import java.io.File
+import java.io.FileReader
 import kotlin.jvm.JvmStatic as static
 
 object Credentials {
     private val file = File(Bot.files.data, "credentials.json")
-    private val jso = JSONObject(file.readText())
+    private val jso = JSONObject(JSONTokener(FileReader(file)))
 
     private val token = jso.getJSONObject("token")
     @JvmField val PRODUCTION: String = token.optString("production") ?: ""

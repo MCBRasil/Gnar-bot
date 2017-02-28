@@ -4,7 +4,6 @@ import com.mashape.unirest.http.Unirest;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.Credentials;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
@@ -37,7 +36,6 @@ public class UrbanDictionaryCommand extends CommandExecutor {
             JSONObject word = words.getJSONObject(0);
 
             note.embed("Urban Dictionary")
-                    .color(Bot.getColor())
                     .thumbnail("https://s3.amazonaws.com/mashape-production-logos/apis/53aa4f67e4b0a9b1348da532_medium")
                     .field("Word", true, "[" + word.getString("word") + "](" + word.getString("permalink") + ")")
                     .field("Definition", true, word.optString("definition"))

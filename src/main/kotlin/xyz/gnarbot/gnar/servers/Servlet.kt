@@ -19,9 +19,9 @@ import xyz.gnarbot.gnar.utils.Note
  * Represents a bot that serves on each [Guild] and wraps around it.
  * @see Guild
  */
-class Servlet(val shard: Shard, private var guild: Guild) : Guild by guild {
+class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild by guild {
     val clientHandler: ClientHandler = ClientHandler(this)
-    val commandHandler: CommandHandler = CommandHandler(this)
+    val commandHandler: CommandHandler = CommandHandler(this, bot)
 
     val selfClient: Client get() = clientHandler.selfClient
 

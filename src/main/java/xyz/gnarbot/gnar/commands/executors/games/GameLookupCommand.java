@@ -6,15 +6,14 @@ import com.mashape.unirest.http.Unirest;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.Credentials;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
-import java.util.StringJoiner;
 
+// TODO Game API is taken down, update to https://market.mashape.com/ahmedakhan/video-game-information
 @Command(aliases = {"game", "gamelookup"}, usage = "(query)", description = "Look up information about a game.")
 public class GameLookupCommand extends CommandExecutor {
     @Override
@@ -43,13 +42,13 @@ public class GameLookupCommand extends CommandExecutor {
             String score = jso.optString("score");
             String desc = jso.optString("short_description");
 
-            StringJoiner joiner = new StringJoiner("\n");
+            note.embed(title)
+                    .thumbnail(jso.optString("thumb"))
+                    .field("Publisher", true, publisher)
+                    .field("Score", true, score)
+                    .field("Description", false, desc)
+                    .rest().queue();
 
-            joiner.add("Publisher: **[" + publisher + "]()**");
-            joiner.add("Score: **[" + score + "]()**");
-            joiner.add("Description: **[" + desc + "]()**");
-
-            note.respond(title, joiner.toString(), Bot.getColor(), jso.optString("thumb"));
         } catch (Exception e) {
             e.printStackTrace();
         }

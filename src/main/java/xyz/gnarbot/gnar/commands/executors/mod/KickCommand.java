@@ -1,5 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.mod;
 
+import com.google.inject.Inject;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 import xyz.gnarbot.gnar.commands.handlers.Command;
@@ -15,10 +16,12 @@ import java.util.List;
         usage = "-user",
         level = Level.BOT_COMMANDER)
 public class KickCommand extends CommandExecutor {
+
+    @Inject
+    private Servlet servlet;
+
     @Override
     public void execute(Note note, List<String> args) {
-        Servlet servlet = note.getServlet();
-
         Client author = note.getAuthor();
         Client target = null;
 

@@ -19,14 +19,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandHandler {
+    private final Bot bot;
     private final Servlet servlet;
     private final Injector injector;
 
     public List<String> disabled = new ArrayList<>();
     private int requests = 0;
 
-    public CommandHandler(Servlet servlet) {
+    public CommandHandler(Servlet servlet, Bot bot) {
         this.servlet = servlet;
+        this.bot = bot;
         this.injector = Guice.createInjector(new CommandModule());
     }
 
@@ -49,22 +51,29 @@ public class CommandHandler {
 
         Note note = new Note(servlet, message);
 
-        CommandExecutor cmd = servlet.getShard().getCommandRegistry().getCommand(label);
+        Class<? extends CommandExecutor> cls = bot.getCommandRegistry().getCommand(label);
 
-        if (cmd == null) return;
+        if (cls == null) return;
 
-        if (cmd.getLevel().getValue() > author.getLevel().getValue()) {
-            note.error("Insufficient bot level.\n" + cmd.getLevel().getRequireText());
+        Command meta = cls.getAnnotation(Command.class);
+
+        if (meta.level().getValue() > author.getLevel().getValue()) {
+            note.error("Insufficient bot level.\n" + meta.level().getRequireText());
             return;
         }
 
         try {
             requests++;
-            cmd.syncExecute(injector, note, args);
+            CommandExecutor cmd = cls.newInstance();
+            cmd.bot = bot;
+            cmd.commandMeta = meta;
+            injector.injectMembers(cmd);
+            cmd.execute(note, args);
         } catch (RuntimeException e) {
             note.error("**Exception**: " + e.getMessage()).queue();
             e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException | InstantiationException e) {
+            note.error("**Class Instantiation Failed**: " + e.getMessage()).queue();
             e.printStackTrace();
         }
     }
@@ -90,7 +99,7 @@ public class CommandHandler {
             bind(Shard.class).toInstance(servlet.getShard());
 
             bind(CommandHandler.class).toInstance(CommandHandler.this);
-            bind(CommandRegistry.class).toInstance(servlet.getShard().getCommandRegistry());
+            bind(CommandRegistry.class).toInstance(servlet.getBot().getCommandRegistry());
             bind(ClientHandler.class).toInstance(servlet.getClientHandler());
 
             bind(JDA.class).toInstance(servlet.getJDA());
