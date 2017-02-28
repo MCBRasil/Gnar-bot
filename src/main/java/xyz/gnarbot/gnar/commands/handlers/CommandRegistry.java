@@ -1,5 +1,6 @@
 package xyz.gnarbot.gnar.commands.handlers;
 
+import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.executors.admin.GarbageCollectCommand;
 import xyz.gnarbot.gnar.commands.executors.admin.JavascriptCommand;
 import xyz.gnarbot.gnar.commands.executors.admin.ThrowError;
@@ -144,7 +145,7 @@ public class CommandRegistry {
             throw new IllegalStateException("@Command annotation not found for class: " + cls.getName());
         }
 
-        Command meta = cls.getAnnotation(Command.class);
+        final Command meta = cls.getAnnotation(Command.class);
         for (String alias : meta.aliases()) {
             registerCommand(alias, cls);
         }
@@ -213,8 +214,35 @@ public class CommandRegistry {
     /**
      * @return Unique command executors.
      */
-    public Set<Class<? extends CommandExecutor>> getUniqueExecutors() {
+    public Set<Class<? extends CommandExecutor>> getClasses() {
         return new LinkedHashSet<>(commandMap.values());
+    }
+
+    public Set<Command> getCommandMetas() {
+        final Set<Command> set = new LinkedHashSet<>();
+
+        for (Class<? extends CommandExecutor> cls : getClasses()) {
+            set.add(cls.getAnnotation(Command.class));
+        }
+
+        return set;
+    }
+
+    public Set<CommandExecutor> getUniqueExecutors() {
+        final Set<CommandExecutor> set = new LinkedHashSet<>();
+
+        for (Class<? extends CommandExecutor> cls : getClasses()) {
+            try {
+                CommandExecutor cmd = cls.newInstance();
+                cmd.bot = Bot.INSTANCE;
+                cmd.commandMeta = cls.getAnnotation(Command.class);
+                set.add(cmd);
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return set;
     }
 
     /**
@@ -223,16 +251,25 @@ public class CommandRegistry {
      * @param key Invoking key.
      * @return CommandExecutor instance.
      */
-    public Class<? extends CommandExecutor> getCommand(String key) {
+    public Class<? extends CommandExecutor> getCommandClass(String key) {
         return getCommandMap().get(key);
     }
+
+    public Command getCommandMeta(String key) {
+        final Class<? extends CommandExecutor> cls = getCommandClass(key);
+        if (cls != null) {
+            return cls.getAnnotation(Command.class);
+        }
+        return null;
+    }
+
 //    /**
 //     * Returns the CommandExecutor based on the class.
 //     *
 //     * @param cls CommandExecutor class.
 //     * @return CommandExecutor instance.
 //     */
-//    public CommandExecutor getCommand(Class<? extends CommandExecutor> cls) {
+//    public CommandExecutor getCommandClass(Class<? extends CommandExecutor> cls) {
 //        Optional<CommandExecutor> cmd = commandMap.values()
 //                .stream()
 //                .filter(commandExecutor -> commandExecutor.getClass() == cls)

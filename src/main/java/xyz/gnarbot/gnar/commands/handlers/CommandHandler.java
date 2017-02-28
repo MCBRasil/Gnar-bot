@@ -51,7 +51,7 @@ public class CommandHandler {
 
         Note note = new Note(servlet, message);
 
-        Class<? extends CommandExecutor> cls = bot.getCommandRegistry().getCommand(label);
+        Class<? extends CommandExecutor> cls = bot.getCommandRegistry().getCommandClass(label);
 
         if (cls == null) return;
 

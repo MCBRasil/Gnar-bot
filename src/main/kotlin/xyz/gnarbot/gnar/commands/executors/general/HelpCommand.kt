@@ -19,14 +19,12 @@ class HelpCommand : CommandExecutor() {
         if (args.isNotEmpty()) {
             val target = if (args[0].startsWith('_')) args[0].substring(1) else args[0]
 
-            val cmd = registry.getCommand(target)
+            val meta = registry.getCommandMeta(target)
 
-            if (cmd == null) {
+            if (meta == null) {
                 note.error("There is no command named `$target`. :cry:").queue()
                 return
             }
-
-            val meta = cmd.getAnnotation(Command::class.java)
 
             note.embed("Command Information") {
                 field("Aliases", true, meta.aliases.joinToString(separator = ", ${Bot.token}", prefix = Bot.token))
@@ -38,15 +36,14 @@ class HelpCommand : CommandExecutor() {
             return
         }
 
-        val executors = registry.uniqueExecutors
+        val metas = registry.commandMetas
 
         val embed = note.embed("Documentation") {
             description("This is all of Gnar's currently registered commands.")
 
             for (level in Level.values()) {
-                val filtered = executors.filter {
-                    val meta = it.getAnnotation(Command::class.java)
-                    meta.level == level && meta.showInHelp
+                val filtered = metas.filter {
+                   it.level == level && it.showInHelp
                 }
                 val sectionCount = filtered.size
                 if (sectionCount < 1) continue
@@ -58,10 +55,7 @@ class HelpCommand : CommandExecutor() {
 
                 for (page in pages) {
                     field("", true) {
-                        page.map {
-                            it.getAnnotation(Command::class.java)
-                                    //meta.symbol?.let { append(it).append(' ') }
-                        }.forEach { append("**[").append(Bot.token).append(it.aliases[0]).appendln("]()**") }
+                        page.forEach { append("**[").append(Bot.token).append(it.aliases[0]).appendln("]()**") }
                     }
                 }
             }

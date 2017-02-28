@@ -28,14 +28,4 @@ public abstract class CommandExecutor {
      * @param args Arguments passed into the execution.
      */
     protected abstract void execute(Note note, List<String> args);
-
-//    /**
-//     * @return String representation of the command.
-//     */
-//    @Override
-//    public String toString() {
-//        return this.getClass()
-//                .getSimpleName() + "(aliases=" + Arrays.toString(aliases) + ", desc=\"" + description + "\", " +
-//                "usage=\"" + usage + "\", level=" + level + ", shownInHelp=" + shownInHelp + ")";
-//    }
 }
