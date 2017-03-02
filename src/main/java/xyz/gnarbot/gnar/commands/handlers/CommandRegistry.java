@@ -31,12 +31,16 @@ import java.util.Set;
  * Registry unique to each Shard.
  */
 public class CommandRegistry {
+    private final Bot bot;
+
     /**
      * The mapped registry of invoking key to the classes.
      */
-    private final Map<String, Class<? extends CommandExecutor>> commandMap = new LinkedHashMap<>();
+    private final Map<String, CommandEntry> commandEntryMap = new LinkedHashMap<>();
 
-    public CommandRegistry() {
+    public CommandRegistry(Bot bot) {
+        this.bot = bot;
+
         register(HelpCommand.class);
         register(InviteBotCommand.class);
         register(PingCommand.class);
@@ -139,58 +143,32 @@ public class CommandRegistry {
         //register(new JSCommandExecutor(new File("data/scripting/javascript/firstJSCommand.js")));
     }
 
+    public Map<String, CommandEntry> getCommandEntriesMap() {
+        return commandEntryMap;
+    }
 
     public void register(Class<? extends CommandExecutor> cls) {
         if (!cls.isAnnotationPresent(Command.class)) {
             throw new IllegalStateException("@Command annotation not found for class: " + cls.getName());
         }
 
-        final Command meta = cls.getAnnotation(Command.class);
-        for (String alias : meta.aliases()) {
-            registerCommand(alias, cls);
+        CommandEntry entry = new CommandEntry(cls, bot);
+        for (String alias : entry.meta.aliases()) {
+            registerCommand(alias, entry);
         }
-
-//            CommandExecutor cmd = cls.newInstance();
-//
-//            Command meta = cls.getAnnotation(Command.class);
-//
-//            cmd.bot = Bot.INSTANCE;
-//            cmd.setAliases(meta.aliases());
-//            cmd.setDescription(meta.description());
-//            cmd.setLevel(meta.level());
-//            cmd.setShownInHelp(meta.showInHelp());
-//            cmd.setUsage(meta.usage());
-//
-//            for (Field field : cls.getDeclaredFields()) {
-//                if (field.isAnnotationPresent(Inject.class)) {
-//                    cmd.setInject(true);
-//                    break;
-//                }
-//            }
-//
-//            for (String alias : cmd.getAliases()) {
-//                registerCommand(alias, cmd);
-//            }
     }
-//
-//    public void register(Class<CommandExecutor> jsc) {
-//        for (String alias : jsc.getAliases()) {
-//            registerCommand(alias, jsc);
-//        }
-//    }
-
 
     /**
      * Register the CommandExecutor instance into the registry.
-     *  @param label Invoking key.
-     * @param cmd   CommandExecutor instance.
+     * @param label Invoking key.
+     * @param entry CommandEntry.
      */
-    public void registerCommand(String label, Class<? extends CommandExecutor> cmd) {
+    public void registerCommand(String label, CommandEntry entry) {
         label = label.toLowerCase();
-        if (commandMap.containsKey(label)) {
+        if (commandEntryMap.containsKey(label)) {
             throw new IllegalStateException("Command " + label + " is already registered.");
         }
-        commandMap.put(label, cmd);
+        commandEntryMap.put(label, entry);
     }
 
     /**
@@ -199,7 +177,7 @@ public class CommandRegistry {
      * @param label Invoking key.
      */
     public void unregisterCommand(String label) {
-        commandMap.remove(label);
+        commandEntryMap.remove(label);
     }
 
     /**
@@ -207,42 +185,15 @@ public class CommandRegistry {
      *
      * @return The command registry.
      */
-    public Map<String, Class<? extends CommandExecutor>> getCommandMap() {
-        return commandMap;
+    public Set<CommandEntry> getEntries() {
+        return new LinkedHashSet<>(commandEntryMap.values());
     }
 
     /**
      * @return Unique command executors.
      */
-    public Set<Class<? extends CommandExecutor>> getClasses() {
-        return new LinkedHashSet<>(commandMap.values());
-    }
-
-    public Set<Command> getCommandMetas() {
-        final Set<Command> set = new LinkedHashSet<>();
-
-        for (Class<? extends CommandExecutor> cls : getClasses()) {
-            set.add(cls.getAnnotation(Command.class));
-        }
-
-        return set;
-    }
-
-    public Set<CommandExecutor> getUniqueExecutors() {
-        final Set<CommandExecutor> set = new LinkedHashSet<>();
-
-        for (Class<? extends CommandExecutor> cls : getClasses()) {
-            try {
-                CommandExecutor cmd = cls.newInstance();
-                cmd.bot = Bot.INSTANCE;
-                cmd.commandMeta = cls.getAnnotation(Command.class);
-                set.add(cmd);
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return set;
+    public Set<CommandEntry> getClasses() {
+        return new LinkedHashSet<>(commandEntryMap.values());
     }
 
     /**
@@ -251,16 +202,37 @@ public class CommandRegistry {
      * @param key Invoking key.
      * @return CommandExecutor instance.
      */
-    public Class<? extends CommandExecutor> getCommandClass(String key) {
-        return getCommandMap().get(key);
+    public CommandEntry getEntry(String key) {
+        return commandEntryMap.get(key);
     }
 
-    public Command getCommandMeta(String key) {
-        final Class<? extends CommandExecutor> cls = getCommandClass(key);
-        if (cls != null) {
-            return cls.getAnnotation(Command.class);
+//    public Set<CommandExecutor> getUniqueExecutors() {
+//        final Set<CommandExecutor> set = new LinkedHashSet<>();
+//
+//        for (Class<? extends CommandExecutor> cls : getClasses()) {
+//            try {
+//                CommandExecutor cmd = cls.newInstance();
+//                cmd.bot = Bot.INSTANCE;
+//                cmd.commandMeta = cls.getAnnotation(Command.class);
+//                set.add(cmd);
+//            } catch (InstantiationException | IllegalAccessException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        return set;
+//    }
+
+    public static class CommandEntry {
+        public final Class<? extends CommandExecutor> cls;
+        public final Command meta;
+        private final Bot bot;
+
+        CommandEntry(Class<? extends CommandExecutor> cls, Bot bot) {
+            this.bot = bot;
+            this.cls = cls;
+            this.meta = cls.getAnnotation(Command.class);
         }
-        return null;
     }
 
 //    /**

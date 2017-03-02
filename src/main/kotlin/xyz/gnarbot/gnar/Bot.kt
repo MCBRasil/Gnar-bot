@@ -33,7 +33,7 @@ object Bot {
 
     @static val files = BotFiles()
 
-    val commandRegistry = CommandRegistry()
+    val commandRegistry = CommandRegistry(this)
 
     /** @returns If the bot is initialized. */
     var initialized = false

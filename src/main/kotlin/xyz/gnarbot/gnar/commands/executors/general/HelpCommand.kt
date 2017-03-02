@@ -19,43 +19,42 @@ class HelpCommand : CommandExecutor() {
         if (args.isNotEmpty()) {
             val target = if (args[0].startsWith('_')) args[0].substring(1) else args[0]
 
-            val meta = registry.getCommandMeta(target)
+            val entry = registry.getEntry(target)
 
-            if (meta == null) {
+            if (entry == null) {
                 note.error("There is no command named `$target`. :cry:").queue()
                 return
             }
 
             note.embed("Command Information") {
-                field("Aliases", true, meta.aliases.joinToString(separator = ", ${Bot.token}", prefix = Bot.token))
-                field("Usage", true, "${Bot.token}${meta.aliases[0].toLowerCase()} ${meta.usage}")
-                field("Level", true, meta.level.title)
-                field("Description", false, meta.description)
+                field("Aliases", true, entry.meta.aliases.joinToString(separator = ", ${Bot.token}", prefix = Bot.token))
+                field("Usage", true, "${Bot.token}${entry.meta.aliases[0].toLowerCase()} ${entry.meta.usage}")
+                field("Level", true, entry.meta.level.title)
+                field("Description", false, entry.meta.description)
             }.rest().queue()
 
             return
         }
 
-        val metas = registry.commandMetas
+        val cmds = registry.entries
 
         val embed = note.embed("Documentation") {
             description("This is all of Gnar's currently registered commands.")
 
             for (level in Level.values()) {
-                val filtered = metas.filter {
-                   it.level == level && it.showInHelp
+                val filtered = cmds.filter {
+                   it.meta.level == level && it.meta.showInHelp
                 }
-                val sectionCount = filtered.size
-                if (sectionCount < 1) continue
+                if (filtered.isEmpty()) continue
 
-                val pages = Lists.partition(filtered, sectionCount / 3 + 1)
+                val pages = Lists.partition(filtered, filtered.size / 3 + 1)
 
                 addBlankField(true)
-                field("${level.title} — $sectionCount", false, level.requireText)
+                field("${level.title} — ${filtered.size}", false, level.requireText)
 
                 for (page in pages) {
                     field("", true) {
-                        page.forEach { append("**[").append(Bot.token).append(it.aliases[0]).appendln("]()**") }
+                        page.forEach { append("**[").append(Bot.token).append(it.meta.aliases[0]).appendln("]()**") }
                     }
                 }
             }

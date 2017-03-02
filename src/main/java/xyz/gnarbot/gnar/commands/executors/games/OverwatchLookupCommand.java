@@ -22,7 +22,7 @@ public class OverwatchLookupCommand extends CommandExecutor {
             return;
         }
 
-        if (!args.get(0).matches("[a-zA-Z1-9]+(#|-)\\d+")) {
+        if (!args.get(0).matches("[a-zA-Z1-9\\wа-я]+(#|-)\\d+/ig")) {
             note.error("You did not enter a valid BattleTag `[BattleTag#0000]`.").queue();
             return;
         }

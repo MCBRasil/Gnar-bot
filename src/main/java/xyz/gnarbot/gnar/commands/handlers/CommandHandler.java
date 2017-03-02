@@ -51,11 +51,12 @@ public class CommandHandler {
 
         Note note = new Note(servlet, message);
 
-        Class<? extends CommandExecutor> cls = bot.getCommandRegistry().getCommandClass(label);
+        CommandRegistry.CommandEntry entry =  bot.getCommandRegistry().getEntry(label);
+        Class<? extends CommandExecutor> cls = entry.cls;
 
         if (cls == null) return;
 
-        Command meta = cls.getAnnotation(Command.class);
+        Command meta = entry.meta;
 
         if (meta.level().getValue() > author.getLevel().getValue()) {
             note.error("Insufficient bot level.\n" + meta.level().getRequireText());

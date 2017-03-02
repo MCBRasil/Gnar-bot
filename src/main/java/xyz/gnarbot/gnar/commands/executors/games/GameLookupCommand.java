@@ -13,17 +13,17 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 
-// TODO Game API is taken down, update to https://market.mashape.com/ahmedakhan/video-game-information
-@Command(aliases = {"game", "gamelookup"}, usage = "(query)", description = "Look up information about a game.")
+@Command(aliases = {"game", "gamelookup"}, usage = "(Game name)", description = "Look up information about a game.")
 public class GameLookupCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         try {
             String query = StringUtils.join(args, "+");
 
-            HttpResponse<JsonNode> response = Unirest.get("https://videogamesrating.p.mashape.com/get.php")
-                    .queryString("count", 5)
-                    .queryString("game", query)
+            HttpResponse<JsonNode> response = Unirest.get("https://igdbcom-internet-game-database-v1.p.mashape.com/games/")
+                    .queryString("fields", "name,summary,rating,cover.url")
+                    .queryString("limit", 1)
+                    .queryString("search", query)
                     .header("X-Mashape-Key", Credentials.MASHAPE)
                     .header("Accept", "application/json")
                     .asJson();
@@ -37,14 +37,15 @@ public class GameLookupCommand extends CommandExecutor {
 
             JSONObject jso = jsa.getJSONObject(0);
 
-            String title = jso.optString("title");
-            String publisher = jso.optString("publisher");
-            String score = jso.optString("score");
-            String desc = jso.optString("short_description");
+            String title = jso.optString("name");
+            //String publisher = jso.optString("publisher");
+            String score = jso.optString("rating");
+            String desc = jso.optString("summary");
+            String thumb = "https:" + jso.optJSONObject("cover").optString("url");
 
             note.embed(title)
-                    .thumbnail(jso.optString("thumb"))
-                    .field("Publisher", true, publisher)
+                    .thumbnail(thumb)
+                    //.field("Publisher", true, publisher)
                     .field("Score", true, score)
                     .field("Description", false, desc)
                     .rest().queue();

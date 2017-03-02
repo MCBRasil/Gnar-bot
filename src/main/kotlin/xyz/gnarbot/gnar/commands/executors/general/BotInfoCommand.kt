@@ -59,7 +59,7 @@ class BotInfoCommand : CommandExecutor() {
             servlets += shard.servlets.size
         }
 
-        val commandSize = registry.commandMetas.count(Command::showInHelp)
+        val commandSize = registry.entries.count { it.meta.showInHelp }
 
         val requests = Bot.shards
                 .flatMap { it.servlets.values }

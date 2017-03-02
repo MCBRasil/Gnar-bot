@@ -10,9 +10,9 @@
 
     <properties>
         <JDA.version>3.0.BETA2_140</JDA.version>
-        <lavaplayer.version>1.2.21</lavaplayer.version>
+        <lavaplayer.version>1.2.22</lavaplayer.version>
         <pippo.version>1.2.0</pippo.version>
-        <kotlin.version>1.0.6</kotlin.version>
+        <kotlin.version>1.1.0</kotlin.version>
         <jar.mainClass>xyz.gnarbot.gnar.MainBot</jar.mainClass>
     </properties>
 
