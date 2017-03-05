@@ -60,14 +60,14 @@ class Shard(val id: Int, val bot: Bot, private val jda: JDA) : JDA by jda {
      */
     override fun shutdown() {
         jda.shutdown(false)
-        clearServlets()
+        clearServlets(true)
     }
 
-    fun clearServlets() {
+    fun clearServlets(interrupt: Boolean) {
         val iterator = servlets.iterator()
         while (iterator.hasNext()) {
             val it = iterator.next()
-            if(it.value.shutdown(false)) {
+            if(it.value.shutdown(interrupt)) {
                 iterator.remove()
             }
         }

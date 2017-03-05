@@ -35,6 +35,9 @@ class RemindMeCommand : CommandExecutor() {
                 Bot.scheduler.schedule({
                     note.author.requestPrivateChannel()
                             .sendMessage(makeEmbed("Reminder from $time ${timeUnit.toString().toLowerCase()} ago.", string)).queue()
+
+
+
                 }, time.toLong(), timeUnit)
 
             } else {

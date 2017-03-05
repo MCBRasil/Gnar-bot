@@ -4,7 +4,6 @@ import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.members.Level
-import xyz.gnarbot.gnar.servers.Shard
 import xyz.gnarbot.gnar.utils.Note
 
 @Command(
@@ -16,7 +15,9 @@ import xyz.gnarbot.gnar.utils.Note
 class GarbageCollectCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
         note.embed("Garbage Collection") {
-            Bot.shards.forEach(Shard::clearServlets)
+            val interrupt = if (!args.isEmpty()) args[0].toBoolean() else false
+
+            Bot.shards.forEach { it.clearServlets(interrupt) }
             field("Wrappers", false, "Removed references to wrappers.")
 
             field("Guild Servlets Remaining", true, Bot.shards.sumBy { it.servlets.size })
