@@ -17,7 +17,6 @@ import xyz.gnarbot.gnar.api.data.BotInfo
 import xyz.gnarbot.gnar.commands.handlers.CommandRegistry
 import xyz.gnarbot.gnar.servers.Shard
 import xyz.gnarbot.gnar.utils.Utils
-import java.awt.Color
 import java.util.concurrent.Executors
 import kotlin.jvm.JvmStatic as static
 
@@ -25,9 +24,7 @@ import kotlin.jvm.JvmStatic as static
  * Main class of the bot. Implemented as a singleton.
  */
 object Bot {
-    @static val color = Color(0, 80, 175)
-
-    @static val LOGGER: Logger = LoggerFactory.getLogger("Bot")
+    @static val log: Logger = LoggerFactory.getLogger("Bot")
 
     @static val token = "_" //default token
 
@@ -80,11 +77,11 @@ object Bot {
         if (initialized) throw IllegalStateException("Bot instance have already been initialized.")
         initialized = true
 
-        LOGGER.info("Initializing the Discord bot.")
-        LOGGER.info("Requesting $numShards shards.")
+        log.info("Initializing the Discord bot.")
+        log.info("Requesting $numShards shards.")
 
-        LOGGER.info("There are ${admins.size} administrators registered for the bot.")
-        LOGGER.info("There are ${blocked.size} blocked users registered for the bot.")
+        log.info("There are ${admins.size} administrators registered for the bot.")
+        log.info("There are ${blocked.size} blocked users registered for the bot.")
 
         for (id in 0..numShards - 1) {
             val jda = makeJDA(token, numShards, id)
@@ -93,10 +90,10 @@ object Bot {
 
             shards.add(Shard(id, this, jda))
 
-            LOGGER.info("Shard [$id] is initialized.")
+            log.info("Shard [$id] is initialized.")
         }
 
-        LOGGER.info("Bot is now connected to Discord.")
+        log.info("Bot is now connected to Discord.")
 
         api.registerRoutes()
 
@@ -123,7 +120,7 @@ object Bot {
         initialized = false
         System.gc()
 
-        LOGGER.info("Bot is now disconnected from Discord.")
+        log.info("Bot is now disconnected from Discord.")
     }
 
     val info: BotInfo get() = BotInfo(this)

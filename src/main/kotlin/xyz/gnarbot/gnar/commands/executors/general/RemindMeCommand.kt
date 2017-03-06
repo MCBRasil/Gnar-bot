@@ -3,8 +3,8 @@ package xyz.gnarbot.gnar.commands.executors.general
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
+import xyz.gnarbot.gnar.utils.EmbedCreator
 import xyz.gnarbot.gnar.utils.Note
-import xyz.gnarbot.gnar.utils.makeEmbed
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -30,14 +30,14 @@ class RemindMeCommand : CommandExecutor() {
 
             // todo change to new embed
             if (time > 0) {
-                note.respond("Reminder Scheduled", "I'll be reminding you in __$time ${timeUnit.toString().toLowerCase()}__.").queue()
+                note.respond("Reminder Scheduled",
+                        "I'll be reminding you in __$time ${timeUnit.toString().toLowerCase()}__.").queue()
 
                 Bot.scheduler.schedule({
-                    note.author.requestPrivateChannel()
-                            .sendMessage(makeEmbed("Reminder from $time ${timeUnit.toString().toLowerCase()} ago.", string)).queue()
-
-
-
+                    EmbedCreator(note.servlet, note.textChannel)
+                            .title("Reminder from $time ${timeUnit.toString().toLowerCase()} ago.")
+                            .description(string)
+                            .rest().queue()
                 }, time.toLong(), timeUnit)
 
             } else {

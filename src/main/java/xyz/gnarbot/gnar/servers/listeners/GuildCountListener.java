@@ -49,12 +49,12 @@ public class GuildCountListener extends ListenerAdapter {
         updateServerCount(count);
     }
 
-    public void updateServerCount(int i) {
+    private void updateServerCount(int i) {
         updateAbalCount(i);
         updateCarbonitexCount(i);
     }
 
-    public void updateAbalCount(int i) {
+    private void updateAbalCount(int i) {
         try {
             String auth = Credentials.ABAL_TOKEN;
 
@@ -69,15 +69,15 @@ public class GuildCountListener extends ListenerAdapter {
                     .asString()
                     .getStatusText();
 
-            Bot.getLOGGER().info("Successfully updated Abal server count to " + i + ".");
-            Bot.getLOGGER().info("Response code: " + response);
+            Bot.getLog().info("Successfully updated Abal server count to " + i + ".");
+            Bot.getLog().info("Response code: " + response);
         } catch (UnirestException e) {
-            Bot.getLOGGER().warn("Failed updating Abal server count to " + i + ".");
+            Bot.getLog().warn("Failed updating Abal server count to " + i + ".");
             e.printStackTrace();
         }
     }
 
-    public void updateCarbonitexCount(int i) {
+    private void updateCarbonitexCount(int i) {
         try {
             String auth = Credentials.ABAL_TOKEN;
             String key = Credentials.CARBONITEX;
@@ -93,10 +93,10 @@ public class GuildCountListener extends ListenerAdapter {
                     .asString()
                     .getStatusText();
 
-            Bot.getLOGGER().info("Successfully updated Carbonitex server count to " + i + ".");
-            Bot.getLOGGER().info("Response code: " + response);
+            Bot.getLog().info("Successfully updated Carbonitex server count to " + i + ".");
+            Bot.getLog().info("Response code: " + response);
         } catch (UnirestException e) {
-            Bot.getLOGGER().warn("Failed updating Carbonitex server count to " + i + ".");
+            Bot.getLog().warn("Failed updating Carbonitex server count to " + i + ".");
             e.printStackTrace();
         }
     }

@@ -5,7 +5,6 @@ import net.dv8tion.jda.core.entities.MessageEmbed
 import net.dv8tion.jda.core.entities.TextChannel
 import net.dv8tion.jda.core.entities.User
 import net.dv8tion.jda.core.requests.RestAction
-import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.servers.Servlet
 import java.awt.Color
 import java.time.temporal.TemporalAccessor
@@ -16,7 +15,7 @@ class EmbedCreator(private val servlet: Servlet, private val textChannel: TextCh
     val delegate = EmbedBuilder()
 
     init {
-        color(Bot.color)
+        color(Color(0, 80, 175))
     }
 
 

@@ -40,7 +40,7 @@ public class AdventureGrid {
     }
 
     public Area getAreaAtLocation(int x, int y) {
-        return (xygrid[x][y] != null) ? xygrid[x][y] : null;
+        return xygrid[x][y];
     }
 
     public int getCurrentX() {
@@ -174,7 +174,7 @@ public class AdventureGrid {
             Bot.INSTANCE.getScheduler().schedule(() ->
             {
                 if (!mapFile.delete()) {
-                    Bot.getLOGGER().warn("Unable to delete map file.");
+                    Bot.getLog().warn("Unable to delete map file.");
                 }
                 mapFile.deleteOnExit();
             }, 10, TimeUnit.SECONDS);
