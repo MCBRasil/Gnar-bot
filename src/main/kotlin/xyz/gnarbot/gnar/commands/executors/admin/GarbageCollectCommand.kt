@@ -27,7 +27,7 @@ class GarbageCollectCommand : CommandExecutor() {
 
             System.gc()
             field("GC Request", false, "Garbage collection request sent to JVM.")
-            Bot.LOGGER.info("Garbage collection request sent to JVM.")
+            Bot.log.info("Garbage collection request sent to JVM.")
         }.rest().queue()
     }
 }

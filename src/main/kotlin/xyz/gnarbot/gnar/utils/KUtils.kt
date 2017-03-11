@@ -5,8 +5,18 @@ package xyz.gnarbot.gnar.utils
 
 import java.io.File
 import java.util.*
+import java.util.function.Consumer
 
 inline fun File.child(path: String) = File(this, path)
+
+//inline fun TextChannel.embed(title: String? = null, value: EmbedCreator.() -> Unit): EmbedCreator {
+//    return EmbedCreator(servlet, this).title(title).apply { value(this) }
+//}
+
+@Suppress("NOTHING_TO_INLINE")
+inline operator fun <T> Consumer<T>.invoke(value: T) {
+    this.accept(value)
+}
 
 fun String.fastSplit(delimiter: Char): List<String> {
     val res = ArrayList<String>(count { it == delimiter } + 1)
