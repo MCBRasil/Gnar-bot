@@ -53,8 +53,6 @@ class Shard(val id: Int, val bot: Bot, private val jda: JDA) : JDA by jda {
      */
     val info: ShardInfo get() = ShardInfo(this)
 
-
-
     /**
      * Shuts down the shard.
      */

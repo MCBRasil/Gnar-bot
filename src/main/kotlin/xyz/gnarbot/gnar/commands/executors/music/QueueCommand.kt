@@ -5,7 +5,6 @@ import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
-import java.awt.Color
 
 @Command(aliases = arrayOf("queue", "list"),
         description = "Shows the music that's currently queued.")
@@ -17,9 +16,9 @@ class QueueCommand : MusicExecutor() {
         val queue = manager.scheduler.queue
 
         if (queue.isEmpty()) {
-            note.embed("Queue") {
-                color(musicColor)
-                description("The queue is currently empty.")
+            note.respond().embed("Queue") {
+                color = musicColor
+                description = "The queue is currently empty."
             }.rest().queue()
             return
         }
@@ -27,8 +26,8 @@ class QueueCommand : MusicExecutor() {
         var trackCount = 0
         var queueLength = 0L
 
-        note.embed("Music Queue") {
-            color(Color(0, 221, 88))
+        note.respond().embed("Music Queue") {
+            color = musicColor
 
             manager.player.playingTrack?.let {
                 field("Now Playing", false, if (it.sourceManager.sourceName.contains("youtube")) {

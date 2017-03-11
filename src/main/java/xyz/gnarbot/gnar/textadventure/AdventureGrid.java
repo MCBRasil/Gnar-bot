@@ -1,5 +1,6 @@
 package xyz.gnarbot.gnar.textadventure;
 
+import net.dv8tion.jda.core.entities.Message;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.textadventure.enums.DIRECTION;
 import xyz.gnarbot.gnar.textadventure.enums.LOCATION;
@@ -157,14 +158,14 @@ public class AdventureGrid {
             ImageBuilder builder = new ImageBuilder();
             File mapFile = builder.runBuilder();
             if (mapFile == null) {
-                n.respond("Error", "Couldn't create map file. Notify @Gatt#9711 please.", Color.RED);
+                n.respond().error("Couldn't create map file. Notify @Gatt#9711 please.").queue();
                 return;
             }
 
             Bot.INSTANCE.getScheduler().schedule(() ->
             {
                 try {
-                    Note m = n.info("Sending your map!").complete();
+                    Message m = n.respond().info("Sending your map!").complete();
                     n.getChannel().sendFile(mapFile, m).queue();
                 } catch (IOException e) {
                     e.printStackTrace();

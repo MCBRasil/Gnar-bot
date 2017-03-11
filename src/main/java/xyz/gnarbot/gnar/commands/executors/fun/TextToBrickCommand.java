@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.commands.executors.fun;
 
 import org.apache.commons.lang3.StringUtils;
+import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -12,11 +13,12 @@ public class TextToBrickCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (args.isEmpty()) {
-            note.error("Please provide a query.").queue();
+            note.respond().error("Please provide a query.").queue();
             return;
         }
 
-        note.embed("Text to Brick")
+        note.respond().embed("Text to Brick")
+                .setColor(Constants.COLOR)
                 .description(sb -> {
                     for (String a : StringUtils.join(args, " ").split("")) {
                         if (Character.isLetter(a.toLowerCase().charAt(0))) {

@@ -20,9 +20,9 @@ class SkipCommand : MusicExecutor() {
             manager.scheduler.nextTrack()
         }
 
-        note.embed("Skip Current Track") {
-            color(musicColor)
-            description("The track was skipped.")
+        note.respond().embed("Skip Current Track") {
+            color = musicColor
+            description = "The track was skipped."
         }.rest().queue()
     }
 }

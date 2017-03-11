@@ -1,9 +1,11 @@
 package xyz.gnarbot.gnar.commands.executors.admin
 
+import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.members.Level
 import xyz.gnarbot.gnar.utils.Note
+import java.awt.Color
 import javax.script.ScriptEngineManager
 import javax.script.ScriptException
 
@@ -28,22 +30,22 @@ class JavascriptCommand : CommandExecutor() {
         val script = args.joinToString(" ")
 
         if (blocked.any { script.contains(it, true) }) {
-            note.error("JavaScript eval Expression may be malicious, canceling.").queue()
+            note.respond().error("JavaScript eval Expression may be malicious, canceling.").queue()
             return
         }
 
-        val result: Any? = try {
-            engine.eval(script)
-        } catch (e: ScriptException) {
-            note.error("The error `$e` occurred while executing the JavaScript statement.").queue()
-            return
-        }
+        note.respond().embed("JavaScript") {
+            color = Constants.COLOR
 
-        if (result != null) {
-            note.embed("JavaScript") {
-                field("Running", false, script)
-                field("Result", false, result)
-            }.rest().queue()
-        }
+            field("Running", false, script)
+            field("Result", false, try {
+                engine.eval(script)
+            } catch (e: ScriptException) {
+                color = Color.RED
+                "The error `$e` occurred while executing the JavaScript statement."
+            })
+        }.rest().queue()
+
+
     }
 }

@@ -5,19 +5,18 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.Credentials;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
-
-import java.awt.*;
 
 @Command(aliases = {"marvel"}, usage = "(hero/villain name)", description = "Look up info on a Marvel character.")
 public class MarvelComics extends CommandExecutor {
     @Override
     public void execute(Note note, java.util.List<String> args) {
         if (args.isEmpty()) {
-            note.error("Please provide a name.");
+            note.respond().error("Please provide a name.").queue();
             return;
         }
 
@@ -46,14 +45,14 @@ public class MarvelComics extends CommandExecutor {
 
             JSONObject thumb = (JSONObject) j.get("thumbnail");
 
-            note.embed("Marvel Characters")
-                    .description(StringUtils.capitalize(s.toLowerCase().replaceAll("\\+", " ")))
-                    .color(Color.RED)
-                    .image(thumb.optString("path") + "." + thumb.optString("extension"))
+            note.respond().embed("Marvel Characters")
+                    .setColor(Constants.COLOR)
+                    .setDescription(StringUtils.capitalize(s.toLowerCase().replaceAll("\\+", " ")))
+                    .setImage(thumb.optString("path") + "." + thumb.optString("extension"))
                     .rest().queue();
 
         } catch (Exception e) {
-            note.error("Couldn't find that Marvel character.").queue();
+            note.respond().error("Couldn't find that Marvel character.").queue();
         }
     }
 }

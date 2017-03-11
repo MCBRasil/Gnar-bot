@@ -4,6 +4,7 @@ import com.mashape.unirest.http.Unirest;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.Credentials;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
@@ -29,21 +30,22 @@ public class UrbanDictionaryCommand extends CommandExecutor {
             JSONArray words = json.getJSONArray("list");
 
             if (words.length() < 1) {
-                note.error("Could not find that word, rip u");
+                note.respond().error("Could not find that word, rip u");
                 return;
             }
 
             JSONObject word = words.getJSONObject(0);
 
-            note.embed("Urban Dictionary")
-                    .thumbnail("https://s3.amazonaws.com/mashape-production-logos/apis/53aa4f67e4b0a9b1348da532_medium")
+            note.respond().embed("Urban Dictionary")
+                    .setColor(Constants.COLOR)
+                    .setThumbnail("https://s3.amazonaws.com/mashape-production-logos/apis/53aa4f67e4b0a9b1348da532_medium")
                     .field("Word", true, "[" + word.getString("word") + "](" + word.getString("permalink") + ")")
                     .field("Definition", true, word.optString("definition"))
                     .field("Example", true, word.optString("example"))
                     .rest().queue();
 
         } catch (Exception e) {
-            note.error("Could not find that word, rip u").queue();
+            note.respond().error("Could not find that word, rip u").queue();
         }
     }
 

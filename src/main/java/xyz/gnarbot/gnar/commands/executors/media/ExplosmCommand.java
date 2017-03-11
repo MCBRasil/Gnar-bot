@@ -2,6 +2,7 @@ package xyz.gnarbot.gnar.commands.executors.media;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -27,7 +28,7 @@ public class ExplosmCommand extends CommandExecutor {
                     input = Integer.valueOf(args.get(0));
 
                     if (input > max || input < 100) {
-                        note.error("Explosm does not have a comic for that number.").queue();
+                        note.respond().error("Explosm does not have a comic for that number.").queue();
                     }
 
                     rand = String.valueOf(input);
@@ -35,7 +36,7 @@ public class ExplosmCommand extends CommandExecutor {
                     if (args.get(0).equalsIgnoreCase("latest")) {
                         rand = "latest";
                     } else {
-                        note.error("You didn't enter a proper ID number.").queue();
+                        note.respond().error("You didn't enter a proper ID number.").queue();
                         return;
                     }
                 }
@@ -49,14 +50,15 @@ public class ExplosmCommand extends CommandExecutor {
 
             String logo = "http://explosm.net/img/logo.png";
 
-            note.embed("Cyanide and Happiness")
-                    .description("No: **" + rand + "**\n")
-                    .thumbnail(logo)
-                    .image(url)
+            note.respond().embed("Cyanide and Happiness")
+                    .setColor(Constants.COLOR)
+                    .setDescription("No: **" + rand + "**\n")
+                    .setThumbnail(logo)
+                    .setImage(url)
                     .rest().queue();
 
         } catch (Exception e) {
-            note.error("Unable to grab Cyanide and Happiness comic.").queue();
+            note.respond().error("Unable to grab Cyanide and Happiness comic.").queue();
             e.printStackTrace();
         }
     }

@@ -1,5 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.fun;
 
+import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -16,11 +17,12 @@ public class RollCommand extends CommandExecutor {
         try {
             if (args.size() >= 1) {
                 if (!(Integer.valueOf(args.get(0)) > 0)) {
-                    note.error("Number need to be > 0.").queue();
+                    note.respond().error("Number need to be > 0.").queue();
                     return;
                 }
 
-                note.embed("Roll a Number")
+                note.respond().embed("Roll a Number")
+                        .setColor(Constants.COLOR)
                         .description(sb -> {
                             sb.append("You rolled a **")
                                     .append(new Random().nextInt(Integer.valueOf(args.get(0))))
@@ -31,10 +33,10 @@ public class RollCommand extends CommandExecutor {
                         .rest().queue();
 
             } else {
-                note.error("Insufficient amount of arguments.").queue();
+                note.respond().error("Insufficient amount of arguments.").queue();
             }
         } catch (Exception e) {
-            note.error("Only numbers are allowed.\n\n**Example:**\n\n[_roll 10]()").queue();
+            note.respond().error("Only numbers are allowed.\n\n**Example:**\n\n[_roll 10]()").queue();
         }
     }
 }

@@ -11,7 +11,7 @@ import java.awt.Color
 class YoutubeCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
         if (args.isEmpty()) {
-            note.error("Gotta put something to search YouTube.").queue()
+            note.respond().error("Gotta put something to search YouTube.").queue()
             return
         }
 
@@ -21,15 +21,15 @@ class YoutubeCommand : CommandExecutor() {
             val results = YouTube.search(query, 3)
 
             if (results.isEmpty()) {
-                note.error("No search results for `$query`.").queue()
+                note.respond().error("No search results for `$query`.").queue()
                 return
             }
             var firstUrl: String? = null
 
-            note.embed {
-                author("YouTube Results", "https://www.youtube.com", "https://s.ytimg.com/yts/img/favicon_144-vflWmzoXw.png")
-                thumbnail("https://gnarbot.xyz/assets/img/youtube.png")
-                color(Color(141, 20, 0))
+            note.respond().embed {
+                setAuthor("YouTube Results", "https://www.youtube.com", "https://s.ytimg.com/yts/img/favicon_144-vflWmzoXw.png")
+                thumbnail = "https://gnarbot.xyz/assets/img/youtube.png"
+                color = Color(141, 20, 0)
 
                 description {
                     for (result in results) {
@@ -48,12 +48,12 @@ class YoutubeCommand : CommandExecutor() {
                 }
             }.rest().queue()
 
-            note.reply("**First Video:** $firstUrl").queue()
+            note.respond().text("**First Video:** $firstUrl").queue()
         } catch (e: JSONException) {
-            note.error("Unable to get YouTube results.").queue()
+            note.respond().error("Unable to get YouTube results.").queue()
             e.printStackTrace()
         } catch (e: NullPointerException) {
-            note.error("Unable to get YouTube results.").queue()
+            note.respond().error("Unable to get YouTube results.").queue()
             e.printStackTrace()
         }
 

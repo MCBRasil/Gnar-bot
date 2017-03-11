@@ -3,6 +3,7 @@ package xyz.gnarbot.gnar.commands.executors.general
 import com.google.inject.Inject
 import net.dv8tion.jda.core.OnlineStatus
 import xyz.gnarbot.gnar.Bot
+import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.servers.Shard
@@ -65,7 +66,9 @@ class BotInfoCommand : CommandExecutor() {
                 .flatMap { it.servlets.values }
                 .sumBy { it.commandHandler.requests }
 
-        note.embed("Bot Information") {
+        note.respond().embed("Bot Information") {
+            color = Constants.COLOR
+
             field("Requests", true, requests)
             field("Requests Per Hour", true, requests / uptime_hour)
             field("Website", true, link("gnarbot.xyz", "https://gnarbot.xyz"))
@@ -79,10 +82,10 @@ class BotInfoCommand : CommandExecutor() {
             field("Member#Clients", true, clients)
 
             field("Users", true) {
-                append("Total: ").appendln(highlight(users))
-                append("Online: ").appendln(highlight(online))
-                append("Offline: ").appendln(highlight(offline))
-                append("Inactive: ").appendln(highlight(inactive))
+                append("Total: ").appendln(users)
+                append("Online: ").appendln(online)
+                append("Offline: ").appendln(offline)
+                append("Inactive: ").appendln(inactive)
             }
 
             field("Others", true) {

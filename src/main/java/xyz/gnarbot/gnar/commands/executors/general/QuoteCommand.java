@@ -3,9 +3,9 @@ package xyz.gnarbot.gnar.commands.executors.general;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
 import xyz.gnarbot.gnar.Bot;
+import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.utils.EmbedCreator;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class QuoteCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (args.isEmpty()) {
-            note.error("Provide a message id.").queue();
+            note.respond().error("Provide a message id.").queue();
             return;
         }
 
@@ -35,14 +35,15 @@ public class QuoteCommand extends CommandExecutor {
                 try {
                     Message msg = note.getChannel().getMessageById(id).complete();
 
-                    new EmbedCreator(note.getServlet(), targetChannel)
-                            .description(msg.getContent())
-                            .author(msg.getAuthor())
+                    targetChannel.send().embed()
+                            .setColor(Constants.COLOR)
+                            .setAuthor(msg.getAuthor().getName(), null, msg.getAuthor().getAvatarUrl())
+                            .setDescription(msg.getContent())
                             .rest().queue();
 
                 } catch (Exception e) {
                     try {
-                        Message m = note
+                        Message m = note.respond()
                                 .error("Could not find a message with the ID " + id + " within this channel.")
                                 .complete();
                         toDelete.add(m);
@@ -54,7 +55,7 @@ public class QuoteCommand extends CommandExecutor {
         toDelete.add(note);
 
         try {
-            Message m = note.info("Sent quotes to the " + targetChannel.getName() + " channel!").complete();
+            Message m = note.respond().info("Sent quotes to the " + targetChannel.getName() + " channel!").complete();
 
             toDelete.add(m);
 

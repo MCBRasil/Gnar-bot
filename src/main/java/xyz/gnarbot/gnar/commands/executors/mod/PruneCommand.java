@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
+import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Level;
@@ -12,6 +13,7 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Command(aliases = {"prune", "delmessages", "delmsgs"},
         usage = "-amount -words...",
@@ -24,25 +26,25 @@ public class PruneCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (!note.getAuthor().hasPermission(Permission.MESSAGE_MANAGE)) {
-            note.error("You don't have the `Manage Messages` permission!").queue();
+            note.respond().error("You don't have the `Manage Messages` permission!").queue();
             return;
         }
 
         if (args.isEmpty()) {
-            note.error("Insufficient amount of arguments.").queue();
+            note.respond().error("Insufficient amount of arguments.").queue();
             return;
         }
 
         try {
-            note.optDelete();
+            note.delete().queue();
 
-            MessageHistory history = note.getChannel().getHistory();
+            MessageHistory history = note.respond().getChannel().getHistory();
 
             int amount = Integer.parseInt(args.get(0));
             amount = Math.min(amount, 100);
 
             if (amount < 2) {
-                note.error("You need to delete 2 or more messages to use this command.").queue();
+                note.respond().error("You need to delete 2 or more messages to use this command.").queue();
                 return;
             }
 
@@ -65,10 +67,12 @@ public class PruneCommand extends CommandExecutor {
 
             note.getTextChannel().deleteMessages(msgs).queue();
 
-            note.info("Attempted to delete **[" + msgs.size() + "]()** messages.\nDeleting this message in **5** seconds.")
-                    .complete().optDelete(5);
+            Message msg = note.respond().info("Attempted to delete **[" + msgs.size() + "]()** messages.\nDeleting this message in **5** seconds.")
+                    .complete();
+
+            Bot.INSTANCE.getScheduler().schedule(() -> msg.delete().queue(), 5, TimeUnit.SECONDS);
         } catch (NumberFormatException e) {
-            note.error("Improper arguments supplies, must be a number.").queue();
+            note.respond().error("Improper arguments supplies, must be a number.").queue();
         }
     }
 }

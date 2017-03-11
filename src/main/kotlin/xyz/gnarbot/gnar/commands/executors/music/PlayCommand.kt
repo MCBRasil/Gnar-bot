@@ -22,28 +22,28 @@ class PlayCommand : MusicExecutor() {
         val userChannel = note.author.voiceChannel
 
         if (botChannel != null && botChannel != userChannel) {
-            note.error("The bot is already playing music in another channel.").queue()
+            note.respond().error("The bot is already playing music in another channel.").queue()
             return
         }
 
         if (userChannel == null) {
-            note.error("You must be in a voice channel to play music.").queue()
+            note.respond().error("You must be in a voice channel to play music.").queue()
             return
         }
 
         if (args.isEmpty()) {
             if (manager.player.isPaused) {
                 manager.player.isPaused = false
-                note.embed("Play Music") {
-                    color(musicColor)
-                    description("Music is now playing.")
+                note.respond().embed("Play Music") {
+                    color = musicColor
+                    description = "Music is now playing."
                 }.rest().queue()
             } else if (manager.player.playingTrack != null) {
-                note.error("Music is already playing.").queue()
+                note.respond().error("Music is already playing.").queue()
             } else if (manager.scheduler.queue.isEmpty()) {
-                note.embed("Empty Queue") {
-                    color(musicColor)
-                    description("There is no music queued right now. Add some songs with `play -song|url`.")
+                note.respond().embed("Empty Queue") {
+                    color = musicColor
+                    description = "There is no music queued right now. Add some songs with `play -song|url`."
                 }.rest().queue()
             }
             return
@@ -62,7 +62,7 @@ class PlayCommand : MusicExecutor() {
             val results = YouTube.search(query, 1)
 
             if (results.isEmpty()) {
-                note.error("No YouTube results returned for `${query.replace('+', ' ')}`.").queue()
+                note.respond().error("No YouTube results returned for `${query.replace('+', ' ')}`.").queue()
                 return
             }
 
@@ -75,9 +75,9 @@ class PlayCommand : MusicExecutor() {
             servlet.audioManager.sendingHandler = manager.sendHandler
             servlet.audioManager.openAudioConnection(userChannel)
 
-            note.embed("Music Playback") {
-                color(musicColor)
-                description("Joined channel `${userChannel.name}`.")
+            note.respond().embed("Music Playback") {
+                color = musicColor
+                description = "Joined channel `${userChannel.name}`."
             }.rest().queue()
         }
 

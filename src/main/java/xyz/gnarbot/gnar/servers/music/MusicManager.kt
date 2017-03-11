@@ -47,12 +47,12 @@ class MusicManager(servlet: Servlet, val playerManager: AudioPlayerManager) {
             override fun trackLoaded(track: AudioTrack) {
 
                 if (scheduler.queue.size >= TrackScheduler.QUEUE_LIMIT) {
-                    note.error("The queue can not exceed 20 songs.")
+                    note.respond().error("The queue can not exceed 20 songs.")
                     return
                 }
 
                 if (track.duration > Duration.ofHours(1).toMillis()) {
-                    note.error("The track can not exceed 1 hour.")
+                    note.respond().error("The track can not exceed 1 hour.")
                     return
                 }
 
@@ -64,9 +64,9 @@ class MusicManager(servlet: Servlet, val playerManager: AudioPlayerManager) {
                     msg += "\nThe player has started playing."
                 }
 
-                note.embed("Music Queue") {
-                    color(Color(0, 221, 88))
-                    description(msg)
+                note.respond().embed("Music Queue") {
+                    color = Color(0, 221, 88)
+                    description = msg
                 }.rest().queue()
             }
 
@@ -77,7 +77,7 @@ class MusicManager(servlet: Servlet, val playerManager: AudioPlayerManager) {
                 for (track in tracks) {
 
                     if (scheduler.queue.size >= TrackScheduler.QUEUE_LIMIT) {
-                        note.info("Ignored ${tracks.size - added} songs as the queue can not exceed 20 songs.")
+                        note.respond().info("Ignored ${tracks.size - added} songs as the queue can not exceed 20 songs.")
                         break
                     }
 
@@ -85,18 +85,18 @@ class MusicManager(servlet: Servlet, val playerManager: AudioPlayerManager) {
                     added++
                 }
 
-                note.embed("Music Queue") {
-                    color(Color(0, 221, 88))
-                    description("Added `$added` tracks to queue from playlist `${playlist.name}`.")
+                note.respond().embed("Music Queue") {
+                    color = Color(0, 221, 88)
+                    description = "Added `$added` tracks to queue from playlist `${playlist.name}`."
                 }.rest().queue()
             }
 
             override fun noMatches() {
-                note.error("Nothing found by `$trackUrl`.")
+                note.respond().error("Nothing found by `$trackUrl`.")
             }
 
             override fun loadFailed(e: FriendlyException) {
-                note.error("**Exception**: `${e.message}`")
+                note.respond().error("**Exception**: `${e.message}`")
             }
         })
     }

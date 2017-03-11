@@ -13,19 +13,19 @@ class PauseCommand : MusicExecutor() {
 
     override fun execute(note: Note, args: List<String>) {
         if (manager.player.playingTrack == null) {
-            note.error("Can not pause or resume player because there is no track loaded for playing.")
+            note.respond().error("Can not pause or resume player because there is no track loaded for playing.")
             return
         }
 
         manager.player.isPaused = !manager.player.isPaused
 
-        note.embed("Playback Control") {
-            color(musicColor)
-            description(if (manager.player.isPaused) {
+        note.respond().embed("Playback Control") {
+            color = musicColor
+            description = if (manager.player.isPaused) {
                 "The player has been paused."
             } else {
                 "The player has resumed playing."
-            })
+            }
         }.rest().queue()
     }
 }

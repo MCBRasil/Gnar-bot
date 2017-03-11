@@ -16,7 +16,7 @@ public class ReactCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (args.size() < 2) {
-            note.error("Insufficient arguments. `" + meta().usage() + "`").queue();
+            note.respond().error("Insufficient arguments. `" + meta().usage() + "`").queue();
             return;
         }
 
@@ -30,9 +30,8 @@ public class ReactCommand extends CommandExecutor {
                 msg.addReaction(em).queue();
             }
 
-            note.info("Reacted to the message with " + note.getEmotes().size() + " emotes. :smile:")
-                    .complete()
-                    .optDelete(5);
+//            note.respond().info("Reacted to the message with " + note.getEmotes().size() + " emotes. :smile:")
+//                    .complete();
         } else {
             boolean suc = false;
 
@@ -43,14 +42,14 @@ public class ReactCommand extends CommandExecutor {
                 suc = true;
             }
 
-            if (suc) {
-                note.info("Reacted to the message with " + (args.size() - 1) + " emotes. :smile:")
-                        .complete()
-                        .optDelete(5);
-                return;
-            }
+//            if (suc) {
+////                note.info("Reacted to the message with " + (args.size() - 1) + " emotes. :smile:")
+////                        .complete()
+////                        .optDelete(5);
+////                return;
+//            }
 
-            note.error("No reactions detected, robot.").queue();
+            note.respond().error("No reactions detected, robot.").queue();
         }
     }
 

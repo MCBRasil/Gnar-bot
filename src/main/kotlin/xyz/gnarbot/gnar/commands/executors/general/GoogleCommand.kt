@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.commands.executors.general
 
 import org.jsoup.Jsoup
+import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
@@ -12,7 +13,7 @@ import java.nio.charset.StandardCharsets
 class GoogleCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
         if (args.isEmpty()) {
-            note.error("Gotta have something to search Google.").queue()
+            note.respond().error("Gotta have something to search Google.").queue()
             return
         }
 
@@ -25,13 +26,14 @@ class GoogleCommand : CommandExecutor() {
                     .select(".g")
 
             if (blocks.isEmpty()) {
-                note.error("No search results for `$query`.").queue()
+                note.respond().error("No search results for `$query`.").queue()
                 return
             }
 
-            note.embed {
-                author("Google Results", "https://www.google.com/", "https://www.google.com/favicon.ico")
-                thumbnail("https://gnarbot.xyz/assets/img/google.png")
+            note.respond().embed {
+                color = Constants.COLOR
+                setAuthor("Google Results", "https://www.google.com/", "https://www.google.com/favicon.ico")
+                thumbnail = "https://gnarbot.xyz/assets/img/google.png"
 
                 description {
                     var count = 0
@@ -57,7 +59,7 @@ class GoogleCommand : CommandExecutor() {
                 }
             }.rest().queue()
         } catch (e: IOException) {
-            note.error("Caught an exception while trying to Google stuff.").queue()
+            note.respond().error("Caught an exception while trying to Google stuff.").queue()
             e.printStackTrace()
         }
     }

@@ -115,7 +115,7 @@ public class Adventure {
         this.lastMessage = message;
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
-                .addBlankField(true)
+                .blankField(true)
                 .setDescription(message)
                 .setColor(getDefaultMessageColor());
         if (getPlayerIcon() != null) {
@@ -133,7 +133,7 @@ public class Adventure {
         this.lastMessage = message;
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
-                .addBlankField(true)
+                .blankField(true)
                 .setDescription(message)
                 .setColor(color);
         if (getPlayerIcon() != null) {
@@ -151,7 +151,7 @@ public class Adventure {
         this.lastMessage = message;
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
-                .addBlankField(true)
+                .blankField(true)
                 .setDescription(message)
                 .setColor(getDefaultMessageColor());
         eb.setThumbnail(url);
@@ -167,7 +167,7 @@ public class Adventure {
         this.lastMessage = message;
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
-                .addBlankField(true)
+                .blankField(true)
                 .setDescription(message)
                 .setColor(color);
         eb.setThumbnail(url);
@@ -182,7 +182,7 @@ public class Adventure {
     public void sendInformativeMessage(Note n, String message) {
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
-                .addBlankField(true)
+                .blankField(true)
                 .setDescription(message)
                 .setThumbnail(getPlayerIcon())
                 .setColor(new Color(0xFFDD15));
@@ -197,7 +197,7 @@ public class Adventure {
 
         EmbedBuilder eb = new EmbedBuilder();
         eb.setTitle("Sending last sent message...", null)
-                .addBlankField(true)
+                .blankField(true)
                 .setDescription(lastMessage)
                 .setThumbnail(getPlayerIcon())
                 .setColor(getDefaultMessageColor());

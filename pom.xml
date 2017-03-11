@@ -80,10 +80,15 @@
         </dependency>
 
         <!--JDA-->
+        <!--<dependency>-->
+            <!--<groupId>net.dv8tion</groupId>-->
+            <!--<artifactId>JDA</artifactId>-->
+            <!--<version>${JDA.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>net.dv8tion</groupId>
-            <artifactId>JDA</artifactId>
-            <version>${JDA.version}</version>
+            <artifactId>JDA_K</artifactId>
+            <version>0.0.8</version>
         </dependency>
 
         <!--CHATTERBOT-->

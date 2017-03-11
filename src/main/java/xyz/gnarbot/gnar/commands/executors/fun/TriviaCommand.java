@@ -17,9 +17,9 @@ public class TriviaCommand extends CommandExecutor {
         }
 
         if (args.size() > 0) {
-            note.info(TriviaQuestions.getRandomQuestion(StringUtils.join(args, " "))).queue();
+            note.respond().info(TriviaQuestions.getRandomQuestion(StringUtils.join(args, " "))).queue();
         } else {
-            note.error(TriviaQuestions.getRandomQuestion()).queue();
+            note.respond().error(TriviaQuestions.getRandomQuestion()).queue();
         }
     }
 

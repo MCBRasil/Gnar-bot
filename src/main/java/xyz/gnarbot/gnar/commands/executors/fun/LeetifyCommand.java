@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.commands.executors.fun;
 
 import org.apache.commons.lang3.StringUtils;
+import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -34,8 +35,9 @@ public class LeetifyCommand extends CommandExecutor {
             s = s.replaceAll(entry.getKey(), entry.getValue());
         }
 
-        note.embed("Leet it")
-                .description(s)
+        note.respond().embed("Leet it")
+                .setColor(Constants.COLOR)
+                .setDescription(s)
                 .rest().queue();
     }
 }

@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.commands.executors.admin
 
 import xyz.gnarbot.gnar.Bot
+import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.members.Level
@@ -14,7 +15,8 @@ import xyz.gnarbot.gnar.utils.Note
 )
 class GarbageCollectCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
-        note.embed("Garbage Collection") {
+        note.respond().embed("Garbage Collection") {
+            color = Constants.COLOR
             val interrupt = if (!args.isEmpty()) args[0].toBoolean() else false
 
             Bot.shards.forEach { it.clearServlets(interrupt) }

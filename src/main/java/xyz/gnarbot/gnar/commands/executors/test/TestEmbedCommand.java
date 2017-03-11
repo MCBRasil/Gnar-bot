@@ -28,7 +28,7 @@ public class TestEmbedCommand extends CommandExecutor {
             for (String p : parts) {
                 if (p.equals("")) {
                     id++;
-                    eb.addField("Section " + id, p, false);
+                    eb.field("Section " + id, false, p);
                 }
             }
         }

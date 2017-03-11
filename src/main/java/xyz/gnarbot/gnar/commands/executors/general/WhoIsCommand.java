@@ -19,7 +19,7 @@ public class WhoIsCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (args.isEmpty()) {
-            note.error("You did not mention a user.").queue();
+            note.respond().error("You did not mention a user.").queue();
             return;
         }
 
@@ -34,13 +34,13 @@ public class WhoIsCommand extends CommandExecutor {
         }
 
         if (client == null) {
-            note.error("You did not mention a valid user.").queue();
+            note.respond().error("You did not mention a valid user.").queue();
             return;
         }
 
 
-        note.embed("Who is " + client.getName() + "?")
-                .thumbnail(client.getAvatarUrl())
+        note.respond().embed("Who is " + client.getName() + "?")
+                .setThumbnail(client.getAvatarUrl())
                 .field("Name", true, client.getName())
                 .field("Nickname", true, client.getNickname() != null ? client.getNickname() : "No nickname.")
 

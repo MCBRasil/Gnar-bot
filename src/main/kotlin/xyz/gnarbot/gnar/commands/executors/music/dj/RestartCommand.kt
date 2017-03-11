@@ -20,14 +20,14 @@ class RestartCommand : MusicExecutor() {
 
         if (track != null) {
 
-            note.embed("Restart Song") {
-                color(musicColor)
-                description("Restarting track: `${track.info.title}`.")
+            note.respond().embed("Restart Song") {
+                color = musicColor
+                description = "Restarting track: `${track.info.title}`."
             }.rest().queue()
 
             manager.player.playTrack(track.makeClone())
         } else {
-            note.error("No track has been previously started.").queue()
+            note.respond().error("No track has been previously started.").queue()
         }
     }
 }

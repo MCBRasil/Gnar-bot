@@ -6,6 +6,7 @@ import com.mashape.unirest.http.Unirest;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.Credentials;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
@@ -31,7 +32,7 @@ public class GameLookupCommand extends CommandExecutor {
             JSONArray jsa = response.getBody().getArray();
 
             if (jsa.length() == 0) {
-                note.error("No game found with that title.").queue();
+                note.respond().error("No game found with that title.").queue();
                 return;
             }
 
@@ -43,8 +44,9 @@ public class GameLookupCommand extends CommandExecutor {
             String desc = jso.optString("summary");
             String thumb = "https:" + jso.optJSONObject("cover").optString("url");
 
-            note.embed(title)
-                    .thumbnail(thumb)
+            note.respond().embed(title)
+                    .setColor(Constants.COLOR)
+                    .setThumbnail(thumb)
                     //.field("Publisher", true, publisher)
                     .field("Score", true, score)
                     .field("Description", false, desc)

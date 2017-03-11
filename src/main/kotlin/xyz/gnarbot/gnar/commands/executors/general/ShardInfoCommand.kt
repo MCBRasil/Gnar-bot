@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.commands.executors.general
 
 import xyz.gnarbot.gnar.Bot
+import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
@@ -12,13 +13,14 @@ import xyz.gnarbot.gnar.utils.Note
 )
 class ShardInfoCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
-        note.embed("Shard Information") {
+        note.respond().embed("Shard Information") {
+            color = Constants.COLOR
             Bot.shards.forEach {
                 field("Shard ${it.id}", true) {
-                    append("Status: ").appendln(b(it.status))
-                    append("Guilds: ").appendln(b(it.guilds.size))
-                    append("Users: ").appendln(b(it.users.size))
-                    append("Requests: ").appendln(b(it.servlets.values.sumBy { it.commandHandler.requests }))
+                    append("Status: ").appendln(it.status)
+                    append("Guilds: ").appendln(it.guilds.size)
+                    append("Users: ").appendln(it.users.size)
+                    append("Requests: ").appendln(it.servlets.values.sumBy { it.commandHandler.requests })
                 }
             }
         }.rest().queue()

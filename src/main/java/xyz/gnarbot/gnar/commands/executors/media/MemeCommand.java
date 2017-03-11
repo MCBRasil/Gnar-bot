@@ -6,6 +6,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.Credentials;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
@@ -66,7 +67,7 @@ public class MemeCommand extends CommandExecutor {
                 if (page > pages) page = pages;
 
                 int _page = page;
-                note.embed("Meme List (Page " + page + "/" + pages + ")")
+                note.respond().embed("Meme List (Page " + page + "/" + pages + ")")
                         .description(sb -> {
                             int i = 0;
                             for (String g : names) {
@@ -107,12 +108,13 @@ public class MemeCommand extends CommandExecutor {
                     .getObject()
                     .getJSONObject("data");
 
-            note.embed("Meme Generator")
-                    .image(response.optString("url"))
+            note.respond().embed("Meme Generator")
+                    .setColor(Constants.COLOR)
+                    .setImage(response.optString("url"))
                     .rest().queue();
 
         } catch (Exception e) {
-            note.error(
+            note.respond().error(
                     "**Please supply more arguments. Example Usage:**\n\n" +
                     "[_meme Spongegar | Top Text | Bottom Text]()\n\n" +
                     "**For a list of memes, type:**\n\n" +

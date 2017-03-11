@@ -13,7 +13,7 @@ public class AdventureCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (!Adventure.hasAdventure(note.getAuthor())) {
-            note.info("Use `_startadventure` to begin your adventure!");
+            note.respond().info("Use `_startadventure` to begin your adventure!").queue();
             return;
         }
         Adventure adventure = Adventure.getAdventure(note.getAuthor(), note);
@@ -21,12 +21,12 @@ public class AdventureCommand extends CommandExecutor {
         if (args.size() > 0) {
             switch (args.get(0).toLowerCase()) {
                 case "quit": {
-                    note.info("Poof! Your adventure has been lost to the winds of Azaroth.");
+                    note.respond().info("Poof! Your adventure has been lost to the winds of Azaroth.").queue();
                     Adventure.removeAdventure(note.getAuthor());
                     return;
                 }
                 case "map": {
-                    note.info("Preparing your map...");
+                    note.respond().info("Preparing your map...").queue();
                     adventure.getGrid().sendMap(note);
                     return;
                 }
@@ -92,10 +92,10 @@ public class AdventureCommand extends CommandExecutor {
                                 "[_adventure setname {name}] Changes your name.\n" +
                                 "[_adventure {response}] Respond to a question, or do an action. \n" +
                                 "[_adventure last] Sends the last sent message. " + "\n```";
-                        note.info(reply);
+                        note.respond().info(reply).queue();
                     } else {
                         String reply = "*Adventure Help!~*\n```ini\n" + "[_adventure help] This list.\n" + "[_adventure actions] List of previous actions.\n" + "[_adventure quit] Ends the adventure.\n" + "[_adventure setname {name}] Changes your name.\n" + "[_adventure {response}] Respond to a question, or do an action.\n" + "[_adventure last] Sends the last sent message.\n" + "[_adventure inventory] Displays your inventory." + "\n```";
-                        note.info(reply);
+                        note.respond().info(reply).queue();
                     }
                     return;
                 }

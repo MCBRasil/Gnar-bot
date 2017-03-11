@@ -1,5 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.general;
 
+import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -12,8 +13,9 @@ public class InviteBotCommand extends CommandExecutor {
     public void execute(Note note, List<String> args) {
         String link = "https://discordapp.com/oauth2/authorize?client_id=201492375653056512&scope=bot&permissions=8";
 
-        note.embed("Get Gnar on your server!")
-                .description("__**[Click to invite Gnar to your server.](" + link + ")**__")
+        note.respond().embed("Get Gnar on your server!")
+                .setColor(Constants.COLOR)
+                .setDescription("__**[Click to invite Gnar to your server.](" + link + ")**__")
                 .rest().queue();
     }
 }

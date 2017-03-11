@@ -22,7 +22,7 @@ public class UnbanCommand extends CommandExecutor {
         Client target = null;
 
         if (!PermissionUtil.checkPermission(note.getTextChannel(), author, Permission.BAN_MEMBERS)) {
-            note.error("You do not have permission to manage bans.").queue();
+            note.respond().error("You do not have permission to manage bans.").queue();
             return;
         }
 
@@ -39,15 +39,15 @@ public class UnbanCommand extends CommandExecutor {
             target = note.getServlet().getClientHandler().getClientByName(args.get(0), true);
         }
         if (target == null) {
-            note.error("Could not find user.").queue();
+            note.respond().error("Could not find user.").queue();
             return;
         }
 
         if (!servlet.unban(target)) {
-            note.error("Gnar does not have permission to manage bans.").queue();
+            note.respond().error("Gnar does not have permission to manage bans.").queue();
             return;
         }
-        note.info(target.getEffectiveName() + " has been unbanned.").queue();
+        note.respond().info(target.getEffectiveName() + " has been unbanned.").queue();
     }
 }
 

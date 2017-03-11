@@ -21,7 +21,7 @@ import java.util.Random;
 public class Rule34Command extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
-        if (note.getAuthor().hasRole("Fucking Teemo")) {
+        if (note.getAuthor().hasRoleNamed("Fucking Teemo")) {
             String tag = "";
             try {
                 for (String s : args) {
@@ -53,12 +53,12 @@ public class Rule34Command extends CommandExecutor {
 
                 url = att2.getValue();
 
-                note.reply("http:" + url).queue();
+                note.respond().text("http:" + url).queue();
             } catch (Exception e) {
-                note.error("Please refer to rule 35.").queue();
+                note.respond().error("Please refer to rule 35.").queue();
             }
         } else {
-            note.error("Sorry, you must have the role `Fucking Teemo` to use this command!").queue();
+            note.respond().error("Sorry, you must have the role `Fucking Teemo` to use this command!").queue();
         }
 
     }

@@ -1,16 +1,11 @@
 @file:JvmName("KUtils")
+@file:Suppress("NOTHING_TO_INLINE")
 
 package xyz.gnarbot.gnar.utils
 
-import net.dv8tion.jda.core.EmbedBuilder
-import net.dv8tion.jda.core.entities.MessageEmbed
-import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.members.Client
-import java.awt.Color
 import java.io.File
 import java.util.*
 
-@Suppress("NOTHING_TO_INLINE")
 inline fun File.child(path: String) = File(this, path)
 
 fun String.fastSplit(delimiter: Char): List<String> {
@@ -35,23 +30,3 @@ fun String.fastSplit(delimiter: Char): List<String> {
 
     return res
 }
-
-@JvmOverloads
-fun makeEmbed(title: String?, msg: String?, color: Color? = Bot.color, thumb: String? = null, img: String? = null, author: Client? = null): MessageEmbed {
-    return EmbedBuilder().run {
-        setDescription(msg)
-        setTitle(title, null)
-        setColor(color)
-
-        if (author != null) {
-            setAuthor(author.name, null, author.avatarUrl)
-        }
-
-        setThumbnail(thumb)
-
-        setImage(img)
-
-        build()
-    }
-}
-

@@ -2,6 +2,7 @@ package xyz.gnarbot.gnar.commands.executors.`fun`
 
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.text.WordUtils
+import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
@@ -66,9 +67,12 @@ class DialogCommand : CommandExecutor() {
         joiner.add(" ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾ ")
 
         try {
-            note.respond(null, joiner.toString()).queue()
+            note.respond().embed {
+                color = Constants.COLOR
+                description = joiner.toString()
+            }.rest().queue()
         } catch (e: UnsupportedOperationException) {
-            note.error("Message was too long or something... no memes for you.")
+            note.respond().error("Message was too long or something... no memes for you.").queue()
         }
     }
 }

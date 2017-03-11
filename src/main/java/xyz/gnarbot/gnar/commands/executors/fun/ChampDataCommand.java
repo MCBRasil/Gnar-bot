@@ -6,13 +6,31 @@ import org.json.JSONObject;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
-import xyz.gnarbot.gnar.utils.Utils;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.List;
 
 @Command(aliases = "champdata")
 public class ChampDataCommand extends CommandExecutor {
     public static final String[] names = ChampQuoteCommand.names;
+    private static JSONObject information;
+
+    static {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(new File("_DATA/league/League.txt")));
+
+            String info = "";
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                info += line;
+            }
+
+            information = new JSONObject(info);
+        } catch (Exception ignore) { }
+    }
 
     @Override
     public void execute(Note note, List<String> args) {
@@ -27,7 +45,7 @@ public class ChampDataCommand extends CommandExecutor {
             }
         }
 
-        JSONObject jso = Utils.information.getJSONObject(maybe);
+        JSONObject jso = information.getJSONObject(maybe);
 
         JSONArray spells = jso.getJSONArray("spells");
 
@@ -70,7 +88,7 @@ public class ChampDataCommand extends CommandExecutor {
             spellInfo += "\n    **" + fuckTits + "**: " + j.get("name");
         }
 
-        note.reply(spellInfo).queue();
+        note.respond().text(spellInfo).queue();
     }
 
 }

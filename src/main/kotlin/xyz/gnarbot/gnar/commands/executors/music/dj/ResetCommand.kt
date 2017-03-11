@@ -17,9 +17,9 @@ class ResetCommand : MusicExecutor() {
     override fun execute(note: Note, args: List<String>) {
         servlet.resetMusicManager()
 
-        note.embed("Reset Music") {
-            color(musicColor)
-            description("The player was completely reset.")
+        note.respond().embed("Reset Music") {
+            color = musicColor
+            description = "The player was completely reset."
         }.rest().queue()
     }
 }

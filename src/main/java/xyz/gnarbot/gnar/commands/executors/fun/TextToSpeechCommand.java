@@ -13,7 +13,7 @@ public class TextToSpeechCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (args.isEmpty()) {
-            note.error("Please provide a query.").queue();
+            note.respond().error("Please provide a query.").queue();
             return;
         }
 

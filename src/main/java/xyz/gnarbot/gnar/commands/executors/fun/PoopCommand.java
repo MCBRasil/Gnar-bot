@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.commands.executors.fun;
 
 import org.apache.commons.lang3.StringUtils;
+import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -34,7 +35,7 @@ public class PoopCommand extends CommandExecutor {
             try {
                 poopArt.setCharAt(7 + i, poop.charAt(i));
             } catch (IndexOutOfBoundsException e) {
-                note.error("Poop is too big. Constipation occurred.").queue();
+                note.respond().error("Poop is too big. Constipation occurred.").queue();
                 return;
             }
         }
@@ -42,8 +43,9 @@ public class PoopCommand extends CommandExecutor {
         joiner.add(poopArt);
         joiner.add("░░░░░░░░░░░░░░░░░░░░░░░");
 
-        note.embed("Pooping Memes")
-                .description(joiner.toString())
+        note.respond().embed("Pooping Memes")
+                .setColor(Constants.COLOR)
+                .setDescription(joiner.toString())
                 .rest().queue();
     }
 }

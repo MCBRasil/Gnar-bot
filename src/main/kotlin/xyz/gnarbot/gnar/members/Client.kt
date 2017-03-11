@@ -1,6 +1,8 @@
 package xyz.gnarbot.gnar.members
 
-import net.dv8tion.jda.core.entities.*
+import net.dv8tion.jda.core.entities.Member
+import net.dv8tion.jda.core.entities.PrivateChannel
+import net.dv8tion.jda.core.entities.VoiceChannel
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.servers.Servlet
 
@@ -9,7 +11,7 @@ import xyz.gnarbot.gnar.servers.Servlet
  *
  * @see Member
  */
-class Client(val servlet: Servlet, private val member: Member) : Member by member, User by member.user {
+class Client(val servlet: Servlet, private val member: Member) : Member by member {
     val isBotMaster = Bot.admins.contains(id)
 
     val level: Level
@@ -24,10 +26,10 @@ class Client(val servlet: Servlet, private val member: Member) : Member by membe
             member == servlet.owner -> Level.SERVER_OWNER
 
             // BOT COMMANDER
-            hasRole("Bot Commander") -> Level.BOT_COMMANDER
+            hasRoleNamed("Bot Commander") -> Level.BOT_COMMANDER
 
             // DJ
-            hasRole("DJ") -> Level.DJ
+            hasRoleNamed("DJ") -> Level.DJ
 
             // USERS
             else -> Level.USER
@@ -38,41 +40,12 @@ class Client(val servlet: Servlet, private val member: Member) : Member by membe
             return servlet.voiceChannels.firstOrNull { it.members.contains(member) }
         }
 
-    /** @return The current JDA instance. */
-    override fun getJDA() = member.jda!!
-
-    /** @return A resolvable mention. */
-    override fun getAsMention() = member.asMention!!
-
     fun requestPrivateChannel(): PrivateChannel {
         if (!user.hasPrivateChannel()) {
             openPrivateChannel().complete()
         }
         return privateChannel
     }
-
-    /**
-     * Check if the member have a role named [name].
-     *
-     * @param name Role name.
-     * @return If the member have a role named [name].
-     */
-    fun hasRole(name: String): Boolean {
-        roles.forEach {
-            if (it.name == name) {
-                return true
-            }
-        }
-        return false
-    }
-
-    /**
-     * Check if the member have the role [role].
-     *
-     * @param role Role.
-     * @return If the member have the role [role].
-     */
-    fun hasRole(role: Role): Boolean = roles.contains(role)
 
     /**
      * @return String representation of the member.

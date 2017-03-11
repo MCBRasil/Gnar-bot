@@ -3,6 +3,7 @@ package xyz.gnarbot.gnar.commands.executors.general
 import com.google.common.collect.Lists
 import com.google.inject.Inject
 import xyz.gnarbot.gnar.Bot
+import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.commands.handlers.CommandRegistry
@@ -22,11 +23,11 @@ class HelpCommand : CommandExecutor() {
             val entry = registry.getEntry(target)
 
             if (entry == null) {
-                note.error("There is no command named `$target`. :cry:").queue()
+                note.respond().error("There is no command named `$target`. :cry:").queue()
                 return
             }
 
-            note.embed("Command Information") {
+            note.respond().embed("Command Information") {
                 field("Aliases", true, entry.meta.aliases.joinToString(separator = ", ${Bot.token}", prefix = Bot.token))
                 field("Usage", true, "${Bot.token}${entry.meta.aliases[0].toLowerCase()} ${entry.meta.usage}")
                 field("Level", true, entry.meta.level.title)
@@ -38,8 +39,9 @@ class HelpCommand : CommandExecutor() {
 
         val cmds = registry.entries
 
-        val embed = note.embed("Documentation") {
-            description("This is all of Gnar's currently registered commands.")
+        note.author.requestPrivateChannel().send().embed("Documentation") {
+            color = Constants.COLOR
+            description = "This is all of Gnar's currently registered commands."
 
             for (level in Level.values()) {
                 val filtered = cmds.filter {
@@ -49,7 +51,7 @@ class HelpCommand : CommandExecutor() {
 
                 val pages = Lists.partition(filtered, filtered.size / 3 + 1)
 
-                addBlankField(true)
+                blankField(true)
                 field("${level.title} — ${filtered.size}", false, level.requireText)
 
                 for (page in pages) {
@@ -59,7 +61,7 @@ class HelpCommand : CommandExecutor() {
                 }
             }
 
-            addBlankField(true)
+            blankField(true)
             field("Additional Information") {
                 append("To view a command's description, do `").append(Bot.token).appendln("help [command]`.")
                 append("__The commands that requires a named role must be created by you and assigned to a member in your guild.__")
@@ -76,10 +78,8 @@ class HelpCommand : CommandExecutor() {
                 appendln(b(link("Website", "http://gnarbot.xyz")))
                 append(b(link("Discord Server", "http://discord.gg/NQRpmr2")))
             }
-        }.build()
+        }.rest().queue()
 
-        note.author.requestPrivateChannel().sendMessage(embed)?.queue()
-
-        note.info("Gnar's guide has been directly messaged to you.").queue()
+        note.respond().info("Gnar's guide has been directly messaged to you.").queue()
     }
 }

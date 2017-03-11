@@ -26,7 +26,7 @@ public class KickCommand extends CommandExecutor {
         Client target = null;
 
         if (!PermissionUtil.checkPermission(note.getTextChannel(), author, Permission.KICK_MEMBERS)) {
-            note.error("You do not have permission to kick.").queue();
+            note.respond().error("You do not have permission to kick.").queue();
             return;
         }
 
@@ -37,18 +37,18 @@ public class KickCommand extends CommandExecutor {
         }
 
         if (target == null) {
-            note.error("Could not find user.").queue();
+            note.respond().error("Could not find user.").queue();
             return;
         }
         if (!PermissionUtil.canInteract(author, target)) {
-            note.error("Sorry, that user has an equal or higher role.").queue();
+            note.respond().error("Sorry, that user has an equal or higher role.").queue();
             return;
         }
 
         if (!servlet.kick(target)) {
-            note.error("Gnar does not have permission to kick.").queue();
+            note.respond().error("Gnar does not have permission to kick.").queue();
             return;
         }
-        note.info(target.getEffectiveName() + " has been kicked.").queue();
+        note.respond().info(target.getEffectiveName() + " has been kicked.").queue();
     }
 }

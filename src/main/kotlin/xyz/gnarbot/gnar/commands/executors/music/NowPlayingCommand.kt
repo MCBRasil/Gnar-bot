@@ -15,11 +15,11 @@ class NowPlayingCommand : MusicExecutor() {
         val track = manager.player.playingTrack
 
         if (track == null) {
-            note.error("The player is not currently playing anything.")
+            note.respond().error("The player is not currently playing anything.")
             return
         }
 
-        note.embed("Now Playing") {
+        note.respond().embed("Now Playing") {
             field("Now Playing", false, if (track.sourceManager.sourceName.contains("youtube")) {
                 "__[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__"
             } else {

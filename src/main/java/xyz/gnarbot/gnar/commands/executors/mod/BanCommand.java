@@ -21,7 +21,7 @@ public class BanCommand extends CommandExecutor {
         Client target = null;
 
         if (!PermissionUtil.checkPermission(note.getTextChannel(), author, Permission.BAN_MEMBERS)) {
-            note.error("You do not have permission to ban.").queue();
+            note.respond().error("You do not have permission to ban.").queue();
             return;
         }
 
@@ -32,18 +32,18 @@ public class BanCommand extends CommandExecutor {
         }
 
         if (target == null) {
-            note.error("Could not find user.").queue();
+            note.respond().error("Could not find user.").queue();
             return;
         }
         if (!PermissionUtil.canInteract(author, target)) {
-            note.error("Sorry, that user has an equal or higher role.").queue();
+            note.respond().error("Sorry, that user has an equal or higher role.").queue();
             return;
         }
 
         if (!servlet.ban(target)) {
-            note.error("Gnar does not have permission to ban.").queue();
+            note.respond().error("Gnar does not have permission to ban.").queue();
             return;
         }
-        note.info(target.getEffectiveName() + " has been banned.").queue();
+        note.respond().info(target.getEffectiveName() + " has been banned.").queue();
     }
 }

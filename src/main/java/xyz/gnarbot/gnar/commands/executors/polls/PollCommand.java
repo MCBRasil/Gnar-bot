@@ -18,7 +18,7 @@ public class PollCommand extends CommandExecutor {
             String reply = "Poll System Help!~\n {} = Required Arguments  |  () = Optional Arguments```ini\n" +
                     "[_poll help] This list\n" + "[_poll startyesno {time} {question}] Start a Yes/No Poll for " +
                     "\"time\" minutes." + "\n```";
-            note.info(reply);
+            note.respond().info(reply).queue();
         } else if (args.size() > 0) {
             if (args.get(0).equalsIgnoreCase("startyesno") && args.size() > 1) {
                 int time = 15;

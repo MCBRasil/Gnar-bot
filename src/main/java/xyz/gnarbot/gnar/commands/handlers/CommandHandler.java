@@ -52,14 +52,15 @@ public class CommandHandler {
         Note note = new Note(servlet, message);
 
         CommandRegistry.CommandEntry entry =  bot.getCommandRegistry().getEntry(label);
-        Class<? extends CommandExecutor> cls = entry.cls;
 
-        if (cls == null) return;
+        if (entry == null) return;
+
+        Class<? extends CommandExecutor> cls = entry.cls;
 
         Command meta = entry.meta;
 
         if (meta.level().getValue() > author.getLevel().getValue()) {
-            note.error("Insufficient bot level.\n" + meta.level().getRequireText());
+            note.respond().error("Insufficient bot level.\n" + meta.level().getRequireText());
             return;
         }
 
@@ -71,10 +72,10 @@ public class CommandHandler {
             injector.injectMembers(cmd);
             cmd.execute(note, args);
         } catch (RuntimeException e) {
-            note.error("**Exception**: " + e.getMessage()).queue();
+            note.respond().error("**Exception**: " + e.getMessage()).queue();
             e.printStackTrace();
         } catch (IllegalAccessException | InstantiationException e) {
-            note.error("**Class Instantiation Failed**: " + e.getMessage()).queue();
+            note.respond().error("**Class Instantiation Failed**: " + e.getMessage()).queue();
             e.printStackTrace();
         }
     }

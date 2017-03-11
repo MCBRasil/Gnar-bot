@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.TextNode
+import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
@@ -18,7 +19,7 @@ import java.util.*
 class ASCIICommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
         if (args.isEmpty()) {
-            note.error("Please provide a query.").queue()
+            note.respond().error("Please provide a query.").queue()
             return
         }
 
@@ -26,7 +27,7 @@ class ASCIICommand : CommandExecutor() {
             val query = StringUtils.join(args, "+")
 
             if (query.length > 15) {
-                note.error("The query has too many characters. `15 at most.`").queue()
+                note.respond().error("The query has too many characters. `15 at most.`").queue()
                 return
             }
 
@@ -34,12 +35,13 @@ class ASCIICommand : CommandExecutor() {
 
             val element = document.getElementsByTag("body")[0]
 
-            note.embed("ASCII Text") {
-                description("```\n${getText(element)}```")
+            note.respond().embed("ASCII Text") {
+                color = Constants.COLOR
+                description = "```\n${getText(element)}```"
             }.rest().queue()
 
         } catch (e: Exception) {
-            note.error("Unable to generate ASCII art.").queue()
+            note.respond().error("Unable to generate ASCII art.").queue()
             e.printStackTrace()
         }
 

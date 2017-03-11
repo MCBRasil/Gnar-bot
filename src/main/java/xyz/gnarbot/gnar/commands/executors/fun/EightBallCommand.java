@@ -1,5 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.fun;
 
+import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -20,12 +21,13 @@ public class EightBallCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (args.isEmpty()) {
-            note.error("Ask the 8-ball something.").queue();
+            note.respond().error("Ask the 8-ball something.").queue();
             return;
         }
 
-        note.embed("8-Ball")
-                .description(responses[random.nextInt(responses.length)])
+        note.respond().embed("8-Ball")
+                .setColor(Constants.COLOR)
+                .setDescription(responses[random.nextInt(responses.length)])
                 .rest().queue();
     }
 }
