@@ -31,6 +31,11 @@ public @interface Command {
     String usage() default "";
 
     /**
+     * @return The symbol of this command.
+     */
+    String symbol() default "";
+
+    /**
      * @return Flag to show this command in help.
      */
     boolean showInHelp() default true;

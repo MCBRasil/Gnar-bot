@@ -8,7 +8,10 @@ import xyz.gnarbot.gnar.servers.Servlet
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("skip"), level = Level.DJ, description = "Skip the current music track.")
+@Command(aliases = arrayOf("skip"),
+        level = Level.DJ,
+        description = "Skip the current music track.",
+        symbol = "♬")
 class SkipCommand : MusicExecutor() {
     @Inject lateinit var servlet: Servlet
     @Inject lateinit var manager: MusicManager

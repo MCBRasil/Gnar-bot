@@ -6,7 +6,9 @@ import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("nowplaying", "np"), description = "Shows what's currently playing.")
+@Command(aliases = arrayOf("nowplaying", "np"),
+        description = "Shows what's currently playing.",
+        symbol = "♬")
 class NowPlayingCommand : MusicExecutor() {
 
     @Inject lateinit private var manager: MusicManager
@@ -20,11 +22,7 @@ class NowPlayingCommand : MusicExecutor() {
         }
 
         note.respond().embed("Now Playing") {
-            field("Now Playing", false, if (track.sourceManager.sourceName.contains("youtube")) {
-                "__[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__"
-            } else {
-                "__[${track.info.title}]()__"
-            })
+            field("Now Playing", false, "__[${track.info.title}](${track.info.uri})__")
 
             val position = getTimestamp(track.position)
             val duration = getTimestamp(track.duration)

@@ -9,7 +9,8 @@ import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("repeat"),
         level = Level.DJ,
-        description = "Set if the music player should repeat.")
+        description = "Set if the music player should repeat.",
+        symbol = "♬")
 class RepeatCommand : MusicExecutor() {
 
     @Inject lateinit var manager: MusicManager

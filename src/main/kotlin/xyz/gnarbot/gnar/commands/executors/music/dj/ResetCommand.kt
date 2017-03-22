@@ -8,7 +8,10 @@ import xyz.gnarbot.gnar.servers.Servlet
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("reset"), level = Level.DJ, description = "Completely reset the music player.")
+@Command(aliases = arrayOf("reset"),
+        level = Level.DJ,
+        description = "Completely reset the music player.",
+        symbol = "♬")
 class ResetCommand : MusicExecutor() {
 
     @Inject lateinit var servlet: Servlet

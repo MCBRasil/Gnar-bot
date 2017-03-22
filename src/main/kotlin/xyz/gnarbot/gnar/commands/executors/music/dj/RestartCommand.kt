@@ -7,7 +7,10 @@ import xyz.gnarbot.gnar.members.Level
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("restart"), level = Level.DJ, description = "Restart the current song.")
+@Command(aliases = arrayOf("restart"),
+        level = Level.DJ,
+        description = "Restart the current song.",
+        symbol = "♬")
 class RestartCommand : MusicExecutor() {
     @Inject lateinit var manager: MusicManager
 

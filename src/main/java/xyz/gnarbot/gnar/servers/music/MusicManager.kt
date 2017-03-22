@@ -45,7 +45,6 @@ class MusicManager(servlet: Servlet, val playerManager: AudioPlayerManager) {
     fun loadAndPlay(note: Note, trackUrl: String) {
         playerManager.loadItemOrdered(this, trackUrl, object : AudioLoadResultHandler {
             override fun trackLoaded(track: AudioTrack) {
-
                 if (scheduler.queue.size >= TrackScheduler.QUEUE_LIMIT) {
                     note.respond().error("The queue can not exceed 20 songs.")
                     return
@@ -58,15 +57,9 @@ class MusicManager(servlet: Servlet, val playerManager: AudioPlayerManager) {
 
                 scheduler.queue(track)
 
-                var msg = "Added `${track.info.title}` to queue."
-
-                if (player.playingTrack == null && note.servlet.audioManager.isConnected) {
-                    msg += "\nThe player has started playing."
-                }
-
                 note.respond().embed("Music Queue") {
                     color = Color(0, 221, 88)
-                    description = msg
+                    description = "Added __**[${track.info.title}](${track.info.uri})**__ to queue."
                 }.rest().queue()
             }
 

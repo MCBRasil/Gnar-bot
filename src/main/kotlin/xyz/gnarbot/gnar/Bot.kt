@@ -16,7 +16,6 @@ import xyz.gnarbot.gnar.api.APIPortal
 import xyz.gnarbot.gnar.api.data.BotInfo
 import xyz.gnarbot.gnar.commands.handlers.CommandRegistry
 import xyz.gnarbot.gnar.servers.Shard
-import xyz.gnarbot.gnar.utils.Utils
 import java.util.concurrent.Executors
 import kotlin.jvm.JvmStatic as static
 

@@ -10,7 +10,9 @@ import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 import java.util.concurrent.TimeUnit
 
-@Command(aliases = arrayOf("voteskip"), description = "Vote to skip the current music track.")
+@Command(aliases = arrayOf("voteskip"),
+        description = "Vote to skip the current music track.",
+        symbol = "♬")
 class VoteSkipCommand : MusicExecutor() {
     @Inject lateinit var servlet: Servlet
     @Inject lateinit var manager: MusicManager

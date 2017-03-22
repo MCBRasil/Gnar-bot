@@ -7,11 +7,6 @@ abstract class MusicExecutor : CommandExecutor() {
 
     val musicColor = Color(0, 221, 88)
 
-//    init {
-//        symbol = "**♬**"
-//    }
-
-    //abstract fun execute(note: Note, args: List<String>, host: Host, manager: MusicManager)
 
     protected fun getTimestamp(milliseconds: Long): String {
         val seconds = (milliseconds / 1000).toInt() % 60

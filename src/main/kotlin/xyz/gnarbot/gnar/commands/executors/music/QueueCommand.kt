@@ -7,7 +7,8 @@ import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("queue", "list"),
-        description = "Shows the music that's currently queued.")
+        description = "Shows the music that's currently queued.",
+        symbol = "♬")
 class QueueCommand : MusicExecutor() {
 
     @Inject lateinit private var manager: MusicManager
@@ -44,13 +45,7 @@ class QueueCommand : MusicExecutor() {
                     queueLength += track.duration
                     trackCount++
 
-                    val str = if (track.sourceManager.sourceName.contains("youtube")) {
-                        "**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}](https://youtube.com/watch?v=${track.info.identifier})__"
-                    } else {
-                        "**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}]()__"
-                    }
-
-                    appendln(str)
+                    appendln("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}](${track.info.uri})__")
 
                     if (length >= 900) {
                         append("... and **${queue.size - trackCount}** more tracks.")

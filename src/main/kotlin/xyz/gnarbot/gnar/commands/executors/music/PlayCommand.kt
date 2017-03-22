@@ -11,7 +11,8 @@ import xyz.gnarbot.gnar.utils.YouTube
 
 @Command(aliases = arrayOf("play"),
         usage = "-(url|YT search)",
-        description = "Joins and play music in a channel.")
+        description = "Joins and play music in a channel.",
+        symbol = "♬")
 class PlayCommand : MusicExecutor() {
     @Inject lateinit private var selfUser: SelfUser
     @Inject lateinit private var servlet: Servlet

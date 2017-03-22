@@ -7,7 +7,10 @@ import xyz.gnarbot.gnar.members.Level
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("pause"), level = Level.DJ, description = "Pause or resume the music player.")
+@Command(aliases = arrayOf("pause"),
+        level = Level.DJ,
+        description = "Pause or resume the music player.",
+        symbol = "♬")
 class PauseCommand : MusicExecutor() {
     @Inject lateinit private var manager: MusicManager
 

@@ -7,7 +7,10 @@ import xyz.gnarbot.gnar.members.Level
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("stop"), level = Level.DJ, description = "Stop and clear the music player.")
+@Command(aliases = arrayOf("stop"),
+        level = Level.DJ,
+        description = "Stop and clear the music player.",
+        symbol = "♬")
 class StopCommand : MusicExecutor() {
 
     @Inject lateinit var manager: MusicManager

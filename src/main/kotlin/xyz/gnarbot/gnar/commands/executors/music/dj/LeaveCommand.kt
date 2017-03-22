@@ -7,7 +7,10 @@ import xyz.gnarbot.gnar.members.Level
 import xyz.gnarbot.gnar.servers.Servlet
 import xyz.gnarbot.gnar.utils.Note
 
-@Command(aliases = arrayOf("leave"), level = Level.DJ, description = "Leave the current music channel but keep the queue intact.")
+@Command(aliases = arrayOf("leave"),
+        level = Level.DJ,
+        description = "Leave the current music channel but keep the queue intact.",
+        symbol = "♬")
 class LeaveCommand : MusicExecutor() {
     @Inject lateinit private var servlet: Servlet
 
