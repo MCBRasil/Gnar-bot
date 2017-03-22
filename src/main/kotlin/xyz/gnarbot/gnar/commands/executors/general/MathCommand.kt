@@ -21,6 +21,7 @@ class MathCommand : CommandExecutor() {
 
         note.respond().embed("Math") {
             color = Constants.COLOR
+
             val exp = ExpressionBuilder()
             val lines = StringUtils.join(args, ' ').fastSplit(';')
             lines.forEach { exp.addLine(it) }

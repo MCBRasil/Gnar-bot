@@ -56,7 +56,12 @@ class HelpCommand : CommandExecutor() {
 
                 for (page in pages) {
                     field("", true) {
-                        page.forEach { append("**").append(it.meta.symbol).append("** **[").append(Bot.token).append(it.meta.aliases[0]).appendln("]()**") }
+                        page.forEach {
+                            if (it.meta.symbol.isNotBlank()) {
+                                append("**").append(it.meta.symbol).append("** ")
+                            }
+                            append("**[").append(Bot.token).append(it.meta.aliases[0]).appendln("]()**")
+                        }
                     }
                 }
             }
