@@ -79,14 +79,14 @@
 
         <!--JDA-->
         <!--<dependency>-->
-            <!--<groupId>net.dv8tion</groupId>-->
-            <!--<artifactId>JDA</artifactId>-->
-            <!--<version>${JDA.version}</version>-->
+        <!--<groupId>net.dv8tion</groupId>-->
+        <!--<artifactId>JDA</artifactId>-->
+        <!--<version>${JDA.version}</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA_K</artifactId>
-            <version>0.0.8</version>
+            <version>3.0.0_2</version>
         </dependency>
 
         <!--CHATTERBOT-->
