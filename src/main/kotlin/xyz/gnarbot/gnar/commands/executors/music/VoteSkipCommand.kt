@@ -1,5 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.music
 
+import b
 import com.google.inject.Inject
 import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.Bot
@@ -53,11 +54,9 @@ class VoteSkipCommand : MusicExecutor() {
             msg.addReaction("👍").queue()
             msg.addReaction("👎").queue()
 
-            val hostCopy = servlet
-            val managerCopy = manager
             Bot.scheduler.schedule({
                 msg.delete()
-                checkVictory(msg, hostCopy, managerCopy)
+                checkVictory(msg, servlet, manager)
             }, 30, TimeUnit.SECONDS)
         } else {
             note.respond().error("You're not in the Music Channel!\n*or there isn't a song playing...*").queue()
