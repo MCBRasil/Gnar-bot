@@ -12,7 +12,7 @@ import java.util.List;
 public class LeagueLookupCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
-        note.respond().error("This is being worked on right now, spam Maeyrl to fix me.");
+        note.respond().error("This command is borked. Blame Rito for their crap API.").queue();
 
         /*
         StringJoiner joiner = new StringJoiner("");

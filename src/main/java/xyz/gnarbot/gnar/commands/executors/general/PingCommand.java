@@ -14,11 +14,10 @@ public class PingCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         OffsetDateTime sentTime = note.getCreationTime();
-        OffsetDateTime responseTime = OffsetDateTime.now();
 
         note.respond().embed("Response Time")
                 .setColor(Constants.COLOR)
-                .setDescription(Math.abs(sentTime.until(responseTime, ChronoUnit.MILLIS)) + "ms")
-                .rest().queue();
+                .setDescription("Checking ping...")
+                .rest().queue(message -> (message.editMessage(Math.abs(sentTime.until(message.getCreationTime(), ChronoUnit.MILLIS)) + " ms\"")).queue());
     }
 }

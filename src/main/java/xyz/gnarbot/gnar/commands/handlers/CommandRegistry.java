@@ -53,6 +53,7 @@ public class CommandRegistry {
         register(UptimeCommand.class);
         register(WhoIsCommand.class);
         register(BotInfoCommand.class);
+        register(DonateCommand.class);
         //End General Commands
 
         //Fun Commands
@@ -67,7 +68,7 @@ public class CommandRegistry {
         register(LeetifyCommand.class);
         register(MarvelComics.class);
         register(ProgressionCommand.class);
-        register(Rule34Command.class);
+        register(GoogleyEyesCommand.class);
         //register(ServersSharedCommand.class);
         register(TextToSpeechCommand.class);
         register(ReactCommand.class);

@@ -1,6 +1,5 @@
 package xyz.gnarbot.gnar.commands.executors.fun;
 
-import org.apache.commons.lang3.StringUtils;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
@@ -17,9 +16,7 @@ public class TriviaCommand extends CommandExecutor {
         }
 
         if (args.size() > 0) {
-            note.respond().info(TriviaQuestions.getRandomQuestion(StringUtils.join(args, " "))).queue();
-        } else {
-            note.respond().error(TriviaQuestions.getRandomQuestion()).queue();
+            note.respond().info(TriviaQuestions.getRandomQuestion()).queue();
         }
     }
 

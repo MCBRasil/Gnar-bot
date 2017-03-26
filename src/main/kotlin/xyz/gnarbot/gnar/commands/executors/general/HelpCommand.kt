@@ -75,18 +75,22 @@ class HelpCommand : CommandExecutor() {
             }
 
             field("News") {
-                appendln("• Music player now running LIVE. Report any bugs to us!")
-                appendln("• To try out music, join a channel and type `_play -url|search YT`!")
-                appendln("• The website is nearing completion!")
-                appendln("• Many general commands got a new layout, check it out!.")
+                appendln("• Music is laggy, please donate for better quality.")
+                appendln("• The League command will probably be removed")
+                appendln("• Working on our own custom version of JDA")
+                appendln("• Donation links fixed along with general buds")
             }
 
             field("Contact") {
                 appendln(b(link("Website", "http://gnarbot.xyz")))
                 append(b(link("Discord Server", "http://discord.gg/NQRpmr2")))
             }
+
+            field("Donations") {
+                appendln(b(link("Donate", "https://gnarbot.xyz/donate")))
+            }
         }.rest().queue()
 
-        note.respond().info("Gnar's guide has been directly messaged to you.").queue()
+        note.respond().info("Gnar's guide has been directly messaged to you.\n\nNeed more support? Reach us on our official support server: https://discord.gg/NQRpmr2").queue()
     }
 }

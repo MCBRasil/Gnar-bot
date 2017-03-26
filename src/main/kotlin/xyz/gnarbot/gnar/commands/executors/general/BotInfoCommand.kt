@@ -90,7 +90,7 @@ class BotInfoCommand : CommandExecutor() {
             }
 
             field("Others", true) {
-                appendln("Creators: **[Avarel](https://github.com/Avarel)** and **[Maeyrl](https://github.com/maeyrl)**")
+                appendln("Creators: **[Avarel](https://github.com/Avarel)** and **[Xevryll](https://github.com/xevryll)**")
                 appendln("Contributor: **[Gatt](https://github.com/RealGatt)**")
                 appendln("Commands: **$commandSize**")
                 appendln("Library: Java **[JDA 3](https://github.com/DV8FromTheWorld/JDA)**")

@@ -60,14 +60,14 @@ class PlayCommand : MusicExecutor() {
         } else {
             val query = args.joinToString("+")
 
-            val results = YouTube.search(query, 1)
+            val results = YouTube.search(query, 2)
 
             if (results.isEmpty()) {
                 note.respond().error("No YouTube results returned for `${query.replace('+', ' ')}`.").queue()
                 return
             }
 
-            val result = results[0]
+            val result = results[1]
             val videoID = result.id
             "https://www.youtube.com/watch?v=$videoID"
         }
