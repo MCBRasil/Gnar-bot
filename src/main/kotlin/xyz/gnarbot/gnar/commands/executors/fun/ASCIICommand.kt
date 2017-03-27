@@ -8,7 +8,7 @@ import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
-import xyz.gnarbot.gnar.utils.fastSplit
+import xyz.gnarbot.gnar.utils.Utils
 import java.util.*
 
 @Command(
@@ -60,7 +60,7 @@ class ASCIICommand : CommandExecutor() {
             text = cell.text()
         }
 
-        text?.fastSplit('\n')?.let {
+        text?.let { Utils.fastSplit(text, '\n') }?.let {
             val b = StringJoiner("\n")
 
             it.filterNot(String::isNullOrBlank)

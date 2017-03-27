@@ -9,6 +9,7 @@ import net.dv8tion.jda.core.AccountType
 import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.JDABuilder
 import net.dv8tion.jda.core.entities.Game
+import net.dv8tion.jda.core.jda
 import org.json.JSONArray
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

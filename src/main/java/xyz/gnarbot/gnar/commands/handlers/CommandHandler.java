@@ -67,8 +67,13 @@ public class CommandHandler {
         try {
             requests++;
             CommandExecutor cmd = cls.newInstance();
+
+            cmd.jda = servlet.getJDA();
+            cmd.shard = servlet.getShard();
+            cmd.servlet = servlet;
             cmd.bot = bot;
             cmd.commandMeta = meta;
+
             injector.injectMembers(cmd);
             cmd.execute(note, args);
         } catch (RuntimeException e) {

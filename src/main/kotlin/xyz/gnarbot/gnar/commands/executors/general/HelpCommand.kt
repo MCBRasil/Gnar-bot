@@ -68,7 +68,7 @@ class HelpCommand : CommandExecutor() {
                 }
             }
 
-            blankField(true)
+            field(inline = true)
             field("Additional Information") {
                 append("To view a command's description, do `").append(Bot.token).appendln("help [command]`.")
                 append("__The commands that requires a named role must be created by you and assigned to a member in your guild.__")
@@ -91,6 +91,6 @@ class HelpCommand : CommandExecutor() {
             }
         }.rest().queue()
 
-        note.respond().info("Gnar's guide has been directly messaged to you.\n\nNeed more support? Reach us on our official support server: https://discord.gg/NQRpmr2").queue()
+        note.respond().info("Gnar's guide has been directly messaged to you.\n\nNeed more support? Reach us on our __**[official support server](https://discord.gg/NQRpmr2)**__.").queue()
     }
 }

@@ -1,5 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.general;
 
+import net.dv8tion.jda.core.EmbedBuilder;
 import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
@@ -18,6 +19,14 @@ public class PingCommand extends CommandExecutor {
         note.respond().embed("Response Time")
                 .setColor(Constants.COLOR)
                 .setDescription("Checking ping...")
-                .rest().queue(message -> (message.editMessage(Math.abs(sentTime.until(message.getCreationTime(), ChronoUnit.MILLIS)) + " ms\"")).queue());
+                .rest().queue(message -> message.editMessage(new EmbedBuilder().setTitle("Response Time")
+                .field("Message Response Time", true, sb -> {
+                    long ping = Math.abs(sentTime.until(message.getCreationTime(), ChronoUnit.MILLIS));
+                    sb.append(ping).append(" ms");
+                })
+                .field("JDA Heartbeat", true, sb -> {
+                    sb.append(jda().getPing()).append(" ms");
+                })
+                .build()));
     }
 }

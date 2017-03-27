@@ -1,11 +1,13 @@
 package xyz.gnarbot.gnar.utils;
 
+import com.google.common.collect.ImmutableList;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
-
     public static List<String> fastSplit(String s, char delimiter) {
+
         List<String> f = new ArrayList<>();
 
         int p = 0;

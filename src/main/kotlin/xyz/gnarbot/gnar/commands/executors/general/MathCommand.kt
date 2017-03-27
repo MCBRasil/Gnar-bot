@@ -6,7 +6,7 @@ import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.utils.Note
-import xyz.gnarbot.gnar.utils.fastSplit
+import xyz.gnarbot.gnar.utils.Utils
 import xyz.hexav.aje.AJEException
 import xyz.hexav.aje.ExpressionBuilder
 import java.awt.Color
@@ -24,7 +24,7 @@ class MathCommand : CommandExecutor() {
             color = Constants.COLOR
 
             val exp = ExpressionBuilder()
-            val lines = StringUtils.join(args, ' ').fastSplit(';')
+            val lines = Utils.fastSplit(StringUtils.join(args, ' '), ';')
             lines.forEach { exp.addLine(it) }
 
             field("Expressions", true, b(lines.map(String::trim).joinToString("\n")))
