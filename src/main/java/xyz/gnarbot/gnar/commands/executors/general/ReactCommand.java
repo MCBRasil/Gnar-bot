@@ -16,7 +16,7 @@ public class ReactCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
         if (args.size() < 2) {
-            note.respond().error("Insufficient arguments. `" + meta().usage() + "`").queue();
+            note.respond().error("Insufficient arguments. `" + getMeta().usage() + "`").queue();
             return;
         }
 

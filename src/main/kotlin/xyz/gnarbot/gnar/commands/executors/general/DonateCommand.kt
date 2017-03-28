@@ -10,7 +10,7 @@ class DonateCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
         note.respond().embed("Donations") {
             color = Constants.COLOR
-            description = "Wanna donate to support Gnar? [Donation Link](https://gnarbot.xyz/donate)"
-        }
+            description = "Want to donate to support Gnar? __**[Click here to donate.](https://gnarbot.xyz/donate)**__"
+        }.rest().queue()
     }
 }

@@ -22,15 +22,15 @@ public abstract class CommandExecutor {
 
     Command commandMeta;
 
-    public JDA jda() {
+    public JDA getJDA() {
         return jda;
     }
 
-    public Shard shard() {
+    public Shard getShard() {
         return shard;
     }
 
-    public Servlet servlet() {
+    public Servlet getServlet() {
         return servlet;
     }
 
@@ -38,7 +38,7 @@ public abstract class CommandExecutor {
         return bot;
     }
 
-    public Command meta() {
+    public Command getMeta() {
         return commandMeta;
     }
 

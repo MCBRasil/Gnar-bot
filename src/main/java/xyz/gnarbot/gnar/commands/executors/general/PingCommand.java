@@ -16,17 +16,18 @@ public class PingCommand extends CommandExecutor {
     public void execute(Note note, List<String> args) {
         OffsetDateTime sentTime = note.getCreationTime();
 
-        note.respond().embed("Response Time")
+        note.respond().embed("Ping")
                 .setColor(Constants.COLOR)
                 .setDescription("Checking ping...")
                 .rest().queue(message -> message.editMessage(new EmbedBuilder().setTitle("Response Time")
-                .field("Message Response Time", true, sb -> {
-                    long ping = Math.abs(sentTime.until(message.getCreationTime(), ChronoUnit.MILLIS));
-                    sb.append(ping).append(" ms");
-                })
-                .field("JDA Heartbeat", true, sb -> {
-                    sb.append(jda().getPing()).append(" ms");
-                })
-                .build()));
+                        .setColor(Constants.COLOR)
+                        .field("Response Time", true, sb -> {
+                            long ping = Math.abs(sentTime.until(message.getCreationTime(), ChronoUnit.MILLIS));
+                            sb.append(ping).append(" ms");
+                        })
+                        .field("JDA Heartbeat", true, sb -> {
+                            sb.append(getJDA().getPing()).append(" ms");
+                        })
+                        .build()).queue());
     }
 }

@@ -1,14 +1,11 @@
 package xyz.gnarbot.gnar.commands.executors.mod;
 
-import com.google.inject.Inject;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
-import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Level;
-import xyz.gnarbot.gnar.servers.Servlet;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.ArrayList;
@@ -20,8 +17,6 @@ import java.util.concurrent.TimeUnit;
         description = "Delete up to 100 messages.",
         level = Level.BOT_COMMANDER)
 public class PruneCommand extends CommandExecutor {
-    @Inject
-    public Servlet servlet;
 
     @Override
     public void execute(Note note, List<String> args) {
@@ -70,7 +65,7 @@ public class PruneCommand extends CommandExecutor {
             Message msg = note.respond().info("Attempted to delete **[" + msgs.size() + "]()** messages.\nDeleting this message in **5** seconds.")
                     .complete();
 
-            Bot.INSTANCE.getScheduler().schedule(() -> msg.delete().queue(), 5, TimeUnit.SECONDS);
+            getBot().getScheduler().schedule(() -> msg.delete().queue(), 5, TimeUnit.SECONDS);
         } catch (NumberFormatException e) {
             note.respond().error("Improper arguments supplies, must be a number.").queue();
         }

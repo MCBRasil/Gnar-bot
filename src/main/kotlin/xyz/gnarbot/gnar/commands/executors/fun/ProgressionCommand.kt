@@ -6,6 +6,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.members.Level
 import xyz.gnarbot.gnar.utils.Note
+import xyz.gnarbot.gnar.utils.schedule
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -68,10 +69,10 @@ class ProgressionCommand : CommandExecutor() {
         try {
             val msg = note.respond().text(list[0]).complete()
 
-            list.forEachIndexed { i, s ->
-                bot.scheduler.schedule({
+            list.forEachIndexed { i, _ ->
+                bot.scheduler.schedule(i + 1L, TimeUnit.SECONDS) {
                     msg.editMessage(list[i]).queue()
-                }, i + 1L, TimeUnit.SECONDS)
+                }
             }
         } catch (e: UnsupportedOperationException) {
             note.respond().error("Message was too long or something... no memes for you.").queue()

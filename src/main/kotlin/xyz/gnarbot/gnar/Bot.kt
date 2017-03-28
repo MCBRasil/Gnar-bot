@@ -2,14 +2,14 @@ package xyz.gnarbot.gnar
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager
+import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
-import net.dv8tion.jda.core.AccountType
-import net.dv8tion.jda.core.JDA
-import net.dv8tion.jda.core.JDABuilder
 import net.dv8tion.jda.core.entities.Game
+import net.dv8tion.jda.core.jda
 import org.json.JSONArray
+import org.json.JSONTokener
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import xyz.gnarbot.gnar.api.APIPortal
@@ -18,7 +18,6 @@ import xyz.gnarbot.gnar.commands.handlers.CommandRegistry
 import xyz.gnarbot.gnar.servers.Shard
 import xyz.gnarbot.gnar.servers.listeners.GuildCountListener
 import java.util.concurrent.Executors
-import java.util.concurrent.ScheduledExecutorService
 import kotlin.jvm.JvmStatic as static
 
 /**
@@ -43,6 +42,7 @@ class Bot {
         registerSourceManager(YoutubeAudioSourceManager())
         registerSourceManager(SoundCloudAudioSourceManager())
         registerSourceManager(VimeoAudioSourceManager())
+        registerSourceManager(BandcampAudioSourceManager())
         //registerSourceManager(TwitchStreamAudioSourceManager())
     }
 
@@ -51,13 +51,13 @@ class Bot {
 
     /** @return Administrator users of the bot. */
     val admins = hashSetOf<String>().apply {
-        JSONArray(files.admins.readText()).forEach {
+        JSONArray(JSONTokener(files.admins.reader())).forEach {
             add(it as String)
         }
     }
 
     val blocked = hashSetOf<String>().apply {
-        JSONArray(files.blocked.readText()).forEach {
+        JSONArray(JSONTokener(files.blocked.reader())).forEach {
             add(it as String)
         }
     }
@@ -66,7 +66,7 @@ class Bot {
     /** Returns how many milliseconds since the bot have been up. */
     val uptime: Long get() = System.currentTimeMillis() - startTime
 
-    val scheduler: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
+    val scheduler = Executors.newSingleThreadScheduledExecutor()!!
 
     /**
      * Start the bot.
@@ -80,36 +80,26 @@ class Bot {
         if (initialized) throw IllegalStateException("Bot instance have already been initialized.")
         initialized = true
 
-        log.info("Initializing the Discord getBot.")
+        log.info("Initializing the Discord bot.")
         log.info("Requesting $numShards shards.")
 
         log.info("There are ${admins.size} administrators registered for the bot.")
         log.info("There are ${blocked.size} blocked users registered for the bot.")
 
-        for (id in 0..numShards - 1) {
-            val jda = makeJDA(token, numShards, id)
-
+        shards += jda(token, numShards) { id ->
+            setAutoReconnect(true)
+            setGame(Game.of("$id | _help"))
+            setAudioEnabled(true)
+            setEnableShutdownHook(true)
+        }.mapIndexed { id, jda ->
             jda.selfUser.manager.setName("Gnar").queue()
-
-            shards.add(Shard(id, jda, this))
-
             log.info("Shard [$id] is initialized.")
+            Shard(id, jda, this)
         }
 
         log.info("Bot is now connected to Discord.")
 
         api.registerRoutes()
-    }
-
-    fun makeJDA(token: String, numShards: Int, id: Int): JDA {
-        return JDABuilder(AccountType.BOT).apply {
-            if (numShards > 1) useSharding(id, numShards)
-            setToken(token)
-            setAutoReconnect(true)
-            setGame(Game.of("$id | _help"))
-            setAudioEnabled(true)
-            setEnableShutdownHook(true)
-        }.buildBlocking()
     }
 
     /**

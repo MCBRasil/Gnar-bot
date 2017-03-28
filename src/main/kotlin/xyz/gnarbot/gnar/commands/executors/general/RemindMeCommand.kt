@@ -39,7 +39,6 @@ class RemindMeCommand : CommandExecutor() {
                         color = Constants.COLOR
                         description = string
                     }.rest().queue()
-
                 }, time.toLong(), timeUnit)
             } else {
                 note.respond().error("Number must be more than 0.").queue()

@@ -8,17 +8,18 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.awt.*;
+import java.util.List;
 import java.util.StringJoiner;
 
 @Command(aliases = {"overwatch", "ow"},
-        usage = "-BattleTag#0000 ~region",
+        usage = "(BattleTag#0000) [region]",
         description = "Look up Overwatch information about a player.")
 public class OverwatchLookupCommand extends CommandExecutor {
     private final String[] regions = {"us", "eu", "kr"};
 
-    public void execute(Note note, java.util.List<String> args) {
+    public void execute(Note note, List<String> args) {
         if (args.isEmpty()) {
-            note.respond().error("Insufficient arguments. `" + meta().usage() + "`.").queue();
+            note.respond().error("Insufficient arguments. `" + getMeta().usage() + "`.").queue();
             return;
         }
 

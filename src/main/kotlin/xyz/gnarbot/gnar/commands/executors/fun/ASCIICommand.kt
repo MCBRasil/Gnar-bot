@@ -60,7 +60,7 @@ class ASCIICommand : CommandExecutor() {
             text = cell.text()
         }
 
-        text?.let { Utils.fastSplit(text, '\n') }?.let {
+        text?.let { Utils.fastSplit(it, '\n') }?.let {
             val b = StringJoiner("\n")
 
             it.filterNot(String::isNullOrBlank)

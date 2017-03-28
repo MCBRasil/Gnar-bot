@@ -1,21 +1,17 @@
 package xyz.gnarbot.gnar.commands.executors.general;
 
-import com.google.inject.Inject;
 import net.dv8tion.jda.core.entities.Role;
 import org.apache.commons.lang3.StringUtils;
+import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Client;
-import xyz.gnarbot.gnar.servers.Servlet;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 
 @Command(aliases = {"whois", "infoof", "infoon", "user"}, usage = "-@user", description = "Get information on a user.")
 public class WhoIsCommand extends CommandExecutor {
-    @Inject
-    private Servlet servlet;
-
     @Override
     public void execute(Note note, List<String> args) {
         if (args.isEmpty()) {
@@ -30,7 +26,7 @@ public class WhoIsCommand extends CommandExecutor {
         if (mentioned.size() > 0) {
             client = mentioned.get(0);
         } else {
-            client = servlet.getClientByName(StringUtils.join(args, " "), true);
+            client = getServlet().getClientByName(StringUtils.join(args, " "), true);
         }
 
         if (client == null) {
@@ -40,6 +36,7 @@ public class WhoIsCommand extends CommandExecutor {
 
 
         note.respond().embed("Who is " + client.getName() + "?")
+                .setColor(Constants.COLOR)
                 .setThumbnail(client.getAvatarUrl())
                 .field("Name", true, client.getName())
                 .field("Nickname", true, client.getNickname() != null ? client.getNickname() : "No nickname.")

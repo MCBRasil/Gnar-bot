@@ -2,21 +2,18 @@ package xyz.gnarbot.gnar.commands.executors.general
 
 import b
 import com.google.common.collect.Lists
-import com.google.inject.Inject
 import link
 import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.commands.handlers.CommandRegistry
 import xyz.gnarbot.gnar.members.Level
 import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("help", "guide"), usage = "~command", description = "Display GN4R's list of commands.")
 class HelpCommand : CommandExecutor() {
 
-    @Inject lateinit var registry: CommandRegistry
-
     override fun execute(note: Note, args: List<String>) {
+        val registry = bot.commandRegistry
 
         if (args.isNotEmpty()) {
             val target = if (args[0].startsWith('_')) args[0].substring(1) else args[0]
@@ -67,7 +64,7 @@ class HelpCommand : CommandExecutor() {
                 }
             }
 
-            field(inline = true)
+            field(true)
             field("Additional Information") {
                 append("To view a command's description, do `").append(bot.token).appendln("help [command]`.")
                 append("__The commands that requires a named role must be created by you and assigned to a member in your guild.__")
@@ -81,12 +78,12 @@ class HelpCommand : CommandExecutor() {
             }
 
             field("Contact") {
-                appendln(b(link("Website", "http://gnarbot().xyz")))
+                appendln(b(link("Website", "http://gnarbot.xyz")))
                 append(b(link("Discord Server", "http://discord.gg/NQRpmr2")))
             }
 
             field("Donations") {
-                appendln(b(link("Donate", "https://gnarbot().xyz/donate")))
+                appendln(b(link("Donate", "https://gnarbot.xyz/donate")))
             }
         }.rest().queue()
 

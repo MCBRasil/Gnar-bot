@@ -1,11 +1,7 @@
 package xyz.gnarbot.gnar.commands.executors.music
 
-import com.google.inject.Inject
-import net.dv8tion.jda.core.entities.SelfUser
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.servers.Servlet
-import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 import xyz.gnarbot.gnar.utils.YouTube
 
@@ -14,12 +10,11 @@ import xyz.gnarbot.gnar.utils.YouTube
         description = "Joins and play music in a channel.",
         symbol = "♬")
 class PlayCommand : MusicExecutor() {
-    @Inject lateinit private var selfUser: SelfUser
-    @Inject lateinit private var servlet: Servlet
-    @Inject lateinit private var manager: MusicManager
-
+    
     override fun execute(note: Note, args: List<String>) {
-        val botChannel = servlet.clientHandler.getClient(selfUser)!!.voiceChannel
+        val manager = servlet.musicManager
+        
+        val botChannel = servlet.clientHandler.getClient(jda.selfUser)!!.voiceChannel
         val userChannel = note.author.voiceChannel
 
         if (botChannel != null && botChannel != userChannel) {

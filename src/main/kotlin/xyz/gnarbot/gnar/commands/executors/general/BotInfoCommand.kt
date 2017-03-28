@@ -1,20 +1,15 @@
 package xyz.gnarbot.gnar.commands.executors.general
 
-import com.google.inject.Inject
 import link
 import net.dv8tion.jda.core.OnlineStatus
 import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.servers.Shard
 import xyz.gnarbot.gnar.utils.Note
 
 
 @Command(aliases = arrayOf("info", "botinfo"), description = "Show information about GN4R-BOT.")
 class BotInfoCommand : CommandExecutor() {
-
-    @Inject lateinit var shard: Shard
-
     override fun execute(note: Note, args: List<String>) {
         val registry = bot.commandRegistry
 
@@ -71,7 +66,7 @@ class BotInfoCommand : CommandExecutor() {
 
             field("Requests", true, requests)
             field("Requests Per Hour", true, requests / uptime_hour)
-            field("Website", true, link("gnarbot().xyz", "https://gnarbot().xyz"))
+            field("Website", true, link("gnarbot.xyz", "https://gnarbot.xyz"))
 
             field("Text Channels", true, textChannels)
             field("Voice Channels", true, voiceChannels)

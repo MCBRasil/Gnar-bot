@@ -1,7 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.music
 
 import b
-import com.google.inject.Inject
 import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
@@ -14,10 +13,10 @@ import java.util.concurrent.TimeUnit
         description = "Vote to skip the current music track.",
         symbol = "♬")
 class VoteSkipCommand : MusicExecutor() {
-    @Inject lateinit var servlet: Servlet
-    @Inject lateinit var manager: MusicManager
 
     override fun execute(note: Note, args: List<String>) {
+        val manager = servlet.musicManager
+
         if (note.author.voiceChannel !== null && manager.player.playingTrack !== null) {
             if (note.author.voiceState.isDeafened) {
                 val msg = note.respond().error("You actually have to be listening to the song to start a vote... Tsk tsk...").complete()

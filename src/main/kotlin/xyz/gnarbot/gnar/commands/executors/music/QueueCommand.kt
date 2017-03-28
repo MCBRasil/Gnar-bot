@@ -1,10 +1,8 @@
 package xyz.gnarbot.gnar.commands.executors.music
 
-import com.google.inject.Inject
 import u
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("queue", "list"),
@@ -12,10 +10,8 @@ import xyz.gnarbot.gnar.utils.Note
         symbol = "♬")
 class QueueCommand : MusicExecutor() {
 
-    @Inject lateinit private var manager: MusicManager
-
     override fun execute(note: Note, args: List<String>) {
-        val queue = manager.scheduler.queue
+        val queue = servlet.musicManager.scheduler.queue
 
         if (queue.isEmpty()) {
             note.respond().embed("Queue") {
@@ -31,7 +27,7 @@ class QueueCommand : MusicExecutor() {
         note.respond().embed("Music Queue") {
             color = musicColor
 
-            manager.player.playingTrack?.let {
+            servlet.musicManager.player.playingTrack?.let {
                 field("Now Playing", false, if (it.sourceManager.sourceName.contains("youtube")) {
                     "__[${it.info.title}](https://youtube.com/watch?v=${it.info.identifier})__"
                 } else {

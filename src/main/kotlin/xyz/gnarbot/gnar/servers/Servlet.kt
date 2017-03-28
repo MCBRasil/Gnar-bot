@@ -25,21 +25,27 @@ class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild 
 
     val selfClient get() = clientHandler.selfClient
 
-    var musicManager: MusicManager? = null
+    private var _musicManager: MusicManager? = null
         get() {
             if (field == null) {
-                this.musicManager = MusicManager(this, bot.playerManager)
+                field = MusicManager(this, bot.playerManager)
                 field!!.player.volume = 35
             }
             return field
         }
 
+    var musicManager: MusicManager
+        get() = _musicManager!!
+        set(value) {
+            _musicManager = value
+        }
+
     fun resetMusicManager() {
-        musicManager!!.scheduler.queue.clear()
-        musicManager!!.player.destroy()
+        _musicManager!!.scheduler.queue.clear()
+        _musicManager!!.player.destroy()
         audioManager.closeAudioConnection()
         audioManager.sendingHandler = null
-        musicManager = null
+        _musicManager = null
     }
 
     fun getMemberByName(name: String, searchNickname: Boolean = false): Member? {
@@ -173,7 +179,7 @@ class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild 
     fun shutdown(interrupt: Boolean) : Boolean {
         clientHandler.registry.clear()
 
-        musicManager?.let {
+        musicManager.let {
             if (!interrupt && it.player.playingTrack != null) {
                 return false
             }

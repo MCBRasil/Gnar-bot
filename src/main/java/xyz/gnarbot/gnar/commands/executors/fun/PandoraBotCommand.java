@@ -4,12 +4,10 @@ import com.google.code.chatterbotapi.ChatterBot;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
-import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.servers.Servlet;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.List;
 @Command(aliases = "pbot")
 public class PandoraBotCommand extends CommandExecutor {
     private static final ChatterBotFactory factory = new ChatterBotFactory();
-    @Inject
-    private Servlet servlet;
     private ChatterBot bot = null;
 
     private ChatterBotSession session = null;
