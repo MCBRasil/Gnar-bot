@@ -1,10 +1,8 @@
 package xyz.gnarbot.gnar.textadventure;
 
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.User;
+import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.textadventure.enums.DIRECTION;
 import xyz.gnarbot.gnar.textadventure.events.FirstBagEvent;
 import xyz.gnarbot.gnar.utils.Note;
@@ -38,7 +36,7 @@ public class Adventure {
     private String gender = "";
     private boolean adventureActive = true;
 
-    public Adventure(User u, Note note) {
+    public Adventure(User u, Note note, Bot bot) {
 
         adventures.put(u, this);
         this.user = u;
@@ -46,7 +44,7 @@ public class Adventure {
         this.gameID = UUID.randomUUID();
         this.random = new Random();
         this.random.setSeed(this.startTime);
-        this.grid = new AdventureGrid(this);
+        this.grid = new AdventureGrid(this, bot);
         state = STATE.WAITING_FOR_NAME;
         stateRelation = "waitname";
         logAction("Started your adventure...");
@@ -72,11 +70,11 @@ public class Adventure {
         return adventures.containsKey(u) && adventures.get(u) != null && adventures.get(u).isAdventureActive();
     }
 
-    public static Adventure getAdventure(User u, Note n) {
+    public static Adventure getAdventure(User u, Note n, Bot bot) {
         if (adventures.containsKey(u) && adventures.get(u) != null) {
-            return adventures.get(u).isAdventureActive() ? adventures.get(u) : new Adventure(u, n);
+            return adventures.get(u).isAdventureActive() ? adventures.get(u) : new Adventure(u, n, bot);
         } else {
-            return new Adventure(u, n);
+            return new Adventure(u, n, bot);
         }
     }
 
@@ -111,101 +109,38 @@ public class Adventure {
     }
 
     public void sendMessage(Note n, String message) {
-        this.lastMessage = message;
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
-                .blankField(true)
-                .setDescription(message)
-                .setColor(getDefaultMessageColor());
-        if (getPlayerIcon() != null) {
-            eb.setThumbnail(getPlayerIcon());
-        }
-        MessageEmbed embed = eb.build();
-        MessageBuilder mb = new MessageBuilder();
-        mb.setEmbed(embed);
-        Message m = mb.build();
-        n.getChannel().sendMessage(m).queue();
-        lastSentMessage = m;
         sendMessage(n, message, getDefaultMessageColor());
     }
 
-    public void sendMessage(Note n, String message, Color color) {
-        this.lastMessage = message;
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
-                .blankField(true)
-                .setDescription(message)
-                .setColor(color);
-        if (getPlayerIcon() != null) {
-            eb.setThumbnail(getPlayerIcon());
-        }
-        MessageEmbed embed = eb.build();
-        MessageBuilder mb = new MessageBuilder();
-        mb.setEmbed(embed);
-        Message m = mb.build();
-        n.getChannel().sendMessage(m).queue();
-        lastSentMessage = m;
+    public void sendMessage(Note note, String message, Color color) {
+        sendMessage(note, message, null, color);
     }
 
-    public void sendMessage(Note n, String message, String url) {
-        this.lastMessage = message;
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
-                .blankField(true)
-                .setDescription(message)
-                .setColor(getDefaultMessageColor());
-        eb.setThumbnail(url);
-        MessageEmbed embed = eb.build();
-        MessageBuilder mb = new MessageBuilder();
-        mb.setEmbed(embed);
-        Message m = mb.build();
-        n.getChannel().sendMessage(m).queue();
-        lastSentMessage = m;
+    public void sendMessage(Note note, String message, String url) {
+        sendMessage(note, message, url, getDefaultMessageColor());
     }
 
-    public void sendMessage(Note n, String message, String url, Color color) {
-        this.lastMessage = message;
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
-                .blankField(true)
+    public void sendMessage(Note note, String message, String url, Color color) {
+        lastMessage = message;
+        note.respond().embed(note.getAuthor().getName() + "'s Adventure")
+                .field(true)
                 .setDescription(message)
-                .setColor(color);
-        eb.setThumbnail(url);
-        MessageEmbed embed = eb.build();
-        MessageBuilder mb = new MessageBuilder();
-        mb.setEmbed(embed);
-        Message m = mb.build();
-        n.getChannel().sendMessage(m).queue();
-        lastSentMessage = m;
+                .setColor(color)
+                .setThumbnail(url)
+                .rest().queue(msg -> lastSentMessage = msg);
     }
 
-    public void sendInformativeMessage(Note n, String message) {
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
-                .blankField(true)
+    public void sendInformativeMessage(Note note, String message) {
+        note.respond().embed(note.getAuthor().getName() + "'s Adventure")
+                .field(true)
                 .setDescription(message)
+                .setColor(new Color(0xFFDD15))
                 .setThumbnail(getPlayerIcon())
-                .setColor(new Color(0xFFDD15));
-        MessageEmbed embed = eb.build();
-        MessageBuilder mb = new MessageBuilder();
-        mb.setEmbed(embed);
-        Message m = mb.build();
-        n.getChannel().sendMessage(m).queue();
+                .rest().queue();
     }
 
     public void sendLastMessage(Note n, String extra) {
-
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Sending last sent message...", null)
-                .blankField(true)
-                .setDescription(lastMessage)
-                .setThumbnail(getPlayerIcon())
-                .setColor(getDefaultMessageColor());
-        MessageEmbed embed = eb.build();
-        MessageBuilder mb = new MessageBuilder();
-        mb.setEmbed(embed);
-        Message m = mb.build();
-        n.getChannel().sendMessage(m).queue();
+        n.getChannel().sendMessage(lastSentMessage).queue();
     }
 
     public void getResponseFromEvent(Event e, String response) {

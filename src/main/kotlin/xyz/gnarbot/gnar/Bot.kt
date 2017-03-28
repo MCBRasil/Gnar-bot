@@ -9,7 +9,6 @@ import net.dv8tion.jda.core.AccountType
 import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.JDABuilder
 import net.dv8tion.jda.core.entities.Game
-import net.dv8tion.jda.core.jda
 import org.json.JSONArray
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -17,18 +16,22 @@ import xyz.gnarbot.gnar.api.APIPortal
 import xyz.gnarbot.gnar.api.data.BotInfo
 import xyz.gnarbot.gnar.commands.handlers.CommandRegistry
 import xyz.gnarbot.gnar.servers.Shard
+import xyz.gnarbot.gnar.servers.listeners.GuildCountListener
 import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledExecutorService
 import kotlin.jvm.JvmStatic as static
 
 /**
  * Main class of the bot. Implemented as a singleton.
  */
-object Bot {
-    @static val log: Logger = LoggerFactory.getLogger("Bot")
+class Bot {
+    val log: Logger = LoggerFactory.getLogger("Bot")
 
-    @static val token = "_" //default token
+    val token = "_" //default token
 
-    @static val files = BotFiles()
+    val files = BotFiles()
+
+    val guildCountListener = GuildCountListener(this)
 
     val commandRegistry = CommandRegistry(this)
 
@@ -63,7 +66,7 @@ object Bot {
     /** Returns how many milliseconds since the bot have been up. */
     val uptime: Long get() = System.currentTimeMillis() - startTime
 
-    val scheduler = Executors.newSingleThreadScheduledExecutor()!!
+    val scheduler: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
 
     /**
      * Start the bot.
@@ -72,12 +75,12 @@ object Bot {
      * @param numShards Number of shards to request.
      */
     fun start(token: String, numShards: Int) {
-        val api = APIPortal().apply { start() }
+        val api = APIPortal(this).apply { start() }
 
         if (initialized) throw IllegalStateException("Bot instance have already been initialized.")
         initialized = true
 
-        log.info("Initializing the Discord bot.")
+        log.info("Initializing the Discord getBot.")
         log.info("Requesting $numShards shards.")
 
         log.info("There are ${admins.size} administrators registered for the bot.")
@@ -88,7 +91,7 @@ object Bot {
 
             jda.selfUser.manager.setName("Gnar").queue()
 
-            shards.add(Shard(id, this, jda))
+            shards.add(Shard(id, jda, this))
 
             log.info("Shard [$id] is initialized.")
         }

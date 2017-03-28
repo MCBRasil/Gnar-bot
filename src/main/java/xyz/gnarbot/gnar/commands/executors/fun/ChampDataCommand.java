@@ -21,14 +21,14 @@ public class ChampDataCommand extends CommandExecutor {
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File("_DATA/league/League.txt")));
 
-            String info = "";
+            StringBuilder info = new StringBuilder();
 
             String line;
             while ((line = br.readLine()) != null) {
-                info += line;
+                info.append(line);
             }
 
-            information = new JSONObject(info);
+            information = new JSONObject(info.toString());
         } catch (Exception ignore) { }
     }
 
@@ -50,7 +50,7 @@ public class ChampDataCommand extends CommandExecutor {
         JSONArray spells = jso.getJSONArray("spells");
 
 
-        String spellInfo = "**" + maybe + "**: " + jso.get("title") + "\n";
+        StringBuilder spellInfo = new StringBuilder("**" + maybe + "**: " + jso.get("title") + "\n");
         String key = "";
 
 
@@ -72,11 +72,11 @@ public class ChampDataCommand extends CommandExecutor {
                     break;
             }
 
-            spellInfo += "    **" + key + "** - " + spellOne.get("name") + ": \n         " + spellOne.get
-                    ("description") + "\n";
+            spellInfo.append("    **").append(key).append("** - ").append(spellOne.get("name")).append(": \n         ").append(spellOne.get
+                    ("description")).append("\n");
         }
 
-        spellInfo += "\n**Skins:**";
+        spellInfo.append("\n**Skins:**");
 
 
         JSONArray skins = jso.getJSONArray("skins");
@@ -85,10 +85,10 @@ public class ChampDataCommand extends CommandExecutor {
 
             int fuckTits = i + 1;
 
-            spellInfo += "\n    **" + fuckTits + "**: " + j.get("name");
+            spellInfo.append("\n    **").append(fuckTits).append("**: ").append(j.get("name"));
         }
 
-        note.respond().text(spellInfo).queue();
+        note.respond().text(spellInfo.toString()).queue();
     }
 
 }

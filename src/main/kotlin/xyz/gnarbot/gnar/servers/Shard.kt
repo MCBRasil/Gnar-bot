@@ -4,7 +4,6 @@ import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.entities.Guild
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.api.data.ShardInfo
-import xyz.gnarbot.gnar.servers.listeners.GuildCountListener
 import xyz.gnarbot.gnar.servers.listeners.ShardListener
 import xyz.gnarbot.gnar.servers.listeners.UserListener
 import java.util.*
@@ -12,13 +11,13 @@ import java.util.*
 /**
  * Individual shard instances of [JDA] of the bot that contains all the [Servlet] for each guild.
  */
-class Shard(val id: Int, val bot: Bot, private val jda: JDA) : JDA by jda {
+class Shard(val id: Int, private val jda: JDA, val bot: Bot) : JDA by jda {
     val servlets: MutableMap<String, Servlet> = WeakHashMap()
 
     init {
         jda.addEventListener(ShardListener(this))
         jda.addEventListener(UserListener())
-        jda.addEventListener(GuildCountListener.INSTANCE)
+        jda.addEventListener(bot.guildCountListener)
 
         //Logger.getLogger("org.apache.http.client.protocol.ResponseProcessCookies").level = Level.OFF
     }

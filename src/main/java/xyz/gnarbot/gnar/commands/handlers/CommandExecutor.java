@@ -34,7 +34,7 @@ public abstract class CommandExecutor {
         return servlet;
     }
 
-    public Bot bot() {
+    public Bot getBot() {
         return bot;
     }
 

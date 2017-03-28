@@ -20,15 +20,15 @@ import xyz.gnarbot.gnar.utils.Note
  * @see Guild
  */
 class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild by guild {
-    val clientHandler: ClientHandler = ClientHandler(this)
-    val commandHandler: CommandHandler = CommandHandler(this, bot)
+    val clientHandler = ClientHandler(this)
+    val commandHandler = CommandHandler(this, bot)
 
-    val selfClient: Client get() = clientHandler.selfClient
+    val selfClient get() = clientHandler.selfClient
 
     var musicManager: MusicManager? = null
         get() {
             if (field == null) {
-                this.musicManager = MusicManager(this, Bot.playerManager)
+                this.musicManager = MusicManager(this, bot.playerManager)
                 field!!.player.volume = 35
             }
             return field

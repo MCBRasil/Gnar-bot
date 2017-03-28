@@ -42,11 +42,11 @@ public class ChampQuoteCommand extends CommandExecutor {
 
             //Champions List
             if (champ.equalsIgnoreCase("list")) {
-                String championsList = "**Current Champions:** \n";
+                StringBuilder championsList = new StringBuilder("**Current Champions:** \n");
                 for (String s : names) {
-                    championsList += ", " + s;
+                    championsList.append(", ").append(s);
                 }
-                note.respond().text(championsList.replaceFirst(", ", "")).queue();
+                note.respond().text(championsList.toString().replaceFirst(", ", "")).queue();
                 return;
             }
 

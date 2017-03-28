@@ -2,7 +2,6 @@ package xyz.gnarbot.gnar.utils
 
 import net.dv8tion.jda.core.entities.Message
 import net.dv8tion.jda.core.exceptions.PermissionException
-import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.members.Client
 import xyz.gnarbot.gnar.servers.Servlet
 import java.util.concurrent.TimeUnit
@@ -38,7 +37,7 @@ class Note(val servlet: Servlet, private var message: Message) : Message by mess
     }
 
     fun optDelete(seconds: Long) {
-        Bot.scheduler.schedule({ optDelete() }, seconds, TimeUnit.SECONDS)
+        servlet.bot.scheduler.schedule(seconds, TimeUnit.SECONDS) { optDelete() }
     }
 
     /**

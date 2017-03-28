@@ -19,13 +19,15 @@ public class AdventureGrid {
     private final Area[][] xygrid = new Area[15][15];
 
     private final Adventure relatedAdventure;
+    private final Bot bot;
 
     private int maxSize = 15; // Indicates the maximum and minimum x and y values (convert to negative for minimum)
 
     private int currentX = 7, currentY = 7;
 
-    public AdventureGrid(Adventure relatedAdventure) {
+    public AdventureGrid(Adventure relatedAdventure, Bot bot) {
         this.relatedAdventure = relatedAdventure;
+        this.bot = bot;
     }
 
     public int getMaxSize() {
@@ -162,7 +164,7 @@ public class AdventureGrid {
                 return;
             }
 
-            Bot.INSTANCE.getScheduler().schedule(() ->
+            bot.getScheduler().schedule(() ->
             {
                 try {
                     Message m = n.respond().info("Sending your map!").complete();
@@ -172,10 +174,10 @@ public class AdventureGrid {
                 }
             }, 1, TimeUnit.SECONDS);
 
-            Bot.INSTANCE.getScheduler().schedule(() ->
+            bot.getScheduler().schedule(() ->
             {
                 if (!mapFile.delete()) {
-                    Bot.getLog().warn("Unable to delete map file.");
+                    bot.getLog().warn("Unable to delete map file.");
                 }
                 mapFile.deleteOnExit();
             }, 10, TimeUnit.SECONDS);
@@ -226,7 +228,7 @@ public class AdventureGrid {
                 Graphics2D graphics = map.createGraphics();
                 graphics.setColor(Color.WHITE);
                 graphics.fillRect(0, 0, getMaxSize() * 64, getMaxSize() * 64 + 200);
-                graphics.setFont(new Font(Font.DIALOG_INPUT, 25, 40));
+                graphics.setFont(new Font(Font.DIALOG_INPUT, Font.BOLD, 40));
                 graphics.setColor(Color.BLACK);
                 int curX, curY;
                 int printX = 0, printY = 200;

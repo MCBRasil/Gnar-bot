@@ -16,7 +16,7 @@ public class AdventureCommand extends CommandExecutor {
             note.respond().info("Use `_startadventure` to begin your adventure!").queue();
             return;
         }
-        Adventure adventure = Adventure.getAdventure(note.getAuthor(), note);
+        Adventure adventure = Adventure.getAdventure(note.getAuthor(), note, getBot());
 
         if (args.size() > 0) {
             switch (args.get(0).toLowerCase()) {

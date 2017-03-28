@@ -1,6 +1,5 @@
 package xyz.gnarbot.gnar.commands.executors.general
 
-import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
@@ -15,7 +14,7 @@ class ShardInfoCommand : CommandExecutor() {
     override fun execute(note: Note, args: List<String>) {
         note.respond().embed("Shard Information") {
             color = Constants.COLOR
-            Bot.shards.forEach {
+            bot.shards.forEach {
                 field("Shard ${it.id}", true) {
                     append("Status: ").appendln(it.status)
                     append("Guilds: ").appendln(it.guilds.size)

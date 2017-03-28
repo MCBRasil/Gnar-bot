@@ -12,7 +12,7 @@ class BotInfo(bot: Bot) {
     val textChannels = bot.shards.sumBy { it.textChannels.size }
     val voiceChannels = bot.shards.sumBy { it.voiceChannels.size }
 
-    val shards = Bot.shards.map(Shard::info)
+    val shards = bot.shards.map(Shard::info)
 
     val date = Date()
 }

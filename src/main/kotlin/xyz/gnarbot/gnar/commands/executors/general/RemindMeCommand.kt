@@ -1,6 +1,5 @@
 package xyz.gnarbot.gnar.commands.executors.general
 
-import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
@@ -35,7 +34,7 @@ class RemindMeCommand : CommandExecutor() {
                     description = "I'll be reminding you in __$time ${timeUnit.toString().toLowerCase()}__."
                 }.rest().queue()
 
-                Bot.scheduler.schedule({
+                bot.scheduler.schedule({
                     note.author.requestPrivateChannel().send().embed("Reminder from $time ${timeUnit.toString().toLowerCase()} ago.") {
                         color = Constants.COLOR
                         description = string

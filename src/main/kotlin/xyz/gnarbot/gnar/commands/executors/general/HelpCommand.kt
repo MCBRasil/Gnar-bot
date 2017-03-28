@@ -4,7 +4,6 @@ import b
 import com.google.common.collect.Lists
 import com.google.inject.Inject
 import link
-import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
@@ -30,8 +29,8 @@ class HelpCommand : CommandExecutor() {
             }
 
             note.respond().embed("Command Information") {
-                field("Aliases", true, entry.meta.aliases.joinToString(separator = ", ${Bot.token}", prefix = Bot.token))
-                field("Usage", true, "${Bot.token}${entry.meta.aliases[0].toLowerCase()} ${entry.meta.usage}")
+                field("Aliases", true, entry.meta.aliases.joinToString(separator = ", ${bot.token}", prefix = bot.token))
+                field("Usage", true, "${bot.token}${entry.meta.aliases[0].toLowerCase()} ${entry.meta.usage}")
                 field("Level", true, entry.meta.level.title)
                 field("Description", false, entry.meta.description)
             }.rest().queue()
@@ -53,7 +52,7 @@ class HelpCommand : CommandExecutor() {
 
                 val pages = Lists.partition(filtered, filtered.size / 3 + 1)
 
-                blankField(true)
+                field(true)
                 field("${level.title} — ${filtered.size}", false, level.requireText)
 
                 for (page in pages) {
@@ -62,7 +61,7 @@ class HelpCommand : CommandExecutor() {
                             if (it.meta.symbol.isNotBlank()) {
                                 append("**").append(it.meta.symbol).append("** ")
                             }
-                            append("**[").append(Bot.token).append(it.meta.aliases[0]).appendln("]()**")
+                            append("**[").append(bot.token).append(it.meta.aliases[0]).appendln("]()**")
                         }
                     }
                 }
@@ -70,7 +69,7 @@ class HelpCommand : CommandExecutor() {
 
             field(inline = true)
             field("Additional Information") {
-                append("To view a command's description, do `").append(Bot.token).appendln("help [command]`.")
+                append("To view a command's description, do `").append(bot.token).appendln("help [command]`.")
                 append("__The commands that requires a named role must be created by you and assigned to a member in your guild.__")
             }
 
@@ -82,12 +81,12 @@ class HelpCommand : CommandExecutor() {
             }
 
             field("Contact") {
-                appendln(b(link("Website", "http://gnarbot.xyz")))
+                appendln(b(link("Website", "http://gnarbot().xyz")))
                 append(b(link("Discord Server", "http://discord.gg/NQRpmr2")))
             }
 
             field("Donations") {
-                appendln(b(link("Donate", "https://gnarbot.xyz/donate")))
+                appendln(b(link("Donate", "https://gnarbot().xyz/donate")))
             }
         }.rest().queue()
 

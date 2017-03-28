@@ -6,7 +6,7 @@ package xyz.gnarbot.gnar.members
 enum class Level(val value: Int, val title: String, val requireText: String) {
     /** Highest level level. */
     BOT_CREATOR(4, "Bot Creator",
-            "You need to be one of the developers for the bot to use this command."),
+            "You need to be one of the developers for the getBot to use this command."),
 
     /** Server owner level. */
     SERVER_OWNER(3, "Server Owner",

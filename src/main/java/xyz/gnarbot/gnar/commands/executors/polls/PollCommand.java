@@ -29,14 +29,14 @@ public class PollCommand extends CommandExecutor {
 
                 args.set(0, "");
                 args.set(1, "");
-                String q = "";
+                StringBuilder q = new StringBuilder();
                 for (String s : args) {
                     if (!s.equalsIgnoreCase("")) {
-                        q += s + " ";
+                        q.append(s).append(" ");
                     }
                 }
-                q = q.trim();
-                PollManager.registerPoll(new YesNoPoll(note, q, time));
+                q = new StringBuilder(q.toString().trim());
+                PollManager.registerPoll(new YesNoPoll(note, q.toString(), time));
             }
         }
     }

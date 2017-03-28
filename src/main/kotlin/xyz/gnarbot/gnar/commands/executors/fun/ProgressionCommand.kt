@@ -2,7 +2,6 @@ package xyz.gnarbot.gnar.commands.executors.`fun`
 
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.text.WordUtils
-import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.members.Level
@@ -70,7 +69,7 @@ class ProgressionCommand : CommandExecutor() {
             val msg = note.respond().text(list[0]).complete()
 
             list.forEachIndexed { i, s ->
-                Bot.scheduler.schedule({
+                bot.scheduler.schedule({
                     msg.editMessage(list[i]).queue()
                 }, i + 1L, TimeUnit.SECONDS)
             }

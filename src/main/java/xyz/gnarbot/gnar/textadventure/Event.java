@@ -1,9 +1,5 @@
 package xyz.gnarbot.gnar.textadventure;
 
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.awt.*;
@@ -47,31 +43,17 @@ public class Event {
 
     }
 
-    public void sendMessage(Note n, String message) {
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
-                .blankField(true)
-                .setDescription(message)
-                .setColor(new Color(39, 255, 9));
-        MessageEmbed embed = eb.build();
-        MessageBuilder mb = new MessageBuilder();
-        mb.setEmbed(embed);
-        Message m = mb.build();
-        n.getChannel().sendMessage(m).queue();
+    public void sendMessage(Note note, String message) {
+        sendMessage(note, message, null);
     }
 
-    public void sendMessage(Note n, String message, String imageurl) {
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle(n.getAuthor().getName() + "'s Adventure", null)
-                .blankField(true)
+    public void sendMessage(Note note, String message, String image) {
+        note.respond().embed(note.getAuthor().getName() + "'s Adventure")
+                .field(true)
                 .setDescription(message)
-                .setColor(new Color(39, 255, 9));
-        eb.setThumbnail(imageurl);
-        MessageEmbed embed = eb.build();
-        MessageBuilder mb = new MessageBuilder();
-        mb.setEmbed(embed);
-        Message m = mb.build();
-        n.getChannel().sendMessage(m).queue();
+                .setColor(new Color(39, 255, 9))
+                .setThumbnail(image)
+                .rest().queue();
     }
 
     public void setCompletedEvent(boolean completedEvent) {

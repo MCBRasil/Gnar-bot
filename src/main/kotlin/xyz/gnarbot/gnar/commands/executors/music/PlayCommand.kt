@@ -23,7 +23,7 @@ class PlayCommand : MusicExecutor() {
         val userChannel = note.author.voiceChannel
 
         if (botChannel != null && botChannel != userChannel) {
-            note.respond().error("The bot is already playing music in another channel.").queue()
+            note.respond().error("The getBot is already playing music in another channel.").queue()
             return
         }
 

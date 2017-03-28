@@ -48,22 +48,22 @@ public class Inventory {
 
     @Override
     public String toString() {
-        String inv = "**Your Inventory " +
-                "Contents:**\n-------------------------------------------------------------------------\n```ini\n";
+        StringBuilder inv = new StringBuilder("**Your Inventory " +
+                "Contents:**\n-------------------------------------------------------------------------\n```ini\n");
         for (int slot = 0; slot < getInventorySize(); slot++) {
-            inv += "[ Slot #" + (slot + 1) + "/" + getInventorySize() + " ] \n";
+            inv.append("[ Slot #").append(slot + 1).append("/").append(getInventorySize()).append(" ] \n");
             Item i = getItem(slot);
 
             if (i != null) {
-                inv += "  [Name: ] [" + i.getAmount() + "x] " + i.getItemName() + "\n";
-                inv += "  [Description: ] " + i.getItemDescription() + "\n";
-                inv += "  [Type: ] " + i.getItemType() + "\n";
+                inv.append("  [Name: ] [").append(i.getAmount()).append("x] ").append(i.getItemName()).append("\n");
+                inv.append("  [Description: ] ").append(i.getItemDescription()).append("\n");
+                inv.append("  [Type: ] ").append(i.getItemType()).append("\n");
             } else {
-                inv += "  [???] No information\n";
+                inv.append("  [???] No information\n");
             }
         }
-        inv += "```";
-        return inv;
+        inv.append("```");
+        return inv.toString();
     }
 
 }

@@ -3,7 +3,6 @@ package xyz.gnarbot.gnar.commands.executors.general
 import com.google.inject.Inject
 import link
 import net.dv8tion.jda.core.OnlineStatus
-import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
@@ -17,9 +16,9 @@ class BotInfoCommand : CommandExecutor() {
     @Inject lateinit var shard: Shard
 
     override fun execute(note: Note, args: List<String>) {
-        val registry = bot().commandRegistry
+        val registry = bot.commandRegistry
 
-        var uptime_hour = Bot.uptime / 1000 / 60 / 60
+        var uptime_hour = bot.uptime / 1000 / 60 / 60
         if (uptime_hour == 0L) uptime_hour = 1L
 
         var voiceConnections = 0
@@ -35,7 +34,7 @@ class BotInfoCommand : CommandExecutor() {
         var online = 0
         var inactive = 0
 
-        for (shard in Bot.shards) {
+        for (shard in bot.shards) {
             guilds += shard.guilds.size
 
             for (guild in shard.guilds) {
@@ -63,7 +62,7 @@ class BotInfoCommand : CommandExecutor() {
 
         val commandSize = registry.entries.count { it.meta.showInHelp }
 
-        val requests = Bot.shards
+        val requests = bot.shards
                 .flatMap { it.servlets.values }
                 .sumBy { it.commandHandler.requests }
 
@@ -72,7 +71,7 @@ class BotInfoCommand : CommandExecutor() {
 
             field("Requests", true, requests)
             field("Requests Per Hour", true, requests / uptime_hour)
-            field("Website", true, link("gnarbot.xyz", "https://gnarbot.xyz"))
+            field("Website", true, link("gnarbot().xyz", "https://gnarbot().xyz"))
 
             field("Text Channels", true, textChannels)
             field("Voice Channels", true, voiceChannels)

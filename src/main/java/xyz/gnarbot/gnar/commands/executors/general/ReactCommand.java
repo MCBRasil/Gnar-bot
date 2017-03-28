@@ -23,15 +23,11 @@ public class ReactCommand extends CommandExecutor {
         String msg_id = args.get(0);
         Message msg = note.getChannel().getMessageById(msg_id).complete();
 
-        //Note msg = new Note(note.getServlet(), msg);
-
         if (note.getEmotes().size() > 0) {
             for (Emote em : note.getEmotes()) {
                 msg.addReaction(em).queue();
             }
 
-//            note.respond().info("Reacted to the message with " + note.getEmotes().size() + " emotes. :smile:")
-//                    .complete();
         } else {
             boolean suc = false;
 
@@ -49,22 +45,11 @@ public class ReactCommand extends CommandExecutor {
 ////                return;
 //            }
 
-            note.respond().error("No reactions detected, robot.").queue();
+            if (!suc) {
+                note.respond().error("No reactions detected, robot.").queue();
+            }
         }
     }
-
-//    public static boolean sendReactionAutoEncode(Message message, String encodedEmoji) {
-//        try {
-//            Unirest.put("https://discordapp.com/api/v6/channels/" + message.getChannel()
-//                    .getId() + "/messages/" + message.getId() + "/reactions/" + URLEncoder.encode(encodedEmoji,
-//                    "UTF-8") + "/@me")
-//                    .header("Authorization", message.getJDA().getToken())
-//                    .asJsonAsync();
-//            return true;
-//        } catch (Exception e) {
-//            return false;
-//        }
-//    }
 }
 
 

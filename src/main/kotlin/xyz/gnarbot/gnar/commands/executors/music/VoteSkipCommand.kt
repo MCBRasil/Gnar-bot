@@ -3,7 +3,6 @@ package xyz.gnarbot.gnar.commands.executors.music
 import b
 import com.google.inject.Inject
 import net.dv8tion.jda.core.entities.Message
-import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.servers.Servlet
@@ -22,12 +21,12 @@ class VoteSkipCommand : MusicExecutor() {
         if (note.author.voiceChannel !== null && manager.player.playingTrack !== null) {
             if (note.author.voiceState.isDeafened) {
                 val msg = note.respond().error("You actually have to be listening to the song to start a vote... Tsk tsk...").complete()
-                Bot.scheduler.schedule({ msg.delete().queue() }, 5, TimeUnit.SECONDS)
+                bot.scheduler.schedule({ msg.delete().queue() }, 5, TimeUnit.SECONDS)
                 return
             }
             if (manager.isVotingToSkip) {
                 val msg = note.respond().error("There is already a vote going on!").complete()
-                Bot.scheduler.schedule({ msg.delete().queue() }, 5, TimeUnit.SECONDS)
+                bot.scheduler.schedule({ msg.delete().queue() }, 5, TimeUnit.SECONDS)
                 return
             }
             if ((System.currentTimeMillis() - manager.lastVoteTime) < 30000) {
@@ -54,7 +53,7 @@ class VoteSkipCommand : MusicExecutor() {
             msg.addReaction("👍").queue()
             msg.addReaction("👎").queue()
 
-            Bot.scheduler.schedule({
+            bot.scheduler.schedule({
                 msg.delete()
                 checkVictory(msg, servlet, manager)
             }, 30, TimeUnit.SECONDS)

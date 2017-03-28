@@ -1,6 +1,5 @@
 package xyz.gnarbot.gnar.commands.executors.admin
 
-import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
@@ -9,7 +8,7 @@ import xyz.gnarbot.gnar.utils.Note
 
 @Command(
         aliases = arrayOf("restartbot"),
-        description = "Restart bot..",
+        description = "Restart getBot..",
         level = Level.BOT_CREATOR,
         showInHelp = false
 )
@@ -18,7 +17,7 @@ class RestartBotCommand : CommandExecutor() {
         note.respond().embed("Restarting") {
             color = Constants.COLOR
 
-            Bot.shards.forEach {
+            bot.shards.forEach {
                 it.clearServlets(true)
                 it.shutdown(true)
             }

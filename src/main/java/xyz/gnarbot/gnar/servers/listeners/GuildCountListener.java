@@ -11,11 +11,14 @@ import xyz.gnarbot.gnar.Credentials;
 import xyz.gnarbot.gnar.servers.Shard;
 
 public class GuildCountListener extends ListenerAdapter {
-    public static GuildCountListener INSTANCE = new GuildCountListener();
+
+    private final Bot bot;
 
     private int changes = 0;
 
-    private GuildCountListener() {}
+    public GuildCountListener(Bot bot) {
+        this.bot = bot;
+    }
 
     @Override
     public void onGuildJoin(GuildJoinEvent event) {
@@ -42,7 +45,7 @@ public class GuildCountListener extends ListenerAdapter {
     public void update() {
         int count = 0;
 
-        for (Shard shard : Bot.INSTANCE.getShards()) {
+        for (Shard shard : bot.getShards()) {
             count += shard.getGuilds().size();
         }
 
@@ -69,10 +72,10 @@ public class GuildCountListener extends ListenerAdapter {
                     .asString()
                     .getStatusText();
 
-            Bot.getLog().info("Successfully updated Abal server count to " + i + ".");
-            Bot.getLog().info("Response code: " + response);
+            bot.getLog().info("Successfully updated Abal server count to " + i + ".");
+            bot.getLog().info("Response code: " + response);
         } catch (UnirestException e) {
-            Bot.getLog().warn("Failed updating Abal server count to " + i + ".");
+            bot.getLog().warn("Failed updating Abal server count to " + i + ".");
             e.printStackTrace();
         }
     }
@@ -93,10 +96,10 @@ public class GuildCountListener extends ListenerAdapter {
                     .asString()
                     .getStatusText();
 
-            Bot.getLog().info("Successfully updated Carbonitex server count to " + i + ".");
-            Bot.getLog().info("Response code: " + response);
+            bot.getLog().info("Successfully updated Carbonitex server count to " + i + ".");
+            bot.getLog().info("Response code: " + response);
         } catch (UnirestException e) {
-            Bot.getLog().warn("Failed updating Carbonitex server count to " + i + ".");
+            bot.getLog().warn("Failed updating Carbonitex server count to " + i + ".");
             e.printStackTrace();
         }
     }
