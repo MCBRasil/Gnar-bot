@@ -36,7 +36,7 @@ public class PollCommand extends CommandExecutor {
                     }
                 }
                 q = new StringBuilder(q.toString().trim());
-                PollManager.registerPoll(new YesNoPoll(note, q.toString(), time));
+                PollManager.registerPoll(new YesNoPoll(note, q.toString(), time, getBot()));
             }
         }
     }

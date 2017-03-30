@@ -2,7 +2,6 @@ package xyz.gnarbot.gnar.commands.executors.mod;
 
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
-import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Level;
@@ -43,7 +42,7 @@ public class DeleteMessageCommand extends CommandExecutor {
             Message msg = note.respond().info("Deleted the message.\nDeleting this message in **5** seconds.")
                     .complete();
 
-            Bot.INSTANCE.getScheduler().schedule(() -> msg.delete().queue(), 5, TimeUnit.SECONDS);
+            getBot().getScheduler().schedule(() -> msg.delete().queue(), 5, TimeUnit.SECONDS);
         } else {
             note.getTextChannel().deleteMessages(list).queue();
 
@@ -51,7 +50,7 @@ public class DeleteMessageCommand extends CommandExecutor {
                     + "]()** messages.\nDeleting this message in **5** seconds.")
                     .complete();
 
-            Bot.INSTANCE.getScheduler().schedule(() -> msg.delete().queue(), 5, TimeUnit.SECONDS);
+            getBot().getScheduler().schedule(() -> msg.delete().queue(), 5, TimeUnit.SECONDS);
         }
     }
 }

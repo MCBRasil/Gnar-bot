@@ -17,7 +17,8 @@ public class YesNoPoll extends Poll {
     private ScheduledFuture runTask;
     private int pollid;
 
-    public YesNoPoll(Note n, final String question, int minutes) {
+    public YesNoPoll(Note n, final String question, int minutes, Bot bot) {
+        super(bot);
         this.n = n;
         this.question = question;
         this.minutes = minutes;
@@ -25,22 +26,38 @@ public class YesNoPoll extends Poll {
 
 
     @Override
-    public void startPoll() {
+    public void start() {
 
         System.out.println(n.getAuthor().getName() + " created a new poll");
         startingClient = n.getAuthor();
         final Message repliedMessage;
 
-        repliedMessage = n.respond().text(":pushpin: *A new poll has been started by* **" + startingClient.getName() +
-                "** `(Poll ID: " + getPollid() + ")`\n\n" + ":paperclip: Question:\n" + "        ╚ " + question +
-                "\n\n" + ":clock1: Time Left:\n" + "        ╚ " + minutes + " minute(s) 0 second(s)\n\n" + "     " +
-                "  " + " ╠ ❌ - No  [0 Votes]\n" + "        ╚ ✅ - Yes [0 Votes]")
-                .complete();
+        repliedMessage = n.respond().embed("Yes or No Poll")
+                .description(sb -> {
+                    sb.append(":pushpin: *A new poll has been started by* **")
+                            .append(startingClient.getName())
+                            .append("** `(Poll ID: ")
+                            .append(getId())
+                            .append(")`\n\n")
+                            .append(":paperclip: Question:\n")
+                            .append("        ╚ ")
+                            .append(question)
+                            .append("\n\n")
+                            .append(":clock1: Time Left:\n")
+                            .append("        ╚ ")
+                            .append(minutes)
+                            .append(" minute(s) 0 second(s)\n\n")
+                            .append("     ")
+                            .append("  ")
+                            .append(" ╠ ❌ - No  [0 Votes]\n")
+                            .append("        ╚ ✅ - Yes [0 Votes]");
+                })
+                .rest().complete();
 
         System.out.println(repliedMessage.getId());
         repliedMessage.addReaction("❌");
 
-        runTask = Bot.INSTANCE.getScheduler().scheduleAtFixedRate(new Runnable() {
+        runTask = getBot().getScheduler().scheduleAtFixedRate(new Runnable() {
             int minutesInst = minutes;
 
             int seconds = 0;
@@ -62,7 +79,7 @@ public class YesNoPoll extends Poll {
                     }
                     if (String.valueOf(seconds).contains("5") || String.valueOf(seconds).contains("0")) {
                         repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingClient
-                                .getName() + "** `(Poll ID: " + getPollid() + ")`\n\n" + ":paperclip: " +
+                                .getName() + "** `(Poll ID: " + getId() + ")`\n\n" + ":paperclip: " +
                                 "Question:\n" + "        ╚ " + question + "\n\n" + ":clock1: Time Left:\n" + "   " +
                                 "     ╚ " + minutesInst + " minute(s) " + seconds + " second(s)\n\n" + ":gem: " +
                                 "Votes:\n" + "      " + "  ╠ ❌ - No  [" + (repliedMessage
@@ -77,10 +94,10 @@ public class YesNoPoll extends Poll {
             }
         }, 1, 1, TimeUnit.SECONDS);
 
-        Bot.INSTANCE.getScheduler().schedule(() ->
+        getBot().getScheduler().schedule(() ->
         {
             repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingClient.getName() +
-                    "**" + " `(Poll ID: " + getPollid() + ")`\n\n" + ":paperclip: Question:\n" + "        ╚ " +
+                    "**" + " `(Poll ID: " + getId() + ")`\n\n" + ":paperclip: Question:\n" + "        ╚ " +
                     question + "\n\n" + ":clock1: Time Left:\n" + "        ╚ **Voting Over**\n\n" + ":gem: " +
                     "Votes:\n" + "        " + "╠ ❌ - No  [" + (repliedMessage
                     .getReactions()
@@ -89,7 +106,7 @@ public class YesNoPoll extends Poll {
                     .get(0)
                     .getCount() - 1) + " Votes]").queue();
 
-            repliedMessage.respond().text(":exclamation: Poll `#" + getPollid() + "` by " + startingClient.getName() + " " +
+            repliedMessage.respond().text(":exclamation: Poll `#" + getId() + "` by " + startingClient.getName() + " " +
                     "has " + "finished! Check above for the results!");
 
             startingClient.getPrivateChannel()
@@ -101,11 +118,11 @@ public class YesNoPoll extends Poll {
 
     }
 
-    public int getPollid() {
+    public int getId() {
         return pollid;
     }
 
-    public void setPollid(int pollid) {
-        this.pollid = pollid;
+    public void setId(int id) {
+        this.pollid = id;
     }
 }

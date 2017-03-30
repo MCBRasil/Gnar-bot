@@ -8,6 +8,6 @@ import xyz.gnarbot.gnar.Credentials;
  */
 public class TestBot {
     public static void main(String[] args) {
-        Bot.INSTANCE.start(Credentials.BETA, 1);
+        new Bot().start(Credentials.BETA, 1);
     }
 }

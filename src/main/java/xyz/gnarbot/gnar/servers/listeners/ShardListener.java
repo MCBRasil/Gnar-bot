@@ -15,19 +15,21 @@ import xyz.gnarbot.gnar.servers.Shard;
 
 public class ShardListener extends ListenerAdapter {
     private final Shard shard;
+    private final Bot bot;
 
-    public ShardListener(Shard shard) {
+    public ShardListener(Shard shard, Bot bot) {
         this.shard = shard;
+        this.bot = bot;
     }
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if (Bot.INSTANCE.getBlocked().contains(event.getAuthor().getId())) {
+        if (bot.getBlocked().contains(event.getAuthor().getId())) {
             event.getChannel().sendMessage("You are not allowed to use this bot.").queue();
             return;
         }
 
-        if (event.getMessage().getContent().startsWith(Bot.getToken())) {
+        if (event.getMessage().getContent().startsWith(bot.getToken())) {
             Servlet servlet = shard.getServlet(event.getGuild());
             if (servlet != null) servlet.handleMessage(event.getMessage());
         }

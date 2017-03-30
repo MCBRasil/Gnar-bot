@@ -27,7 +27,7 @@ public class Credentials {
     static {
         JSONObject jso = null;
         try {
-            File file = new File(Bot.getFiles().getData(), "credentials.json");
+            File file = new File(new File("data"), "credentials.json");
             jso = new JSONObject(new JSONTokener(new FileReader(file)));
         } catch (FileNotFoundException e) {
             e.printStackTrace();

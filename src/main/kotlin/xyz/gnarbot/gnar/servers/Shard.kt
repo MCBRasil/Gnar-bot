@@ -15,7 +15,7 @@ class Shard(val id: Int, private val jda: JDA, val bot: Bot) : JDA by jda {
     val servlets: MutableMap<String, Servlet> = WeakHashMap()
 
     init {
-        jda.addEventListener(ShardListener(this))
+        jda.addEventListener(ShardListener(this, bot))
         jda.addEventListener(UserListener())
         jda.addEventListener(bot.guildCountListener)
 

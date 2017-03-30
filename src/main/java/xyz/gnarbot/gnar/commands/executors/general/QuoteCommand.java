@@ -2,7 +2,6 @@ package xyz.gnarbot.gnar.commands.executors.general;
 
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
-import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
@@ -59,7 +58,7 @@ public class QuoteCommand extends CommandExecutor {
 
             toDelete.add(m);
 
-            Bot.INSTANCE.getScheduler().schedule(() -> {
+            getBot().getScheduler().schedule(() -> {
                 for (Message m2 : toDelete) {
                     m2.delete().queue();
                 }
