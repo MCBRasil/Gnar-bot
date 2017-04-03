@@ -14,8 +14,8 @@ class PlayCommand : MusicExecutor() {
     override fun execute(note: Note, args: List<String>) {
         val manager = servlet.musicManager
         
-        val botChannel = servlet.clientHandler.getClient(jda.selfUser)!!.voiceChannel
-        val userChannel = note.author.voiceChannel
+        val botChannel = servlet.clientHandler.getClient(jda.selfUser).voiceState.channel
+        val userChannel = note.author.voiceState.channel
 
         if (botChannel != null && botChannel != userChannel) {
             note.respond().error("The getBot is already playing music in another channel.").queue()

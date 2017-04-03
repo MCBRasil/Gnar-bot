@@ -24,9 +24,15 @@ import kotlin.jvm.JvmStatic as static
  * Main class of the bot. Implemented as a singleton.
  */
 class Bot {
+    /** @returns The SLF4J logger instance of the bot. */
     val log: Logger = LoggerFactory.getLogger("Bot")
 
+    /** @returns The global token of the bot. */
     val token = "_" //default token
+
+    /** @returns If the bot is initialized. */
+    var initialized = false
+        private set
 
     val files = BotFiles()
 
@@ -34,9 +40,7 @@ class Bot {
 
     val commandRegistry = CommandRegistry(this)
 
-    /** @returns If the bot is initialized. */
-    var initialized = false
-        private set
+
 
     val playerManager: AudioPlayerManager = DefaultAudioPlayerManager().apply {
         registerSourceManager(YoutubeAudioSourceManager())

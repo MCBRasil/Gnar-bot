@@ -72,7 +72,7 @@ class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild 
      * @return User instance.
      */
     fun getClient(member: Member?): Client? {
-        return clientHandler.getClient(member)
+        return member?.let { clientHandler.getClient(member) }
     }
 
     /**
@@ -83,24 +83,8 @@ class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild 
      * @return User instance.
      */
     fun getClient(user: User?): Client? {
-        return clientHandler.getClient(user)
+        return user?.let { clientHandler.getClient(user) }
     }
-
-    //    @Deprecated("Useless")
-    //    /** Load JSON instance from the Host's storage. */
-    //    public boolean loadJSON()
-    //    {
-    //        file = Bot.files.hosts.child("$id.json")
-    //        file.createNewFile()
-    //
-    //        val content = file.readText()
-    ////        if (content.isEmpty()) jsonObject = NullableJSON()
-    ////        else jsonObject = NullableJSON(content)
-    //    }
-    //
-    //    @Deprecated("Useless")
-    //    /** Save the JSON instance of the Host. */
-    //    public boolean saveJSON() = file.writeText(jsonObject.toString(4))
 
     /**
      * Attempt to ban the member from the guild.

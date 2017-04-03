@@ -2,7 +2,6 @@ package xyz.gnarbot.gnar.members
 
 import net.dv8tion.jda.core.entities.Member
 import net.dv8tion.jda.core.entities.PrivateChannel
-import net.dv8tion.jda.core.entities.VoiceChannel
 import xyz.gnarbot.gnar.servers.Servlet
 
 /**
@@ -32,11 +31,6 @@ class Client(val servlet: Servlet, private val member: Member) : Member by membe
 
             // USERS
             else -> Level.USER
-        }
-
-    val voiceChannel: VoiceChannel?
-        get() {
-            return servlet.voiceChannels.firstOrNull { it.members.contains(member) }
         }
 
     fun requestPrivateChannel(): PrivateChannel {

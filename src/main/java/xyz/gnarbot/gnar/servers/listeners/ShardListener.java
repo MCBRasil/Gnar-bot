@@ -57,7 +57,7 @@ public class ShardListener extends ListenerAdapter {
 
             if (servlet == null) return;
 
-            Channel botChannel = servlet.getClientHandler().getSelfClient().getVoiceChannel();
+            Channel botChannel = servlet.getSelfClient().getVoiceState().getChannel();
 
             Channel channelLeft;
 

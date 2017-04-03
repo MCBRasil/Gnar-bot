@@ -17,7 +17,7 @@ class VoteSkipCommand : MusicExecutor() {
     override fun execute(note: Note, args: List<String>) {
         val manager = servlet.musicManager
 
-        if (note.author.voiceChannel !== null && manager.player.playingTrack !== null) {
+        if (note.author.voiceState.channel !== null && manager.player.playingTrack !== null) {
             if (note.author.voiceState.isDeafened) {
                 val msg = note.respond().error("You actually have to be listening to the song to start a vote... Tsk tsk...").complete()
                 bot.scheduler.schedule({ msg.delete().queue() }, 5, TimeUnit.SECONDS)
