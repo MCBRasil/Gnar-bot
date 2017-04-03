@@ -1,5 +1,6 @@
 package xyz.gnarbot.gnar.commands.handlers;
 
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.members.Client;
@@ -8,7 +9,9 @@ import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CommandHandler {
     private final Bot bot;
@@ -48,6 +51,22 @@ public class CommandHandler {
         Class<? extends CommandExecutor> cls = entry.cls;
 
         Command meta = entry.meta;
+
+        if (!servlet.getSelfClient().hasPermission(meta.permissions())) {
+            note.respond().error("Gnar doesn't have the permissions: `"
+                    + Arrays.stream(meta.permissions())
+                            .map(Permission::getName)
+                            .collect(Collectors.toList())
+                    + "`");
+            return;
+        } else if (!author.hasPermission(meta.permissions())) {
+            note.respond().error("You have insufficient permissions. `"
+                    + Arrays.stream(meta.permissions())
+                            .map(Permission::getName)
+                            .collect(Collectors.toList())
+                    + "`");
+            return;
+        }
 
         if (meta.level().getValue() > author.getLevel().getValue()) {
             note.respond().error("Insufficient bot level.\n" + meta.level().getRequireText());

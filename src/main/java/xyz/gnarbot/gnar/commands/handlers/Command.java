@@ -1,5 +1,6 @@
 package xyz.gnarbot.gnar.commands.handlers;
 
+import net.dv8tion.jda.core.Permission;
 import xyz.gnarbot.gnar.members.Level;
 
 import java.lang.annotation.ElementType;
@@ -44,4 +45,6 @@ public @interface Command {
      * @return The permission required for this command.
      */
     Level level() default Level.USER;
+
+    Permission[] permissions() default {};
 }

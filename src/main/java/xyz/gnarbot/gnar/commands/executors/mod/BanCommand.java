@@ -11,7 +11,7 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 
-@Command(aliases = "ban", level = Level.BOT_COMMANDER)
+@Command(aliases = "ban", level = Level.BOT_COMMANDER, permissions = Permission.BAN_MEMBERS)
 public class BanCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
