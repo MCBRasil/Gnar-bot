@@ -1,7 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.mod;
 
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.utils.PermissionUtil;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Client;
@@ -11,7 +10,7 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 
-@Command(aliases = "ban", level = Level.BOT_COMMANDER, permissions = Permission.BAN_MEMBERS)
+@Command(aliases = "ban", level = Level.BOT_COMMANDER)
 public class BanCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
@@ -20,7 +19,7 @@ public class BanCommand extends CommandExecutor {
         Client author = note.getAuthor();
         Client target = null;
 
-        if (!PermissionUtil.checkPermission(note.getTextChannel(), author, Permission.BAN_MEMBERS)) {
+        if (!author.hasPermission(note.getTextChannel(), Permission.BAN_MEMBERS)) {
             note.respond().error("You do not have permission to ban.").queue();
             return;
         }
@@ -35,7 +34,7 @@ public class BanCommand extends CommandExecutor {
             note.respond().error("Could not find user.").queue();
             return;
         }
-        if (!PermissionUtil.canInteract(author, target)) {
+        if (!author.canInteract(target)) {
             note.respond().error("Sorry, that user has an equal or higher role.").queue();
             return;
         }

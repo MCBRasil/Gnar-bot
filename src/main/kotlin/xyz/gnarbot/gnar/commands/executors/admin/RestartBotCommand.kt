@@ -8,7 +8,7 @@ import xyz.gnarbot.gnar.utils.Note
 
 @Command(
         aliases = arrayOf("restartbot"),
-        description = "Restart getBot..",
+        description = "Restart bot.",
         level = Level.BOT_CREATOR,
         showInHelp = false
 )

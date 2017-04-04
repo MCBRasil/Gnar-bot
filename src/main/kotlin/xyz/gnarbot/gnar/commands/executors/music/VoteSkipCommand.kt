@@ -7,6 +7,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.servers.Servlet
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import xyz.gnarbot.gnar.utils.Note
+import xyz.gnarbot.gnar.utils.schedule
 import java.util.concurrent.TimeUnit
 
 @Command(aliases = arrayOf("voteskip"),
@@ -20,12 +21,12 @@ class VoteSkipCommand : MusicExecutor() {
         if (note.author.voiceState.channel !== null && manager.player.playingTrack !== null) {
             if (note.author.voiceState.isDeafened) {
                 val msg = note.respond().error("You actually have to be listening to the song to start a vote... Tsk tsk...").complete()
-                bot.scheduler.schedule({ msg.delete().queue() }, 5, TimeUnit.SECONDS)
+                bot.scheduler.schedule(5, TimeUnit.SECONDS) { msg.delete().queue() }
                 return
             }
             if (manager.isVotingToSkip) {
                 val msg = note.respond().error("There is already a vote going on!").complete()
-                bot.scheduler.schedule({ msg.delete().queue() }, 5, TimeUnit.SECONDS)
+                bot.scheduler.schedule(5, TimeUnit.SECONDS) { msg.delete().queue() }
                 return
             }
             if ((System.currentTimeMillis() - manager.lastVoteTime) < 30000) {

@@ -25,7 +25,7 @@ class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild 
 
     val selfClient get() = clientHandler.selfClient
 
-    private var _musicManager: MusicManager? = null
+    private var musicManager_delegate: MusicManager? = null
         get() {
             if (field == null) {
                 field = MusicManager(this, bot.playerManager)
@@ -35,17 +35,17 @@ class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild 
         }
 
     var musicManager: MusicManager
-        get() = _musicManager!!
+        get() = musicManager_delegate!!
         set(value) {
-            _musicManager = value
+            musicManager_delegate = value
         }
 
     fun resetMusicManager() {
-        _musicManager!!.scheduler.queue.clear()
-        _musicManager!!.player.destroy()
+        musicManager.scheduler.queue.clear()
+        musicManager.player.destroy()
         audioManager.closeAudioConnection()
         audioManager.sendingHandler = null
-        _musicManager = null
+        musicManager_delegate = null
     }
 
     fun getMemberByName(name: String, searchNickname: Boolean = false): Member? {
@@ -61,7 +61,7 @@ class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild 
     }
 
     fun getClientByName(name: String, searchNickname: Boolean): Client? {
-        return getClient(getMemberByName(name, searchNickname))
+        return clientHandler.getClientByName(name, searchNickname)
     }
 
     /**
@@ -71,8 +71,8 @@ class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild 
      *
      * @return User instance.
      */
-    fun getClient(member: Member?): Client? {
-        return member?.let { clientHandler.getClient(member) }
+    fun getClient(member: Member): Client? {
+        return clientHandler.getClient(member)
     }
 
     /**
@@ -82,8 +82,8 @@ class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild 
      *
      * @return User instance.
      */
-    fun getClient(user: User?): Client? {
-        return user?.let { clientHandler.getClient(user) }
+    fun getClient(user: User): Client? {
+        return user.let { clientHandler.getClient(user) }
     }
 
     /**
@@ -158,7 +158,7 @@ class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild 
     /**
      * @return String representation of the Host.
      */
-    override fun toString(): String = "Host(id=${guild.id}, shard=${shard.id}, guild=${guild.name})"
+    override fun toString(): String = "Servlet(id=${guild.id}, shard=${shard.id}, guild=${guild.name})"
 
     fun shutdown(interrupt: Boolean) : Boolean {
         clientHandler.registry.clear()

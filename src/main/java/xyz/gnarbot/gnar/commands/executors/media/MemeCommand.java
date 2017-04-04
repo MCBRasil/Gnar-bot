@@ -67,7 +67,7 @@ public class MemeCommand extends CommandExecutor {
                 if (page > pages) page = pages;
 
                 int _page = page;
-                note.respond().embed("Meme List (Page " + page + "/" + pages + ")")
+                note.respond().embed("Meme List")
                         .description(sb -> {
                             int i = 0;
                             for (String g : names) {
@@ -77,6 +77,7 @@ public class MemeCommand extends CommandExecutor {
                                 }
                             }
                         })
+                        .setFooter("Page " + page + "/" + pages, null)
                         .rest().queue();
 
                 return;

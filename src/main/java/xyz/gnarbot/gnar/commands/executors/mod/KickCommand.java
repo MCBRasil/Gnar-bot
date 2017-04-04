@@ -1,7 +1,6 @@
 package xyz.gnarbot.gnar.commands.executors.mod;
 
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.utils.PermissionUtil;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Client;
@@ -20,7 +19,7 @@ public class KickCommand extends CommandExecutor {
         Client author = note.getAuthor();
         Client target = null;
 
-        if (!PermissionUtil.checkPermission(note.getTextChannel(), author, Permission.KICK_MEMBERS)) {
+        if (!author.hasPermission(note.getTextChannel(), Permission.KICK_MEMBERS)) {
             note.respond().error("You do not have permission to kick.").queue();
             return;
         }
@@ -35,7 +34,7 @@ public class KickCommand extends CommandExecutor {
             note.respond().error("Could not find user.").queue();
             return;
         }
-        if (!PermissionUtil.canInteract(author, target)) {
+        if (!author.canInteract(target)) {
             note.respond().error("Sorry, that user has an equal or higher role.").queue();
             return;
         }

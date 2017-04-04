@@ -8,6 +8,6 @@ import xyz.gnarbot.gnar.utils.Note
 class StartAdventureCommand : CommandExecutor() {
     override fun execute(note: Note, args: MutableList<String>) {
         Adventure.getAdventure(note.author, note, bot)
-        note.optDelete()
+        note.delete().queue()
     }
 }

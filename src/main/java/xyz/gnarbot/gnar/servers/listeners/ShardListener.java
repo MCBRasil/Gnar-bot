@@ -1,7 +1,7 @@
 package xyz.gnarbot.gnar.servers.listeners;
 
 
-import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberLeaveEvent;
 import net.dv8tion.jda.core.events.guild.voice.GenericGuildVoiceEvent;
@@ -44,7 +44,7 @@ public class ShardListener extends ListenerAdapter {
     public void onGuildMemberLeave(GuildMemberLeaveEvent event) {
         Servlet servlet = shard.getServlet(event.getGuild());
         if (servlet != null) {
-            servlet.getClientHandler().removeUser(event.getMember());
+            servlet.getClientHandler().removeClient(event.getMember());
         }
     }
 
@@ -57,9 +57,9 @@ public class ShardListener extends ListenerAdapter {
 
             if (servlet == null) return;
 
-            Channel botChannel = servlet.getSelfClient().getVoiceState().getChannel();
+            VoiceChannel botChannel = servlet.getSelfClient().getVoiceState().getChannel();
 
-            Channel channelLeft;
+            VoiceChannel channelLeft;
 
             if (event instanceof GuildVoiceLeaveEvent) {
                 channelLeft = ((GuildVoiceLeaveEvent) event).getChannelLeft();

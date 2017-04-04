@@ -2,7 +2,6 @@ package xyz.gnarbot.gnar.commands.executors.mod;
 
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.utils.PermissionUtil;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Client;
@@ -21,7 +20,7 @@ public class UnbanCommand extends CommandExecutor {
         Client author = note.getAuthor();
         Client target = null;
 
-        if (!PermissionUtil.checkPermission(note.getTextChannel(), author, Permission.BAN_MEMBERS)) {
+        if (!author.hasPermission(note.getTextChannel(), Permission.BAN_MEMBERS)) {
             note.respond().error("You do not have permission to manage bans.").queue();
             return;
         }

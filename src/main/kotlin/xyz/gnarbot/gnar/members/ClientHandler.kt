@@ -47,7 +47,7 @@ class ClientHandler(private val servlet: Servlet) {
     /**
      * Remove the user from the registry.
      */
-    fun removeUser(member: Member) {
+    fun removeClient(member: Member) {
         registry.remove(member.user.id)
     }
 }
