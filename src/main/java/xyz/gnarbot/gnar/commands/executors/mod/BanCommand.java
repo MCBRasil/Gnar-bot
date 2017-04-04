@@ -5,24 +5,23 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.members.Client;
 import xyz.gnarbot.gnar.members.Level;
-import xyz.gnarbot.gnar.servers.Servlet;
 import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 
-@Command(aliases = "ban", level = Level.BOT_COMMANDER)
+@Command(aliases = "ban",
+        level = Level.BOT_COMMANDER,
+        guildPermissions = Permission.BAN_MEMBERS)
 public class BanCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
-        Servlet servlet = note.getServlet();
-
         Client author = note.getAuthor();
         Client target = null;
 
-        if (!author.hasPermission(note.getTextChannel(), Permission.BAN_MEMBERS)) {
-            note.respond().error("You do not have permission to ban.").queue();
-            return;
-        }
+//        if (!author.hasPermission(note.getTextChannel(), Permission.BAN_MEMBERS)) {
+//            note.respond().error("You do not have permission to ban.").queue();
+//            return;
+//        }
 
         if (note.getMentionedChannels().size() >= 1) {
             target = note.getMentionedUsers().get(0);
@@ -39,10 +38,7 @@ public class BanCommand extends CommandExecutor {
             return;
         }
 
-        if (!servlet.ban(target)) {
-            note.respond().error("Gnar does not have permission to ban.").queue();
-            return;
-        }
+        getServlet().getController().ban(target, 2).queue();
         note.respond().info(target.getEffectiveName() + " has been banned.").queue();
     }
 }

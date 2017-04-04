@@ -1,7 +1,7 @@
 package xyz.gnarbot.gnar.commands.handlers;
 
-import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.exceptions.PermissionException;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.members.Client;
 import xyz.gnarbot.gnar.servers.Servlet;
@@ -9,9 +9,7 @@ import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CommandHandler {
     private final Bot bot;
@@ -52,20 +50,17 @@ public class CommandHandler {
 
         Command meta = entry.meta;
 
-        if (!servlet.getSelfClient().hasPermission(meta.permissions())) {
-            note.respond().error("Gnar doesn't have the permissions: `"
-                    + Arrays.stream(meta.permissions())
-                            .map(Permission::getName)
-                            .collect(Collectors.toList())
-                    + "`");
-            return;
-        } else if (!author.hasPermission(meta.permissions())) {
-            note.respond().error("You have insufficient permissions. `"
-                    + Arrays.stream(meta.permissions())
-                            .map(Permission::getName)
-                            .collect(Collectors.toList())
-                    + "`");
-            return;
+        if (meta.channelPermissions().length > 0) {
+            if (note.getAuthor().hasPermission(note.getTextChannel(), meta.channelPermissions())) {
+                note.respond().error("You have insufficient permissions.");
+                return;
+            }
+        }
+        if (meta.guildPermissions().length > 0) {
+            if (note.getAuthor().hasPermission(meta.guildPermissions())) {
+                note.respond().error("You have insufficient permissions.");
+                return;
+            }
         }
 
         if (meta.level().getValue() > author.getLevel().getValue()) {
@@ -84,6 +79,9 @@ public class CommandHandler {
             cmd.commandMeta = meta;
 
             cmd.execute(note, args);
+        } catch (PermissionException e) {
+            note.respond().error("The bot lacks the permission `"
+                    + e.getPermission().getName() + "` required to perform this command.").queue();
         } catch (RuntimeException e) {
             note.respond().error("**Exception**: " + e.getMessage()).queue();
             e.printStackTrace();

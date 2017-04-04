@@ -46,5 +46,7 @@ public @interface Command {
      */
     Level level() default Level.USER;
 
-    Permission[] permissions() default {};
+    Permission[] guildPermissions() default {};
+
+    Permission[] channelPermissions() default {};
 }

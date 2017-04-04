@@ -15,15 +15,16 @@ import java.util.concurrent.TimeUnit;
 @Command(aliases = {"prune", "delmessages", "delmsgs"},
         usage = "-amount -words...",
         description = "Delete up to 100 messages.",
-        level = Level.BOT_COMMANDER)
+        level = Level.BOT_COMMANDER,
+        channelPermissions = Permission.MESSAGE_MANAGE)
 public class PruneCommand extends CommandExecutor {
 
     @Override
     public void execute(Note note, List<String> args) {
-        if (!note.getAuthor().hasPermission(Permission.MESSAGE_MANAGE)) {
-            note.respond().error("You don't have the `Manage Messages` permission!").queue();
-            return;
-        }
+//        if (!note.getAuthor().hasPermission(Permission.MESSAGE_MANAGE)) {
+//            note.respond().error("You don't have the `Manage Messages` permission!").queue();
+//            return;
+//        }
 
         if (args.isEmpty()) {
             note.respond().error("Insufficient amount of arguments.").queue();

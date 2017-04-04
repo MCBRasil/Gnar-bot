@@ -3,7 +3,6 @@ package xyz.gnarbot.gnar.servers
 import net.dv8tion.jda.core.MessageBuilder
 import net.dv8tion.jda.core.entities.*
 import net.dv8tion.jda.core.entities.impl.MessageImpl
-import net.dv8tion.jda.core.exceptions.PermissionException
 import net.dv8tion.jda.core.requests.Request
 import net.dv8tion.jda.core.requests.Response
 import net.dv8tion.jda.core.requests.RestAction
@@ -84,75 +83,6 @@ class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild 
      */
     fun getClient(user: User): Client? {
         return user.let { clientHandler.getClient(user) }
-    }
-
-    /**
-     * Attempt to ban the member from the guild.
-     * @return If the bot had permission.
-     */
-    fun ban(client: Client): Boolean {
-        try {
-            controller.ban(client as User, 2).queue()
-            return true
-        } catch (e: PermissionException) {
-            return false
-        }
-
-    }
-
-    /**
-     * Attempt to un-ban the member from the guild.
-     * @return If the bot had permission.
-     */
-    fun unban(client: Client): Boolean {
-        try {
-            controller.unban(client).queue()
-            return true
-        } catch (e: PermissionException) {
-            return false
-        }
-
-    }
-
-    /**
-     * Attempt to kick the member from the guild.
-     * @return If the bot had permission.
-     */
-    fun kick(client: Client): Boolean {
-        try {
-            controller.kick(client).queue()
-            return true
-        } catch (e: PermissionException) {
-            return false
-        }
-
-    }
-
-    /**
-     * Attempt to mute the member in the guild.
-     * @return If the bot had permission.
-     */
-    fun mute(client: Client): Boolean {
-        try {
-            controller.setMute(client, true).queue()
-            return true
-        } catch (e: PermissionException) {
-            return false
-        }
-
-    }
-
-    /**
-     * Attempt to unmute the member in the guild.
-     * @return If the bot had permission.
-     */
-    fun unmute(client: Client): Boolean {
-        try {
-            controller.setMute(client, false).queue()
-            return true
-        } catch (e: PermissionException) {
-            return false
-        }
     }
 
     /**

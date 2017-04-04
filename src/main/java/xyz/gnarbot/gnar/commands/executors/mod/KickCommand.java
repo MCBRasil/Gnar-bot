@@ -11,7 +11,8 @@ import java.util.List;
 
 @Command(aliases = "kick",
         usage = "-user",
-        level = Level.BOT_COMMANDER)
+        level = Level.BOT_COMMANDER,
+        channelPermissions = Permission.KICK_MEMBERS)
 public class KickCommand extends CommandExecutor {
 
     @Override
@@ -19,10 +20,10 @@ public class KickCommand extends CommandExecutor {
         Client author = note.getAuthor();
         Client target = null;
 
-        if (!author.hasPermission(note.getTextChannel(), Permission.KICK_MEMBERS)) {
-            note.respond().error("You do not have permission to kick.").queue();
-            return;
-        }
+//        if (!author.hasPermission(note.getTextChannel(), Permission.KICK_MEMBERS)) {
+//            note.respond().error("You do not have permission to kick.").queue();
+//            return;
+//        }
 
         if (note.getMentionedChannels().size() >= 1) {
             target = note.getMentionedUsers().get(0);
@@ -34,15 +35,13 @@ public class KickCommand extends CommandExecutor {
             note.respond().error("Could not find user.").queue();
             return;
         }
+
         if (!author.canInteract(target)) {
             note.respond().error("Sorry, that user has an equal or higher role.").queue();
             return;
         }
 
-        if (!getServlet().kick(target)) {
-            note.respond().error("Gnar does not have permission to kick.").queue();
-            return;
-        }
+        getServlet().getController().kick(target).queue();
         note.respond().info(target.getEffectiveName() + " has been kicked.").queue();
     }
 }

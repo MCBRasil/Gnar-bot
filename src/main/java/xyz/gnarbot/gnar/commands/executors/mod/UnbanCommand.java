@@ -11,7 +11,9 @@ import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 
-@Command(aliases = "unban", level = Level.BOT_COMMANDER)
+@Command(aliases = "unban",
+        level = Level.BOT_COMMANDER,
+        guildPermissions = Permission.BAN_MEMBERS)
 public class UnbanCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
@@ -20,10 +22,10 @@ public class UnbanCommand extends CommandExecutor {
         Client author = note.getAuthor();
         Client target = null;
 
-        if (!author.hasPermission(note.getTextChannel(), Permission.BAN_MEMBERS)) {
-            note.respond().error("You do not have permission to manage bans.").queue();
-            return;
-        }
+//        if (!author.hasPermission(note.getTextChannel(), Permission.BAN_MEMBERS)) {
+//            note.respond().error("You do not have permission to manage bans.").queue();
+//            return;
+//        }
 
         List<User> bans = note.getGuild().getController().getBans().complete();
 
@@ -42,10 +44,7 @@ public class UnbanCommand extends CommandExecutor {
             return;
         }
 
-        if (!servlet.unban(target)) {
-            note.respond().error("Gnar does not have permission to manage bans.").queue();
-            return;
-        }
+        servlet.getController().unban(target).queue();
         note.respond().info(target.getEffectiveName() + " has been unbanned.").queue();
     }
 }

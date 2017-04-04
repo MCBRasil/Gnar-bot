@@ -14,14 +14,15 @@ import java.util.concurrent.TimeUnit;
 @Command(aliases = "deletemsg",
         usage = "-msg_id...",
         description = "Delete those messages..",
-        level = Level.BOT_COMMANDER)
+        level = Level.BOT_COMMANDER,
+        channelPermissions = Permission.MESSAGE_MANAGE)
 public class DeleteMessageCommand extends CommandExecutor {
     @Override
     public void execute(Note note, List<String> args) {
-        if (!note.getAuthor().hasPermission(Permission.MESSAGE_MANAGE)) {
-            note.respond().error("You don't have the `Manage Messages` permission!").queue();
-            return;
-        }
+//        if (!note.getAuthor().hasPermission(Permission.MESSAGE_MANAGE)) {
+//            note.respond().error("You don't have the `Manage Messages` permission!").queue();
+//            return;
+//        }
 
         if (args.isEmpty()) {
             note.respond().error("Please input message ID(s) to queue them for deletion.").queue();
