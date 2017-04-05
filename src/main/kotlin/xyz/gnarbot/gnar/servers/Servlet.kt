@@ -70,7 +70,7 @@ class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild 
      *
      * @return User instance.
      */
-    fun getClient(member: Member): Client? {
+    fun getClient(member: Member): Client {
         return clientHandler.getClient(member)
     }
 
@@ -81,8 +81,8 @@ class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild 
      *
      * @return User instance.
      */
-    fun getClient(user: User): Client? {
-        return user.let { clientHandler.getClient(user) }
+    fun getClient(user: User): Client {
+        return clientHandler.getClient(user)
     }
 
     /**

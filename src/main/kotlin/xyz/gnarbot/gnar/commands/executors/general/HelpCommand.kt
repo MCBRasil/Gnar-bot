@@ -50,7 +50,7 @@ class HelpCommand : CommandExecutor() {
                 val pages = Lists.partition(filtered, filtered.size / 3 + 1)
 
                 field(true)
-                field("${level.title} — ${filtered.size}", false, level.requireText)
+                field("${level.title} — ${filtered.size}", false, level.requirement)
 
                 for (page in pages) {
                     field("", true) {

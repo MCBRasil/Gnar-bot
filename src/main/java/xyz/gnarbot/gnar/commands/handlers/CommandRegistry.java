@@ -193,12 +193,6 @@ public class CommandRegistry {
         return new LinkedHashSet<>(commandEntryMap.values());
     }
 
-    /**
-     * @return Unique command executors.
-     */
-    public Set<CommandEntry> getClasses() {
-        return new LinkedHashSet<>(commandEntryMap.values());
-    }
 
     /**
      * Get the command based on the key.
@@ -209,23 +203,6 @@ public class CommandRegistry {
     public CommandEntry getEntry(String key) {
         return commandEntryMap.get(key);
     }
-
-//    public Set<CommandExecutor> getUniqueExecutors() {
-//        final Set<CommandExecutor> set = new LinkedHashSet<>();
-//
-//        for (Class<? extends CommandExecutor> cls : getClasses()) {
-//            try {
-//                CommandExecutor cmd = cls.newInstance();
-//                cmd.bot = Bot.INSTANCE;
-//                cmd.commandMeta = cls.getAnnotation(Command.class);
-//                set.add(cmd);
-//            } catch (InstantiationException | IllegalAccessException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        return set;
-//    }
 
     public static class CommandEntry {
         public final Class<? extends CommandExecutor> cls;
@@ -238,19 +215,4 @@ public class CommandRegistry {
             this.meta = cls.getAnnotation(Command.class);
         }
     }
-
-//    /**
-//     * Returns the CommandExecutor based on the class.
-//     *
-//     * @param cls CommandExecutor class.
-//     * @return CommandExecutor instance.
-//     */
-//    public CommandExecutor getCommandClass(Class<? extends CommandExecutor> cls) {
-//        Optional<CommandExecutor> cmd = commandMap.values()
-//                .stream()
-//                .filter(commandExecutor -> commandExecutor.getClass() == cls)
-//                .findFirst();
-//
-//        return cmd.orElse(null);
-//    }
 }

@@ -3,7 +3,7 @@ package xyz.gnarbot.gnar.members
 /**
  * Level levels for [Client] for use by the bot.
  */
-enum class Level(val value: Int, val title: String, val requireText: String) {
+enum class Level(val value: Int, val title: String, val requirement: String) {
     /** Highest level level. */
     BOT_CREATOR(4, "Bot Creator",
             "You need to be one of the developers for the getBot to use this command."),
