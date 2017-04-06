@@ -5,7 +5,6 @@ import net.dv8tion.jda.core.entities.TextChannel;
 import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +15,15 @@ import java.util.concurrent.TimeUnit;
         description = "Quote somebody else..")
 public class QuoteCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, List<String> args) {
+    public void execute(Message message, List<String> args) {
         if (args.isEmpty()) {
-            note.respond().error("Provide a message id.").queue();
+            message.respond().error("Provide a message id.").queue();
             return;
         }
 
-        TextChannel targetChannel = note.getTextChannel();
-        if (note.getMentionedChannels().size() > 0) {
-            targetChannel = note.getMentionedChannels().get(0);
+        TextChannel targetChannel = message.getTextChannel();
+        if (message.getMentionedChannels().size() > 0) {
+            targetChannel = message.getMentionedChannels().get(0);
         }
 
         List<Message> toDelete = new ArrayList<>();
@@ -32,7 +31,7 @@ public class QuoteCommand extends CommandExecutor {
         for (String id : args) {
             if (!id.contains("#")) {
                 try {
-                    Message msg = note.getChannel().getMessageById(id).complete();
+                    Message msg = message.getChannel().getMessageById(id).complete();
 
                     targetChannel.send().embed()
                             .setColor(Constants.COLOR)
@@ -42,7 +41,7 @@ public class QuoteCommand extends CommandExecutor {
 
                 } catch (Exception e) {
                     try {
-                        Message m = note.respond()
+                        Message m = message.respond()
                                 .error("Could not find a message with the ID " + id + " within this channel.")
                                 .complete();
                         toDelete.add(m);
@@ -51,10 +50,10 @@ public class QuoteCommand extends CommandExecutor {
             }
         }
 
-        toDelete.add(note);
+        toDelete.add(message);
 
         try {
-            Message m = note.respond().info("Sent quotes to the " + targetChannel.getName() + " channel!").complete();
+            Message m = message.respond().info("Sent quotes to the " + targetChannel.getName() + " channel!").complete();
 
             toDelete.add(m);
 

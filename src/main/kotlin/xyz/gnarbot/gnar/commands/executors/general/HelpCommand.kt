@@ -3,16 +3,17 @@ package xyz.gnarbot.gnar.commands.executors.general
 import b
 import com.google.common.collect.Lists
 import link
+import net.dv8tion.jda.core.Permission
+import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.Constants
+import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.members.Level
-import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("help", "guide"), usage = "~command", description = "Display GN4R's list of commands.")
 class HelpCommand : CommandExecutor() {
 
-    override fun execute(note: Note, args: List<String>) {
+    override fun execute(message: Message, args: List<String>) {
         val registry = bot.commandRegistry
 
         if (args.isNotEmpty()) {
@@ -21,15 +22,19 @@ class HelpCommand : CommandExecutor() {
             val entry = registry.getEntry(target)
 
             if (entry == null) {
-                note.respond().error("There is no command named `$target`. :cry:").queue()
+                message.respond().error("There is no command named `$target`. :cry:").queue()
                 return
             }
 
-            note.respond().embed("Command Information") {
+            message.respond().embed("Command Information") {
                 field("Aliases", true, entry.meta.aliases.joinToString(separator = ", ${bot.token}", prefix = bot.token))
                 field("Usage", true, "${bot.token}${entry.meta.aliases[0].toLowerCase()} ${entry.meta.usage}")
-                field("Level", true, entry.meta.level.title)
                 field("Description", false, entry.meta.description)
+
+                field("Channel Permission", true, meta.channelPermissions.map(Permission::name))
+                field("Voice Permission", true, meta.channelPermissions.map(Permission::name))
+                field("Guild Permission", true, meta.guildPermissions.map(Permission::name))
+
             }.rest().queue()
 
             return
@@ -37,27 +42,32 @@ class HelpCommand : CommandExecutor() {
 
         val cmds = registry.entries
 
-        note.author.requestPrivateChannel().send().embed("Documentation") {
+        val privateChannel = if (!message.author.hasPrivateChannel()) {
+            message.author.openPrivateChannel().complete()
+        } else {
+            message.author.privateChannel
+        }
+
+        privateChannel.send().embed("Documentation") {
             color = Constants.COLOR
             description = "This is all of Gnar's currently registered commands."
 
-            for (level in Level.values()) {
+            for (level in Category.values()) {
+                if (!level.show) continue
+
                 val filtered = cmds.filter {
-                   it.meta.level == level && it.meta.showInHelp
+                   it.meta.category == level
                 }
                 if (filtered.isEmpty()) continue
 
                 val pages = Lists.partition(filtered, filtered.size / 3 + 1)
 
                 field(true)
-                field("${level.title} — ${filtered.size}", false, level.requirement)
+                field("${level.title} — ${filtered.size}", false)
 
                 for (page in pages) {
                     field("", true) {
                         page.forEach {
-                            if (it.meta.symbol.isNotBlank()) {
-                                append("**").append(it.meta.symbol).append("** ")
-                            }
                             append("**[").append(bot.token).append(it.meta.aliases[0]).appendln("]()**")
                         }
                     }
@@ -87,6 +97,6 @@ class HelpCommand : CommandExecutor() {
             }
         }.rest().queue()
 
-        note.respond().info("Gnar's guide has been directly messaged to you.\n\nNeed more support? Reach us on our __**[official support server](https://discord.gg/NQRpmr2)**__.").queue()
+        message.respond().info("Gnar's guide has been directly messaged to you.\n\nNeed more support? Reach us on our __**[official support server](https://discord.gg/NQRpmr2)**__.").queue()
     }
 }

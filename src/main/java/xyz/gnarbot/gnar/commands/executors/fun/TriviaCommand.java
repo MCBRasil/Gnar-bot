@@ -1,22 +1,26 @@
 package xyz.gnarbot.gnar.commands.executors.fun;
 
+import net.dv8tion.jda.core.entities.Message;
+import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.utils.Note;
 import xyz.gnarbot.gnar.utils.TriviaQuestions;
 
 import java.util.List;
 
-@Command(aliases = "trivia")
+@Command(
+        aliases = "trivia",
+        category = Category.FUN
+)
 public class TriviaCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, List<String> args) {
+    public void execute(Message message, List<String> args) {
         if (!TriviaQuestions.isSetup()) {
             TriviaQuestions.init();
         }
 
         if (args.size() > 0) {
-            note.respond().info(TriviaQuestions.getRandomQuestion()).queue();
+            message.respond().info(TriviaQuestions.getRandomQuestion()).queue();
         }
     }
 

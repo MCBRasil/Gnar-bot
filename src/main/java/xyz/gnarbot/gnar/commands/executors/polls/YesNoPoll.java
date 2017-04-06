@@ -1,25 +1,24 @@
 package xyz.gnarbot.gnar.commands.executors.polls;
 
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.User;
 import xyz.gnarbot.gnar.Bot;
-import xyz.gnarbot.gnar.members.Client;
-import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class YesNoPoll extends Poll {
 
-    private final Note n;
+    private final Message msg;
     private final String question;
     private final int minutes;
-    private Client startingClient;
+    private User startingClient;
     private ScheduledFuture runTask;
     private int pollid;
 
-    public YesNoPoll(Note n, final String question, int minutes, Bot bot) {
+    public YesNoPoll(Message msg, final String question, int minutes, Bot bot) {
         super(bot);
-        this.n = n;
+        this.msg = msg;
         this.question = question;
         this.minutes = minutes;
     }
@@ -28,11 +27,11 @@ public class YesNoPoll extends Poll {
     @Override
     public void start() {
 
-        System.out.println(n.getAuthor().getName() + " created a new poll");
-        startingClient = n.getAuthor();
+        System.out.println(msg.getAuthor().getName() + " created a new poll");
+        startingClient = msg.getAuthor();
         final Message repliedMessage;
 
-        repliedMessage = n.respond().embed("Yes or No Poll")
+        repliedMessage = msg.respond().embed("Yes or No Poll")
                 .description(sb -> {
                     sb.append(":pushpin: *A new poll has been started by* **")
                             .append(startingClient.getName())
@@ -110,7 +109,7 @@ public class YesNoPoll extends Poll {
                     "has " + "finished! Check above for the results!");
 
             startingClient.getPrivateChannel()
-                    .sendMessage(":exclamation: Your poll in <#" + n.getChannel()
+                    .sendMessage(":exclamation: Your poll in <#" + msg.getChannel()
                             .getId() + "> has ended! Go check it's results!");
 
             runTask.cancel(true);

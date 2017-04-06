@@ -3,12 +3,13 @@ package xyz.gnarbot.gnar.commands.executors.fun;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
+import net.dv8tion.jda.core.entities.Message;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import xyz.gnarbot.gnar.Credentials;
+import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.utils.Note;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -22,7 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@Command(aliases = {"eyes", "googleyeyes"}, usage = "-image_url", description = "Put weird eyes on people!")
+@Command(
+        aliases = {"eyes", "googleyeyes"},
+        usage = "-image_url",
+        description = "Put weird eyes on people!",
+        category = Category.FUN)
 public class GoogleyEyesCommand extends CommandExecutor {
     private static BufferedImage resize(BufferedImage img, int newW, int newH) {
         Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
@@ -36,9 +41,9 @@ public class GoogleyEyesCommand extends CommandExecutor {
     }
 
     @Override
-    public void execute(Note note, List<String> args) {
+    public void execute(Message message, List<String> args) {
         if (args.isEmpty()) {
-            note.respond().error("Please provide an image link.");
+            message.respond().error("Please provide an image link.");
             return;
         }
 
@@ -71,7 +76,7 @@ public class GoogleyEyesCommand extends CommandExecutor {
                 }
             } catch (Exception e) {
                 if (eyesJSON.isEmpty()) {
-                    note.respond().error("The API did not detect any eyes/facial features.");
+                    message.respond().error("The API did not detect any eyes/facial features.");
                     return;
                 }
             }
@@ -91,7 +96,7 @@ public class GoogleyEyesCommand extends CommandExecutor {
             try {
                 if (ImageIO.write(targetImg, "jpg", outputFile)) {
                     //send if success
-                    note.getChannel().sendFile(outputFile, null);
+                    message.getChannel().sendFile(outputFile, null);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -102,7 +107,7 @@ public class GoogleyEyesCommand extends CommandExecutor {
 
             //event.getChannel().sendMessage(mb.build());
         } catch (Exception e) {
-            note.respond().error("An unexpected error occurred, did you provide a proper link?");
+            message.respond().error("An unexpected error occurred, did you provide a proper link?");
             e.printStackTrace();
         }
     }

@@ -1,9 +1,10 @@
 package xyz.gnarbot.gnar.commands.executors.fun;
 
+import net.dv8tion.jda.core.entities.Message;
 import org.apache.commons.lang3.StringUtils;
+import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.utils.Note;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,7 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@Command(aliases = {"q", "quotes"})
+@Command(
+        aliases = {"q", "quotes"},
+        category = Category.FUN)
 public class ChampQuoteCommand extends CommandExecutor {
     public static final String[] names = {"Aatrox", "Ahri", "Akali", "Alistar", "Amumu", "Anivia", "Annie", "Ashe",
             "Aurelion Sol", "Azir", "Bard", "Blitzcrank", "Brand", "Braum", "Caitlyn", "Cassiopeia", "Cho'Gath",
@@ -30,7 +33,7 @@ public class ChampQuoteCommand extends CommandExecutor {
             "Zed", "Ziggs", "Zilean", "Zyra"};
 
     @Override
-    public void execute(Note note, List<String> args) {
+    public void execute(Message message, List<String> args) {
         try {
             //Makes the first character uppercase
             String champ = StringUtils.join(args, " ");
@@ -46,7 +49,7 @@ public class ChampQuoteCommand extends CommandExecutor {
                 for (String s : names) {
                     championsList.append(", ").append(s);
                 }
-                note.respond().text(championsList.toString().replaceFirst(", ", "")).queue();
+                message.respond().text(championsList.toString().replaceFirst(", ", "")).queue();
                 return;
             }
 
@@ -74,7 +77,7 @@ public class ChampQuoteCommand extends CommandExecutor {
 
                 br = new BufferedReader(new FileReader(new File("_DATA/quotes/" + maybe + ".txt")));
 
-                note.respond().info("I think you meant **" + maybe + "**? Here's a quote from them!").queue();
+                message.respond().info("I think you meant **" + maybe + "**? Here's a quote from them!").queue();
                 champ = maybe;
             }
 
@@ -85,10 +88,10 @@ public class ChampQuoteCommand extends CommandExecutor {
             }
 
             //Pull a random quote and send
-            note.respond().text("`" + quotes.get(new Random().nextInt(quotes.size())) + "` - **" + champ + "**").queue();
+            message.respond().text("`" + quotes.get(new Random().nextInt(quotes.size())) + "` - **" + champ + "**").queue();
 
         } catch (Exception e) {
-            note.respond().text("Odd, you should have never got here. For getting here and some how butchering that " +
+            message.respond().text("Odd, you should have never got here. For getting here and some how butchering that " +
                     "champions name so bad, here's a cookie :cookie:").queue();
             e.printStackTrace();
         }

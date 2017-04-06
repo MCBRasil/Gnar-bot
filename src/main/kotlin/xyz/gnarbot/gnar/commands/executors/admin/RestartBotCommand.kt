@@ -1,20 +1,20 @@
 package xyz.gnarbot.gnar.commands.executors.admin
 
+import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.Constants
+import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.members.Level
-import xyz.gnarbot.gnar.utils.Note
 
 @Command(
         aliases = arrayOf("restartbot"),
         description = "Restart bot.",
-        level = Level.BOT_CREATOR,
-        showInHelp = false
+        administrator = true,
+        category = Category.NONE
 )
 class RestartBotCommand : CommandExecutor() {
-    override fun execute(note: Note, args: List<String>) {
-        note.respond().embed("Restarting") {
+    override fun execute(message: Message, args: List<String>) {
+        message.respond().embed("Restarting") {
             color = Constants.COLOR
 
             bot.shards.forEach {

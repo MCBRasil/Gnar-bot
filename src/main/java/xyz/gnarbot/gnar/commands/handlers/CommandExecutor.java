@@ -1,10 +1,10 @@
 package xyz.gnarbot.gnar.commands.handlers;
 
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.Message;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.servers.Servlet;
 import xyz.gnarbot.gnar.servers.Shard;
-import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 
@@ -17,6 +17,8 @@ public abstract class CommandExecutor {
     Shard shard;
 
     Servlet servlet;
+
+    CommandHandler commandHandler;
 
     Bot bot;
 
@@ -44,9 +46,8 @@ public abstract class CommandExecutor {
 
     /**
      * Abstract method to be executed when the command is called.
-     *
-     * @param note Message object passed into the execution.
+     *  @param message Message object passed into the execution.
      * @param args Arguments passed into the execution.
      */
-    protected abstract void execute(Note note, List<String> args);
+    protected abstract void execute(Message message, List<String> args);
 }

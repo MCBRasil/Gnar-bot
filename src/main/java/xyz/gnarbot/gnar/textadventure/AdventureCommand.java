@@ -1,9 +1,9 @@
 package xyz.gnarbot.gnar.textadventure;
 
+import net.dv8tion.jda.core.entities.Message;
 import org.apache.commons.lang3.StringUtils;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 
@@ -11,28 +11,28 @@ import java.util.List;
 public class AdventureCommand extends CommandExecutor {
     @SuppressWarnings("all")
     @Override
-    public void execute(Note note, List<String> args) {
-        if (!Adventure.hasAdventure(note.getAuthor())) {
-            note.respond().info("Use `_startadventure` to begin your adventure!").queue();
+    public void execute(Message message, List<String> args) {
+        if (!Adventure.hasAdventure(message.getAuthor())) {
+            message.respond().info("Use `_startadventure` to begin your adventure!").queue();
             return;
         }
-        Adventure adventure = Adventure.getAdventure(note.getAuthor(), note, getBot());
+        Adventure adventure = Adventure.getAdventure(message.getAuthor(), message, getBot());
 
         if (args.size() > 0) {
             switch (args.get(0).toLowerCase()) {
                 case "quit": {
-                    note.respond().info("Poof! Your adventure has been lost to the winds of Azaroth.").queue();
-                    Adventure.removeAdventure(note.getAuthor());
+                    message.respond().info("Poof! Your adventure has been lost to the winds of Azaroth.").queue();
+                    Adventure.removeAdventure(message.getAuthor());
                     return;
                 }
                 case "map": {
-                    note.respond().info("Preparing your map...").queue();
-                    adventure.getGrid().sendMap(note);
+                    message.respond().info("Preparing your map...").queue();
+                    adventure.getGrid().sendMap(message);
                     return;
                 }
                 case "inventory": {
                     if (adventure.getInventory() != null) {
-                        adventure.sendInformativeMessage(note, adventure.getInventory().toString());
+                        adventure.sendInformativeMessage(message, adventure.getInventory().toString());
                         return;
                     }
                 }
@@ -40,14 +40,14 @@ public class AdventureCommand extends CommandExecutor {
                     if (args.size() > 1) {
                         String oldname = adventure.getHeroName();
                         adventure.setHeroName(StringUtils.join(args, " ").replace("setname ", ""));
-                        adventure.sendInformativeMessage(note,
+                        adventure.sendInformativeMessage(message,
                                 ":bulb: The hero wishes to change their name? Very well " +
                                         "then . I shall now refer to you as **" + adventure
                                         .getHeroName() + "**");
                         adventure.logAction("Changed Hero name to " + adventure.getHeroName() + " from " + oldname);
                         return;
                     } else {
-                        adventure.sendInformativeMessage(note,
+                        adventure.sendInformativeMessage(message,
                                 ":bulb: Hmm... I can't do that unless you tell me what to " +
                                         "call you, Hero.");
                         return;
@@ -55,7 +55,7 @@ public class AdventureCommand extends CommandExecutor {
                 }
                 case "actions": {
                     if (adventure.getActionList().size() == 0) {
-                        adventure.sendInformativeMessage(note, "I couldn't find anything... Sorry :no_mouth:");
+                        adventure.sendInformativeMessage(message, "I couldn't find anything... Sorry :no_mouth:");
                         return;
                     }
                     String r = "```Markdown\n";
@@ -73,16 +73,16 @@ public class AdventureCommand extends CommandExecutor {
                             done++;
                         } else {
                             r += "```";
-                            adventure.sendInformativeMessage(note, r);
+                            adventure.sendInformativeMessage(message, r);
                             return;
                         }
                     }
                     r += "```";
-                    adventure.sendInformativeMessage(note, r);
+                    adventure.sendInformativeMessage(message, r);
                     return;
                 }
                 case "last": {
-                    adventure.sendLastMessage(note, "Sending last message as per your request~");
+                    adventure.sendLastMessage(message, "Sending last message as per your request~");
                     return;
                 }
                 case "help": {
@@ -92,17 +92,17 @@ public class AdventureCommand extends CommandExecutor {
                                 "[_adventure setname {name}] Changes your name.\n" +
                                 "[_adventure {response}] Respond to a question, or do an action. \n" +
                                 "[_adventure last] Sends the last sent message. " + "\n```";
-                        note.respond().info(reply).queue();
+                        message.respond().info(reply).queue();
                     } else {
                         String reply = "*Adventure Help!~*\n```ini\n" + "[_adventure help] This list.\n" + "[_adventure actions] List of previous actions.\n" + "[_adventure quit] Ends the adventure.\n" + "[_adventure setname {name}] Changes your name.\n" + "[_adventure {response}] Respond to a question, or do an action.\n" + "[_adventure last] Sends the last sent message.\n" + "[_adventure inventory] Displays your inventory." + "\n```";
-                        note.respond().info(reply).queue();
+                        message.respond().info(reply).queue();
                     }
                     return;
                 }
             }
-            adventure.parseResponse(note, StringUtils.join(args, " "), false);
+            adventure.parseResponse(message, StringUtils.join(args, " "), false);
         } else {
-            adventure.sendLastMessage(note,
+            adventure.sendLastMessage(message,
                     "**No response given. Use `_adventure help` for a command list.**\nSending last message:");
         }
 

@@ -1,10 +1,10 @@
 package xyz.gnarbot.gnar.commands.executors.admin
 
+import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.Constants
+import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.members.Level
-import xyz.gnarbot.gnar.utils.Note
 import java.awt.Color
 import javax.script.ScriptEngineManager
 import javax.script.ScriptException
@@ -12,29 +12,29 @@ import javax.script.ScriptException
 @Command(
         aliases = arrayOf("js", "runjs"),
         description = "Run JavaScript commands.",
-        level = Level.BOT_CREATOR,
-        showInHelp = false
+        administrator = true,
+        category = Category.NONE
 )
 class JavascriptCommand : CommandExecutor() {
     val blocked = arrayListOf("leave", "delete", "Guilds", "Token", "Channels", "voice",
             "remove", "ByName", "ById", "Controller", "Manager", "Permissions")
 
-    override fun execute(note: Note, args: List<String>) {
+    override fun execute(message: Message, args: List<String>) {
         val engine = ScriptEngineManager().getEngineByName("javascript")
 
-        engine.put("jda", note.jda)
-        engine.put("message", note)
-        engine.put("host", note.servlet)
-        engine.put("channel", note.channel)
+        engine.put("jda", jda)
+        engine.put("message", message)
+        engine.put("host", servlet)
+        engine.put("channel", message.channel)
 
         val script = args.joinToString(" ")
 
         if (blocked.any { script.contains(it, true) }) {
-            note.respond().error("JavaScript eval Expression may be malicious, canceling.").queue()
+            message.respond().error("JavaScript eval Expression may be malicious, canceling.").queue()
             return
         }
 
-        note.respond().embed("JavaScript") {
+        message.respond().embed("JavaScript") {
             color = Constants.COLOR
 
             field("Running", false, script)

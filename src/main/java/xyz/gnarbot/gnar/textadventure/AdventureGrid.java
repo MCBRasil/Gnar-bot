@@ -4,7 +4,6 @@ import net.dv8tion.jda.core.entities.Message;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.textadventure.enums.DIRECTION;
 import xyz.gnarbot.gnar.textadventure.enums.LOCATION;
-import xyz.gnarbot.gnar.utils.Note;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -155,20 +154,20 @@ public class AdventureGrid {
         g.drawString(text, x, y);
     }
 
-    public void sendMap(Note n) {
+    public void sendMap(Message msg) {
         try {
             ImageBuilder builder = new ImageBuilder();
             File mapFile = builder.runBuilder();
             if (mapFile == null) {
-                n.respond().error("Couldn't create map file. Notify @Gatt#9711 please.").queue();
+                msg.respond().error("Couldn't create map file. Notify @Gatt#9711 please.").queue();
                 return;
             }
 
             bot.getScheduler().schedule(() ->
             {
                 try {
-                    Message m = n.respond().info("Sending your map!").complete();
-                    n.getChannel().sendFile(mapFile, m).queue();
+                    Message m = msg.respond().info("Sending your map!").complete();
+                    msg.getChannel().sendFile(mapFile, m).queue();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

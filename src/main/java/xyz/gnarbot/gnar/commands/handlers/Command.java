@@ -1,7 +1,6 @@
 package xyz.gnarbot.gnar.commands.handlers;
 
 import net.dv8tion.jda.core.Permission;
-import xyz.gnarbot.gnar.members.Level;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -31,20 +30,11 @@ public @interface Command {
      */
     String usage() default "";
 
-    /**
-     * @return The symbol of this command.
-     */
-    String symbol() default "";
+    boolean serverOwner() default false;
 
-    /**
-     * @return Flag to show this command in help.
-     */
-    boolean showInHelp() default true;
+    boolean administrator() default false;
 
-    /**
-     * @return The permission required for this command.
-     */
-    Level level() default Level.USER;
+    Category category() default Category.GENERAL;
 
     Permission[] guildPermissions() default {};
 

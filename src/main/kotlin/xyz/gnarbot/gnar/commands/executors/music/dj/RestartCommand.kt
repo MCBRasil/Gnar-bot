@@ -1,16 +1,17 @@
 package xyz.gnarbot.gnar.commands.executors.music.dj
 
 import net.dv8tion.jda.core.Permission
+import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
+import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("restart"),
         description = "Restart the current song.",
-        symbol = "♬",
+        category = Category.MUSIC,
         voicePermissions = arrayOf(Permission.MANAGE_CHANNEL))
 class RestartCommand : MusicExecutor() {
-    override fun execute(note: Note, args: List<String>) {
+    override fun execute(message: Message, args: List<String>) {
         val manager = servlet.musicManager
 
         var track = manager.player.playingTrack
@@ -21,14 +22,14 @@ class RestartCommand : MusicExecutor() {
 
         if (track != null) {
 
-            note.respond().embed("Restart Song") {
+            message.respond().embed("Restart Song") {
                 color = musicColor
                 description = "Restarting track: `${track.info.title}`."
             }.rest().queue()
 
             manager.player.playTrack(track.makeClone())
         } else {
-            note.respond().error("No track has been previously started.").queue()
+            message.respond().error("No track has been previously started.").queue()
         }
     }
 }

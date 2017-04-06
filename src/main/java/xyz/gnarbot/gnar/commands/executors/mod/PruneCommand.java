@@ -3,10 +3,9 @@ package xyz.gnarbot.gnar.commands.executors.mod;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
+import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.members.Level;
-import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,32 +14,32 @@ import java.util.concurrent.TimeUnit;
 @Command(aliases = {"prune", "delmessages", "delmsgs"},
         usage = "-amount -words...",
         description = "Delete up to 100 messages.",
-        level = Level.BOT_COMMANDER,
+        category = Category.MODERATION,
         channelPermissions = Permission.MESSAGE_MANAGE)
 public class PruneCommand extends CommandExecutor {
 
     @Override
-    public void execute(Note note, List<String> args) {
+    public void execute(Message message, List<String> args) {
 //        if (!note.getAuthor().hasPermission(Permission.MESSAGE_MANAGE)) {
 //            note.respond().error("You don't have the `Manage Messages` permission!").queue();
 //            return;
 //        }
 
         if (args.isEmpty()) {
-            note.respond().error("Insufficient amount of arguments.").queue();
+            message.respond().error("Insufficient amount of arguments.").queue();
             return;
         }
 
         try {
-            note.delete().queue();
+            message.delete().queue();
 
-            MessageHistory history = note.respond().getChannel().getHistory();
+            MessageHistory history = message.respond().getChannel().getHistory();
 
             int amount = Integer.parseInt(args.get(0));
             amount = Math.min(amount, 100);
 
             if (amount < 2) {
-                note.respond().error("You need to delete 2 or more messages to use this command.").queue();
+                message.respond().error("You need to delete 2 or more messages to use this command.").queue();
                 return;
             }
 
@@ -61,14 +60,14 @@ public class PruneCommand extends CommandExecutor {
                 msgs = _msgs;
             }
 
-            note.getTextChannel().deleteMessages(msgs).queue();
+            message.getTextChannel().deleteMessages(msgs).queue();
 
-            Message msg = note.respond().info("Attempted to delete **[" + msgs.size() + "]()** messages.\nDeleting this message in **5** seconds.")
+            Message msg = message.respond().info("Attempted to delete **[" + msgs.size() + "]()** messages.\nDeleting this message in **5** seconds.")
                     .complete();
 
             getBot().getScheduler().schedule(() -> msg.delete().queue(), 5, TimeUnit.SECONDS);
         } catch (NumberFormatException e) {
-            note.respond().error("Improper arguments supplies, must be a number.").queue();
+            message.respond().error("Improper arguments supplies, must be a number.").queue();
         }
     }
 }

@@ -1,8 +1,9 @@
 package xyz.gnarbot.gnar.commands.executors.polls;
 
+import net.dv8tion.jda.core.entities.Message;
+import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 
@@ -10,15 +11,15 @@ import java.util.List;
 @Command(aliases = "poll",
         usage = "(argument)",
         description = "Do poll-y stuff!",
-        showInHelp = false)
+        category = Category.NONE)
 public class PollCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, List<String> args) {
+    public void execute(Message message, List<String> args) {
         if (args.isEmpty() || (!args.isEmpty() && args.get(0).equalsIgnoreCase("help"))) {
             String reply = "Poll System Help!~\n {} = Required Arguments  |  () = Optional Arguments```ini\n" +
                     "[_poll help] This list\n" + "[_poll startyesno {time} {question}] Start a Yes/No Poll for " +
                     "\"time\" minutes." + "\n```";
-            note.respond().info(reply).queue();
+            message.respond().info(reply).queue();
         } else if (args.size() > 0) {
             if (args.get(0).equalsIgnoreCase("startyesno") && args.size() > 1) {
                 int time = 15;
@@ -36,7 +37,7 @@ public class PollCommand extends CommandExecutor {
                     }
                 }
                 q = new StringBuilder(q.toString().trim());
-                PollManager.registerPoll(new YesNoPoll(note, q.toString(), time, getBot()));
+                PollManager.registerPoll(new YesNoPoll(message, q.toString(), time, getBot()));
             }
         }
     }

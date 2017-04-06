@@ -1,18 +1,21 @@
 package xyz.gnarbot.gnar.commands.executors.fun;
 
+import net.dv8tion.jda.core.entities.Message;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.utils.Note;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.List;
 
-@Command(aliases = "champdata")
+@Command(
+        aliases = "champdata",
+        category = Category.FUN)
 public class ChampDataCommand extends CommandExecutor {
     public static final String[] names = ChampQuoteCommand.names;
     private static JSONObject information;
@@ -33,7 +36,7 @@ public class ChampDataCommand extends CommandExecutor {
     }
 
     @Override
-    public void execute(Note note, List<String> args) {
+    public void execute(Message message, List<String> args) {
         int maybeDistance = 20;
         String maybe = "";
 
@@ -88,7 +91,7 @@ public class ChampDataCommand extends CommandExecutor {
             spellInfo.append("\n    **").append(fuckTits).append("**: ").append(j.get("name"));
         }
 
-        note.respond().text(spellInfo.toString()).queue();
+        message.respond().text(spellInfo.toString()).queue();
     }
 
 }

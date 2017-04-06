@@ -1,21 +1,25 @@
-package xyz.gnarbot.gnar.commands.executors.general
+package xyz.gnarbot.gnar.commands.executors.media
 
 import b
 import link
+import net.dv8tion.jda.core.entities.Message
 import org.jsoup.Jsoup
 import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.utils.Note
 import java.io.IOException
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
-@Command(aliases = arrayOf("google"), usage = "-query...", description = "Who needs browsers!?")
+@Command(
+        aliases = arrayOf("google"),
+        usage = "-query...",
+        description = "Who needs browsers!?"
+)
 class GoogleCommand : CommandExecutor() {
-    override fun execute(note: Note, args: List<String>) {
+    override fun execute(message: Message, args: List<String>) {
         if (args.isEmpty()) {
-            note.respond().error("Gotta have something to search Google.").queue()
+            message.respond().error("Gotta have something to search Google.").queue()
             return
         }
 
@@ -28,11 +32,11 @@ class GoogleCommand : CommandExecutor() {
                     .select(".g")
 
             if (blocks.isEmpty()) {
-                note.respond().error("No search results for `$query`.").queue()
+                message.respond().error("No search results for `$query`.").queue()
                 return
             }
 
-            note.respond().embed {
+            message.respond().embed {
                 color = Constants.COLOR
                 setAuthor("Google Results", "https://www.google.com/", "https://www.google.com/favicon.ico")
                 thumbnail = "https://gnarbot.xyz/assets/img/google.png"
@@ -61,7 +65,7 @@ class GoogleCommand : CommandExecutor() {
                 }
             }.rest().queue()
         } catch (e: IOException) {
-            note.respond().error("Caught an exception while trying to Google stuff.").queue()
+            message.respond().error("Caught an exception while trying to Google stuff.").queue()
             e.printStackTrace()
         }
     }

@@ -1,28 +1,29 @@
 package xyz.gnarbot.gnar.commands.executors.general;
 
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Message;
 import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.utils.Note;
 
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-@Command(aliases = "ping", description = "Show the bot's current response time.")
+@Command(aliases = "ping",
+        description = "Show the bot's current response time.")
 public class PingCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, List<String> args) {
-        OffsetDateTime sentTime = note.getCreationTime();
+    public void execute(Message message, List<String> args) {
+        OffsetDateTime sentTime = message.getCreationTime();
 
-        note.respond().embed("Ping")
+        message.respond().embed("Ping")
                 .setColor(Constants.COLOR)
                 .setDescription("Checking ping...")
-                .rest().queue(message -> message.editMessage(new EmbedBuilder().setTitle("Response Time")
+                .rest().queue(msg -> msg.editMessage(new EmbedBuilder().setTitle("Response Time")
                         .setColor(Constants.COLOR)
                         .field("Response Time", true, sb -> {
-                            long ping = Math.abs(sentTime.until(message.getCreationTime(), ChronoUnit.MILLIS));
+                            long ping = Math.abs(sentTime.until(msg.getCreationTime(), ChronoUnit.MILLIS));
                             sb.append(ping).append(" ms");
                         })
                         .field("JDA Heartbeat", true, sb -> {

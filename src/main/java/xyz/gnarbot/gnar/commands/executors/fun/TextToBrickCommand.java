@@ -1,23 +1,27 @@
 package xyz.gnarbot.gnar.commands.executors.fun;
 
+import net.dv8tion.jda.core.entities.Message;
 import org.apache.commons.lang3.StringUtils;
 import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 
-@Command(aliases = "ttb", usage = "(string)", description = "Text to bricks fun.")
+@Command(
+        aliases = "ttb",
+        usage = "(string)",
+        description = "Text to bricks fun."
+)
 public class TextToBrickCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, List<String> args) {
+    public void execute(Message message, List<String> args) {
         if (args.isEmpty()) {
-            note.respond().error("Please provide a query.").queue();
+            message.respond().error("Please provide a query.").queue();
             return;
         }
 
-        note.respond().embed("Text to Brick")
+        message.respond().embed("Text to Brick")
                 .setColor(Constants.COLOR)
                 .description(sb -> {
                     for (String a : StringUtils.join(args, " ").split("")) {

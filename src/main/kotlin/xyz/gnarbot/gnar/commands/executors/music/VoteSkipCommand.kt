@@ -3,48 +3,50 @@ package xyz.gnarbot.gnar.commands.executors.music
 import b
 import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
+import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.servers.Servlet
 import xyz.gnarbot.gnar.servers.music.MusicManager
-import xyz.gnarbot.gnar.utils.Note
 import xyz.gnarbot.gnar.utils.schedule
 import java.util.concurrent.TimeUnit
 
 @Command(aliases = arrayOf("voteskip"),
         description = "Vote to skip the current music track.",
-        symbol = "♬")
+        category = Category.MUSIC)
 class VoteSkipCommand : MusicExecutor() {
 
-    override fun execute(note: Note, args: List<String>) {
+    override fun execute(message: Message, args: List<String>) {
         val manager = servlet.musicManager
 
-        if (note.author.voiceState.channel !== null && manager.player.playingTrack !== null) {
-            if (note.author.voiceState.isDeafened) {
-                val msg = note.respond().error("You actually have to be listening to the song to start a vote... Tsk tsk...").complete()
+        val member = servlet.getMember(message.author)
+
+        if (member.voiceState.channel !== null && manager.player.playingTrack !== null) {
+            if (member.voiceState.isDeafened) {
+                val msg = message.respond().error("You actually have to be listening to the song to start a vote... Tsk tsk...").complete()
                 bot.scheduler.schedule(5, TimeUnit.SECONDS) { msg.delete().queue() }
                 return
             }
             if (manager.isVotingToSkip) {
-                val msg = note.respond().error("There is already a vote going on!").complete()
+                val msg = message.respond().error("There is already a vote going on!").complete()
                 bot.scheduler.schedule(5, TimeUnit.SECONDS) { msg.delete().queue() }
                 return
             }
             if ((System.currentTimeMillis() - manager.lastVoteTime) < 30000) {
-                note.respond().error("You must wait 30 seconds before starting a new vote!").queue()
+                message.respond().error("You must wait 30 seconds before starting a new vote!").queue()
                 return
             }
             if ((manager.player.playingTrack.duration - manager.player.playingTrack.position) <= 30) {
-                note.respond().error("By the time the vote finishes, the song will be over!").queue()
+                message.respond().error("By the time the vote finishes, the song will be over!").queue()
                 return
             }
 
             manager.lastVoteTime = System.currentTimeMillis()
             manager.isVotingToSkip = true
 
-            val msg = note.respond().embed("Vote Skip") {
+            val msg = message.respond().embed("Vote Skip") {
                 color = musicColor
                 description {
-                    append(b(note.author.name))
+                    append(b(message.author.name))
                     append(" has voted to **skip** the current track!")
                     appendln("React with :thumbsup: or :thumbsdown:")
                     append("Whichever has the most votes in 30 seconds will win!")
@@ -58,7 +60,7 @@ class VoteSkipCommand : MusicExecutor() {
                 checkVictory(msg, servlet, manager)
             }, 30, TimeUnit.SECONDS)
         } else {
-            note.respond().error("You're not in the Music Channel!\n*or there isn't a song playing...*").queue()
+            message.respond().error("You're not in the Music Channel!\n*or there isn't a song playing...*").queue()
         }
     }
 

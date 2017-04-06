@@ -1,16 +1,17 @@
 package xyz.gnarbot.gnar.commands.executors.music.dj
 
 import net.dv8tion.jda.core.Permission
+import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
+import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("skip"),
         description = "Skip the current music track.",
-        symbol = "♬",
+        category = Category.MUSIC,
         voicePermissions = arrayOf(Permission.MANAGE_CHANNEL))
 class SkipCommand : MusicExecutor() {
-    override fun execute(note: Note, args: List<String>) {
+    override fun execute(message: Message, args: List<String>) {
         val manager = servlet.musicManager
 
         if (manager.scheduler.queue.isEmpty()) {
@@ -19,7 +20,7 @@ class SkipCommand : MusicExecutor() {
             manager.scheduler.nextTrack()
         }
 
-        note.respond().embed("Skip Current Track") {
+        message.respond().embed("Skip Current Track") {
             color = musicColor
             description = "The track was skipped."
         }.rest().queue()

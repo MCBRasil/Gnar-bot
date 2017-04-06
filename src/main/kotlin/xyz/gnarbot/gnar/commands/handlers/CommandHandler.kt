@@ -4,15 +4,13 @@ import net.dv8tion.jda.core.Permission
 import net.dv8tion.jda.core.entities.Message
 import net.dv8tion.jda.core.exceptions.PermissionException
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.members.Client
 import xyz.gnarbot.gnar.servers.Servlet
-import xyz.gnarbot.gnar.utils.Note
 import xyz.gnarbot.gnar.utils.Utils
 
 class CommandHandler(private val servlet: Servlet, private val bot: Bot) {
-    val disabled: MutableList<CommandRegistry.CommandEntry> = mutableListOf()
+    val disabledCommands: MutableList<CommandRegistry.CommandEntry> = mutableListOf()
 
-    val commandRegistry get() = ArrayList(bot.commandRegistry.entries).apply { removeAll(disabled) }
+    val commandRegistry get() = bot.commandRegistry.entries.apply { removeAll(disabledCommands) }
 
     /**
      * @return the amount of successful requests on this command handler.
@@ -25,9 +23,8 @@ class CommandHandler(private val servlet: Servlet, private val bot: Bot) {
      *
      * @param message Message object.
      * @param content String content of the message.
-     * @param author  Author of the message.
      */
-    fun callCommand(message: Message, content: String, author: Client) {
+    fun callCommand(message: Message, content: String) {
         if (!content.startsWith(bot.token)) return
 
         // Tokenize the message.
@@ -36,45 +33,45 @@ class CommandHandler(private val servlet: Servlet, private val bot: Bot) {
         val label = tokens[0].substring(bot.token.length).toLowerCase()
 
         val args = tokens.subList(1, tokens.size)
-
-        val note = Note(servlet, message)
-
+        
         val entry = bot.commandRegistry.getEntry(label) ?: return
 
-        if (disabled.contains(entry)) return
+        if (disabledCommands.contains(entry)) return
 
         val cls = entry.cls
 
         val meta = entry.meta
 
+        val member = servlet.getMember(message.author)
+
         if (meta.channelPermissions.isNotEmpty()) {
-            if (note.author.hasPermission(note.textChannel, *meta.channelPermissions)) {
+            if (member.hasPermission(message.textChannel, *meta.channelPermissions)) {
                 val requirement = meta.channelPermissions.map(Permission::name)
-                note.respond().error("You lack the following permissions `$requirement`.")
+                message.respond().error("You lack the following permissions `$requirement`.")
                 return
             }
         }
         if (meta.voicePermissions.isNotEmpty()) {
-            note.author.voiceState.channel?.let {
-                if (note.author.hasPermission(it, *meta.voicePermissions)) {
+            member.voiceState.channel?.let {
+                if (member.hasPermission(it, *meta.voicePermissions)) {
                     val requirement = meta.channelPermissions.map(Permission::name)
-                    note.respond().error("You lack the following permissions `$requirement`.")
+                    message.respond().error("You lack the following permissions `$requirement`.")
                     return
                 }
             }
         }
         if (meta.guildPermissions.isNotEmpty()) {
-            if (note.author.hasPermission(*meta.guildPermissions)) {
+            if (member.hasPermission(*meta.guildPermissions)) {
                 val requirement = meta.guildPermissions.map(Permission::name)
-                note.respond().error("You lack the following permissions `$requirement`.")
+                message.respond().error("You lack the following permissions `$requirement`.")
                 return
             }
         }
 
-        if (meta.level.value > author.level.value) {
-            note.respond().error("Insufficient bot level.\n${meta.level.requirement}")
-            return
-        }
+//        if (meta.level.value > author.category.value) {
+//            message.respond().error("Insufficient bot level.\n${meta.level.requirement}")
+//            return
+//        }
 
         try {
             requests++
@@ -83,15 +80,16 @@ class CommandHandler(private val servlet: Servlet, private val bot: Bot) {
             cmd.jda = servlet.jda
             cmd.shard = servlet.shard
             cmd.servlet = servlet
+            cmd.commandHandler = this
             cmd.bot = bot
             cmd.commandMeta = meta
 
-            cmd.execute(note, args)
+            cmd.execute(message, args)
         } catch (e: PermissionException) {
-            note.respond().error("The bot lacks the permission `"
+            message.respond().error("The bot lacks the permission `"
                     + e.permission.getName() + "` required to perform this command.").queue()
         } catch (e: RuntimeException) {
-            note.respond().error("**Exception**: " + e.message).queue()
+            message.respond().error("**Exception**: " + e.message).queue()
             e.printStackTrace()
         }
     }
@@ -102,7 +100,7 @@ class CommandHandler(private val servlet: Servlet, private val bot: Bot) {
      * @param cmd Command entry.
      */
     fun enableCommand(cmd: CommandRegistry.CommandEntry) {
-        disabled -= cmd
+        disabledCommands -= cmd
     }
 
     /**
@@ -120,7 +118,7 @@ class CommandHandler(private val servlet: Servlet, private val bot: Bot) {
      * @param cmd Command entry.
      */
     fun disableCommand(cmd: CommandRegistry.CommandEntry) {
-        disabled += cmd
+        disabledCommands += cmd
     }
 
     /**

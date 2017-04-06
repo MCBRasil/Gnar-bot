@@ -1,43 +1,44 @@
 package xyz.gnarbot.gnar.commands.executors.music
 
+import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
+import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.utils.Note
 import xyz.gnarbot.gnar.utils.YouTube
 
 @Command(aliases = arrayOf("play"),
         usage = "-(url|YT search)",
         description = "Joins and play music in a channel.",
-        symbol = "♬")
+        category = Category.MUSIC)
 class PlayCommand : MusicExecutor() {
     
-    override fun execute(note: Note, args: List<String>) {
+    override fun execute(message: Message, args: List<String>) {
         val manager = servlet.musicManager
         
-        val botChannel = servlet.clientHandler.getClient(jda.selfUser).voiceState.channel
-        val userChannel = note.author.voiceState.channel
+        val botChannel = servlet.selfMember.voiceState.channel
+        val userChannel = servlet.getMember(message.author).voiceState.channel
 
         if (botChannel != null && botChannel != userChannel) {
-            note.respond().error("The getBot is already playing music in another channel.").queue()
+            message.respond().error("The getBot is already playing music in another channel.").queue()
             return
         }
 
         if (userChannel == null) {
-            note.respond().error("You must be in a voice channel to play music.").queue()
+            message.respond().error("You must be in a voice channel to play music.").queue()
             return
         }
 
         if (args.isEmpty()) {
             if (manager.player.isPaused) {
                 manager.player.isPaused = false
-                note.respond().embed("Play Music") {
+                message.respond().embed("Play Music") {
                     color = musicColor
                     description = "Music is now playing."
                 }.rest().queue()
             } else if (manager.player.playingTrack != null) {
-                note.respond().error("Music is already playing.").queue()
+                message.respond().error("Music is already playing.").queue()
             } else if (manager.scheduler.queue.isEmpty()) {
-                note.respond().embed("Empty Queue") {
+                message.respond().embed("Empty Queue") {
                     color = musicColor
                     description = "There is no music queued right now. Add some songs with `play -song|url`."
                 }.rest().queue()
@@ -58,7 +59,7 @@ class PlayCommand : MusicExecutor() {
             val results = YouTube.search(query, 2)
 
             if (results.isEmpty()) {
-                note.respond().error("No YouTube results returned for `${query.replace('+', ' ')}`.").queue()
+                message.respond().error("No YouTube results returned for `${query.replace('+', ' ')}`.").queue()
                 return
             }
 
@@ -71,12 +72,12 @@ class PlayCommand : MusicExecutor() {
             servlet.audioManager.sendingHandler = manager.sendHandler
             servlet.audioManager.openAudioConnection(userChannel)
 
-            note.respond().embed("Music Playback") {
+            message.respond().embed("Music Playback") {
                 color = musicColor
                 description = "Joined channel `${userChannel.name}`."
             }.rest().queue()
         }
 
-        manager.loadAndPlay(note, url)
+        manager.loadAndPlay(message, url)
     }
 }

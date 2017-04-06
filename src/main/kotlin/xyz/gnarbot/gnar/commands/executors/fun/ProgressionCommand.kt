@@ -1,22 +1,22 @@
 package xyz.gnarbot.gnar.commands.executors.`fun`
 
+import net.dv8tion.jda.core.entities.Message
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.text.WordUtils
+import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.members.Level
-import xyz.gnarbot.gnar.utils.Note
 import xyz.gnarbot.gnar.utils.schedule
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 @Command(
         aliases = arrayOf("progress"),
-        level = Level.BOT_CREATOR,
-        showInHelp = false
+        administrator = true,
+        category = Category.NONE
 )
 class ProgressionCommand : CommandExecutor() {
-    override fun execute(note: Note, args: List<String>) {
+    override fun execute(message: Message, args: List<String>) {
         val joiner = StringJoiner("\n", "```", "```")
         joiner.add("﻿ ___________________________ ")
         joiner.add("| Progression     [_][☐][✕]|")
@@ -67,7 +67,7 @@ class ProgressionCommand : CommandExecutor() {
         }
 
         try {
-            val msg = note.respond().text(list[0]).complete()
+            val msg = message.respond().text(list[0]).complete()
 
             list.forEachIndexed { i, _ ->
                 bot.scheduler.schedule(i + 1L, TimeUnit.SECONDS) {
@@ -75,7 +75,7 @@ class ProgressionCommand : CommandExecutor() {
                 }
             }
         } catch (e: UnsupportedOperationException) {
-            note.respond().error("Message was too long or something... no memes for you.").queue()
+            message.respond().error("Message was too long or something... no memes for you.").queue()
         }
     }
 }

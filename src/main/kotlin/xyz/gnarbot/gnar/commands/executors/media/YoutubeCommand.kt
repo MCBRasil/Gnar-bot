@@ -1,19 +1,23 @@
-package xyz.gnarbot.gnar.commands.executors.general
+package xyz.gnarbot.gnar.commands.executors.media
 
 import b
 import link
+import net.dv8tion.jda.core.entities.Message
 import org.json.JSONException
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.utils.Note
 import xyz.gnarbot.gnar.utils.YouTube
 import java.awt.Color
 
-@Command(aliases = arrayOf("youtube"), usage = "-query...", description = "Search and get a YouTube video.")
+@Command(
+        aliases = arrayOf("youtube"),
+        usage = "-query...",
+        description = "Search and get a YouTube video."
+)
 class YoutubeCommand : CommandExecutor() {
-    override fun execute(note: Note, args: List<String>) {
+    override fun execute(message: Message, args: List<String>) {
         if (args.isEmpty()) {
-            note.respond().error("Gotta put something to search YouTube.").queue()
+            message.respond().error("Gotta put something to search YouTube.").queue()
             return
         }
 
@@ -23,12 +27,12 @@ class YoutubeCommand : CommandExecutor() {
             val results = YouTube.search(query, 3)
 
             if (results.isEmpty()) {
-                note.respond().error("No search results for `$query`.").queue()
+                message.respond().error("No search results for `$query`.").queue()
                 return
             }
             var firstUrl: String? = null
 
-            note.respond().embed {
+            message.respond().embed {
                 setAuthor("YouTube Results", "https://www.youtube.com", "https://s.ytimg.com/yts/img/favicon_144-vflWmzoXw.png")
                 thumbnail = "https://gnarbot.xyz/assets/img/youtube.png"
                 color = Color(141, 20, 0)
@@ -50,12 +54,12 @@ class YoutubeCommand : CommandExecutor() {
                 }
             }.rest().queue()
 
-            note.respond().text("**First Video:** $firstUrl").queue()
+            message.respond().text("**First Video:** $firstUrl").queue()
         } catch (e: JSONException) {
-            note.respond().error("Unable to get YouTube results.").queue()
+            message.respond().error("Unable to get YouTube results.").queue()
             e.printStackTrace()
         } catch (e: NullPointerException) {
-            note.respond().error("Unable to get YouTube results.").queue()
+            message.respond().error("Unable to get YouTube results.").queue()
             e.printStackTrace()
         }
 

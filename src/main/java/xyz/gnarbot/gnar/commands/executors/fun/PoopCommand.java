@@ -1,18 +1,23 @@
 package xyz.gnarbot.gnar.commands.executors.fun;
 
+import net.dv8tion.jda.core.entities.Message;
 import org.apache.commons.lang3.StringUtils;
 import xyz.gnarbot.gnar.Constants;
+import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 import java.util.StringJoiner;
 
-@Command(aliases = {"poop"}, usage = "[string]", description = "Shit your heart out.")
+@Command(
+        aliases = {"poop"},
+        usage = "[string]",
+        description = "Shit your heart out.",
+        category = Category.FUN)
 public class PoopCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, List<String> args) {
+    public void execute(Message message, List<String> args) {
         String poop = StringUtils.join(args, " ");
 
         StringJoiner joiner = new StringJoiner("\n", "```\n", "```");
@@ -35,7 +40,7 @@ public class PoopCommand extends CommandExecutor {
             try {
                 poopArt.setCharAt(7 + i, poop.charAt(i));
             } catch (IndexOutOfBoundsException e) {
-                note.respond().error("Poop is too big. Constipation occurred.").queue();
+                message.respond().error("Poop is too big. Constipation occurred.").queue();
                 return;
             }
         }
@@ -43,7 +48,7 @@ public class PoopCommand extends CommandExecutor {
         joiner.add(poopArt);
         joiner.add("░░░░░░░░░░░░░░░░░░░░░░░");
 
-        note.respond().embed("Pooping Memes")
+        message.respond().embed("Pooping Memes")
                 .setColor(Constants.COLOR)
                 .setDescription(joiner.toString())
                 .rest().queue();

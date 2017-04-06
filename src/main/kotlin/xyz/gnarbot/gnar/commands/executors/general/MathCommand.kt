@@ -1,11 +1,11 @@
 package xyz.gnarbot.gnar.commands.executors.general
 
 import b
+import net.dv8tion.jda.core.entities.Message
 import org.apache.commons.lang3.StringUtils
 import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.utils.Note
 import xyz.gnarbot.gnar.utils.Utils
 import xyz.hexav.aje.AJEException
 import xyz.hexav.aje.ExpressionBuilder
@@ -14,13 +14,13 @@ import java.util.*
 
 @Command(aliases = arrayOf("math"), usage = "-expression", description = "Calculate fancy math expressions.")
 class MathCommand : CommandExecutor() {
-    override fun execute(note: Note, args: List<String>) {
+    override fun execute(message: Message, args: List<String>) {
         if (args.isEmpty()) {
-            note.respond().error("Please provide a math expression.").queue()
+            message.respond().error("Please provide a math expression.").queue()
             return
         }
 
-        note.respond().embed("Math") {
+        message.respond().embed("Math") {
             color = Constants.COLOR
 
             val exp = ExpressionBuilder()

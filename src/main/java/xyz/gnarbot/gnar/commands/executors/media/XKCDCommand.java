@@ -1,19 +1,24 @@
 package xyz.gnarbot.gnar.commands.executors.media;
 
 import com.mashape.unirest.http.Unirest;
+import net.dv8tion.jda.core.entities.Message;
 import org.json.JSONObject;
 import xyz.gnarbot.gnar.Constants;
+import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 import java.util.Random;
 
-@Command(aliases = "xkcd")
+@Command(
+        aliases = "xkcd",
+        description = "Grab some XKCD comics.",
+        category = Category.FUN
+)
 public class XKCDCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, List<String> args) {
+    public void execute(Message message, List<String> args) {
         try {
             JSONObject latestJso = Unirest.get("http://xkcd.com/info.0.json").asJson().getBody().getObject();
 
@@ -28,7 +33,7 @@ public class XKCDCommand extends CommandExecutor {
                         input = Integer.valueOf(args.get(0));
 
                         if (input > max || input < 1) {
-                            note.respond().error("xkcd does not have a comic for that number.").queue();
+                            message.respond().error("xkcd does not have a comic for that number.").queue();
                         }
 
                         rand = input;
@@ -36,7 +41,7 @@ public class XKCDCommand extends CommandExecutor {
                         if (args.get(0).equalsIgnoreCase("latest")) {
                             rand = max;
                         } else {
-                            note.respond().error("You didn't enter a proper number.").queue();
+                            message.respond().error("You didn't enter a proper number.").queue();
                             return;
                         }
                     }
@@ -55,7 +60,7 @@ public class XKCDCommand extends CommandExecutor {
 
                     String logo = "http://imgs.xkcd.com/static/terrible_small_logo.png";
 
-                    note.respond().embed(title)
+                    message.respond().embed(title)
                             .setColor(Constants.COLOR)
                             .setDescription("No: " + num)
                             .setThumbnail(logo)
@@ -66,7 +71,7 @@ public class XKCDCommand extends CommandExecutor {
                 }
             }
 
-            note.respond().error("Unable to grab xkcd comic.").queue();
+            message.respond().error("Unable to grab xkcd comic.").queue();
         } catch (Exception e) {
             e.printStackTrace();
         }

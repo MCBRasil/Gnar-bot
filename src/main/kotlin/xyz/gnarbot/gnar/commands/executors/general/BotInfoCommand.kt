@@ -2,15 +2,18 @@ package xyz.gnarbot.gnar.commands.executors.general
 
 import link
 import net.dv8tion.jda.core.OnlineStatus
+import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.utils.Note
 
 
-@Command(aliases = arrayOf("info", "botinfo"), description = "Show information about GN4R-BOT.")
+@Command(
+        aliases = arrayOf("info", "botinfo"),
+        description = "Show information about the bot."
+)
 class BotInfoCommand : CommandExecutor() {
-    override fun execute(note: Note, args: List<String>) {
+    override fun execute(message: Message, args: List<String>) {
         val registry = bot.commandRegistry
 
         var uptime_hour = bot.uptime / 1000 / 60 / 60
@@ -24,7 +27,6 @@ class BotInfoCommand : CommandExecutor() {
         var guilds = 0
 
         var users = 0
-        var clients = 0 // wrapper
         var offline = 0
         var online = 0
         var inactive = 0
@@ -47,21 +49,19 @@ class BotInfoCommand : CommandExecutor() {
                 }
             }
 
-            shard.servlets.values.forEach { clients += it.clientHandler.registry.size }
-
             users += shard.users.size
             textChannels += shard.textChannels.size
             voiceChannels += shard.voiceChannels.size
             servlets += shard.servlets.size
         }
 
-        val commandSize = registry.entries.count { it.meta.showInHelp }
+        val commandSize = registry.entries.count { it.meta.category.show }
 
         val requests = bot.shards
                 .flatMap { it.servlets.values }
                 .sumBy { it.commandHandler.requests }
 
-        note.respond().embed("Bot Information") {
+        message.respond().embed("Bot Information") {
             color = Constants.COLOR
 
             field("Requests", true, requests)
@@ -74,7 +74,7 @@ class BotInfoCommand : CommandExecutor() {
 
             field("Guilds", true, guilds)
             field("Guild#Servlets", true, servlets)
-            field("Member#Clients", true, clients)
+            field(true)
 
             field("Users", true) {
                 append("Total: ").appendln(users)

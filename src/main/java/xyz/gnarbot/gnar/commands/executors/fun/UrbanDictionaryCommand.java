@@ -1,21 +1,25 @@
 package xyz.gnarbot.gnar.commands.executors.fun;
 
 import com.mashape.unirest.http.Unirest;
+import net.dv8tion.jda.core.entities.Message;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.Credentials;
+import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 
-@Command(aliases = "ub")
+@Command(
+        aliases = {"urbandict", "ub", "urbandictionary"},
+        category = Category.FUN
+)
 public class UrbanDictionaryCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, List<String> args) {
+    public void execute(Message message, List<String> args) {
         try {
             String query = StringUtils.join(args, "+");
 
@@ -30,13 +34,13 @@ public class UrbanDictionaryCommand extends CommandExecutor {
             JSONArray words = json.getJSONArray("list");
 
             if (words.length() < 1) {
-                note.respond().error("Could not find that word, rip u");
+                message.respond().error("Could not find that word, rip u");
                 return;
             }
 
             JSONObject word = words.getJSONObject(0);
 
-            note.respond().embed("Urban Dictionary")
+            message.respond().embed("Urban Dictionary")
                     .setColor(Constants.COLOR)
                     .setThumbnail("https://s3.amazonaws.com/mashape-production-logos/apis/53aa4f67e4b0a9b1348da532_medium")
                     .field("Word", true, "[" + word.getString("word") + "](" + word.getString("permalink") + ")")
@@ -45,7 +49,7 @@ public class UrbanDictionaryCommand extends CommandExecutor {
                     .rest().queue();
 
         } catch (Exception e) {
-            note.respond().error("Could not find that word, rip u").queue();
+            message.respond().error("Could not find that word, rip u").queue();
         }
     }
 

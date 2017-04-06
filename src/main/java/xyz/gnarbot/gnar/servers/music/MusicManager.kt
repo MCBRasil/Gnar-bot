@@ -6,8 +6,8 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
+import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.servers.Servlet
-import xyz.gnarbot.gnar.utils.Note
 import java.awt.Color
 import java.time.Duration
 
@@ -42,22 +42,22 @@ class MusicManager(servlet: Servlet, val playerManager: AudioPlayerManager) {
         player.addListener(scheduler)
     }
 
-    fun loadAndPlay(note: Note, trackUrl: String) {
+    fun loadAndPlay(message: Message, trackUrl: String) {
         playerManager.loadItemOrdered(this, trackUrl, object : AudioLoadResultHandler {
             override fun trackLoaded(track: AudioTrack) {
                 if (scheduler.queue.size >= TrackScheduler.QUEUE_LIMIT) {
-                    note.respond().error("The queue can not exceed 20 songs.")
+                    message.respond().error("The queue can not exceed 20 songs.")
                     return
                 }
 
                 if (track.duration > Duration.ofHours(1).toMillis()) {
-                    note.respond().error("The track can not exceed 1 hour.")
+                    message.respond().error("The track can not exceed 1 hour.")
                     return
                 }
 
                 scheduler.queue(track)
 
-                note.respond().embed("Music Queue") {
+                message.respond().embed("Music Queue") {
                     color = Color(0, 221, 88)
                     description = "Added __**[${track.info.title}](${track.info.uri})**__ to queue."
                 }.rest().queue()
@@ -70,7 +70,7 @@ class MusicManager(servlet: Servlet, val playerManager: AudioPlayerManager) {
                 for (track in tracks) {
 
                     if (scheduler.queue.size >= TrackScheduler.QUEUE_LIMIT) {
-                        note.respond().info("Ignored ${tracks.size - added} songs as the queue can not exceed 20 songs.")
+                        message.respond().info("Ignored ${tracks.size - added} songs as the queue can not exceed 20 songs.")
                         break
                     }
 
@@ -78,18 +78,18 @@ class MusicManager(servlet: Servlet, val playerManager: AudioPlayerManager) {
                     added++
                 }
 
-                note.respond().embed("Music Queue") {
+                message.respond().embed("Music Queue") {
                     color = Color(0, 221, 88)
                     description = "Added `$added` tracks to queue from playlist `${playlist.name}`."
                 }.rest().queue()
             }
 
             override fun noMatches() {
-                note.respond().error("Nothing found by `$trackUrl`.")
+                message.respond().error("Nothing found by `$trackUrl`.")
             }
 
             override fun loadFailed(e: FriendlyException) {
-                note.respond().error("**Exception**: `${e.message}`")
+                message.respond().error("**Exception**: `${e.message}`")
             }
         })
     }

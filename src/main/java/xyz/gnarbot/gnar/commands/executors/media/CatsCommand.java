@@ -1,20 +1,25 @@
 package xyz.gnarbot.gnar.commands.executors.media;
 
+import net.dv8tion.jda.core.entities.Message;
 import org.w3c.dom.Document;
 import xyz.gnarbot.gnar.Constants;
+import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.utils.Note;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.net.URL;
 import java.util.List;
 
-@Command(aliases = {"cats", "cat"})
+@Command(
+        aliases = {"cats", "cat"},
+        description = "Grab random cats for you.",
+        category = Category.FUN
+)
 public class CatsCommand extends CommandExecutor {
     @Override
-    public void execute(Note note, List<String> args) {
+    public void execute(Message message, List<String> args) {
         try {
             String apiKey = "MTAyODkw";
 
@@ -32,7 +37,7 @@ public class CatsCommand extends CommandExecutor {
 
                         break;
                     default:
-                        note.respond().error("Not a valid picture type. `[png, jpg, gif]`").queue();
+                        message.respond().error("Not a valid picture type. `[png, jpg, gif]`").queue();
                         return;
                 }
             } else {
@@ -43,13 +48,13 @@ public class CatsCommand extends CommandExecutor {
 
             String url = doc.getElementsByTagName("url").item(0).getTextContent();
 
-            note.respond().embed("Random Cat Pictures")
+            message.respond().embed("Random Cat Pictures")
                     .setColor(Constants.COLOR)
                     .setImage(url)
                     .rest().queue();
 
         } catch (Exception e) {
-            note.respond().error("Unable to find cats to sooth the darkness of your soul.").queue();
+            message.respond().error("Unable to find cats to sooth the darkness of your soul.").queue();
             e.printStackTrace();
         }
     }

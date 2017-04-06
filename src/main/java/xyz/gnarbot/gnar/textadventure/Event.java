@@ -1,6 +1,6 @@
 package xyz.gnarbot.gnar.textadventure;
 
-import xyz.gnarbot.gnar.utils.Note;
+import net.dv8tion.jda.core.entities.Message;
 
 import java.awt.*;
 
@@ -35,22 +35,22 @@ public class Event {
         return completedEvent;
     }
 
-    public Event runEvent(Adventure adventure, Note n) {
+    public Event runEvent(Adventure adventure, Message message) {
         return this;
     }
 
-    public void parseResponse(Adventure adventure, Note n, String response) {
+    public void parseResponse(Adventure adventure, Message message, String response) {
 
     }
 
-    public void sendMessage(Note note, String message) {
-        sendMessage(note, message, null);
+    public void sendMessage(Message message, String text) {
+        sendMessage(message, text, null);
     }
 
-    public void sendMessage(Note note, String message, String image) {
-        note.respond().embed(note.getAuthor().getName() + "'s Adventure")
+    public void sendMessage(Message message, String text, String image) {
+        message.respond().embed(message.getAuthor().getName() + "'s Adventure")
                 .field(true)
-                .setDescription(message)
+                .setDescription(text)
                 .setColor(new Color(39, 255, 9))
                 .setThumbnail(image)
                 .rest().queue();

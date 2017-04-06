@@ -1,18 +1,18 @@
 package xyz.gnarbot.gnar.commands.executors.`fun`
 
+import net.dv8tion.jda.core.entities.Message
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.text.WordUtils
 import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.utils.Note
 import java.util.*
 
 @Command(aliases = arrayOf("dialog"),
         usage = "-words...",
         description = "Make some of that Windows ASCII art!")
 class DialogCommand : CommandExecutor() {
-    override fun execute(note: Note, args: List<String>) {
+    override fun execute(message: Message, args: List<String>) {
         val joiner = StringJoiner("\n", "```", "```")
         joiner.add("﻿ ___________________________ ")
         joiner.add("| Dialog          [_][☐][✕]|")
@@ -67,12 +67,12 @@ class DialogCommand : CommandExecutor() {
         joiner.add(" ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾ ")
 
         try {
-            note.respond().embed {
+            message.respond().embed {
                 color = Constants.COLOR
                 description = joiner.toString()
             }.rest().queue()
         } catch (e: UnsupportedOperationException) {
-            note.respond().error("Message was too long or something... no memes for you.").queue()
+            message.respond().error("Message was too long or something... no memes for you.").queue()
         }
     }
 }

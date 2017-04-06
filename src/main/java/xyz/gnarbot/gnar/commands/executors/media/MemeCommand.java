@@ -3,23 +3,27 @@ package xyz.gnarbot.gnar.commands.executors.media;
 
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import net.dv8tion.jda.core.entities.Message;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.Credentials;
+import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
-import xyz.gnarbot.gnar.utils.Note;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-@Command(aliases = "meme",
+@Command(
+        aliases = "meme",
         usage = "-meme_name | _top | _bottom",
-        description = "Create the dankest memes ever.")
+        description = "Create the dankest memes ever.",
+        category = Category.FUN
+)
 public class MemeCommand extends CommandExecutor {
     private static final Map<String, String> map = new TreeMap<>();
 
@@ -41,7 +45,7 @@ public class MemeCommand extends CommandExecutor {
     }
 
     @Override
-    public void execute(Note note, List<String> args) {
+    public void execute(Message message, List<String> args) {
         try {
             if (args.get(0).equalsIgnoreCase("list")) {
                 int page = 1;
@@ -67,7 +71,7 @@ public class MemeCommand extends CommandExecutor {
                 if (page > pages) page = pages;
 
                 int _page = page;
-                note.respond().embed("Meme List")
+                message.respond().embed("Meme List")
                         .description(sb -> {
                             int i = 0;
                             for (String g : names) {
@@ -109,13 +113,13 @@ public class MemeCommand extends CommandExecutor {
                     .getObject()
                     .getJSONObject("data");
 
-            note.respond().embed("Meme Generator")
+            message.respond().embed("Meme Generator")
                     .setColor(Constants.COLOR)
                     .setImage(response.optString("url"))
                     .rest().queue();
 
         } catch (Exception e) {
-            note.respond().error(
+            message.respond().error(
                     "**Please supply more arguments. Example Usage:**\n\n" +
                     "[_meme Spongegar | Top Text | Bottom Text]()\n\n" +
                     "**For a list of memes, type:**\n\n" +

@@ -1,13 +1,13 @@
 package xyz.gnarbot.gnar.textadventure
 
+import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("startadventure"), usage = "[command]", description = "Start a text-based aventure!")
 class StartAdventureCommand : CommandExecutor() {
-    override fun execute(note: Note, args: MutableList<String>) {
-        Adventure.getAdventure(note.author, note, bot)
-        note.delete().queue()
+    override fun execute(message: Message, args: MutableList<String>) {
+        Adventure.getAdventure(message.author, message, bot)
+        message.delete().queue()
     }
 }

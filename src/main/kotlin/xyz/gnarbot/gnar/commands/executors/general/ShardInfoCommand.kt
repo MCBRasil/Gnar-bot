@@ -1,18 +1,19 @@
 package xyz.gnarbot.gnar.commands.executors.general
 
+import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.Constants
+import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.utils.Note
 
 @Command(
         aliases = arrayOf("shards", "shard", "shardinfo"),
         description = "Get shard information.",
-        showInHelp = false
+        category = Category.NONE
 )
 class ShardInfoCommand : CommandExecutor() {
-    override fun execute(note: Note, args: List<String>) {
-        note.respond().embed("Shard Information") {
+    override fun execute(message: Message, args: List<String>) {
+        message.respond().embed("Shard Information") {
             color = Constants.COLOR
             bot.shards.forEach {
                 field("Shard ${it.id}", true) {

@@ -1,20 +1,21 @@
 package xyz.gnarbot.gnar.commands.executors.music
 
+import net.dv8tion.jda.core.entities.Message
 import u
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
+import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.utils.Note
 
 @Command(aliases = arrayOf("queue", "list"),
         description = "Shows the music that's currently queued.",
-        symbol = "♬")
+        category = Category.MUSIC)
 class QueueCommand : MusicExecutor() {
 
-    override fun execute(note: Note, args: List<String>) {
+    override fun execute(message: Message, args: List<String>) {
         val queue = servlet.musicManager.scheduler.queue
 
         if (queue.isEmpty()) {
-            note.respond().embed("Queue") {
+            message.respond().embed("Queue") {
                 color = musicColor
                 description = "The queue is currently empty."
             }.rest().queue()
@@ -24,7 +25,7 @@ class QueueCommand : MusicExecutor() {
         var trackCount = 0
         var queueLength = 0L
 
-        note.respond().embed("Music Queue") {
+        message.respond().embed("Music Queue") {
             color = musicColor
 
             servlet.musicManager.player.playingTrack?.let {

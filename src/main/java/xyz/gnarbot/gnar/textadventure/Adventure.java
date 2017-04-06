@@ -5,7 +5,6 @@ import net.dv8tion.jda.core.entities.User;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.textadventure.enums.DIRECTION;
 import xyz.gnarbot.gnar.textadventure.events.FirstBagEvent;
-import xyz.gnarbot.gnar.utils.Note;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
@@ -36,7 +35,7 @@ public class Adventure {
     private String gender = "";
     private boolean adventureActive = true;
 
-    public Adventure(User u, Note note, Bot bot) {
+    public Adventure(User u, Message note, Bot bot) {
 
         adventures.put(u, this);
         this.user = u;
@@ -70,7 +69,7 @@ public class Adventure {
         return adventures.containsKey(u) && adventures.get(u) != null && adventures.get(u).isAdventureActive();
     }
 
-    public static Adventure getAdventure(User u, Note n, Bot bot) {
+    public static Adventure getAdventure(User u, Message n, Bot bot) {
         if (adventures.containsKey(u) && adventures.get(u) != null) {
             return adventures.get(u).isAdventureActive() ? adventures.get(u) : new Adventure(u, n, bot);
         } else {
@@ -108,30 +107,30 @@ public class Adventure {
         }
     }
 
-    public void sendMessage(Note n, String message) {
-        sendMessage(n, message, getDefaultMessageColor());
+    public void sendMessage(Message msg, String message) {
+        sendMessage(msg, message, getDefaultMessageColor());
     }
 
-    public void sendMessage(Note note, String message, Color color) {
-        sendMessage(note, message, null, color);
+    public void sendMessage(Message msg, String message, Color color) {
+        sendMessage(msg, message, null, color);
     }
 
-    public void sendMessage(Note note, String message, String url) {
-        sendMessage(note, message, url, getDefaultMessageColor());
+    public void sendMessage(Message msg, String message, String url) {
+        sendMessage(msg, message, url, getDefaultMessageColor());
     }
 
-    public void sendMessage(Note note, String message, String url, Color color) {
+    public void sendMessage(Message msg, String message, String url, Color color) {
         lastMessage = message;
-        note.respond().embed(note.getAuthor().getName() + "'s Adventure")
+        msg.respond().embed(msg.getAuthor().getName() + "'s Adventure")
                 .field(true)
                 .setDescription(message)
                 .setColor(color)
                 .setThumbnail(url)
-                .rest().queue(msg -> lastSentMessage = msg);
+                .rest().queue(it -> lastSentMessage = it);
     }
 
-    public void sendInformativeMessage(Note note, String message) {
-        note.respond().embed(note.getAuthor().getName() + "'s Adventure")
+    public void sendInformativeMessage(Message msg, String message) {
+        msg.respond().embed(msg.getAuthor().getName() + "'s Adventure")
                 .field(true)
                 .setDescription(message)
                 .setColor(new Color(0xFFDD15))
@@ -139,8 +138,8 @@ public class Adventure {
                 .rest().queue();
     }
 
-    public void sendLastMessage(Note n, String extra) {
-        n.getChannel().sendMessage(lastSentMessage).queue();
+    public void sendLastMessage(Message msg, String extra) {
+        msg.getChannel().sendMessage(lastSentMessage).queue();
     }
 
     public void getResponseFromEvent(Event e, String response) {
@@ -149,9 +148,9 @@ public class Adventure {
         }
     }
 
-    public void parseResponse(Note n, String response, boolean fromEvent) {
+    public void parseResponse(Message msg, String response, boolean fromEvent) {
         if (state == STATE.RESPONSE_REQUIRED && stateRelation.equalsIgnoreCase("EVENTRESPONSE")) {
-            this.currentEvent.parseResponse(this, n, response);
+            this.currentEvent.parseResponse(this, msg, response);
             if (this.currentEvent.hasCompletedEvent()) {
                 this.stateRelation = "move";
                 state = STATE.WAITING;
@@ -162,7 +161,7 @@ public class Adventure {
             setHeroName(response);
             this.grid.beginBuild();
             gender = "selecting";
-            sendMessage(n, "*A new adventure begins! This is the story of...* ***`" + heroName + "`!***\n\nWait a " +
+            sendMessage(msg, "*A new adventure begins! This is the story of...* ***`" + heroName + "`!***\n\nWait a " +
                     "moment... Are you a **BOY** or a **GIRL**?");
             state = STATE.WAITING;
             stateRelation = "selectGender";
@@ -176,12 +175,12 @@ public class Adventure {
                 stateRelation = "move";
                 currentArea = startArea;
                 getGrid().getCurrentArea().discover();
-                sendMessage(n, "Ah! So you're a " + response.toLowerCase() + "! Fantastic! Let's get you started on "
+                sendMessage(msg, "Ah! So you're a " + response.toLowerCase() + "! Fantastic! Let's get you started on "
                         + "your very own adventure!\nThe world is yours to claim! Go out and claim it!\n\n ➜ *To " +
                         "move, " + "use the `_adventure` command!*\n Example: *`_adventure up`* will try to move you " +
                         "up\n ➜ *To " + "view your map, use the `_adventure map` command!*");
             } else {
-                sendMessage(n, "I'm unsure of what you meant by `" + response + "`. Type `_adventure help` to bring "
+                sendMessage(msg, "I'm unsure of what you meant by `" + response + "`. Type `_adventure help` to bring "
                         + "up the Help Menu."); // Placeholder until I add the moving system.
             }
         } else {
@@ -193,7 +192,7 @@ public class Adventure {
                         ("south") || response
                         .equalsIgnoreCase("east") || response.equalsIgnoreCase("west")) {
                     if (!getGrid().moveInDirection(DIRECTION.getFromString(response))) {
-                        sendMessage(n, "Oops! There's something blocking your way!", "http://i.imgur" + "" +
+                        sendMessage(msg, "Oops! There's something blocking your way!", "http://i.imgur" + "" +
                                 ".com/R9gfp56.png");
                     } else {
                         if (getGrid().getCurrentArea().isNewLocation()) {
@@ -201,12 +200,12 @@ public class Adventure {
                         }
                         getGrid().getCurrentArea().discover();
                         getGrid().getCurrentArea().moveToHere();
-                        sendMessage(n, "You continue onwards, towards a " + getGrid().getCurrentArea()
+                        sendMessage(msg, "You continue onwards, towards a " + getGrid().getCurrentArea()
                                 .getType()
                                 .getName(), getGrid().getCurrentArea().getType().getUrl());
                         if (getGrid().getCurrentArea().getRelatedEvent() != null && !getGrid().getCurrentArea()
                                 .hasCompletedEvent()) {
-                            currentEvent = getGrid().getCurrentArea().getRelatedEvent().runEvent(this, n);
+                            currentEvent = getGrid().getCurrentArea().getRelatedEvent().runEvent(this, msg);
                             state = STATE.RESPONSE_REQUIRED;
                             stateRelation = "EVENTRESPONSE";
                         }
@@ -214,7 +213,7 @@ public class Adventure {
                     return;
                 }
             }
-            sendMessage(n, "I'm unsure of what you meant by `" + response + "`. Type `_adventure help` to bring up "
+            sendMessage(msg, "I'm unsure of what you meant by `" + response + "`. Type `_adventure help` to bring up "
                     + "the Help Menu."); // Placeholder until I add the moving system.
         }
     }
