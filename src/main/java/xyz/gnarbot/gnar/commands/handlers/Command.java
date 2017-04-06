@@ -49,4 +49,6 @@ public @interface Command {
     Permission[] guildPermissions() default {};
 
     Permission[] channelPermissions() default {};
+
+    Permission[] voicePermissions() default {};
 }

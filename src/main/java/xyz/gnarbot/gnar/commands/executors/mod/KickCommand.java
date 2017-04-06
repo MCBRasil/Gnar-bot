@@ -12,7 +12,7 @@ import java.util.List;
 @Command(aliases = "kick",
         usage = "-user",
         level = Level.BOT_COMMANDER,
-        channelPermissions = Permission.KICK_MEMBERS)
+        guildPermissions = Permission.KICK_MEMBERS)
 public class KickCommand extends CommandExecutor {
 
     @Override

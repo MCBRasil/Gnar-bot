@@ -54,6 +54,15 @@ class CommandHandler(private val servlet: Servlet, private val bot: Bot) {
                 return
             }
         }
+        if (meta.voicePermissions.isNotEmpty()) {
+            note.author.voiceState.channel?.let {
+                if (note.author.hasPermission(it, *meta.voicePermissions)) {
+                    val requirement = meta.channelPermissions.map(Permission::name)
+                    note.respond().error("You lack the following permissions `$requirement`.")
+                    return
+                }
+            }
+        }
         if (meta.guildPermissions.isNotEmpty()) {
             if (note.author.hasPermission(*meta.guildPermissions)) {
                 val requirement = meta.guildPermissions.map(Permission::name)
