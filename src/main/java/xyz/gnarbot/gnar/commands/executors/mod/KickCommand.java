@@ -16,7 +16,7 @@ import java.util.List;
 public class KickCommand extends CommandExecutor {
     @Override
     public void execute(Message message, List<String> args) {
-        Member author = getServlet().getMember(message.getAuthor());
+        Member author = message.getMember();
         Member target = null;
 
 //        if (!author.hasPermission(note.getTextChannel(), Permission.KICK_MEMBERS)) {

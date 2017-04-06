@@ -42,7 +42,7 @@ class CommandHandler(private val servlet: Servlet, private val bot: Bot) {
 
         val meta = entry.meta
 
-        val member = servlet.getMember(message.author)
+        val member = message.member
 
         if (meta.channelPermissions.isNotEmpty()) {
             if (member.hasPermission(message.textChannel, *meta.channelPermissions)) {

@@ -18,11 +18,6 @@ import java.util.concurrent.TimeUnit;
 public class DeleteMessageCommand extends CommandExecutor {
     @Override
     public void execute(Message message, List<String> args) {
-//        if (!note.getAuthor().hasPermission(Permission.MESSAGE_MANAGE)) {
-//            note.respond().error("You don't have the `Manage Messages` permission!").queue();
-//            return;
-//        }
-
         if (args.isEmpty()) {
             message.respond().error("Please input message ID(s) to queue them for deletion.").queue();
             return;

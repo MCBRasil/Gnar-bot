@@ -15,7 +15,7 @@ import java.util.List;
 public class BanCommand extends CommandExecutor {
     @Override
     public void execute(Message message, List<String> args) {
-        Member author = getServlet().getMember(message.getAuthor());
+        Member author = message.getMember();
         Member target = null;
 
         if (message.getMentionedChannels().size() >= 1) {

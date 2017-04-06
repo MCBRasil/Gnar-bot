@@ -20,11 +20,6 @@ public class PruneCommand extends CommandExecutor {
 
     @Override
     public void execute(Message message, List<String> args) {
-//        if (!note.getAuthor().hasPermission(Permission.MESSAGE_MANAGE)) {
-//            note.respond().error("You don't have the `Manage Messages` permission!").queue();
-//            return;
-//        }
-
         if (args.isEmpty()) {
             message.respond().error("Insufficient amount of arguments.").queue();
             return;
