@@ -24,22 +24,26 @@ public class PruneCommand extends CommandExecutor {
             message.respond().error("Insufficient amount of arguments.").queue();
             return;
         }
+        
+        message.delete().queue();
 
+        MessageHistory history = message.respond().getChannel().getHistory();
+
+        int amount;
         try {
-            message.delete().queue();
-
-            MessageHistory history = message.respond().getChannel().getHistory();
-
-            int amount = Integer.parseInt(args.get(0));
+            amount = Integer.parseInt(args.get(0));
             amount = Math.min(amount, 100);
+        } catch (NumberFormatException e) {
+            message.respond().error("Improper arguments supplies, must be a number.").queue();
+            return;
+        }
 
-            if (amount < 2) {
-                message.respond().error("You need to delete 2 or more messages to use this command.").queue();
-                return;
-            }
+        if (amount < 2) {
+            message.respond().error("You need to delete 2 or more messages to use this command.").queue();
+            return;
+        }
 
-            List<Message> msgs = history.retrievePast(amount).complete();
-
+        history.retrievePast(amount).queue(msgs -> {
             if (args.size() >= 2) {
                 List<String> filter = args.subList(1, args.size());
 
@@ -57,12 +61,9 @@ public class PruneCommand extends CommandExecutor {
 
             message.getTextChannel().deleteMessages(msgs).queue();
 
-            Message msg = message.respond().info("Attempted to delete **[" + msgs.size() + "]()** messages.\nDeleting this message in **5** seconds.")
-                    .complete();
-
-            getBot().getScheduler().schedule(() -> msg.delete().queue(), 5, TimeUnit.SECONDS);
-        } catch (NumberFormatException e) {
-            message.respond().error("Improper arguments supplies, must be a number.").queue();
-        }
+            message.respond().info("Attempted to delete **[" + msgs.size() + "]()** messages.\nDeleting this message in **5** seconds.")
+                    .queue(msg -> getBot().getScheduler().schedule(
+                            () -> msg.delete().queue(), 5, TimeUnit.SECONDS));
+        });
     }
 }

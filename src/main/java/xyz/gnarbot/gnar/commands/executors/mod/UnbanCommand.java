@@ -17,27 +17,29 @@ public class UnbanCommand extends CommandExecutor {
     @Override
     public void execute(Message message, List<String> args) {
         Member author = message.getMember();
-        Member target = null;
 
-        List<User> bans = message.getGuild().getController().getBans().complete();
 
-        for (User user : bans) {
-            if (user.getId().equals(args.get(0))) {
-                target = getServlet().getMember(user);
-                break;
+        message.getGuild().getController().getBans().queue(bans -> {
+            Member target = null;
+
+            for (User user : bans) {
+                if (user.getId().equals(args.get(0))) {
+                    target = getServlet().getMember(user);
+                    break;
+                }
             }
-        }
 
-        if (args.size() >= 1) {
-            target = getServlet().getMemberByName(args.get(0), true);
-        }
-        if (target == null) {
-            message.respond().error("Could not find user.").queue();
-            return;
-        }
+            if (args.size() >= 1) {
+                target = getServlet().getMemberByName(args.get(0), true);
+            }
+            if (target == null) {
+                message.respond().error("Could not find user.").queue();
+                return;
+            }
 
-        getServlet().getController().unban(target).queue();
-        message.respond().info(target.getEffectiveName() + " has been unbanned.").queue();
+            getServlet().getController().unban(target).queue();
+            message.respond().info(target.getEffectiveName() + " has been unbanned.").queue();
+        });
     }
 }
 

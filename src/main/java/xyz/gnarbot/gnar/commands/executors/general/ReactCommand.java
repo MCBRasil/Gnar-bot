@@ -19,35 +19,24 @@ public class ReactCommand extends CommandExecutor {
             return;
         }
 
-        String msg_id = args.get(0);
-        Message msg = message.getChannel().getMessageById(msg_id).complete();
+        message.getChannel().getMessageById(args.get(0)).queue(msg -> {
+            if (message.getEmotes().size() > 0) {
+                for (Emote em : message.getEmotes()) {
+                    msg.addReaction(em).queue();
+                }
+            } else {
+                List<String> reactions = args.subList(1, args.size());
 
-        if (message.getEmotes().size() > 0) {
-            for (Emote em : message.getEmotes()) {
-                msg.addReaction(em).queue();
+                if (reactions.isEmpty()) {
+                    message.respond().error("No reactions detected, robot.").queue();
+                    return;
+                }
+
+                for (String r : reactions) {
+                    msg.addReaction(r).queue();
+                }
             }
-
-        } else {
-            boolean suc = false;
-
-            List<String> reactions = args.subList(1, args.size());
-
-            for (String r : reactions) {
-                msg.addReaction(r).queue();
-                suc = true;
-            }
-
-//            if (suc) {
-////                note.info("Reacted to the message with " + (args.size() - 1) + " emotes. :smile:")
-////                        .complete()
-////                        .optDelete(5);
-////                return;
-//            }
-
-            if (!suc) {
-                message.respond().error("No reactions detected, robot.").queue();
-            }
-        }
+        });
     }
 }
 

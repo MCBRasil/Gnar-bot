@@ -164,14 +164,13 @@ public class AdventureGrid {
             }
 
             bot.getScheduler().schedule(() ->
-            {
-                try {
-                    Message m = msg.respond().info("Sending your map!").complete();
-                    msg.getChannel().sendFile(mapFile, m).queue();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }, 1, TimeUnit.SECONDS);
+                    msg.respond().info("Sending your map!").queue(it -> {
+                        try {
+                            msg.getChannel().sendFile(mapFile, it).queue();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }), 1, TimeUnit.SECONDS);
 
             bot.getScheduler().schedule(() ->
             {

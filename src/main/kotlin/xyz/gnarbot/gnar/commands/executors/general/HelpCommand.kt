@@ -55,60 +55,56 @@ class HelpCommand : CommandExecutor() {
 
         val cmds = registry.entries
 
-        val privateChannel = if (!message.author.hasPrivateChannel()) {
-            message.author.openPrivateChannel().complete()
-        } else {
-            message.author.privateChannel
-        }
+        message.author.openPrivateChannel().queue {
+            it.send().embed("Documentation") {
+                color = Constants.COLOR
+                description = "This is all of Gnar's currently registered commands."
 
-        privateChannel.send().embed("Documentation") {
-            color = Constants.COLOR
-            description = "This is all of Gnar's currently registered commands."
+                for (category in Category.values()) {
+                    if (!category.show) continue
 
-            for (category in Category.values()) {
-                if (!category.show) continue
+                    val filtered = cmds.filter {
+                        it.meta.category == category
+                    }
+                    if (filtered.isEmpty()) continue
 
-                val filtered = cmds.filter {
-                   it.meta.category == category
-                }
-                if (filtered.isEmpty()) continue
+                    val pages = Lists.partition(filtered, filtered.size / 3 + 1)
 
-                val pages = Lists.partition(filtered, filtered.size / 3 + 1)
+                    field(true)
+                    field("${category.title} — ${filtered.size}\n", false, category.description)
 
-                field(true)
-                field("${category.title} — ${filtered.size}\n", false, category.description)
-
-                for (page in pages) {
-                    field("", true) {
-                        page.forEach {
-                            append("**[").append(bot.token).append(it.meta.aliases[0]).appendln("]()**")
+                    for (page in pages) {
+                        field("", true) {
+                            page.forEach {
+                                append("**[").append(bot.token).append(it.meta.aliases[0]).appendln("]()**")
+                            }
                         }
                     }
                 }
-            }
 
-            field(true)
-            field("Additional Information") {
-                append("To view a command's description, do `").append(bot.token).appendln("help [command]`.")
-                append("__The commands that requires a named role must be created by you and assigned to a member in your guild.__")
-            }
+                field(true)
+                field("Additional Information") {
+                    append("To view a command's description, do `").append(bot.token).appendln("help [command]`.")
+                    append("__The commands that requires a named role must be created by you and assigned to a member in your guild.__")
+                }
 
-            field("News") {
-                appendln("• Music is laggy, please donate for better quality.")
-                appendln("• The League command will probably be removed")
-                appendln("• Working on our own custom version of JDA")
-                appendln("• Donation links fixed along with general buds")
-            }
+                field("News") {
+                    appendln("• Music is laggy, please donate for better quality.")
+                    appendln("• The League command will probably be removed")
+                    appendln("• Working on our own custom version of JDA")
+                    appendln("• Donation links fixed along with general buds")
+                }
 
-            field("Contact") {
-                appendln(b(link("Website", "http://gnarbot.xyz")))
-                append(b(link("Discord Server", "http://discord.gg/NQRpmr2")))
-            }
+                field("Contact") {
+                    appendln(b(link("Website", "http://gnarbot.xyz")))
+                    append(b(link("Discord Server", "http://discord.gg/NQRpmr2")))
+                }
 
-            field("Donations") {
-                appendln(b(link("Donate", "https://gnarbot.xyz/donate")))
-            }
-        }.rest().queue()
+                field("Donations") {
+                    appendln(b(link("Donate", "https://gnarbot.xyz/donate")))
+                }
+            }.rest().queue()
+        }
 
         message.respond().info("Gnar's guide has been directly messaged to you.\n\nNeed more support? Reach us on our __**[official support server](https://discord.gg/NQRpmr2)**__.").queue()
     }

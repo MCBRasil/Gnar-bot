@@ -34,18 +34,16 @@ public class DeleteMessageCommand extends CommandExecutor {
                 msg.delete().queue();
             }
 
-            Message msg = message.respond().info("Deleted the message.\nDeleting this message in **5** seconds.")
-                    .complete();
-
-            getBot().getScheduler().schedule(() -> msg.delete().queue(), 5, TimeUnit.SECONDS);
+            message.respond().info("Deleted the message.\nDeleting this message in **5** seconds.")
+                    .queue(msg -> getBot().getScheduler().schedule(
+                            () -> msg.delete().queue(), 5, TimeUnit.SECONDS));
         } else {
             message.getTextChannel().deleteMessages(list).queue();
 
-            Message msg = message.respond().info("Attempted to delete **[" + list.size()
+            message.respond().info("Attempted to delete **[" + list.size()
                     + "]()** messages.\nDeleting this message in **5** seconds.")
-                    .complete();
-
-            getBot().getScheduler().schedule(() -> msg.delete().queue(), 5, TimeUnit.SECONDS);
+                    .queue(it -> getBot().getScheduler().schedule(
+                            () -> it.delete().queue(), 5, TimeUnit.SECONDS));
         }
     }
 }

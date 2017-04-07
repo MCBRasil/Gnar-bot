@@ -45,25 +45,25 @@ class CommandHandler(private val servlet: Servlet, private val bot: Bot) {
         val member = message.member
 
         if (meta.channelPermissions.isNotEmpty()) {
-            if (member.hasPermission(message.textChannel, *meta.channelPermissions)) {
-                val requirement = meta.channelPermissions.map(Permission::name)
-                message.respond().error("You lack the following permissions `$requirement`.")
+            if (!member.hasPermission(message.textChannel, *meta.channelPermissions)) {
+                val requirement = meta.channelPermissions.map(Permission::getName)
+                message.respond().error("You lack the following permissions: `$requirement`.").queue()
                 return
             }
         }
         if (meta.voicePermissions.isNotEmpty()) {
             member.voiceState.channel?.let {
-                if (member.hasPermission(it, *meta.voicePermissions)) {
-                    val requirement = meta.channelPermissions.map(Permission::name)
-                    message.respond().error("You lack the following permissions `$requirement`.")
+                if (!member.hasPermission(it, *meta.voicePermissions)) {
+                    val requirement = meta.voicePermissions.map(Permission::getName)
+                    message.respond().error("You lack the following permissions: `$requirement`.").queue()
                     return
                 }
             }
         }
         if (meta.guildPermissions.isNotEmpty()) {
-            if (member.hasPermission(*meta.guildPermissions)) {
-                val requirement = meta.guildPermissions.map(Permission::name)
-                message.respond().error("You lack the following permissions `$requirement`.")
+            if (!member.hasPermission(*meta.guildPermissions)) {
+                val requirement = meta.guildPermissions.map(Permission::getName)
+                message.respond().error("You lack the following permissions: `$requirement`.").queue()
                 return
             }
         }

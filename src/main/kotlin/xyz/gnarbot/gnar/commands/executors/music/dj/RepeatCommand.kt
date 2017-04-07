@@ -11,7 +11,6 @@ import xyz.gnarbot.gnar.commands.handlers.Command
         category = Category.MUSIC,
         voicePermissions = arrayOf(Permission.MANAGE_CHANNEL))
 class RepeatCommand : MusicExecutor() {
-
     override fun execute(message: Message, args: List<String>) {
         val manager = servlet.musicManager
 

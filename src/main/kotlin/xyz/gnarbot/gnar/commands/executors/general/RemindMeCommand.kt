@@ -4,6 +4,7 @@ import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
+import xyz.gnarbot.gnar.utils.schedule
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -34,18 +35,14 @@ class RemindMeCommand : CommandExecutor() {
                     description = "I'll be reminding you in __$time ${timeUnit.toString().toLowerCase()}__."
                 }.rest().queue()
 
-                bot.scheduler.schedule({
-                    val privateChannel = if (!message.author.hasPrivateChannel()) {
-                        message.author.openPrivateChannel().complete()
-                    } else {
-                        message.author.privateChannel
+                bot.scheduler.schedule(time.toLong(), timeUnit) {
+                    message.author.openPrivateChannel().queue {
+                        it.send().embed("Reminder from $time ${timeUnit.toString().toLowerCase()} ago.") {
+                            color = Constants.COLOR
+                            description = string
+                        }.rest().queue()
                     }
-
-                    privateChannel.send().embed("Reminder from $time ${timeUnit.toString().toLowerCase()} ago.") {
-                        color = Constants.COLOR
-                        description = string
-                    }.rest().queue()
-                }, time.toLong(), timeUnit)
+                }
             } else {
                 message.respond().error("Number must be more than 0.").queue()
             }

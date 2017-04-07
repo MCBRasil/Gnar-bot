@@ -31,13 +31,12 @@ public class QuoteCommand extends CommandExecutor {
         for (String id : args) {
             if (!id.contains("#")) {
                 try {
-                    Message msg = message.getChannel().getMessageById(id).complete();
-
-                    targetChannel.send().embed()
+                    final TextChannel _targetChannel = targetChannel;
+                    message.getChannel().getMessageById(id).queue(msg -> _targetChannel.send().embed()
                             .setColor(Constants.COLOR)
                             .setAuthor(msg.getAuthor().getName(), null, msg.getAuthor().getAvatarUrl())
                             .setDescription(msg.getContent())
-                            .rest().queue();
+                            .rest().queue());
 
                 } catch (Exception e) {
                     try {
