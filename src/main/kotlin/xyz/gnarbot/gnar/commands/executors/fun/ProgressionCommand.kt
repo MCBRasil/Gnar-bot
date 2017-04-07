@@ -67,11 +67,11 @@ class ProgressionCommand : CommandExecutor() {
         }
 
         try {
-            val msg = message.respond().text(list[0]).complete()
-
-            list.forEachIndexed { i, _ ->
-                bot.scheduler.schedule(i + 1L, TimeUnit.SECONDS) {
-                    msg.editMessage(list[i]).queue()
+            message.respond().text(list[0]).queue { msg ->
+                list.forEachIndexed { i, _ ->
+                    bot.scheduler.schedule(i + 1L, TimeUnit.SECONDS) {
+                        msg.editMessage(list[i]).queue()
+                    }
                 }
             }
         } catch (e: UnsupportedOperationException) {

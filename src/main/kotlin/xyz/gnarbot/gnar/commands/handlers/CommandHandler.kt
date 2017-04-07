@@ -44,20 +44,31 @@ class CommandHandler(private val servlet: Servlet, private val bot: Bot) {
 
         val member = message.member
 
+        if (meta.administrator) {
+            if (!bot.admins.contains(member.id)) {
+                message.respond().error("This command is for bot administrators only.").queue()
+                return
+            }
+        }
+
         if (meta.channelPermissions.isNotEmpty()) {
+            val channel = message.textChannel
             if (!member.hasPermission(message.textChannel, *meta.channelPermissions)) {
                 val requirement = meta.channelPermissions.map(Permission::getName)
-                message.respond().error("You lack the following permissions: `$requirement`.").queue()
+                message.respond().error("You lack the following permissions: `$requirement` in ${channel.asMention}.").queue()
                 return
             }
         }
         if (meta.voicePermissions.isNotEmpty()) {
-            member.voiceState.channel?.let {
-                if (!member.hasPermission(it, *meta.voicePermissions)) {
-                    val requirement = meta.voicePermissions.map(Permission::getName)
-                    message.respond().error("You lack the following permissions: `$requirement`.").queue()
-                    return
-                }
+            val channel = member.voiceState.channel
+            if (channel == null) {
+                message.respond().error("This command requires you to be in a voice channel.").queue()
+                return
+            }
+            if (!member.hasPermission(channel, *meta.voicePermissions)) {
+                val requirement = meta.voicePermissions.map(Permission::getName)
+                message.respond().error("You lack the following permissions: `$requirement` in ${channel.name}.").queue()
+                return
             }
         }
         if (meta.guildPermissions.isNotEmpty()) {

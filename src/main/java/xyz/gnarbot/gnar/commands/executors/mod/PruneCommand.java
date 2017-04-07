@@ -11,11 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@Command(aliases = {"prune", "delmessages", "delmsgs"},
+@Command(
+        aliases = {"prune", "delmessages", "delmsgs"},
         usage = "-amount -words...",
         description = "Delete up to 100 messages.",
         category = Category.MODERATION,
-        channelPermissions = Permission.MESSAGE_MANAGE)
+        channelPermissions = Permission.MESSAGE_MANAGE
+)
 public class PruneCommand extends CommandExecutor {
 
     @Override

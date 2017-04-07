@@ -12,7 +12,7 @@ public class YesNoPoll extends Poll {
     private final Message msg;
     private final String question;
     private final int minutes;
-    private User startingClient;
+    private User startingUser;
     private ScheduledFuture runTask;
     private int pollid;
 
@@ -26,15 +26,11 @@ public class YesNoPoll extends Poll {
 
     @Override
     public void start() {
-
-        System.out.println(msg.getAuthor().getName() + " created a new poll");
-        startingClient = msg.getAuthor();
-        final Message repliedMessage;
-
-        repliedMessage = msg.respond().embed("Yes or No Poll")
+        startingUser = msg.getAuthor();
+        msg.respond().embed("Yes or No Poll")
                 .description(sb -> {
                     sb.append(":pushpin: *A new poll has been started by* **")
-                            .append(startingClient.getName())
+                            .append(startingUser.getName())
                             .append("** `(Poll ID: ")
                             .append(getId())
                             .append(")`\n\n")
@@ -51,69 +47,64 @@ public class YesNoPoll extends Poll {
                             .append(" ╠ ❌ - No  [0 Votes]\n")
                             .append("        ╚ ✅ - Yes [0 Votes]");
                 })
-                .rest().complete();
+                .rest().queue(msg -> {
+            msg.addReaction("❌");
 
-        System.out.println(repliedMessage.getId());
-        repliedMessage.addReaction("❌");
+            runTask = getBot().getScheduler().scheduleAtFixedRate(new Runnable() {
+                int minutesInst = minutes;
 
-        runTask = getBot().getScheduler().scheduleAtFixedRate(new Runnable() {
-            int minutesInst = minutes;
+                int seconds = 0;
 
-            int seconds = 0;
+                int timetaken = 0;
 
-            int timetaken = 0;
-
-            @Override
-            public void run() {
-                System.out.println(timetaken);
-                timetaken++;
-                if (timetaken == 1) {
-                    repliedMessage.addReaction("✅");
-                }
-                if (minutesInst >= 0) {
-                    seconds--;
-                    if (seconds <= 0) {
-                        seconds = 60;
-                        minutesInst--;
+                @Override
+                public void run() {
+                    System.out.println(timetaken);
+                    timetaken++;
+                    if (timetaken == 1) {
+                        msg.addReaction("✅");
                     }
-                    if (String.valueOf(seconds).contains("5") || String.valueOf(seconds).contains("0")) {
-                        repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingClient
-                                .getName() + "** `(Poll ID: " + getId() + ")`\n\n" + ":paperclip: " +
-                                "Question:\n" + "        ╚ " + question + "\n\n" + ":clock1: Time Left:\n" + "   " +
-                                "     ╚ " + minutesInst + " minute(s) " + seconds + " second(s)\n\n" + ":gem: " +
-                                "Votes:\n" + "      " + "  ╠ ❌ - No  [" + (repliedMessage
-                                .getReactions()
-                                .get(0)
-                                .getCount() - 1) + " Votes]\n" + "        ╚ ✅ - Yes [" + (repliedMessage
-                                .getReactions()
-                                .get(0)
-                                .getCount() - 1) + " " + "Votes]").queue();
+                    if (minutesInst >= 0) {
+                        seconds--;
+                        if (seconds <= 0) {
+                            seconds = 60;
+                            minutesInst--;
+                        }
+                        if (String.valueOf(seconds).contains("5") || String.valueOf(seconds).contains("0")) {
+                            msg.editMessage(":pushpin: *A new poll has been started by* **" + startingUser
+                                    .getName() + "** `(Poll ID: " + getId() + ")`\n\n" + ":paperclip: " +
+                                    "Question:\n" + "        ╚ " + question + "\n\n" + ":clock1: Time Left:\n" + "   " +
+                                    "     ╚ " + minutesInst + " minute(s) " + seconds + " second(s)\n\n" + ":gem: " +
+                                    "Votes:\n" + "      " + "  ╠ ❌ - No  [" + (msg
+                                    .getReactions()
+                                    .get(0)
+                                    .getCount() - 1) + " Votes]\n" + "        ╚ ✅ - Yes [" + (msg
+                                    .getReactions()
+                                    .get(0)
+                                    .getCount() - 1) + " " + "Votes]").queue();
+                        }
                     }
                 }
-            }
-        }, 1, 1, TimeUnit.SECONDS);
+            }, 1, 1, TimeUnit.SECONDS);
 
-        getBot().getScheduler().schedule(() ->
-        {
-            repliedMessage.editMessage(":pushpin: *A new poll has been started by* **" + startingClient.getName() +
-                    "**" + " `(Poll ID: " + getId() + ")`\n\n" + ":paperclip: Question:\n" + "        ╚ " +
-                    question + "\n\n" + ":clock1: Time Left:\n" + "        ╚ **Voting Over**\n\n" + ":gem: " +
-                    "Votes:\n" + "        " + "╠ ❌ - No  [" + (repliedMessage
-                    .getReactions()
-                    .get(0)
-                    .getCount() - 1) + " Votes]\n" + "        ╚ " + "✅ - Yes [" + (repliedMessage.getReactions()
-                    .get(0)
-                    .getCount() - 1) + " Votes]").queue();
+            getBot().getScheduler().schedule(() -> {
+                msg.editMessage(":pushpin: *A new poll has been started by* **" + startingUser.getName() +
+                        "**" + " `(Poll ID: " + getId() + ")`\n\n" + ":paperclip: Question:\n" + "        ╚ " +
+                        question + "\n\n" + ":clock1: Time Left:\n" + "        ╚ **Voting Over**\n\n" + ":gem: " +
+                        "Votes:\n" + "        " + "╠ ❌ - No  [" +
+                        (msg.getReactions().get(0).getCount() - 1) + " Votes]\n" + "        ╚ " + "✅ - Yes [" +
+                        (msg.getReactions().get(0).getCount() - 1) + " Votes]").queue();
 
-            repliedMessage.respond().text(":exclamation: Poll `#" + getId() + "` by " + startingClient.getName() + " " +
-                    "has " + "finished! Check above for the results!");
+                msg.respond().text(":exclamation: Poll `#" + getId() + "` by " + startingUser.getName() + " " +
+                        "has " + "finished! Check above for the results!");
 
-            startingClient.getPrivateChannel()
-                    .sendMessage(":exclamation: Your poll in <#" + msg.getChannel()
-                            .getId() + "> has ended! Go check it's results!");
+                startingUser.getPrivateChannel()
+                        .sendMessage(":exclamation: Your poll in <#" + this.msg.getChannel()
+                                .getId() + "> has ended! Go check it's results!");
 
-            runTask.cancel(true);
-        }, minutes * 60 + 5, TimeUnit.SECONDS);
+                runTask.cancel(true);
+            }, minutes * 60 + 5, TimeUnit.SECONDS);
+        });
 
     }
 

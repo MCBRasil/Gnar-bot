@@ -22,13 +22,15 @@ class VoteSkipCommand : MusicExecutor() {
 
         if (member.voiceState.channel !== null && manager.player.playingTrack !== null) {
             if (member.voiceState.isDeafened) {
-                val msg = message.respond().error("You actually have to be listening to the song to start a vote... Tsk tsk...").complete()
-                bot.scheduler.schedule(5, TimeUnit.SECONDS) { msg.delete().queue() }
+                message.respond().error("You actually have to be listening to the song to start a vote... Tsk tsk...").queue { msg ->
+                    bot.scheduler.schedule(5, TimeUnit.SECONDS) { msg.delete().queue() }
+                }
                 return
             }
             if (manager.isVotingToSkip) {
-                val msg = message.respond().error("There is already a vote going on!").complete()
-                bot.scheduler.schedule(5, TimeUnit.SECONDS) { msg.delete().queue() }
+                message.respond().error("There is already a vote going on!").queue { msg ->
+                    bot.scheduler.schedule(5, TimeUnit.SECONDS) { msg.delete().queue() }
+                }
                 return
             }
             if ((System.currentTimeMillis() - manager.lastVoteTime) < 30000) {
@@ -43,7 +45,7 @@ class VoteSkipCommand : MusicExecutor() {
             manager.lastVoteTime = System.currentTimeMillis()
             manager.isVotingToSkip = true
 
-            val msg = message.respond().embed("Vote Skip") {
+            message.respond().embed("Vote Skip") {
                 color = musicColor
                 description {
                     append(b(message.author.name))
@@ -51,46 +53,47 @@ class VoteSkipCommand : MusicExecutor() {
                     appendln("React with :thumbsup: or :thumbsdown:")
                     append("Whichever has the most votes in 30 seconds will win!")
                 }
-            }.rest().complete()
-            msg.addReaction("👍").queue()
-            msg.addReaction("👎").queue()
+            }.rest().queue { msg ->
+                msg.addReaction("👍").queue()
+                msg.addReaction("👎").queue()
 
-            bot.scheduler.schedule({
-                msg.delete()
-                checkVictory(msg, servlet, manager)
-            }, 30, TimeUnit.SECONDS)
+                bot.scheduler.schedule({
+                    msg.delete()
+                    checkVictory(msg, servlet, manager)
+                }, 30, TimeUnit.SECONDS)
+            }
         } else {
             message.respond().error("You're not in the Music Channel!\n*or there isn't a song playing...*").queue()
         }
     }
 
     fun checkVictory(msg: Message, servlet: Servlet, manager: MusicManager) {
-        val _msg = msg.channel.getMessageById(msg.id).complete()
+        msg.channel.getMessageById(msg.id).queue { _msg ->
+            if (_msg.reactions[0].count > _msg.reactions[1].count) {
+                msg.respond().embed("Vote Skip") {
+                    color = musicColor
+                    description {
+                        append("The vote has passed! ")
+                        append(_msg.reactions[0].count - 1).append(" to ").appendln(_msg.reactions[1].count - 1)
+                        append("The song has been skipped!")
+                    }
+                }.rest().queue()
 
-        if (_msg.reactions[0].count > _msg.reactions[1].count) {
-            msg.respond().embed("Vote Skip") {
-                color = musicColor
-                description {
-                    append("The vote has passed! ")
-                    append(_msg.reactions[0].count - 1).append(" to ").appendln(_msg.reactions[1].count - 1)
-                    append("The song has been skipped!")
+                if (manager.scheduler.queue.isEmpty()) {
+                    servlet.resetMusicManager()
+                } else {
+                    manager.scheduler.nextTrack()
                 }
-            }.rest().queue()
-
-            if (manager.scheduler.queue.isEmpty()) {
-                servlet.resetMusicManager()
             } else {
-                manager.scheduler.nextTrack()
+                msg.respond().embed("Vote Skip") {
+                    color = musicColor
+                    description {
+                        appendln("The vote has failed! ")
+                        append("The song will stay!")
+                    }
+                }.rest().queue()
             }
-        } else {
-            msg.respond().embed("Vote Skip") {
-                color = musicColor
-                description {
-                    appendln("The vote has failed! ")
-                    append("The song will stay!")
-                }
-            }.rest().queue()
+            manager.isVotingToSkip = false
         }
-        manager.isVotingToSkip = false
     }
 }

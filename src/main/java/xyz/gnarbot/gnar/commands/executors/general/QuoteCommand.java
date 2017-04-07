@@ -6,7 +6,6 @@ import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -26,8 +25,6 @@ public class QuoteCommand extends CommandExecutor {
             targetChannel = message.getMentionedChannels().get(0);
         }
 
-        List<Message> toDelete = new ArrayList<>();
-
         for (String id : args) {
             if (!id.contains("#")) {
                 try {
@@ -40,29 +37,18 @@ public class QuoteCommand extends CommandExecutor {
 
                 } catch (Exception e) {
                     try {
-                        Message m = message.respond()
+                        message.respond()
                                 .error("Could not find a message with the ID " + id + " within this channel.")
-                                .complete();
-                        toDelete.add(m);
+                                .queue(msg -> getBot().getScheduler().schedule(
+                                        () -> msg.delete().queue(), 5, TimeUnit.SECONDS));
                     } catch (Exception ignore) {}
                 }
             }
         }
 
-        toDelete.add(message);
-
-        try {
-            Message m = message.respond().info("Sent quotes to the " + targetChannel.getName() + " channel!").complete();
-
-            toDelete.add(m);
-
-            getBot().getScheduler().schedule(() -> {
-                for (Message m2 : toDelete) {
-                    m2.delete().queue();
-                }
-            }, 5, TimeUnit.SECONDS);
-
-        } catch (Exception ignore) {}
+        message.respond().info("Sent quotes to the " + targetChannel.getName() + " channel!")
+                .queue(msg -> getBot().getScheduler().schedule(
+                () -> msg.delete().queue(), 5, TimeUnit.SECONDS));
     }
 }
 
