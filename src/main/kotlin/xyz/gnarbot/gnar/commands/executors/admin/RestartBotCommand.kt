@@ -18,7 +18,7 @@ class RestartBotCommand : CommandExecutor() {
             color = Constants.COLOR
 
             bot.shards.forEach {
-                it.clearServlets(true)
+                it.clearData(true)
                 it.shutdown(true)
             }
 

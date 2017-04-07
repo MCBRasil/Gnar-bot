@@ -4,7 +4,7 @@ import net.dv8tion.jda.core.JDA
 import xyz.gnarbot.gnar.servers.Shard
 
 class ShardInfo(shard: Shard) {
-    val requests: Int = shard.servlets.values.map { it.commandHandler.requests }.sum()
+    val requests: Int = shard.guildData.values.map { it.commandHandler.requests }.sum()
     val id: Int = shard.id
     val status: JDA.Status = shard.status
     val guilds: Int = shard.guilds.size

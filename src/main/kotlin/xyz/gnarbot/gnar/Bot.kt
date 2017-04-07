@@ -17,7 +17,7 @@ import xyz.gnarbot.gnar.api.data.BotInfo
 import xyz.gnarbot.gnar.commands.handlers.CommandRegistry
 import xyz.gnarbot.gnar.servers.Shard
 import xyz.gnarbot.gnar.servers.listeners.GuildCountListener
-import java.util.concurrent.Executors
+import java.io.File
 import kotlin.jvm.JvmStatic as static
 
 /**
@@ -28,19 +28,19 @@ class Bot {
     val log: Logger = LoggerFactory.getLogger("Bot")
 
     /** @returns The global token of the bot. */
-    val token = "_" //default token
+    val prefix = "_" //default token
 
-    /** @returns If the bot is initialized. */
-    var initialized = false
-        private set
-
-    val files = BotFiles()
+    // FILES
+    val dataFile = File("data").takeIf(File::exists)
+            ?: throw IllegalStateException("`data` folder does not exist.")
+    val adminsFile = File(dataFile, "administrators.json").takeIf(File::exists)
+            ?: throw IllegalStateException("`administrators.json` does not exist.")
+    val blockedFile = File(dataFile, "blocked.json").takeIf(File::exists)
+            ?: throw IllegalStateException("`blocked.json` does not exist.")
 
     val guildCountListener = GuildCountListener(this)
 
     val commandRegistry = CommandRegistry(this)
-
-
 
     val playerManager: AudioPlayerManager = DefaultAudioPlayerManager().apply {
         registerSourceManager(YoutubeAudioSourceManager())
@@ -55,13 +55,13 @@ class Bot {
 
     /** @return Administrator users of the bot. */
     val admins = hashSetOf<String>().apply {
-        JSONArray(JSONTokener(files.admins.reader())).forEach {
+        JSONArray(JSONTokener(adminsFile.reader())).forEach {
             add(it as String)
         }
     }
 
     val blocked = hashSetOf<String>().apply {
-        JSONArray(JSONTokener(files.blocked.reader())).forEach {
+        JSONArray(JSONTokener(blockedFile.reader())).forEach {
             add(it as String)
         }
     }
@@ -69,8 +69,6 @@ class Bot {
     val startTime = System.currentTimeMillis()
     /** Returns how many milliseconds since the bot have been up. */
     val uptime: Long get() = System.currentTimeMillis() - startTime
-
-    val scheduler = Executors.newSingleThreadScheduledExecutor()!!
 
     /**
      * Start the bot.
@@ -80,9 +78,6 @@ class Bot {
      */
     fun start(token: String, numShards: Int) {
         val api = APIPortal(this).apply { start() }
-
-        if (initialized) throw IllegalStateException("Bot instance have already been initialized.")
-        initialized = true
 
         log.info("Initializing the Discord bot.")
         log.info("Requesting $numShards shards.")
@@ -119,12 +114,10 @@ class Bot {
     fun stop() {
         shards.forEach(Shard::shutdown)
         shards.clear()
-        initialized = false
         System.gc()
 
         log.info("Bot is now disconnected from Discord.")
     }
 
     val info: BotInfo get() = BotInfo(this)
-
 }

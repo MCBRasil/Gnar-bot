@@ -6,9 +6,7 @@ import org.apache.commons.lang3.text.WordUtils
 import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
-import xyz.gnarbot.gnar.utils.schedule
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 @Command(
         aliases = arrayOf("progress"),
@@ -67,13 +65,13 @@ class ProgressionCommand : CommandExecutor() {
         }
 
         try {
-            message.respond().text(list[0]).queue { msg ->
-                list.forEachIndexed { i, _ ->
-                    bot.scheduler.schedule(i + 1L, TimeUnit.SECONDS) {
-                        msg.editMessage(list[i]).queue()
-                    }
-                }
-            }
+//            message.respond().text(list[0]).queue { msg ->
+//                list.forEachIndexed { i, _ ->
+//                    bot.scheduler.schedule(i + 1L, TimeUnit.SECONDS) {
+//                        msg.editMessage(list[i]).queue()
+//                    }
+//                }
+//            }
         } catch (e: UnsupportedOperationException) {
             message.respond().error("Message was too long or something... no memes for you.").queue()
         }

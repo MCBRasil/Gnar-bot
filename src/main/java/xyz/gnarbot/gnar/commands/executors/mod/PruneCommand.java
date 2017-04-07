@@ -64,8 +64,7 @@ public class PruneCommand extends CommandExecutor {
             message.getTextChannel().deleteMessages(msgs).queue();
 
             message.respond().info("Attempted to delete **[" + msgs.size() + "]()** messages.\nDeleting this message in **5** seconds.")
-                    .queue(msg -> getBot().getScheduler().schedule(
-                            () -> msg.delete().queue(), 5, TimeUnit.SECONDS));
+                    .queue(msg -> msg.delete().queueAfter(5, TimeUnit.SECONDS));
         });
     }
 }

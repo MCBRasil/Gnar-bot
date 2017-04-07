@@ -4,13 +4,13 @@ import net.dv8tion.jda.core.Permission
 import net.dv8tion.jda.core.entities.Message
 import net.dv8tion.jda.core.exceptions.PermissionException
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.servers.Servlet
+import xyz.gnarbot.gnar.servers.GuildData
 import xyz.gnarbot.gnar.utils.Utils
 
-class CommandHandler(private val servlet: Servlet, private val bot: Bot) {
-    val disabledCommands: MutableList<CommandRegistry.CommandEntry> = mutableListOf()
+class CommandHandler(private val guildData: GuildData, private val bot: Bot) {
+    val disabled: MutableList<CommandRegistry.CommandEntry> = mutableListOf()
 
-    val commandRegistry get() = bot.commandRegistry.entries.apply { removeAll(disabledCommands) }
+    val enabled get() = bot.commandRegistry.entries.apply { removeAll(disabled) }
 
     /**
      * @return the amount of successful requests on this command handler.
@@ -25,18 +25,21 @@ class CommandHandler(private val servlet: Servlet, private val bot: Bot) {
      * @param content String content of the message.
      */
     fun callCommand(message: Message, content: String) {
-        if (!content.startsWith(bot.token)) return
+        if (!content.startsWith(bot.prefix)) return
 
         // Tokenize the message.
         val tokens = Utils.fastSplit(content, ' ')
 
-        val label = tokens[0].substring(bot.token.length).toLowerCase()
+        val label = tokens[0].substring(bot.prefix.length).toLowerCase()
 
         val args = tokens.subList(1, tokens.size)
         
         val entry = bot.commandRegistry.getEntry(label) ?: return
 
-        if (disabledCommands.contains(entry)) return
+        if (disabled.contains(entry)) {
+            message.respond().error("This command is disabled by the server owner.").queue()
+            return
+        }
 
         val cls = entry.cls
 
@@ -88,9 +91,10 @@ class CommandHandler(private val servlet: Servlet, private val bot: Bot) {
             requests++
             val cmd = cls.newInstance()
 
-            cmd.jda = servlet.jda
-            cmd.shard = servlet.shard
-            cmd.servlet = servlet
+            cmd.jda = guildData.shard
+            cmd.shard = guildData.shard
+            cmd.guild = guildData.guild
+            cmd.guildData = guildData
             cmd.commandHandler = this
             cmd.bot = bot
             cmd.commandMeta = meta
@@ -111,7 +115,7 @@ class CommandHandler(private val servlet: Servlet, private val bot: Bot) {
      * @param cmd Command entry.
      */
     fun enableCommand(cmd: CommandRegistry.CommandEntry) {
-        disabledCommands -= cmd
+        disabled -= cmd
     }
 
     /**
@@ -129,7 +133,7 @@ class CommandHandler(private val servlet: Servlet, private val bot: Bot) {
      * @param cmd Command entry.
      */
     fun disableCommand(cmd: CommandRegistry.CommandEntry) {
-        disabledCommands += cmd
+        disabled += cmd
     }
 
     /**

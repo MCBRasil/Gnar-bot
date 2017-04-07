@@ -13,10 +13,10 @@ import xyz.gnarbot.gnar.utils.YouTube
 class PlayCommand : MusicExecutor() {
     
     override fun execute(message: Message, args: List<String>) {
-        val manager = servlet.musicManager
+        val manager = guildData.musicManager
         
-        val botChannel = servlet.selfMember.voiceState.channel
-        val userChannel = servlet.getMember(message.author).voiceState.channel
+        val botChannel = guild.selfMember.voiceState.channel
+        val userChannel = guild.getMember(message.author).voiceState.channel
 
         if (botChannel != null && botChannel != userChannel) {
             message.respond().error("The getBot is already playing music in another channel.").queue()
@@ -69,8 +69,8 @@ class PlayCommand : MusicExecutor() {
         }
 
         if (botChannel == null) {
-            servlet.audioManager.sendingHandler = manager.sendHandler
-            servlet.audioManager.openAudioConnection(userChannel)
+            guild.audioManager.sendingHandler = manager.sendHandler
+            guild.audioManager.openAudioConnection(userChannel)
 
             message.respond().embed("Music Playback") {
                 color = musicColor

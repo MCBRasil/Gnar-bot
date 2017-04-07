@@ -39,16 +39,14 @@ public class QuoteCommand extends CommandExecutor {
                     try {
                         message.respond()
                                 .error("Could not find a message with the ID " + id + " within this channel.")
-                                .queue(msg -> getBot().getScheduler().schedule(
-                                        () -> msg.delete().queue(), 5, TimeUnit.SECONDS));
+                                .queue(msg -> msg.delete().queueAfter(5, TimeUnit.SECONDS));
                     } catch (Exception ignore) {}
                 }
             }
         }
 
         message.respond().info("Sent quotes to the " + targetChannel.getName() + " channel!")
-                .queue(msg -> getBot().getScheduler().schedule(
-                () -> msg.delete().queue(), 5, TimeUnit.SECONDS));
+                .queue(msg -> msg.delete().queueAfter(5, TimeUnit.SECONDS));
     }
 }
 

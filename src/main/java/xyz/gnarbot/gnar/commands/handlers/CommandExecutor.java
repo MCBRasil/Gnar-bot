@@ -1,9 +1,10 @@
 package xyz.gnarbot.gnar.commands.handlers;
 
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import xyz.gnarbot.gnar.Bot;
-import xyz.gnarbot.gnar.servers.Servlet;
+import xyz.gnarbot.gnar.servers.GuildData;
 import xyz.gnarbot.gnar.servers.Shard;
 
 import java.util.List;
@@ -16,7 +17,9 @@ public abstract class CommandExecutor {
 
     Shard shard;
 
-    Servlet servlet;
+    Guild guild;
+
+    GuildData guildData;
 
     CommandHandler commandHandler;
 
@@ -32,8 +35,12 @@ public abstract class CommandExecutor {
         return shard;
     }
 
-    public Servlet getServlet() {
-        return servlet;
+    public Guild getGuild() {
+        return guild;
+    }
+
+    public GuildData getGuildData() {
+        return guildData;
     }
 
     public Bot getBot() {

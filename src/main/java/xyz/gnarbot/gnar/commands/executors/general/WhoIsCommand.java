@@ -28,9 +28,9 @@ public class WhoIsCommand extends CommandExecutor {
 
         List<User> mentioned = message.getMentionedUsers();
         if (mentioned.size() > 0) {
-            client = getServlet().getMember(mentioned.get(0));
+            client = getGuild().getMember(mentioned.get(0));
         } else {
-            client = getServlet().getMemberByName(StringUtils.join(args, " "), true);
+            client = getGuildData().getMemberByName(StringUtils.join(args, " "), true);
         }
 
         if (client == null) {

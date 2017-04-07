@@ -11,7 +11,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command
 class NowPlayingCommand : MusicExecutor() {
 
     override fun execute(message: Message, args: List<String>) {
-        val track = servlet.musicManager.player.playingTrack
+        val track = guildData.musicManager.player.playingTrack
 
         if (track == null) {
             message.respond().error("The player is not currently playing anything.")

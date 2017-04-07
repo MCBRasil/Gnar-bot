@@ -6,13 +6,14 @@ import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.api.data.ShardInfo
 import xyz.gnarbot.gnar.servers.listeners.ShardListener
 import xyz.gnarbot.gnar.servers.listeners.UserListener
-import java.util.*
+import javax.servlet.Servlet
 
 /**
  * Individual shard instances of [JDA] of the bot that contains all the [Servlet] for each guild.
  */
 class Shard(val id: Int, private val jda: JDA, val bot: Bot) : JDA by jda {
-    val servlets: MutableMap<String, Servlet> = WeakHashMap()
+
+    val guildData = mutableMapOf<String, GuildData>()
 
     init {
         jda.addEventListener(ShardListener(this, bot))
@@ -22,8 +23,8 @@ class Shard(val id: Int, private val jda: JDA, val bot: Bot) : JDA by jda {
         //Logger.getLogger("org.apache.http.client.protocol.ResponseProcessCookies").level = Level.OFF
     }
 
-    fun getServlet(id: String?) : Servlet? {
-        return getServlet(getGuildById(id))
+    fun getGuildData(id: String) : GuildData {
+        return guildData.getOrPut(id) { GuildData(id, this, bot) }
     }
 
     /**
@@ -35,10 +36,7 @@ class Shard(val id: Int, private val jda: JDA, val bot: Bot) : JDA by jda {
      *
      * @see Servlet
      */
-    fun getServlet(guild: Guild?): Servlet? {
-        if (guild == null) return null
-        return servlets.getOrPut(guild.id) { Servlet(this, guild, bot) }
-    }
+    fun getGuildData(guild: Guild) = getGuildData(guild.id)
 
     /**
      * @return The string representation of the shard.
@@ -57,26 +55,17 @@ class Shard(val id: Int, private val jda: JDA, val bot: Bot) : JDA by jda {
      */
     override fun shutdown() {
         jda.shutdown(false)
-        clearServlets(true)
+        clearData(true)
     }
 
-    fun clearServlets(interrupt: Boolean) {
-        val iterator = servlets.iterator()
+    fun clearData(interrupt: Boolean) {
+        val iterator = guildData.iterator()
         while (iterator.hasNext()) {
             val it = iterator.next()
-            if(it.value.shutdown(interrupt)) {
+            if(it.value.reset(interrupt)) {
                 iterator.remove()
             }
         }
     }
-
-    fun reset(id: String?) = reset(getGuildById(id))
-
-    fun reset(guild: Guild?) {
-        if (guild == null) return
-        servlets[guild.id]?.shutdown(true)
-        servlets[guild.id] = getServlet(guild.id)!!
-    }
-
 }
 

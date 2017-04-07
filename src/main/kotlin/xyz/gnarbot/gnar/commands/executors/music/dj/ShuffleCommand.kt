@@ -13,7 +13,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command
 class ShuffleCommand : MusicExecutor() {
 
     override fun execute(message: Message, args: List<String>) {
-        servlet.musicManager.scheduler.shuffle()
+        guildData.musicManager.scheduler.shuffle()
 
         message.respond().embed("Shuffle Queue") {
             color = musicColor

@@ -7,11 +7,9 @@ import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.CommandHandler
 import xyz.gnarbot.gnar.servers.music.MusicManager
 
-/**
- * Represents a bot that serves on each [Guild] and wraps around it.
- * @see Guild
- */
-class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild by guild {
+class GuildData(val id: String, val shard: Shard, val bot: Bot) {
+    val guild : Guild get() = shard.getGuildById(id)
+
     val commandHandler = CommandHandler(this, bot)
 
     private var musicManager_delegate: MusicManager? = null
@@ -32,17 +30,17 @@ class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild 
     fun resetMusicManager() {
         musicManager.scheduler.queue.clear()
         musicManager.player.destroy()
-        audioManager.closeAudioConnection()
-        audioManager.sendingHandler = null
+        guild.audioManager.closeAudioConnection()
+        guild.audioManager.sendingHandler = null
         musicManager_delegate = null
     }
 
     fun getMemberByName(name: String, searchNickname: Boolean = false): Member? {
-        for (member in getMembersByName(name, true)) {
+        for (member in guild.getMembersByName(name, true)) {
             return member
         }
         if (searchNickname) {
-            for (member in getMembersByNickname(name, true)) {
+            for (member in guild.getMembersByNickname(name, true)) {
                 return member
             }
         }
@@ -52,9 +50,9 @@ class Servlet(val shard: Shard, private val guild: Guild, val bot: Bot) : Guild 
     /**
      * @return String representation of the Host.
      */
-    override fun toString(): String = "Servlet(id=${guild.id}, shard=${shard.id}, guild=${guild.name})"
+    override fun toString(): String = "Servlet(id=${guild.id}, shard=${shard.shardInfo.shardId}, guild=${guild.name})"
 
-    fun shutdown(interrupt: Boolean) : Boolean {
+    fun reset(interrupt: Boolean) : Boolean {
         musicManager.let {
             if (!interrupt && it.player.playingTrack != null) {
                 return false

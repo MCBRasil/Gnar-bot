@@ -13,7 +13,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command
 class PauseCommand : MusicExecutor() {
 
     override fun execute(message: Message, args: List<String>) {
-        val manager = servlet.musicManager
+        val manager = guildData.musicManager
 
         if (manager.player.playingTrack == null) {
             message.respond().error("Can not pause or resume player because there is no track loaded for playing.")

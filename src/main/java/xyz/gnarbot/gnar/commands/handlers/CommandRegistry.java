@@ -67,7 +67,7 @@ public class CommandRegistry {
         register(EightBallCommand.class);
         register(LeetifyCommand.class);
         register(MarvelComics.class);
-        register(ProgressionCommand.class);
+        //register(ProgressionCommand.class);
         register(GoogleyEyesCommand.class);
         //register(ServersSharedCommand.class);
         register(TextToSpeechCommand.class);
@@ -143,6 +143,10 @@ public class CommandRegistry {
         register(RepeatCommand.class);
         register(ResetCommand.class);
         register(VoteSkipCommand.class);
+
+        register(EnableCommand.class);
+        register(DisableCommand.class);
+        register(ListDisabledCommand.class);
 
         //register(new JSCommandExecutor(new File("data/scripting/javascript/firstJSCommand.js")));
     }

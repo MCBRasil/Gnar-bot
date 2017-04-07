@@ -34,8 +34,7 @@ public class DeleteMessageCommand extends CommandExecutor {
         }
 
         message.respond().info("Deleted the message.\nDeleting this message in **5** seconds.")
-                .queue(msg -> getBot().getScheduler().schedule(
-                        () -> msg.delete().queue(), 5, TimeUnit.SECONDS));
+                .queue(msg -> msg.delete().queueAfter(5, TimeUnit.SECONDS));
     }
 }
 

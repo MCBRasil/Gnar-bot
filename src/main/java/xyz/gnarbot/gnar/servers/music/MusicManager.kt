@@ -7,11 +7,11 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import net.dv8tion.jda.core.entities.Message
-import xyz.gnarbot.gnar.servers.Servlet
+import xyz.gnarbot.gnar.servers.GuildData
 import java.awt.Color
 import java.time.Duration
 
-class MusicManager(servlet: Servlet, val playerManager: AudioPlayerManager) {
+class MusicManager(guildData: GuildData, val playerManager: AudioPlayerManager) {
 
     /**
      * Audio player for the guild.
@@ -21,7 +21,7 @@ class MusicManager(servlet: Servlet, val playerManager: AudioPlayerManager) {
     /**
      * Track scheduler for the player.
      */
-    val scheduler: TrackScheduler = TrackScheduler(servlet, player)
+    val scheduler: TrackScheduler = TrackScheduler(guildData, player)
 
     /**
      * Wrapper around AudioPlayer to use it as an AudioSendHandler.

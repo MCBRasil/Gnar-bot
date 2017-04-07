@@ -13,12 +13,12 @@ import xyz.gnarbot.gnar.commands.handlers.Command
 class StopCommand : MusicExecutor() {
 
     override fun execute(message: Message, args: List<String>) {
-        val manager = servlet.musicManager
+        val manager = guildData.musicManager
 
         manager.scheduler.queue.clear()
         manager.player.stopTrack()
         manager.player.isPaused = false
-        servlet.audioManager.closeAudioConnection()
+        guild.audioManager.closeAudioConnection()
 
         message.respond().embed("Stop Playback") {
             color = musicColor

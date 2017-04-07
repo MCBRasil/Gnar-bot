@@ -19,15 +19,10 @@ public class KickCommand extends CommandExecutor {
         Member author = message.getMember();
         Member target = null;
 
-//        if (!author.hasPermission(note.getTextChannel(), Permission.KICK_MEMBERS)) {
-//            note.respond().error("You do not have permission to kick.").queue();
-//            return;
-//        }
-
         if (message.getMentionedChannels().size() >= 1) {
-            target = getServlet().getMember(message.getMentionedUsers().get(0));
+            target = getGuild().getMember(message.getMentionedUsers().get(0));
         } else if (args.size() >= 1) {
-            target = getServlet().getMemberByName(args.get(0), false);
+            target = getGuildData().getMemberByName(args.get(0), false);
         }
 
         if (target == null) {
@@ -40,7 +35,7 @@ public class KickCommand extends CommandExecutor {
             return;
         }
 
-        getServlet().getController().kick(target).queue();
+        getGuild().getController().kick(target).queue();
         message.respond().info(target.getEffectiveName() + " has been kicked.").queue();
     }
 }

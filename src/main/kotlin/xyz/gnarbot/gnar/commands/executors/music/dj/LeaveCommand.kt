@@ -12,7 +12,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command
         voicePermissions = arrayOf(Permission.MANAGE_CHANNEL))
 class LeaveCommand : MusicExecutor() {
     override fun execute(message: Message, args: List<String>) {
-        servlet.audioManager.sendingHandler = null
-        servlet.audioManager.closeAudioConnection()
+        guild.audioManager.sendingHandler = null
+        guild.audioManager.closeAudioConnection()
     }
 }

@@ -19,9 +19,9 @@ public class BanCommand extends CommandExecutor {
         Member target = null;
 
         if (message.getMentionedChannels().size() >= 1) {
-            target = getServlet().getMember(message.getMentionedUsers().get(0));
+            target = getGuild().getMember(message.getMentionedUsers().get(0));
         } else if (args.size() >= 1) {
-            target = getServlet().getMemberByName(args.get(0), false);
+            target = getGuildData().getMemberByName(args.get(0), false);
         }
 
         if (target == null) {
@@ -33,7 +33,7 @@ public class BanCommand extends CommandExecutor {
             return;
         }
 
-        getServlet().getController().ban(target, 2).queue();
+        getGuild().getController().ban(target, 2).queue();
         message.respond().info(target.getEffectiveName() + " has been banned.").queue();
     }
 }

@@ -12,7 +12,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command
         voicePermissions = arrayOf(Permission.MANAGE_CHANNEL))
 class RestartCommand : MusicExecutor() {
     override fun execute(message: Message, args: List<String>) {
-        val manager = servlet.musicManager
+        val manager = guildData.musicManager
 
         var track = manager.player.playingTrack
 

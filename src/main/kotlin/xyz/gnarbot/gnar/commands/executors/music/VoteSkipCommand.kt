@@ -5,9 +5,8 @@ import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
 import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.servers.Servlet
+import xyz.gnarbot.gnar.servers.GuildData
 import xyz.gnarbot.gnar.servers.music.MusicManager
-import xyz.gnarbot.gnar.utils.schedule
 import java.util.concurrent.TimeUnit
 
 @Command(aliases = arrayOf("voteskip"),
@@ -16,20 +15,20 @@ import java.util.concurrent.TimeUnit
 class VoteSkipCommand : MusicExecutor() {
 
     override fun execute(message: Message, args: List<String>) {
-        val manager = servlet.musicManager
+        val manager = guildData.musicManager
 
-        val member = servlet.getMember(message.author)
+        val member = guild.getMember(message.author)
 
         if (member.voiceState.channel !== null && manager.player.playingTrack !== null) {
             if (member.voiceState.isDeafened) {
                 message.respond().error("You actually have to be listening to the song to start a vote... Tsk tsk...").queue { msg ->
-                    bot.scheduler.schedule(5, TimeUnit.SECONDS) { msg.delete().queue() }
+                    msg.delete().queueAfter(5, TimeUnit.SECONDS)
                 }
                 return
             }
             if (manager.isVotingToSkip) {
                 message.respond().error("There is already a vote going on!").queue { msg ->
-                    bot.scheduler.schedule(5, TimeUnit.SECONDS) { msg.delete().queue() }
+                    msg.delete().queueAfter(5, TimeUnit.SECONDS)
                 }
                 return
             }
@@ -57,17 +56,16 @@ class VoteSkipCommand : MusicExecutor() {
                 msg.addReaction("👍").queue()
                 msg.addReaction("👎").queue()
 
-                bot.scheduler.schedule({
-                    msg.delete()
-                    checkVictory(msg, servlet, manager)
-                }, 30, TimeUnit.SECONDS)
+                msg.delete().queueAfter(30, TimeUnit.SECONDS) {
+                    checkVictory(msg, guildData, manager)
+                }
             }
         } else {
             message.respond().error("You're not in the Music Channel!\n*or there isn't a song playing...*").queue()
         }
     }
 
-    fun checkVictory(msg: Message, servlet: Servlet, manager: MusicManager) {
+    fun checkVictory(msg: Message, guildData: GuildData, manager: MusicManager) {
         msg.channel.getMessageById(msg.id).queue { _msg ->
             if (_msg.reactions[0].count > _msg.reactions[1].count) {
                 msg.respond().embed("Vote Skip") {
@@ -80,7 +78,7 @@ class VoteSkipCommand : MusicExecutor() {
                 }.rest().queue()
 
                 if (manager.scheduler.queue.isEmpty()) {
-                    servlet.resetMusicManager()
+                    guildData.resetMusicManager()
                 } else {
                     manager.scheduler.nextTrack()
                 }

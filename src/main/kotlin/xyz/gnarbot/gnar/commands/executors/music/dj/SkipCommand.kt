@@ -12,10 +12,10 @@ import xyz.gnarbot.gnar.commands.handlers.Command
         voicePermissions = arrayOf(Permission.MANAGE_CHANNEL))
 class SkipCommand : MusicExecutor() {
     override fun execute(message: Message, args: List<String>) {
-        val manager = servlet.musicManager
+        val manager = guildData.musicManager
 
         if (manager.scheduler.queue.isEmpty()) {
-            servlet.resetMusicManager()
+            guildData.resetMusicManager()
         } else {
             manager.scheduler.nextTrack()
         }

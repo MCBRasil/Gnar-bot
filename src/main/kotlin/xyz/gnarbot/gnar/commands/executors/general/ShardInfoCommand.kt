@@ -20,7 +20,7 @@ class ShardInfoCommand : CommandExecutor() {
                     append("Status: ").appendln(it.status)
                     append("Guilds: ").appendln(it.guilds.size)
                     append("Users: ").appendln(it.users.size)
-                    append("Requests: ").appendln(it.servlets.values.sumBy { it.commandHandler.requests })
+                    append("Requests: ").appendln(it.guildData.values.sumBy { it.commandHandler.requests })
                 }
             }
         }.rest().queue()

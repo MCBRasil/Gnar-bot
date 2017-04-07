@@ -24,20 +24,20 @@ public class UnbanCommand extends CommandExecutor {
 
             for (User user : bans) {
                 if (user.getId().equals(args.get(0))) {
-                    target = getServlet().getMember(user);
+                    target = getGuild().getMember(user);
                     break;
                 }
             }
 
             if (args.size() >= 1) {
-                target = getServlet().getMemberByName(args.get(0), true);
+                target = getGuildData().getMemberByName(args.get(0), true);
             }
             if (target == null) {
                 message.respond().error("Could not find user.").queue();
                 return;
             }
 
-            getServlet().getController().unban(target).queue();
+            getGuild().getController().unban(target).queue();
             message.respond().info(target.getEffectiveName() + " has been unbanned.").queue();
         });
     }

@@ -24,7 +24,7 @@ class JavascriptCommand : CommandExecutor() {
 
         engine.put("jda", jda)
         engine.put("message", message)
-        engine.put("host", servlet)
+        engine.put("host", guild)
         engine.put("channel", message.channel)
 
         val script = args.joinToString(" ")

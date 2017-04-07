@@ -12,7 +12,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command
 class QueueCommand : MusicExecutor() {
 
     override fun execute(message: Message, args: List<String>) {
-        val queue = servlet.musicManager.scheduler.queue
+        val queue = guildData.musicManager.scheduler.queue
 
         if (queue.isEmpty()) {
             message.respond().embed("Queue") {
@@ -28,7 +28,7 @@ class QueueCommand : MusicExecutor() {
         message.respond().embed("Music Queue") {
             color = musicColor
 
-            servlet.musicManager.player.playingTrack?.let {
+            guildData.musicManager.player.playingTrack?.let {
                 field("Now Playing", false, if (it.sourceManager.sourceName.contains("youtube")) {
                     "__[${it.info.title}](https://youtube.com/watch?v=${it.info.identifier})__"
                 } else {

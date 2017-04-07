@@ -23,7 +23,7 @@ class BotInfoCommand : CommandExecutor() {
 
         var textChannels = 0
         var voiceChannels = 0
-        var servlets = 0 // wrapper
+        var guildData = 0 // wrapper
         var guilds = 0
 
         var users = 0
@@ -52,13 +52,13 @@ class BotInfoCommand : CommandExecutor() {
             users += shard.users.size
             textChannels += shard.textChannels.size
             voiceChannels += shard.voiceChannels.size
-            servlets += shard.servlets.size
+            guildData += shard.guildData.size
         }
 
         val commandSize = registry.entries.count { it.meta.category.show }
 
         val requests = bot.shards
-                .flatMap { it.servlets.values }
+                .flatMap { it.guildData.values }
                 .sumBy { it.commandHandler.requests }
 
         message.respond().embed("Bot Information") {
@@ -73,7 +73,7 @@ class BotInfoCommand : CommandExecutor() {
             field("Voice Connections", true, voiceConnections)
 
             field("Guilds", true, guilds)
-            field("Guild#Servlets", true, servlets)
+            field("Guild Data", true, guildData)
             field(true)
 
             field("Users", true) {

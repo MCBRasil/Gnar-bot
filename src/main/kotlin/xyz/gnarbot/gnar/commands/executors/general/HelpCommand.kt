@@ -12,7 +12,7 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 
 @Command(
         aliases = arrayOf("help", "guide"),
-        usage = "~command",
+        usage = "(command)",
         description = "Display GN4R's list of commands."
 )
 class HelpCommand : CommandExecutor() {
@@ -33,8 +33,8 @@ class HelpCommand : CommandExecutor() {
             message.respond().embed("Command Information") {
                 color = Constants.COLOR
 
-                field("Aliases", true, entry.meta.aliases.joinToString(separator = ", ${bot.token}", prefix = bot.token))
-                field("Usage", true, "${bot.token}${entry.meta.aliases[0].toLowerCase()} ${entry.meta.usage}")
+                field("Aliases", true, entry.meta.aliases.joinToString(separator = ", ${bot.prefix}", prefix = bot.prefix))
+                field("Usage", true, "${bot.prefix}${entry.meta.aliases[0].toLowerCase()} ${entry.meta.usage}")
                 field(true)
 
                 if (entry.meta.channelPermissions.isNotEmpty())
@@ -76,7 +76,7 @@ class HelpCommand : CommandExecutor() {
                     for (page in pages) {
                         field("", true) {
                             page.forEach {
-                                append("**[").append(bot.token).append(it.meta.aliases[0]).appendln("]()**")
+                                append("**[").append(bot.prefix).append(it.meta.aliases[0]).appendln("]()**")
                             }
                         }
                     }
@@ -84,7 +84,7 @@ class HelpCommand : CommandExecutor() {
 
                 field(true)
                 field("Additional Information") {
-                    append("To view a command's description, do `").append(bot.token).appendln("help [command]`.")
+                    append("To view a command's description, do `").append(bot.prefix).appendln("help [command]`.")
                     append("__The commands that requires a named role must be created by you and assigned to a member in your guild.__")
                 }
 

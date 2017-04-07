@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.servers.listeners;
 
 
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.ReconnectedEvent;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
@@ -10,7 +11,7 @@ import net.dv8tion.jda.core.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import xyz.gnarbot.gnar.Bot;
-import xyz.gnarbot.gnar.servers.Servlet;
+import xyz.gnarbot.gnar.servers.GuildData;
 import xyz.gnarbot.gnar.servers.Shard;
 
 public class ShardListener extends ListenerAdapter {
@@ -29,15 +30,15 @@ public class ShardListener extends ListenerAdapter {
             return;
         }
 
-        if (event.getMessage().getContent().startsWith(bot.getToken())) {
-            Servlet servlet = shard.getServlet(event.getGuild());
-            if (servlet != null) servlet.handleMessage(event.getMessage());
+        if (event.getMessage().getContent().startsWith(bot.getPrefix())) {
+            GuildData guild = shard.getGuildData(event.getGuild());
+            guild.handleMessage(event.getMessage());
         }
     }
 
     @Override
     public void onGuildLeave(GuildLeaveEvent event) {
-        shard.getServlets().remove(event.getGuild().getId());
+        shard.getGuildData().remove(event.getGuild().getId());
     }
 
     @Override
@@ -45,11 +46,11 @@ public class ShardListener extends ListenerAdapter {
         if (event instanceof GuildVoiceLeaveEvent || event instanceof GuildVoiceMoveEvent) {
             if (event.getMember().getUser() == event.getJDA().getSelfUser()) return;
 
-            Servlet servlet = shard.getServlet(event.getGuild());
+            Guild guild = event.getGuild();
 
-            if (servlet == null) return;
+            if (guild == null) return;
 
-            VoiceChannel botChannel = servlet.getSelfMember().getVoiceState().getChannel();
+            VoiceChannel botChannel = guild.getSelfMember().getVoiceState().getChannel();
 
             VoiceChannel channelLeft;
 
@@ -62,13 +63,14 @@ public class ShardListener extends ListenerAdapter {
             if (botChannel == null || channelLeft != botChannel) return;
 
             if (botChannel.getMembers().size() == 1) {
-                servlet.resetMusicManager();
+                GuildData data = shard.getGuildData(event.getGuild());
+                data.resetMusicManager();
             }
         }
     }
 
     @Override
     public void onReconnect(ReconnectedEvent event) {
-        shard.clearServlets(true);
+        shard.clearData(true);
     }
 }

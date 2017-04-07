@@ -12,7 +12,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command
         voicePermissions = arrayOf(Permission.MANAGE_CHANNEL))
 class ResetCommand : MusicExecutor() {
     override fun execute(message: Message, args: List<String>) {
-        servlet.resetMusicManager()
+        guildData.resetMusicManager()
 
         message.respond().embed("Reset Music") {
             color = musicColor

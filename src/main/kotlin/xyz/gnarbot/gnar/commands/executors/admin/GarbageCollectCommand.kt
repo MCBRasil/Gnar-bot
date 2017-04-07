@@ -18,10 +18,10 @@ class GarbageCollectCommand : CommandExecutor() {
             color = Constants.COLOR
             val interrupt = if (!args.isEmpty()) args[0].toBoolean() else false
 
-            bot.shards.forEach { it.clearServlets(interrupt) }
-            field("Wrappers", false, "Removed references to wrappers.")
+            bot.shards.forEach { it.clearData(interrupt) }
+            field("Wrappers", false, "Removed settings instances.")
 
-            field("Guild Servlets Remaining", true, bot.shards.sumBy { it.servlets.size })
+            field("Guild Data Remaining", true, bot.shards.sumBy { it.guildData.size })
 
             System.gc()
             field("GC Request", false, "Garbage collection request sent to JVM.")
