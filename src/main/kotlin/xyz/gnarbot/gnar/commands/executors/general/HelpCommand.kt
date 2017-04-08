@@ -95,17 +95,18 @@ class HelpCommand : CommandExecutor() {
                 field("News") {
                     appendln("• **Incomplete**: disable commands with `_enable | _disable | _listdisabled`.")
                     appendln("• No more role names! **Commands are now linked with Discord permissions.**")
-                    appendln("• DJ commands for instance, requires you to be in a voice channel and have the `Manage Channel` permission of the channel.")
-                    appendln("• Ban and kick commands requires the `Ban Member` and `Kick Member` permission respectively.")
-                    appendln("• Hella optimizations. RIP Gnar not responding randomly?")
+                    appendln("  - DJ commands for instance, requires you to be in a voice channel and have the `Manage Channel` permission of the channel.")
+                    appendln("  - Ban and kick commands requires the `Ban Member` and `Kick Member` permission respectively.")
+                    appendln("• `_nowplaying` links to the original songs.")
+                    appendln("• Optimizations, basically rewritten the bot's systems.")
                 }
 
-                field("Contact") {
+                field("Contact", true) {
                     appendln(b(link("Website", "http://gnarbot.xyz")))
-                    append(b(link("Discord Server", "http://discord.gg/NQRpmr2")))
+                    appendln(b(link("Discord Server", "http://discord.gg/NQRpmr2")))
                 }
 
-                field("Donations") {
+                field("Donations", true) {
                     appendln(b(link("PayPal", "https://gnarbot.xyz/donate")))
                     appendln(b(link("Patreon", "https://www.patreon.com/gnarbot")))
                 }

@@ -16,8 +16,11 @@ class BotInfoCommand : CommandExecutor() {
     override fun execute(message: Message, args: List<String>) {
         val registry = bot.commandRegistry
 
-        var uptime_hour = bot.uptime / 1000 / 60 / 60
-        if (uptime_hour == 0L) uptime_hour = 1L
+        // Uptime
+        val s = bot.uptime / 1000
+        val m = s / 60
+        val h = m / 60
+        val d = h / 24
 
         var voiceConnections = 0
 
@@ -65,7 +68,7 @@ class BotInfoCommand : CommandExecutor() {
             color = Constants.COLOR
 
             field("Requests", true, requests)
-            field("Requests Per Hour", true, requests / uptime_hour)
+            field("Requests Per Hour", true, requests / if (h == 0L) 1 else h)
             field("Website", true, link("gnarbot.xyz", "https://gnarbot.xyz"))
 
             field("Text Channels", true, textChannels)
@@ -74,7 +77,7 @@ class BotInfoCommand : CommandExecutor() {
 
             field("Guilds", true, guilds)
             field("Guild Data", true, guildData)
-            field(true)
+            field("Uptime", true, "${d}d ${h}h ${m}m ${s}s")
 
             field("Users", true) {
                 append("Total: ").appendln(users)

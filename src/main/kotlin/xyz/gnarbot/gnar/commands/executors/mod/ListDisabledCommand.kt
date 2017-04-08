@@ -16,13 +16,13 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 class ListDisabledCommand : CommandExecutor() {
     override fun execute(message: Message, args: List<String>) {
         message.respond().embed("Disabled Commands") {
+            color = Constants.COLOR
             description {
                 guildData.commandHandler.disabled.forEach {
                     append("• ")
                     appendln(it.meta.aliases.joinToString())
                 }
             }
-            color = Constants.COLOR
         }.rest().queue()
     }
 }

@@ -19,8 +19,8 @@ class DisableCommand : CommandExecutor() {
         args.forEach(guildData.commandHandler::disableCommand)
 
         message.respond().embed("Disabling Commands") {
-            description = "Disabled `$args`"
             color = Constants.COLOR
+            description = "Disabled `$args`"
         }.rest().queue()
     }
 }

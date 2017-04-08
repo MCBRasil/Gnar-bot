@@ -19,8 +19,8 @@ class EnableCommand : CommandExecutor() {
         args.forEach(guildData.commandHandler::enableCommand)
 
         message.respond().embed("Enabling Commands") {
-            description = "Enabled `$args`"
             color = Constants.COLOR
+            description = "Enabled `$args`"
         }.rest().queue()
     }
 }
