@@ -1,5 +1,7 @@
 package xyz.gnarbot.gnar.commands.executors.general
 
+import b
+import link
 import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Command
@@ -10,7 +12,11 @@ class DonateCommand : CommandExecutor() {
     override fun execute(message: Message, args: List<String>) {
         message.respond().embed("Donations") {
             color = Constants.COLOR
-            description = "Want to donate to support Gnar? __**[Click here to donate.](https://gnarbot.xyz/donate)**__"
+            description {
+                appendln("Want to donate to support Gnar?")
+                appendln(b(link("PayPal", "https://gnarbot.xyz/donate")))
+                appendln(b(link("Patreon", "https://www.patreon.com/gnarbot")))
+            }
         }.rest().queue()
     }
 }

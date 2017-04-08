@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Utils {
     public static List<String> fastSplit(String s, char delimiter) {
-
         List<String> f = new ArrayList<>();
 
         int p = 0;

@@ -68,7 +68,11 @@ class HelpCommand : CommandExecutor() {
                     }
                     if (filtered.isEmpty()) continue
 
-                    val pages = Lists.partition(filtered, filtered.size / 3 + 1)
+                    val pages = if (filtered.size % 3 == 0) {
+                        Lists.partition(filtered, filtered.size / 3)
+                    } else {
+                        Lists.partition(filtered, filtered.size / 3 + 1)
+                    }
 
                     field(true)
                     field("${category.title} — ${filtered.size}\n", false, category.description)
@@ -89,10 +93,11 @@ class HelpCommand : CommandExecutor() {
                 }
 
                 field("News") {
-                    appendln("• Music is laggy, please donate for better quality.")
-                    appendln("• The League command will probably be removed")
-                    appendln("• Working on our own custom version of JDA")
-                    appendln("• Donation links fixed along with general buds")
+                    appendln("• **Incomplete**: disable commands with `_enable | _disable | _listdisabled`.")
+                    appendln("• No more role names! **Commands are now linked with Discord permissions.**")
+                    appendln("• DJ commands for instance, requires you to be in a voice channel and have the `Manage Channel` permission of the channel.")
+                    appendln("• Ban and kick commands requires the `Ban Member` and `Kick Member` permission respectively.")
+                    appendln("• Hella optimizations. RIP Gnar not responding randomly?")
                 }
 
                 field("Contact") {
@@ -101,7 +106,8 @@ class HelpCommand : CommandExecutor() {
                 }
 
                 field("Donations") {
-                    appendln(b(link("Donate", "https://gnarbot.xyz/donate")))
+                    appendln(b(link("PayPal", "https://gnarbot.xyz/donate")))
+                    appendln(b(link("Patreon", "https://www.patreon.com/gnarbot")))
                 }
             }.rest().queue()
         }

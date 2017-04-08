@@ -67,7 +67,7 @@ class Bot {
     }
 
     val startTime = System.currentTimeMillis()
-    /** Returns how many milliseconds since the bot have been up. */
+    /** @return how many milliseconds since the bot have been up. */
     val uptime: Long get() = System.currentTimeMillis() - startTime
 
     /**
