@@ -47,13 +47,8 @@ class GuildData(val id: String, val shard: Shard, val bot: Bot) {
         return null
     }
 
-    /**
-     * @return String representation of the Host.
-     */
-    override fun toString(): String = "Servlet(id=${guild.id}, shard=${shard.shardInfo.shardId}, guild=${guild.name})"
-
     fun reset(interrupt: Boolean) : Boolean {
-        musicManager.let {
+        musicManager_delegate?.let {
             if (!interrupt && it.player.playingTrack != null) {
                 return false
             }

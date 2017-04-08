@@ -68,11 +68,8 @@ class HelpCommand : CommandExecutor() {
                     }
                     if (filtered.isEmpty()) continue
 
-                    val pages = if (filtered.size % 3 == 0) {
-                        Lists.partition(filtered, filtered.size / 3)
-                    } else {
-                        Lists.partition(filtered, filtered.size / 3 + 1)
-                    }
+                    val pages = Lists.partition(filtered,
+                            filtered.size / 3 + (if (filtered.size % 3 == 0) 0 else 1))
 
                     field(true)
                     field("${category.title} — ${filtered.size}\n", false, category.description)

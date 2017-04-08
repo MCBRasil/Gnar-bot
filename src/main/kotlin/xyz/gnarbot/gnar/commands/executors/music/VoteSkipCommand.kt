@@ -2,9 +2,10 @@ package xyz.gnarbot.gnar.commands.executors.music
 
 import b
 import net.dv8tion.jda.core.entities.Message
-import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
+import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
+import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.servers.GuildData
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import java.util.concurrent.TimeUnit
@@ -12,7 +13,7 @@ import java.util.concurrent.TimeUnit
 @Command(aliases = arrayOf("voteskip"),
         description = "Vote to skip the current music track.",
         category = Category.MUSIC)
-class VoteSkipCommand : MusicExecutor() {
+class VoteSkipCommand : CommandExecutor() {
 
     override fun execute(message: Message, args: List<String>) {
         val manager = guildData.musicManager
@@ -45,7 +46,7 @@ class VoteSkipCommand : MusicExecutor() {
             manager.isVotingToSkip = true
 
             message.respond().embed("Vote Skip") {
-                color = musicColor
+                color = Constants.MUSIC_COLOR
                 description {
                     append(b(message.author.name))
                     append(" has voted to **skip** the current track!")
@@ -69,7 +70,7 @@ class VoteSkipCommand : MusicExecutor() {
         msg.channel.getMessageById(msg.id).queue { _msg ->
             if (_msg.reactions[0].count > _msg.reactions[1].count) {
                 msg.respond().embed("Vote Skip") {
-                    color = musicColor
+                    color = Constants.MUSIC_COLOR
                     description {
                         append("The vote has passed! ")
                         append(_msg.reactions[0].count - 1).append(" to ").appendln(_msg.reactions[1].count - 1)
@@ -84,7 +85,7 @@ class VoteSkipCommand : MusicExecutor() {
                 }
             } else {
                 msg.respond().embed("Vote Skip") {
-                    color = musicColor
+                    color = Constants.MUSIC_COLOR
                     description {
                         appendln("The vote has failed! ")
                         append("The song will stay!")

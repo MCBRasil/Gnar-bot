@@ -90,6 +90,8 @@ class Bot {
             setGame(Game.of("$id | _help"))
             setAudioEnabled(true)
             setEnableShutdownHook(true)
+
+            log.info("Building shard [$id/$numShards].")
         }.mapIndexed { id, jda ->
             jda.selfUser.manager.setName("Gnar").queue()
             log.info("Shard [$id] is initialized.")

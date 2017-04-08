@@ -1,32 +1,27 @@
 package xyz.gnarbot.gnar.commands.executors.music
 
 import net.dv8tion.jda.core.entities.Message
+import net.dv8tion.jda.core.entities.MessageEmbed
 import u
-import xyz.gnarbot.gnar.commands.executors.music.parent.MusicExecutor
+import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
+import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
+import xyz.gnarbot.gnar.utils.Utils
 
 @Command(aliases = arrayOf("queue", "list"),
         description = "Shows the music that's currently queued.",
         category = Category.MUSIC)
-class QueueCommand : MusicExecutor() {
+class QueueCommand : CommandExecutor() {
 
     override fun execute(message: Message, args: List<String>) {
         val queue = guildData.musicManager.scheduler.queue
-
-        if (queue.isEmpty()) {
-            message.respond().embed("Queue") {
-                color = musicColor
-                description = "The queue is currently empty."
-            }.rest().queue()
-            return
-        }
 
         var trackCount = 0
         var queueLength = 0L
 
         message.respond().embed("Music Queue") {
-            color = musicColor
+            color = Constants.MUSIC_COLOR
 
             guildData.musicManager.player.playingTrack?.let {
                 field("Now Playing", false, if (it.sourceManager.sourceName.contains("youtube")) {
@@ -43,9 +38,9 @@ class QueueCommand : MusicExecutor() {
                     queueLength += track.duration
                     trackCount++
 
-                    appendln("**$trackCount** `[${getTimestamp(track.duration)}]` __[${track.info.title}](${track.info.uri})__")
+                    appendln("**$trackCount** `[${Utils.getTimestamp(track.duration)}]` __[${track.info.title}](${track.info.uri})__")
 
-                    if (length >= 900) {
+                    if (length >= MessageEmbed.VALUE_MAX_LENGTH - 100) {
                         append("... and **${queue.size - trackCount}** more tracks.")
                         break
                     }
@@ -53,7 +48,7 @@ class QueueCommand : MusicExecutor() {
             }
 
             field("Entries", true, trackCount)
-            field("Queue Duration", true, getTimestamp(queueLength))
+            field("Queue Duration", true, Utils.getTimestamp(queueLength))
         }.rest().queue()
     }
 }

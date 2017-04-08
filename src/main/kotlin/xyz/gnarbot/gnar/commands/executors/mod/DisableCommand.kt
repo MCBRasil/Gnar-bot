@@ -21,6 +21,7 @@ class DisableCommand : CommandExecutor() {
         message.respond().embed("Disabling Commands") {
             color = Constants.COLOR
             description = "Disabled `$args`"
+            footer = "This command is not completed yet."
         }.rest().queue()
     }
 }

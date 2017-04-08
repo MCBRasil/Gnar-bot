@@ -81,7 +81,7 @@ public class MemeCommand extends CommandExecutor {
                                 }
                             }
                         })
-                        .setFooter("Page " + page + "/" + pages, null)
+                        .setFooter("Page [" + page + "/" + pages + "]")
                         .rest().queue();
 
                 return;

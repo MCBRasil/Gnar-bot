@@ -23,6 +23,7 @@ class ListDisabledCommand : CommandExecutor() {
                     appendln(it.meta.aliases.joinToString())
                 }
             }
+            footer = "This command is not completed yet."
         }.rest().queue()
     }
 }

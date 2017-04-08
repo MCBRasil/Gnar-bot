@@ -21,6 +21,7 @@ class EnableCommand : CommandExecutor() {
         message.respond().embed("Enabling Commands") {
             color = Constants.COLOR
             description = "Enabled `$args`"
+            footer = "This command is not completed yet."
         }.rest().queue()
     }
 }
