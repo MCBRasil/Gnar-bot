@@ -10,7 +10,6 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.net.URL;
-import java.util.List;
 
 @Command(
         aliases = {"cats", "cat"},
@@ -19,7 +18,7 @@ import java.util.List;
 )
 public class CatsCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
+    public void execute(Message message, String[] args) {
         try {
             String apiKey = "MTAyODkw";
 
@@ -27,12 +26,12 @@ public class CatsCommand extends CommandExecutor {
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc;
 
-            if (args.size() >= 1 && args.get(0) != null) {
-                switch (args.get(0)) {
+            if (args.length >= 1 && args[0] != null) {
+                switch (args[0]) {
                     case "png":
                     case "jpg":
                     case "gif":
-                        doc = db.parse("http://thecatapi.com/api/images/get?format=xml&type=" + args.get(0) + "&api_key="
+                        doc = db.parse("http://thecatapi.com/api/images/get?format=xml&type=" + args[0] + "&api_key="
                                 + apiKey + "&results_per_page=1");
 
                         break;

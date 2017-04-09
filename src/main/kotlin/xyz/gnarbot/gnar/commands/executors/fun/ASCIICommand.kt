@@ -17,7 +17,7 @@ import java.util.*
         description = "ASCII text art!"
 )
 class ASCIICommand : CommandExecutor() {
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         if (args.isEmpty()) {
             message.respond().error("Please provide a query.").queue()
             return
@@ -60,7 +60,7 @@ class ASCIICommand : CommandExecutor() {
             text = cell.text()
         }
 
-        text?.let { Utils.fastSplit(it, '\n') }?.let {
+        text?.let { Utils.stringSplit(it, '\n') }?.let {
             val b = StringJoiner("\n")
 
             it.filterNot(String::isNullOrBlank)

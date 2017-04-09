@@ -5,12 +5,10 @@ import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.List;
-
 @Command(aliases = "wow", administrator = true, category = Category.NONE)
 public class TestCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
+    public void execute(Message message, String[] args) {
         //        msg.reply(host.getShard().toString());
         //        msg.reply(host.toString());
         //        msg.reply(this.toString());

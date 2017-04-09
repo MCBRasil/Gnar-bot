@@ -8,13 +8,12 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 
 @Command(aliases = "ping",
         description = "Show the bot's current response time.")
 public class PingCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
+    public void execute(Message message, String[] args) {
         OffsetDateTime sentTime = message.getCreationTime();
 
         message.respond().embed("Ping")

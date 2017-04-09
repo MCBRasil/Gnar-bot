@@ -11,7 +11,7 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
         category = Category.NONE
 )
 class ThrowError : CommandExecutor() {
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         throw RuntimeException("Requested to throw an error, so here you go.")
     }
 }

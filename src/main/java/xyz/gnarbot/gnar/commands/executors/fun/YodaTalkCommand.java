@@ -10,8 +10,6 @@ import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.List;
-
 @Command(
         aliases = {"yodatalk"},
         usage = "(sentence)",
@@ -20,8 +18,8 @@ import java.util.List;
 )
 public class YodaTalkCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
-        if (args.isEmpty()) {
+    public void execute(Message message, String[] args) {
+        if (args.length == 0) {
             message.respond().error("At least put something. `:[`").queue();
             return;
         }

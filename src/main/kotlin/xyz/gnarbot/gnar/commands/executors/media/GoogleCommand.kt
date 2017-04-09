@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets
         description = "Who needs browsers!?"
 )
 class GoogleCommand : CommandExecutor() {
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         if (args.isEmpty()) {
             message.respond().error("Gotta have something to search Google.").queue()
             return

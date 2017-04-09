@@ -12,8 +12,6 @@ import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.List;
-
 @Command(
         aliases = {"marvel"},
         usage = "(hero/villain name)",
@@ -22,8 +20,8 @@ import java.util.List;
 )
 public class MarvelComics extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
-        if (args.isEmpty()) {
+    public void execute(Message message, String[] args) {
+        if (args.length == 0) {
             message.respond().error("Please provide a name.").queue();
             return;
         }

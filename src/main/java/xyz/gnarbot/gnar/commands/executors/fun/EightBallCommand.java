@@ -6,7 +6,6 @@ import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.List;
 import java.util.Random;
 
 @Command(aliases = "8ball", usage = "-question", description = "Test your wildest dreams!", category = Category.FUN)
@@ -20,8 +19,8 @@ public class EightBallCommand extends CommandExecutor {
             "Outlook not so good", "Very doubtful"};
 
     @Override
-    public void execute(Message message, List<String> args) {
-        if (args.isEmpty()) {
+    public void execute(Message message, String[] args) {
+        if (args.length == 0) {
             message.respond().error("Ask the 8-ball something.").queue();
             return;
         }

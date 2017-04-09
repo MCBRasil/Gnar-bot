@@ -8,6 +8,7 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -21,8 +22,8 @@ import java.util.concurrent.TimeUnit;
 public class PruneCommand extends CommandExecutor {
 
     @Override
-    public void execute(Message message, List<String> args) {
-        if (args.isEmpty()) {
+    public void execute(Message message, String[] args) {
+        if (args.length == 0) {
             message.respond().error("Insufficient amount of arguments.").queue();
             return;
         }
@@ -33,7 +34,7 @@ public class PruneCommand extends CommandExecutor {
 
         int amount;
         try {
-            amount = Integer.parseInt(args.get(0));
+            amount = Integer.parseInt(args[0]);
             amount = Math.min(amount, 100);
         } catch (NumberFormatException e) {
             message.respond().error("Improper arguments supplies, must be a number.").queue();
@@ -46,8 +47,8 @@ public class PruneCommand extends CommandExecutor {
         }
 
         history.retrievePast(amount).queue(msgs -> {
-            if (args.size() >= 2) {
-                List<String> filter = args.subList(1, args.size());
+            if (args.length >= 2) {
+                String[] filter = Arrays.copyOfRange(args, 1, args.length);
 
                 List<Message> _msgs = new ArrayList<>();
 

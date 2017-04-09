@@ -8,7 +8,7 @@ import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.List;
+import java.util.Arrays;
 
 @Command(
         aliases = {"tts"},
@@ -19,15 +19,15 @@ import java.util.List;
 )
 public class TextToSpeechCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
-        if (args.isEmpty()) {
+    public void execute(Message message, String[] args) {
+        if (args.length == 0) {
             message.respond().error("Please provide a query.").queue();
             return;
         }
 
         MessageBuilder builder = new MessageBuilder();
         builder.setTTS(true);
-        builder.append(StringUtils.join(args.subList(1, args.size()), " "));
+        builder.append(StringUtils.join(Arrays.copyOfRange(args, 1, args.length), " "));
 
         message.getChannel().sendMessage(builder.build()).queue();
     }

@@ -9,9 +9,9 @@ import java.util.concurrent.TimeUnit
 
 @Command(aliases = arrayOf("remindme", "remind"), usage = "# -time_unit -msg")
 class RemindMeCommand : CommandExecutor() {
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         if (args.size >= 3) {
-            val string = args.subList(2, args.size).joinToString(" ")
+            val string = Arrays.copyOfRange(args, 2, args.size).joinToString(" ")
 
             val time = args[0].toIntOrNull() ?: kotlin.run {
                 message.respond().error("The time number was not an integer.").queue()

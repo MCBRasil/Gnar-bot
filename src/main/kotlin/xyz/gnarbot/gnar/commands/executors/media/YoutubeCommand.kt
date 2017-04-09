@@ -15,7 +15,7 @@ import java.awt.Color
         description = "Search and get a YouTube video."
 )
 class YoutubeCommand : CommandExecutor() {
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         if (args.isEmpty()) {
             message.respond().error("Gotta put something to search YouTube.").queue()
             return

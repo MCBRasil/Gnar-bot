@@ -17,8 +17,8 @@ import java.util.List;
 )
 public class WhoIsCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
-        if (args.isEmpty()) {
+    public void execute(Message message, String[] args) {
+        if (args.length == 0) {
             message.respond().error("You did not mention a user.").queue();
             return;
         }

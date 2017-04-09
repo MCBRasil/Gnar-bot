@@ -11,15 +11,13 @@ import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.List;
-
 @Command(
         aliases = {"urbandict", "ub", "urbandictionary"},
         category = Category.FUN
 )
 public class UrbanDictionaryCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
+    public void execute(Message message, String[] args) {
         try {
             String query = StringUtils.join(args, "+");
 

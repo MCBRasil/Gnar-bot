@@ -13,7 +13,7 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
         description = "Show information about the bot."
 )
 class BotInfoCommand : CommandExecutor() {
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         val registry = bot.commandRegistry
 
         // Uptime
@@ -67,30 +67,32 @@ class BotInfoCommand : CommandExecutor() {
         message.respond().embed("Bot Information") {
             color = Constants.COLOR
 
-            field("Requests", true, requests)
-            field("Requests Per Hour", true, requests / if (h == 0L) 1 else h)
-            field("Website", true, link("gnarbot.xyz", "https://gnarbot.xyz"))
+            inline {
+                field("Requests", requests)
+                field("Requests Per Hour", requests / if (h == 0L) 1 else h)
+                field("Website", link("gnarbot.xyz", "https://gnarbot.xyz"))
 
-            field("Text Channels", true, textChannels)
-            field("Voice Channels", true, voiceChannels)
-            field("Voice Connections", true, voiceConnections)
+                field("Text Channels", textChannels)
+                field("Voice Channels", voiceChannels)
+                field("Voice Connections", voiceConnections)
 
-            field("Guilds", true, guilds)
-            field("Guild Data", true, guildData)
-            field("Uptime", true, "${d}d ${h}h ${m}m ${s}s")
+                field("Guilds", guilds)
+                field("Guild Data", guildData)
+                field("Uptime", "${d}d ${h}h ${m}m ${s}s")
 
-            field("Users", true) {
-                append("Total: ").appendln(users)
-                append("Online: ").appendln(online)
-                append("Offline: ").appendln(offline)
-                append("Inactive: ").appendln(inactive)
-            }
+                field("Users") {
+                    append("Total: ").appendln(users)
+                    append("Online: ").appendln(online)
+                    append("Offline: ").appendln(offline)
+                    append("Inactive: ").appendln(inactive)
+                }
 
-            field("Others", true) {
-                appendln("Creators: **[Avarel](https://github.com/Avarel)** and **[Xevryll](https://github.com/xevryll)**")
-                appendln("Contributor: **[Gatt](https://github.com/RealGatt)**")
-                appendln("Commands: **$commandSize**")
-                appendln("Library: Java **[JDA 3](https://github.com/DV8FromTheWorld/JDA)**")
+                field("Others") {
+                    appendln("Creators: **[Avarel](https://github.com/Avarel)** and **[Xevryll](https://github.com/xevryll)**")
+                    appendln("Contributor: **[Gatt](https://github.com/RealGatt)**")
+                    appendln("Commands: **$commandSize**")
+                    appendln("Library: Java **[JDA 3](https://github.com/DV8FromTheWorld/JDA)**")
+                }
             }
         }.rest().queue()
     }

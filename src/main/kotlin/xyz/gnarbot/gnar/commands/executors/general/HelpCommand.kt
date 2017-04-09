@@ -17,7 +17,7 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 )
 class HelpCommand : CommandExecutor() {
 
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         val registry = bot.commandRegistry
 
         if (args.isNotEmpty()) {

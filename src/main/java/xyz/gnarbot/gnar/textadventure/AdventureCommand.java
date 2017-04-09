@@ -11,15 +11,15 @@ import java.util.List;
 public class AdventureCommand extends CommandExecutor {
     @SuppressWarnings("all")
     @Override
-    public void execute(Message message, List<String> args) {
+    public void execute(Message message, String[] args) {
         if (!Adventure.hasAdventure(message.getAuthor())) {
             message.respond().info("Use `_startadventure` to begin your adventure!").queue();
             return;
         }
         Adventure adventure = Adventure.getAdventure(message.getAuthor(), message, getBot());
 
-        if (args.size() > 0) {
-            switch (args.get(0).toLowerCase()) {
+        if (args.length > 0) {
+            switch (args[0].toLowerCase()) {
                 case "quit": {
                     message.respond().info("Poof! Your adventure has been lost to the winds of Azaroth.").queue();
                     Adventure.removeAdventure(message.getAuthor());
@@ -37,7 +37,7 @@ public class AdventureCommand extends CommandExecutor {
                     }
                 }
                 case "setname": {
-                    if (args.size() > 1) {
+                    if (args.length > 1) {
                         String oldname = adventure.getHeroName();
                         adventure.setHeroName(StringUtils.join(args, " ").replace("setname ", ""));
                         adventure.sendInformativeMessage(message,

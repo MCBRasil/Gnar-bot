@@ -14,7 +14,7 @@ import java.util.*
 
 @Command(aliases = arrayOf("math"), usage = "-expression", description = "Calculate fancy math expressions.")
 class MathCommand : CommandExecutor() {
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         if (args.isEmpty()) {
             message.respond().error("Please provide a math expression.").queue()
             return
@@ -24,7 +24,7 @@ class MathCommand : CommandExecutor() {
             color = Constants.COLOR
 
             val exp = ExpressionBuilder()
-            val lines = Utils.fastSplit(StringUtils.join(args, ' '), ';')
+            val lines = Utils.stringSplit(StringUtils.join(args, ' '), ';')
             lines.forEach { exp.addLine(it) }
 
             field("Expressions", true, b(lines.map(String::trim).joinToString("\n")))

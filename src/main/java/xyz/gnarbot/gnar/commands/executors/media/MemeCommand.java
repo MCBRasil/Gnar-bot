@@ -13,7 +13,6 @@ import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -45,14 +44,14 @@ public class MemeCommand extends CommandExecutor {
     }
 
     @Override
-    public void execute(Message message, List<String> args) {
+    public void execute(Message message, String[] args) {
         try {
-            if (args.get(0).equalsIgnoreCase("list")) {
+            if (args[0].equalsIgnoreCase("list")) {
                 int page = 1;
 
                 try {
-                    if (args.get(1) != null) {
-                        page = Integer.valueOf(args.get(1));
+                    if (args[1] != null) {
+                        page = Integer.valueOf(args[1]);
                         if (page <= 0) { page = 1; }
                     }
                 } catch (Exception ignore) {}

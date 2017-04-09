@@ -84,7 +84,7 @@ public class YouTube {
     private static int lengthTextToSeconds(String durationText) {
         int length = 0;
 
-        for (String part : Utils.fastSplit(durationText, ':')) {
+        for (String part : Utils.stringSplit(durationText, ':')) {
             length = length * 60 + Integer.valueOf(part);
         }
 

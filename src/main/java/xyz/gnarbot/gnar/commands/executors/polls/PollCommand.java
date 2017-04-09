@@ -5,8 +5,6 @@ import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.List;
-
 // TODO recode command.
 @Command(aliases = "poll",
         usage = "(argument)",
@@ -14,22 +12,22 @@ import java.util.List;
         category = Category.NONE)
 public class PollCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
+    public void execute(Message message, String[] args) {
 
         //TODO rewrite polls
         message.respond().error("This command is going to be rewritten soon.").queue();
 
-//        if (args.isEmpty() || (!args.isEmpty() && args.get(0).equalsIgnoreCase("help"))) {
+//        if (args.length == 0 || (!args.length == 0 && args[0].equalsIgnoreCase("help"))) {
 //            String reply = "Poll System Help!~\n {} = Required Arguments  |  () = Optional Arguments```ini\n" +
 //                    "[_poll help] This list\n" + "[_poll startyesno {time} {question}] Start a Yes/No Poll for " +
 //                    "\"time\" minutes." + "\n```";
 //            message.respond().info(reply).queue();
-//        } else if (args.size() > 0) {
-//            if (args.get(0).equalsIgnoreCase("startyesno") && args.size() > 1) {
+//        } else if (args.length > 0) {
+//            if (args[0].equalsIgnoreCase("startyesno") && args.length > 1) {
 //                int time = 15;
 //
 //                try {
-//                    time = Integer.parseInt(args.get(1).trim());
+//                    time = Integer.parseInt(args[1].trim());
 //                } catch (NumberFormatException ignore) {}
 //
 //                args.set(0, "");

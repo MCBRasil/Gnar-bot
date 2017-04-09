@@ -11,13 +11,12 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.List;
 
 @Command(
         aliases = "champdata",
         category = Category.FUN)
 public class ChampDataCommand extends CommandExecutor {
-    public static final String[] names = ChampQuoteCommand.names;
+    private static final String[] names = ChampQuoteCommand.names;
     private static JSONObject information;
 
     static {
@@ -36,7 +35,7 @@ public class ChampDataCommand extends CommandExecutor {
     }
 
     @Override
-    public void execute(Message message, List<String> args) {
+    public void execute(Message message, String[] args) {
         int maybeDistance = 20;
         String maybe = "";
 

@@ -9,8 +9,6 @@ import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.List;
-
 @Command(
         aliases = "rcg",
         description = "Generate random Cyanide and Happiness comic.",
@@ -18,7 +16,7 @@ import java.util.List;
 )
 public class ExplosmRCGCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
+    public void execute(Message message, String[] args) {
         try {
             Document document;
 

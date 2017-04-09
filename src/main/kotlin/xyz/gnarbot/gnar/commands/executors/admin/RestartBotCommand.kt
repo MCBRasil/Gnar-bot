@@ -13,7 +13,7 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
         category = Category.NONE
 )
 class RestartBotCommand : CommandExecutor() {
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         message.respond().embed("Restarting") {
             color = Constants.COLOR
 

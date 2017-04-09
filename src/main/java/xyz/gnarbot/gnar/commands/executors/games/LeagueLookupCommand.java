@@ -4,14 +4,12 @@ import net.dv8tion.jda.core.entities.Message;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.List;
-
 @Command(aliases = {"league", "lol"},
         usage = "(LOL Username)",
         description = "Look up Leauge of Legends statistics " + "of a player.")
 public class LeagueLookupCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
+    public void execute(Message message, String[] args) {
         message.respond().error("This command is borked. Blame Rito for their crap API.").queue();
 
         /*
@@ -21,7 +19,7 @@ public class LeagueLookupCommand extends CommandExecutor {
             JSONObject jso = Utils.jsonFromUrl("https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/" +
                     StringUtils.join(args, "").toLowerCase() + "?api_key=" + Bot.INSTANCE.getAuthTokens().getProperty
                     ("league"));
-            JSONObject info = jso.getJSONObject(args.get(0));
+            JSONObject info = jso.getJSONObject(args[0]);
             joiner.add("**League Of Legends** Account Info: ");
             joiner.add("Season: **SEASON 2016** \n");
             joiner.add("Current Name: **" + info.get("name") + "**");
@@ -64,7 +62,7 @@ public class LeagueLookupCommand extends CommandExecutor {
             JSONObject jso = Utils.jsonFromUrl("https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/" +
                     StringUtils.join(args, "").toLowerCase() + "?api_key=" + Bot.INSTANCE.getAuthTokens().getProperty
                     ("league"));
-            JSONObject info = jso.getJSONObject(args.get(0));
+            JSONObject info = jso.getJSONObject(args[0]);
             joiner.add("**League Of Legends** Account Info: ");
             joiner.add("Season: **SEASON 2016** \n");
             joiner.add("Current Name: **" + info.get("name") + "**");

@@ -7,22 +7,20 @@ import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.List;
-
 @Command(aliases = "kick",
         usage = "-user",
         category = Category.MODERATION,
         guildPermissions = Permission.KICK_MEMBERS)
 public class KickCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
+    public void execute(Message message, String[] args) {
         Member author = message.getMember();
         Member target = null;
 
         if (message.getMentionedChannels().size() >= 1) {
             target = getGuild().getMember(message.getMentionedUsers().get(0));
-        } else if (args.size() >= 1) {
-            target = getGuildData().getMemberByName(args.get(0), false);
+        } else if (args.length >= 1) {
+            target = getGuildData().getMemberByName(args[0], false);
         }
 
         if (target == null) {

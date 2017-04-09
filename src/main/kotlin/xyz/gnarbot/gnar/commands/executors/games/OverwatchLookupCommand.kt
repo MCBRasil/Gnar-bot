@@ -13,7 +13,7 @@ import java.awt.Color
 class OverwatchLookupCommand : CommandExecutor() {
     private val regions = arrayOf("us", "eu", "kr")
 
-    public override fun execute(message: Message, args: List<String>) {
+    public override fun execute(message: Message, args: Array<String>) {
         if (args.isEmpty()) {
             message.respond().error("Insufficient arguments. `${meta.usage}`.").queue()
             return

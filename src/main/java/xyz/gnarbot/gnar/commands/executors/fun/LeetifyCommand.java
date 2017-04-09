@@ -8,7 +8,6 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Command(aliases = {"leet"}, usage = "(string)", description = "Leet a string!", category = Category.FUN)
@@ -29,7 +28,7 @@ public class LeetifyCommand extends CommandExecutor {
     }};
 
     @Override
-    public void execute(Message message, List<String> args) {
+    public void execute(Message message, String[] args) {
         String s = StringUtils.join(args, " ");
 
         for (Map.Entry<String, String> entry : substitutions.entrySet()) {

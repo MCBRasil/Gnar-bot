@@ -7,6 +7,7 @@ import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 @Command(
         aliases = arrayOf("progress"),
@@ -14,7 +15,7 @@ import java.util.*
         category = Category.NONE
 )
 class ProgressionCommand : CommandExecutor() {
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         val joiner = StringJoiner("\n", "```", "```")
         joiner.add("﻿ ___________________________ ")
         joiner.add("| Progression     [_][☐][✕]|")
@@ -58,20 +59,17 @@ class ProgressionCommand : CommandExecutor() {
                 percent = " $percent"
             }
 
-            list.add(joiner
-                    .toString()
+            list.add(joiner.toString()
                     .replace("var-A", builder.toString())
                     .replace("var-B", percent))
         }
 
         try {
-//            message.respond().text(list[0]).queue { msg ->
-//                list.forEachIndexed { i, _ ->
-//                    bot.scheduler.schedule(i + 1L, TimeUnit.SECONDS) {
-//                        msg.editMessage(list[i]).queue()
-//                    }
-//                }
-//            }
+            message.respond().text(list[0]).queue { msg ->
+                list.forEachIndexed { i, _ ->
+                    msg.editMessage(list[i]).queueAfter(i + 1L, TimeUnit.SECONDS)
+                }
+            }
         } catch (e: UnsupportedOperationException) {
             message.respond().error("Message was too long or something... no memes for you.").queue()
         }

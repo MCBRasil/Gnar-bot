@@ -5,7 +5,7 @@ import net.dv8tion.jda.core.entities.Message;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.List;
+import java.util.Arrays;
 
 //TODO REMOVE THE EDITZ
 @Command(aliases = "react",
@@ -13,21 +13,21 @@ import java.util.List;
         description = "Make GNAR react to something, against it's " + "will. You evil prick.")
 public class ReactCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
-        if (args.size() < 2) {
+    public void execute(Message message, String[] args) {
+        if (args.length < 2) {
             message.respond().error("Insufficient arguments. `" + getMeta().usage() + "`").queue();
             return;
         }
 
-        message.getChannel().getMessageById(args.get(0)).queue(msg -> {
+        message.getChannel().getMessageById(args[0]).queue(msg -> {
             if (message.getEmotes().size() > 0) {
                 for (Emote em : message.getEmotes()) {
                     msg.addReaction(em).queue();
                 }
             } else {
-                List<String> reactions = args.subList(1, args.size());
+                String[] reactions = Arrays.copyOfRange(args, 1, args.length);
 
-                if (reactions.isEmpty()) {
+                if (reactions.length == 0) {
                     message.respond().error("No reactions detected, robot.").queue();
                     return;
                 }

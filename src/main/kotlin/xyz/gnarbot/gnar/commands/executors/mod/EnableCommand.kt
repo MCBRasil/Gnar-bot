@@ -15,7 +15,7 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
         guildPermissions = arrayOf(Permission.ADMINISTRATOR)
 )
 class EnableCommand : CommandExecutor() {
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         val enabled = args.map {
             bot.commandRegistry.getEntry(it)?.let(guildData.commandHandler::enableCommand)
         }.filterNotNull()

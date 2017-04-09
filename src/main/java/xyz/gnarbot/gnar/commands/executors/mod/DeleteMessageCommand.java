@@ -6,7 +6,6 @@ import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Command(
@@ -18,13 +17,13 @@ import java.util.concurrent.TimeUnit;
 )
 public class DeleteMessageCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
-        if (args.isEmpty()) {
+    public void execute(Message message, String[] args) {
+        if (args.length == 0) {
             message.respond().error("Please input message ID(s) to queue them for deletion.").queue();
             return;
         }
 
-        if (args.size() > 3) {
+        if (args.length > 3) {
             message.respond().error("Use `_prune` instead if you're going to delete more than 3 messages.").queue();
             return;
         }

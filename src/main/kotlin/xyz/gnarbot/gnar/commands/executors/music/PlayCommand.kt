@@ -15,7 +15,7 @@ import xyz.gnarbot.gnar.utils.YouTube
 )
 class PlayCommand : CommandExecutor() {
     
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         val manager = guildData.musicManager
         
         val botChannel = guild.selfMember.voiceState.channel

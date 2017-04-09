@@ -14,7 +14,7 @@ import xyz.gnarbot.gnar.utils.Utils
 )
 class NowPlayingCommand : CommandExecutor() {
 
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         val track = guildData.musicManager.player.playingTrack
 
         if (track == null) {

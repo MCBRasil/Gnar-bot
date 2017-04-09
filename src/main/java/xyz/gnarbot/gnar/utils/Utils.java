@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
-    public static List<String> fastSplit(String s, char delimiter) {
+    public static String[] stringSplit(String s, final char delimiter) {
         List<String> f = new ArrayList<>();
 
         int p = 0;
@@ -21,7 +21,7 @@ public class Utils {
         }
         f.add(s.substring(p));
 
-        return f;
+        return f.toArray(new String[f.size()]);
     }
 
     public static String getTimestamp(long milliseconds) {

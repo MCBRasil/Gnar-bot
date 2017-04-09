@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 )
 class VoteSkipCommand : CommandExecutor() {
 
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         val manager = guildData.musicManager
 
         val member = guild.getMember(message.author)

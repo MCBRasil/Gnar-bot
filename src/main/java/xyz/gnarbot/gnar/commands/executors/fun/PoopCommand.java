@@ -7,7 +7,6 @@ import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.List;
 import java.util.StringJoiner;
 
 @Command(
@@ -17,7 +16,7 @@ import java.util.StringJoiner;
         category = Category.FUN)
 public class PoopCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
+    public void execute(Message message, String[] args) {
         String poop = StringUtils.join(args, " ");
 
         StringJoiner joiner = new StringJoiner("\n", "```\n", "```");

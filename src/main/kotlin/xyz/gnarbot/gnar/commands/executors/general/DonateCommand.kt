@@ -9,7 +9,7 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 
 @Command(aliases = arrayOf("donate"), description = "Show the getBot's uptime.")
 class DonateCommand : CommandExecutor() {
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         message.respond().embed("Donations") {
             color = Constants.COLOR
             description {

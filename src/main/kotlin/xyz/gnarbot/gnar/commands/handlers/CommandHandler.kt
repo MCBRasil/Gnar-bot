@@ -6,6 +6,7 @@ import net.dv8tion.jda.core.exceptions.PermissionException
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.servers.GuildData
 import xyz.gnarbot.gnar.utils.Utils
+import java.util.*
 
 class CommandHandler(private val guildData: GuildData, private val bot: Bot) {
     val disabled: MutableList<CommandRegistry.CommandEntry> = mutableListOf()
@@ -28,11 +29,11 @@ class CommandHandler(private val guildData: GuildData, private val bot: Bot) {
         if (!content.startsWith(bot.prefix)) return
 
         // Tokenize the message.
-        val tokens = Utils.fastSplit(content, ' ')
+        val tokens = Utils.stringSplit(content, ' ')
 
         val label = tokens[0].substring(bot.prefix.length).toLowerCase()
 
-        val args = tokens.subList(1, tokens.size)
+        val args = Arrays.copyOfRange(tokens, 1, tokens.size) //tokens.subList(1, tokens.size)
         
         val entry = bot.commandRegistry.getEntry(label) ?: return
 
@@ -101,8 +102,7 @@ class CommandHandler(private val guildData: GuildData, private val bot: Bot) {
 
             cmd.execute(message, args)
         } catch (e: PermissionException) {
-            message.respond().error("The bot lacks the permission `"
-                    + e.permission.getName() + "` required to perform this command.").queue()
+            message.respond().error("The bot lacks the permission `${e.permission.getName()}` required to perform this command.").queue()
         } catch (e: RuntimeException) {
             message.respond().error("**Exception**: " + e.message).queue()
             e.printStackTrace()

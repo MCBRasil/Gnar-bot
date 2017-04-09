@@ -6,7 +6,7 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 
 @Command(aliases = arrayOf("startadventure"), usage = "[command]", description = "Start a text-based aventure!")
 class StartAdventureCommand : CommandExecutor() {
-    override fun execute(message: Message, args: MutableList<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         Adventure.getAdventure(message.author, message, bot)
         message.delete().queue()
     }

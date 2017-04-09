@@ -14,7 +14,7 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
         guildPermissions = arrayOf(Permission.ADMINISTRATOR)
 )
 class ListDisabledCommand : CommandExecutor() {
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         message.respond().embed("Disabled Commands") {
             color = Constants.COLOR
             description {

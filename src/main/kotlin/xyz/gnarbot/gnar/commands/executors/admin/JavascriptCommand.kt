@@ -19,12 +19,12 @@ class JavascriptCommand : CommandExecutor() {
     val blocked = arrayListOf("leave", "delete", "Guilds", "Token", "Channels", "voice",
             "remove", "ByName", "ById", "Controller", "Manager", "Permissions")
 
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         val engine = ScriptEngineManager().getEngineByName("javascript")
 
         engine.put("jda", jda)
         engine.put("message", message)
-        engine.put("host", guild)
+        engine.put("guild", guild)
         engine.put("channel", message.channel)
 
         val script = args.joinToString(" ")

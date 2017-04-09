@@ -13,7 +13,7 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
         voicePermissions = arrayOf(Permission.MANAGE_CHANNEL)
 )
 class LeaveCommand : CommandExecutor() {
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         guild.audioManager.sendingHandler = null
         guild.audioManager.closeAudioConnection()
     }

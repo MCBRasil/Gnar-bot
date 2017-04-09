@@ -14,7 +14,7 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
         voicePermissions = arrayOf(Permission.MANAGE_CHANNEL)
 )
 class PauseCommand : CommandExecutor() {
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         val manager = guildData.musicManager
 
         if (manager.player.playingTrack == null) {

@@ -13,7 +13,7 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
         category = Category.NONE
 )
 class GarbageCollectCommand : CommandExecutor() {
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         message.respond().embed("Garbage Collection") {
             color = Constants.COLOR
             val interrupt = if (!args.isEmpty()) args[0].toBoolean() else false

@@ -6,7 +6,6 @@ import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Command(aliases = {"quote", "quotemsg"},
@@ -14,8 +13,8 @@ import java.util.concurrent.TimeUnit;
         description = "Quote somebody else..")
 public class QuoteCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
-        if (args.isEmpty()) {
+    public void execute(Message message, String[] args) {
+        if (args.length == 0) {
             message.respond().error("Provide a message id.").queue();
             return;
         }

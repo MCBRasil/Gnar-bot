@@ -91,7 +91,7 @@ class Bot {
             setAudioEnabled(true)
             setEnableShutdownHook(true)
 
-            log.info("Building shard [$id/$numShards].")
+            log.info("Building shard [$id/${numShards - 1}].")
         }.mapIndexed { id, jda ->
             jda.selfUser.manager.setName("Gnar").queue()
             Shard(id, jda, this)

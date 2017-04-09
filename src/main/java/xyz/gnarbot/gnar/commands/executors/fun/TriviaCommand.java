@@ -6,20 +6,18 @@ import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 import xyz.gnarbot.gnar.utils.TriviaQuestions;
 
-import java.util.List;
-
 @Command(
         aliases = "trivia",
         category = Category.FUN
 )
 public class TriviaCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
+    public void execute(Message message, String[] args) {
         if (!TriviaQuestions.isSetup()) {
             TriviaQuestions.init();
         }
 
-        if (args.size() > 0) {
+        if (args.length > 0) {
             message.respond().info(TriviaQuestions.getRandomQuestion()).queue();
         }
     }

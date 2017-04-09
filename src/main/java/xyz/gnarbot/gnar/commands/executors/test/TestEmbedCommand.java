@@ -18,7 +18,7 @@ import java.util.Random;
         administrator = true)
 public class TestEmbedCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, java.util.List<String> args) {
+    public void execute(Message message, String[] args) {
         EmbedBuilder eb = new EmbedBuilder();
         String s = StringUtils.join(args, " ");
         Random r = new Random();

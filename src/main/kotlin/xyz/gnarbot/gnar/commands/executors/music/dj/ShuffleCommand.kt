@@ -15,7 +15,7 @@ import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 )
 class ShuffleCommand : CommandExecutor() {
 
-    override fun execute(message: Message, args: List<String>) {
+    override fun execute(message: Message, args: Array<String>) {
         guildData.musicManager.scheduler.shuffle()
 
         message.respond().embed("Shuffle Queue") {

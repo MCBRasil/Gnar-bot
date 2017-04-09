@@ -6,7 +6,6 @@ import xyz.gnarbot.gnar.commands.handlers.Category;
 import xyz.gnarbot.gnar.commands.handlers.Command;
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
 
-import java.util.List;
 import java.util.Random;
 
 @Command(
@@ -16,10 +15,10 @@ import java.util.Random;
         category = Category.FUN)
 public class RollCommand extends CommandExecutor {
     @Override
-    public void execute(Message message, List<String> args) {
+    public void execute(Message message, String[] args) {
         try {
-            if (args.size() >= 1) {
-                if (!(Integer.valueOf(args.get(0)) > 0)) {
+            if (args.length >= 1) {
+                if (!(Integer.valueOf(args[0]) > 0)) {
                     message.respond().error("Number need to be > 0.").queue();
                     return;
                 }
@@ -28,9 +27,9 @@ public class RollCommand extends CommandExecutor {
                         .setColor(Constants.COLOR)
                         .description(sb -> {
                             sb.append("You rolled a **")
-                                    .append(new Random().nextInt(Integer.valueOf(args.get(0))))
+                                    .append(new Random().nextInt(Integer.valueOf(args[0])))
                                     .append("** from range **[0 to ")
-                                    .append(args.get(0))
+                                    .append(args[0])
                                     .append("]**.");
                         })
                         .rest().queue();
