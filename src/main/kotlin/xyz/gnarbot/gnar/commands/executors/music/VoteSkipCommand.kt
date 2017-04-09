@@ -10,9 +10,11 @@ import xyz.gnarbot.gnar.servers.GuildData
 import xyz.gnarbot.gnar.servers.music.MusicManager
 import java.util.concurrent.TimeUnit
 
-@Command(aliases = arrayOf("voteskip"),
+@Command(
+        aliases = arrayOf("voteskip"),
         description = "Vote to skip the current music track.",
-        category = Category.MUSIC)
+        category = Category.MUSIC
+)
 class VoteSkipCommand : CommandExecutor() {
 
     override fun execute(message: Message, args: List<String>) {

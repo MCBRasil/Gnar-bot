@@ -12,8 +12,7 @@ import javax.servlet.Servlet
  * Individual shard instances of [JDA] of the bot that contains all the [Servlet] for each guild.
  */
 class Shard(val id: Int, private val jda: JDA, val bot: Bot) : JDA by jda {
-
-    val guildData = mutableMapOf<String, GuildData>()
+    val guildData = mutableMapOf<Long, GuildData>()
 
     init {
         jda.addEventListener(ShardListener(this, bot))
@@ -23,7 +22,7 @@ class Shard(val id: Int, private val jda: JDA, val bot: Bot) : JDA by jda {
         //Logger.getLogger("org.apache.http.client.protocol.ResponseProcessCookies").level = Level.OFF
     }
 
-    fun getGuildData(id: String) : GuildData {
+    fun getGuildData(id: Long) : GuildData {
         return guildData.getOrPut(id) { GuildData(id, this, bot) }
     }
 
@@ -36,7 +35,7 @@ class Shard(val id: Int, private val jda: JDA, val bot: Bot) : JDA by jda {
      *
      * @see Servlet
      */
-    fun getGuildData(guild: Guild) = getGuildData(guild.id)
+    fun getGuildData(guild: Guild) = getGuildData(guild.idLong)
 
     /**
      * @return The string representation of the shard.

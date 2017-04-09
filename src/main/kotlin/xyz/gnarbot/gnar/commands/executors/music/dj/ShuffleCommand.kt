@@ -7,10 +7,12 @@ import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 
-@Command(aliases = arrayOf("shuffle"),
+@Command(
+        aliases = arrayOf("shuffle"),
         description = "Shuffle the music queue.",
         category = Category.MUSIC,
-        voicePermissions = arrayOf(Permission.MANAGE_CHANNEL))
+        voicePermissions = arrayOf(Permission.MANAGE_CHANNEL)
+)
 class ShuffleCommand : CommandExecutor() {
 
     override fun execute(message: Message, args: List<String>) {

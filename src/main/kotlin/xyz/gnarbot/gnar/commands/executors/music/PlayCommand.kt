@@ -7,10 +7,12 @@ import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.utils.YouTube
 
-@Command(aliases = arrayOf("play"),
+@Command(
+        aliases = arrayOf("play"),
         usage = "-(url|YT search)",
         description = "Joins and play music in a channel.",
-        category = Category.MUSIC)
+        category = Category.MUSIC
+)
 class PlayCommand : CommandExecutor() {
     
     override fun execute(message: Message, args: List<String>) {

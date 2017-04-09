@@ -6,10 +6,12 @@ import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 
-@Command(aliases = arrayOf("leave"),
+@Command(
+        aliases = arrayOf("leave"),
         description = "Leave the current music channel but keep the queue intact.",
         category = Category.MUSIC,
-        voicePermissions = arrayOf(Permission.MANAGE_CHANNEL))
+        voicePermissions = arrayOf(Permission.MANAGE_CHANNEL)
+)
 class LeaveCommand : CommandExecutor() {
     override fun execute(message: Message, args: List<String>) {
         guild.audioManager.sendingHandler = null

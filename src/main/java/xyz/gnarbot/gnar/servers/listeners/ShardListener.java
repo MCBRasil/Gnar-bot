@@ -1,6 +1,7 @@
 package xyz.gnarbot.gnar.servers.listeners;
 
 
+import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.VoiceChannel;
 import net.dv8tion.jda.core.events.ReconnectedEvent;
@@ -31,14 +32,16 @@ public class ShardListener extends ListenerAdapter {
         }
 
         if (event.getMessage().getContent().startsWith(bot.getPrefix())) {
-            GuildData guild = shard.getGuildData(event.getGuild());
-            guild.handleMessage(event.getMessage());
+            if (event.isFromType(ChannelType.TEXT)) {
+                GuildData guild = shard.getGuildData(event.getGuild());
+                guild.handleMessage(event.getMessage());
+            }
         }
     }
 
     @Override
     public void onGuildLeave(GuildLeaveEvent event) {
-        shard.getGuildData().remove(event.getGuild().getId());
+        shard.getGuildData().remove(event.getGuild().getIdLong());
     }
 
     @Override

@@ -9,9 +9,11 @@ import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.utils.Utils
 
-@Command(aliases = arrayOf("queue", "list"),
+@Command(
+        aliases = arrayOf("queue", "list"),
         description = "Shows the music that's currently queued.",
-        category = Category.MUSIC)
+        category = Category.MUSIC
+)
 class QueueCommand : CommandExecutor() {
 
     override fun execute(message: Message, args: List<String>) {

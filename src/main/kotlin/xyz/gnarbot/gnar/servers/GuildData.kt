@@ -7,7 +7,7 @@ import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.commands.handlers.CommandHandler
 import xyz.gnarbot.gnar.servers.music.MusicManager
 
-class GuildData(val id: String, val shard: Shard, val bot: Bot) {
+class GuildData(val id: Long, val shard: Shard, val bot: Bot) {
     val guild : Guild get() = shard.getGuildById(id)
 
     val commandHandler = CommandHandler(this, bot)

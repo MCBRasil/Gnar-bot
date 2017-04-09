@@ -7,9 +7,11 @@ import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 import xyz.gnarbot.gnar.utils.Utils
 
-@Command(aliases = arrayOf("nowplaying", "np"),
+@Command(
+        aliases = arrayOf("nowplaying", "np"),
         description = "Shows what's currently playing.",
-        category = Category.MUSIC)
+        category = Category.MUSIC
+)
 class NowPlayingCommand : CommandExecutor() {
 
     override fun execute(message: Message, args: List<String>) {

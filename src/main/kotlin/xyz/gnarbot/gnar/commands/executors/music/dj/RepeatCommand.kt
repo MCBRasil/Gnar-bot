@@ -7,10 +7,12 @@ import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 
-@Command(aliases = arrayOf("repeat"),
+@Command(
+        aliases = arrayOf("repeat"),
         description = "Set if the music player should repeat.",
         category = Category.MUSIC,
-        voicePermissions = arrayOf(Permission.MANAGE_CHANNEL))
+        voicePermissions = arrayOf(Permission.MANAGE_CHANNEL)
+)
 class RepeatCommand : CommandExecutor() {
     override fun execute(message: Message, args: List<String>) {
         val manager = guildData.musicManager

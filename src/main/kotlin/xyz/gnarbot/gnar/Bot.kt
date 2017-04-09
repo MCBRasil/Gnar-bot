@@ -94,14 +94,6 @@ class Bot {
             log.info("Building shard [$id/$numShards].")
         }.mapIndexed { id, jda ->
             jda.selfUser.manager.setName("Gnar").queue()
-            log.info("Shard [$id] is initialized.")
-
-//            jda.apply {
-//                addEventListener(ShardListener(jda, bot))
-//                addEventListener(UserListener())
-//                addEventListener(guildCountListener)
-//            }
-
             Shard(id, jda, this)
         }
 

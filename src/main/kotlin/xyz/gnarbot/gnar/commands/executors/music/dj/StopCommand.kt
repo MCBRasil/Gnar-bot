@@ -7,10 +7,12 @@ import xyz.gnarbot.gnar.commands.handlers.Category
 import xyz.gnarbot.gnar.commands.handlers.Command
 import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
 
-@Command(aliases = arrayOf("stop"),
+@Command(
+        aliases = arrayOf("stop"),
         description = "Stop and clear the music player.",
         category = Category.MUSIC,
-        voicePermissions = arrayOf(Permission.MANAGE_CHANNEL))
+        voicePermissions = arrayOf(Permission.MANAGE_CHANNEL)
+)
 class StopCommand : CommandExecutor() {
     override fun execute(message: Message, args: List<String>) {
         val manager = guildData.musicManager
