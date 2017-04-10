@@ -4,13 +4,15 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
-import xyz.gnarbot.gnar.commands.handlers.Category;
-import xyz.gnarbot.gnar.commands.handlers.Command;
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
+import xyz.gnarbot.gnar.commands.Category;
+import xyz.gnarbot.gnar.commands.Command;
+import xyz.gnarbot.gnar.commands.CommandExecutor;
+import xyz.gnarbot.gnar.commands.Scope;
 
 @Command(aliases = "unban",
         category = Category.MODERATION,
-        guildPermissions = Permission.BAN_MEMBERS)
+        scope = Scope.TEXT,
+        permissions = Permission.BAN_MEMBERS)
 public class UnbanCommand extends CommandExecutor {
     @Override
     public void execute(Message message, String[] args) {

@@ -4,8 +4,8 @@ import net.dv8tion.jda.core.entities.Message
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.text.WordUtils
 import xyz.gnarbot.gnar.Constants
-import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
+import xyz.gnarbot.gnar.commands.Command
+import xyz.gnarbot.gnar.commands.CommandExecutor
 import java.util.*
 
 @Command(aliases = arrayOf("dialog"),

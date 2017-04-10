@@ -2,9 +2,9 @@ package xyz.gnarbot.gnar.commands.executors.music
 
 import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.Constants
-import xyz.gnarbot.gnar.commands.handlers.Category
-import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
+import xyz.gnarbot.gnar.commands.Category
+import xyz.gnarbot.gnar.commands.Command
+import xyz.gnarbot.gnar.commands.CommandExecutor
 import xyz.gnarbot.gnar.utils.YouTube
 
 @Command(
@@ -14,7 +14,6 @@ import xyz.gnarbot.gnar.utils.YouTube
         category = Category.MUSIC
 )
 class PlayCommand : CommandExecutor() {
-    
     override fun execute(message: Message, args: Array<String>) {
         val manager = guildData.musicManager
         
@@ -59,15 +58,15 @@ class PlayCommand : CommandExecutor() {
         } else {
             val query = args.joinToString("+")
 
-            val results = YouTube.search(query, 2)
+            val results = YouTube.search(query, 1)
 
             if (results.isEmpty()) {
                 message.respond().error("No YouTube results returned for `${query.replace('+', ' ')}`.").queue()
                 return
             }
 
-            val result = results[1]
-            val videoID = result.id
+            val result = results[0]
+            val videoID = result.url
             "https://www.youtube.com/watch?v=$videoID"
         }
 

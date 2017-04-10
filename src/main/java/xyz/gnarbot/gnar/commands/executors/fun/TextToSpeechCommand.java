@@ -4,9 +4,10 @@ import net.dv8tion.jda.core.MessageBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import org.apache.commons.lang3.StringUtils;
-import xyz.gnarbot.gnar.commands.handlers.Category;
-import xyz.gnarbot.gnar.commands.handlers.Command;
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
+import xyz.gnarbot.gnar.commands.Category;
+import xyz.gnarbot.gnar.commands.Command;
+import xyz.gnarbot.gnar.commands.CommandExecutor;
+import xyz.gnarbot.gnar.commands.Scope;
 
 import java.util.Arrays;
 
@@ -15,7 +16,8 @@ import java.util.Arrays;
         usage = "(string)",
         description = "Text to speech fun.",
         category = Category.FUN,
-        channelPermissions = Permission.MESSAGE_TTS
+        scope = Scope.TEXT,
+        permissions = Permission.MESSAGE_TTS
 )
 public class TextToSpeechCommand extends CommandExecutor {
     @Override

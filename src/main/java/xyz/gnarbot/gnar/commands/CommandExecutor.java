@@ -1,11 +1,11 @@
-package xyz.gnarbot.gnar.commands.handlers;
+package xyz.gnarbot.gnar.commands;
 
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Message;
 import xyz.gnarbot.gnar.Bot;
-import xyz.gnarbot.gnar.servers.GuildData;
-import xyz.gnarbot.gnar.servers.Shard;
+import xyz.gnarbot.gnar.guilds.GuildData;
+import xyz.gnarbot.gnar.guilds.Shard;
 
 /**
  * Abstract class that is extended when creating a command.

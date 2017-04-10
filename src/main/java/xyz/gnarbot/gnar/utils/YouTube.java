@@ -120,8 +120,8 @@ public class YouTube {
             return author;
         }
 
-        public String getId() {
-            return id;
+        public String getURL() {
+            return "https://www.youtube.com/watch?v=" + id;
         }
 
         public String getDescription() {

@@ -4,8 +4,8 @@ import b
 import net.dv8tion.jda.core.entities.Message
 import org.apache.commons.lang3.StringUtils
 import xyz.gnarbot.gnar.Constants
-import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
+import xyz.gnarbot.gnar.commands.Command
+import xyz.gnarbot.gnar.commands.CommandExecutor
 import xyz.gnarbot.gnar.utils.Utils
 import xyz.hexav.aje.AJEException
 import xyz.hexav.aje.ExpressionBuilder

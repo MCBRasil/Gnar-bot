@@ -4,8 +4,8 @@ import b
 import link
 import net.dv8tion.jda.core.entities.Message
 import org.json.JSONException
-import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
+import xyz.gnarbot.gnar.commands.Command
+import xyz.gnarbot.gnar.commands.CommandExecutor
 import xyz.gnarbot.gnar.utils.YouTube
 import java.awt.Color
 
@@ -42,8 +42,7 @@ class YoutubeCommand : CommandExecutor() {
 
                         val title = result.title
                         val desc = result.description
-                        val videoID = result.id
-                        val url = "https://www.youtube.com/watch?v=$videoID"
+                        val url = result.url
 
                         if (firstUrl == null) {
                             firstUrl = url
@@ -62,7 +61,6 @@ class YoutubeCommand : CommandExecutor() {
             message.respond().error("Unable to get YouTube results.").queue()
             e.printStackTrace()
         }
-
     }
 }
 

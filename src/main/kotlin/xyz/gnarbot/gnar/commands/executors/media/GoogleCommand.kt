@@ -5,8 +5,8 @@ import link
 import net.dv8tion.jda.core.entities.Message
 import org.jsoup.Jsoup
 import xyz.gnarbot.gnar.Constants
-import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
+import xyz.gnarbot.gnar.commands.Command
+import xyz.gnarbot.gnar.commands.CommandExecutor
 import java.io.IOException
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets

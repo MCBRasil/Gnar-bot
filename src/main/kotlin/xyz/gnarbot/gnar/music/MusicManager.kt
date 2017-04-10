@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar.servers.music
+package xyz.gnarbot.gnar.music
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer
@@ -7,7 +7,7 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import net.dv8tion.jda.core.entities.Message
-import xyz.gnarbot.gnar.servers.GuildData
+import xyz.gnarbot.gnar.guilds.GuildData
 import java.awt.Color
 import java.time.Duration
 

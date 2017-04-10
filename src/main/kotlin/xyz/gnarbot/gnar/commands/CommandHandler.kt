@@ -1,10 +1,10 @@
-package xyz.gnarbot.gnar.commands.handlers
+package xyz.gnarbot.gnar.commands
 
 import net.dv8tion.jda.core.Permission
 import net.dv8tion.jda.core.entities.Message
 import net.dv8tion.jda.core.exceptions.PermissionException
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.servers.GuildData
+import xyz.gnarbot.gnar.guilds.GuildData
 import xyz.gnarbot.gnar.utils.Utils
 import java.util.*
 
@@ -26,7 +26,7 @@ class CommandHandler(private val guildData: GuildData, private val bot: Bot) {
      * Call the command based on the message content.
      *
      * @param message Message object.
-     * @param content String content of the message.
+     * @return If the call was successful.
      */
     fun callCommand(message: Message) : Boolean {
         val content = message.content
@@ -59,30 +59,20 @@ class CommandHandler(private val guildData: GuildData, private val bot: Bot) {
             }
         }
 
-        if (meta.channelPermissions.isNotEmpty()) {
-            val channel = message.textChannel
-            if (!member.hasPermission(message.textChannel, *meta.channelPermissions)) {
-                val requirement = meta.channelPermissions.map(Permission::getName)
-                message.respond().error("You lack the following permissions: `$requirement` in ${channel.asMention}.").queue()
-                return false
+        if (meta.permissions.isNotEmpty()) {
+            if (meta.scope == Scope.VOICE) {
+                if (member.voiceState.channel == null) {
+                    message.respond().error("This command requires you to be in a voice channel.").queue()
+                    return false
+                }
             }
-        }
-        if (meta.voicePermissions.isNotEmpty()) {
-            val channel = member.voiceState.channel
-            if (channel == null) {
-                message.respond().error("This command requires you to be in a voice channel.").queue()
-                return false
-            }
-            if (!member.hasPermission(channel, *meta.voicePermissions)) {
-                val requirement = meta.voicePermissions.map(Permission::getName)
-                message.respond().error("You lack the following permissions: `$requirement` in ${channel.name}.").queue()
-                return false
-            }
-        }
-        if (meta.guildPermissions.isNotEmpty()) {
-            if (!member.hasPermission(*meta.guildPermissions)) {
-                val requirement = meta.guildPermissions.map(Permission::getName)
-                message.respond().error("You lack the following permissions: `$requirement`.").queue()
+            if (meta.scope.checkPermission(message, member, *meta.permissions)) {
+                val requirements = entry.meta.permissions.map(Permission::getName)
+                message.respond().error("You lack the following permissions: `$requirements` in " + when (meta.scope) {
+                    Scope.GUILD -> "the guild `${message.guild.name}`."
+                    Scope.TEXT -> "the text channel `${message.textChannel.name}`."
+                    Scope.VOICE -> "the voice channel `${member.voiceState.channel.name}`."
+                }).queue()
                 return false
             }
         }

@@ -5,9 +5,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import xyz.gnarbot.gnar.Constants;
-import xyz.gnarbot.gnar.commands.handlers.Category;
-import xyz.gnarbot.gnar.commands.handlers.Command;
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
+import xyz.gnarbot.gnar.commands.Category;
+import xyz.gnarbot.gnar.commands.Command;
+import xyz.gnarbot.gnar.commands.CommandExecutor;
 
 @Command(
         aliases = "rcg",

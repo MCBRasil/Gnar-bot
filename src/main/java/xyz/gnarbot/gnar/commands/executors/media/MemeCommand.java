@@ -9,9 +9,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import xyz.gnarbot.gnar.Constants;
 import xyz.gnarbot.gnar.Credentials;
-import xyz.gnarbot.gnar.commands.handlers.Category;
-import xyz.gnarbot.gnar.commands.handlers.Command;
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
+import xyz.gnarbot.gnar.commands.Category;
+import xyz.gnarbot.gnar.commands.Command;
+import xyz.gnarbot.gnar.commands.CommandExecutor;
 
 import java.util.Map;
 import java.util.Set;

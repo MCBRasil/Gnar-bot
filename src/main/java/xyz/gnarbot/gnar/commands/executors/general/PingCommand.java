@@ -3,8 +3,8 @@ package xyz.gnarbot.gnar.commands.executors.general;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import xyz.gnarbot.gnar.Constants;
-import xyz.gnarbot.gnar.commands.handlers.Command;
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
+import xyz.gnarbot.gnar.commands.Command;
+import xyz.gnarbot.gnar.commands.CommandExecutor;
 
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;

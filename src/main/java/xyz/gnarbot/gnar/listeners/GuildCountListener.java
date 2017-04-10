@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar.servers.listeners;
+package xyz.gnarbot.gnar.listeners;
 
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -8,7 +8,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.json.JSONObject;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.Credentials;
-import xyz.gnarbot.gnar.servers.Shard;
+import xyz.gnarbot.gnar.guilds.Shard;
 
 public class GuildCountListener extends ListenerAdapter {
 

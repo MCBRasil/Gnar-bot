@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar.commands.handlers
+package xyz.gnarbot.gnar.commands
 
 enum class Category(val title: String, val description: String = "", val show: Boolean = true) {
     BETA("Beta", "Beta commands. Not complete. Don't complain.", show = false),

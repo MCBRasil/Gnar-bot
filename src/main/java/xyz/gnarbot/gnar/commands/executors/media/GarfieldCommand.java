@@ -2,8 +2,8 @@
 //
 //import org.jsoup.Jsoup;
 //import org.jsoup.nodes.Document;
-//import xyz.gnarbot.gnar.commands.handlers.Command;
-//import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
+//import xyz.gnarbot.gnar.commands.Command;
+//import xyz.gnarbot.gnar.commands.CommandExecutor;
 //import xyz.gnarbot.gnar.utils.Note;
 //
 //import java.util.List;

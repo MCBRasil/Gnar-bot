@@ -1,11 +1,11 @@
-package xyz.gnarbot.gnar.servers
+package xyz.gnarbot.gnar.guilds
 
 import net.dv8tion.jda.core.JDA
 import net.dv8tion.jda.core.entities.Guild
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.api.data.ShardInfo
-import xyz.gnarbot.gnar.servers.listeners.ShardListener
-import xyz.gnarbot.gnar.servers.listeners.UserListener
+import xyz.gnarbot.gnar.listeners.ShardListener
+import xyz.gnarbot.gnar.listeners.UserListener
 import javax.servlet.Servlet
 
 /**

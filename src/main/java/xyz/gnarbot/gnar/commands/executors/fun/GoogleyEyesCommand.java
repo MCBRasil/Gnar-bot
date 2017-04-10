@@ -7,9 +7,9 @@ import net.dv8tion.jda.core.entities.Message;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import xyz.gnarbot.gnar.Credentials;
-import xyz.gnarbot.gnar.commands.handlers.Category;
-import xyz.gnarbot.gnar.commands.handlers.Command;
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
+import xyz.gnarbot.gnar.commands.Category;
+import xyz.gnarbot.gnar.commands.Command;
+import xyz.gnarbot.gnar.commands.CommandExecutor;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

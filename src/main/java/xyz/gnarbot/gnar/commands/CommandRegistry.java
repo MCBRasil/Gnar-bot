@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar.commands.handlers;
+package xyz.gnarbot.gnar.commands;
 
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.executors.admin.GarbageCollectCommand;

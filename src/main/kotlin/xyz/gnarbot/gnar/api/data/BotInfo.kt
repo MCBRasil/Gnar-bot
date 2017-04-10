@@ -1,7 +1,7 @@
 package xyz.gnarbot.gnar.api.data
 
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.servers.Shard
+import xyz.gnarbot.gnar.guilds.Shard
 import java.util.*
 
 class BotInfo(bot: Bot) {

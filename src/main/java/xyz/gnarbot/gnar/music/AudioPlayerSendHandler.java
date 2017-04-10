@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar.servers.music;
+package xyz.gnarbot.gnar.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.playback.AudioFrame;

@@ -3,9 +3,9 @@ package xyz.gnarbot.gnar.commands.executors.media;
 import net.dv8tion.jda.core.entities.Message;
 import org.w3c.dom.Document;
 import xyz.gnarbot.gnar.Constants;
-import xyz.gnarbot.gnar.commands.handlers.Category;
-import xyz.gnarbot.gnar.commands.handlers.Command;
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
+import xyz.gnarbot.gnar.commands.Category;
+import xyz.gnarbot.gnar.commands.Command;
+import xyz.gnarbot.gnar.commands.CommandExecutor;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

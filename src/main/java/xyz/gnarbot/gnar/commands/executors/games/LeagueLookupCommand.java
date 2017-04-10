@@ -1,8 +1,8 @@
 package xyz.gnarbot.gnar.commands.executors.games;
 
 import net.dv8tion.jda.core.entities.Message;
-import xyz.gnarbot.gnar.commands.handlers.Command;
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
+import xyz.gnarbot.gnar.commands.Command;
+import xyz.gnarbot.gnar.commands.CommandExecutor;
 
 @Command(aliases = {"league", "lol"},
         usage = "(LOL Username)",

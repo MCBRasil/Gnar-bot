@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar.commands.handlers;
+package xyz.gnarbot.gnar.commands;
 
 import net.dv8tion.jda.core.Permission;
 
@@ -36,9 +36,7 @@ public @interface Command {
 
     Category category() default Category.GENERAL;
 
-    Permission[] guildPermissions() default {};
+    Scope scope() default Scope.GUILD;
 
-    Permission[] channelPermissions() default {};
-
-    Permission[] voicePermissions() default {};
+    Permission[] permissions() default {};
 }

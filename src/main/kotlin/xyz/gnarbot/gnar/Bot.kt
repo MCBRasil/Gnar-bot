@@ -14,9 +14,9 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import xyz.gnarbot.gnar.api.APIPortal
 import xyz.gnarbot.gnar.api.data.BotInfo
-import xyz.gnarbot.gnar.commands.handlers.CommandRegistry
-import xyz.gnarbot.gnar.servers.Shard
-import xyz.gnarbot.gnar.servers.listeners.GuildCountListener
+import xyz.gnarbot.gnar.commands.CommandRegistry
+import xyz.gnarbot.gnar.guilds.Shard
+import xyz.gnarbot.gnar.listeners.GuildCountListener
 import java.io.File
 import kotlin.jvm.JvmStatic as static
 
@@ -91,9 +91,9 @@ class Bot {
             setAudioEnabled(true)
             setEnableShutdownHook(true)
 
-            log.info("Building shard [$id/${numShards - 1}].")
+            log.info("Building shard $id. [ ${id + 1} / ${numShards} ]")
         }.mapIndexed { id, jda ->
-            jda.selfUser.manager.setName("Gnar").queue()
+            jda.selfUser.manager.setName("Gnarr").queue()
             Shard(id, jda, this)
         }
 

@@ -1,10 +1,10 @@
-package xyz.gnarbot.gnar.servers.music;
+package xyz.gnarbot.gnar.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
-import xyz.gnarbot.gnar.servers.GuildData;
+import xyz.gnarbot.gnar.guilds.GuildData;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Queue;
 
 public class TrackScheduler extends AudioEventAdapter {
-    public static int QUEUE_LIMIT = 30;
+    public static final int QUEUE_LIMIT = 30;
 
     private final GuildData guildData;
     private final AudioPlayer player;

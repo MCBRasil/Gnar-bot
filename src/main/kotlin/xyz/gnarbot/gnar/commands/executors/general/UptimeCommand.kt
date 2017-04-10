@@ -2,8 +2,8 @@ package xyz.gnarbot.gnar.commands.executors.general
 
 import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.Constants
-import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
+import xyz.gnarbot.gnar.commands.Command
+import xyz.gnarbot.gnar.commands.CommandExecutor
 
 @Command(aliases = arrayOf("uptime"), description = "Show the getBot's uptime.")
 class UptimeCommand : CommandExecutor() {

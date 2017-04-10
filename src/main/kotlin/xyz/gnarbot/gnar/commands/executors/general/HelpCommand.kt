@@ -6,9 +6,9 @@ import link
 import net.dv8tion.jda.core.Permission
 import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.Constants
-import xyz.gnarbot.gnar.commands.handlers.Category
-import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
+import xyz.gnarbot.gnar.commands.Category
+import xyz.gnarbot.gnar.commands.Command
+import xyz.gnarbot.gnar.commands.CommandExecutor
 
 @Command(
         aliases = arrayOf("help", "guide"),
@@ -37,14 +37,10 @@ class HelpCommand : CommandExecutor() {
                 field("Usage", true, "${bot.prefix}${entry.meta.aliases[0].toLowerCase()} ${entry.meta.usage}")
                 field(true)
 
-                if (entry.meta.channelPermissions.isNotEmpty())
-                    field("Channel Permission", true, entry.meta.channelPermissions.map(Permission::getName))
+                if (entry.meta.permissions.isNotEmpty())
+                    field("Guild Permission", true, "${entry.meta.scope} ${entry.meta.permissions.map(Permission::getName)}")
 
-                if (entry.meta.voicePermissions.isNotEmpty())
-                    field("Voice Permission", true, entry.meta.voicePermissions.map(Permission::getName))
 
-                if (entry.meta.guildPermissions.isNotEmpty())
-                    field("Guild Permission", true, entry.meta.guildPermissions.map(Permission::getName))
 
                 field("Description", false, entry.meta.description)
 

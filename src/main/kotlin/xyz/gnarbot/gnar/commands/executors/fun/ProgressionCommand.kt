@@ -3,9 +3,9 @@ package xyz.gnarbot.gnar.commands.executors.`fun`
 import net.dv8tion.jda.core.entities.Message
 import org.apache.commons.lang3.StringUtils
 import org.apache.commons.lang3.text.WordUtils
-import xyz.gnarbot.gnar.commands.handlers.Category
-import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
+import xyz.gnarbot.gnar.commands.Category
+import xyz.gnarbot.gnar.commands.Command
+import xyz.gnarbot.gnar.commands.CommandExecutor
 import java.util.*
 import java.util.concurrent.TimeUnit
 

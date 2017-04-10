@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar.servers.listeners;
+package xyz.gnarbot.gnar.listeners;
 
 import net.dv8tion.jda.client.events.relationship.FriendRequestReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;

@@ -3,9 +3,10 @@ package xyz.gnarbot.gnar.commands.executors.mod;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageHistory;
-import xyz.gnarbot.gnar.commands.handlers.Category;
-import xyz.gnarbot.gnar.commands.handlers.Command;
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
+import xyz.gnarbot.gnar.commands.Category;
+import xyz.gnarbot.gnar.commands.Command;
+import xyz.gnarbot.gnar.commands.CommandExecutor;
+import xyz.gnarbot.gnar.commands.Scope;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,7 +18,8 @@ import java.util.concurrent.TimeUnit;
         usage = "-amount -words...",
         description = "Delete up to 100 messages.",
         category = Category.MODERATION,
-        channelPermissions = Permission.MESSAGE_MANAGE
+        scope = Scope.TEXT,
+        permissions = Permission.MESSAGE_MANAGE
 )
 public class PruneCommand extends CommandExecutor {
 

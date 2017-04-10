@@ -2,8 +2,8 @@ package xyz.gnarbot.gnar.commands.executors.general;
 
 import net.dv8tion.jda.core.entities.Message;
 import xyz.gnarbot.gnar.Constants;
-import xyz.gnarbot.gnar.commands.handlers.Command;
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor;
+import xyz.gnarbot.gnar.commands.Command;
+import xyz.gnarbot.gnar.commands.CommandExecutor;
 
 @Command(aliases = {"invite", "invitebot"}, description = "Get a link to invite GN4R to your server.")
 public class InviteBotCommand extends CommandExecutor {

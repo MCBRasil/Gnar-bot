@@ -1,11 +1,11 @@
-package xyz.gnarbot.gnar.servers
+package xyz.gnarbot.gnar.guilds
 
 import net.dv8tion.jda.core.entities.Guild
 import net.dv8tion.jda.core.entities.Member
 import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.Bot
-import xyz.gnarbot.gnar.commands.handlers.CommandHandler
-import xyz.gnarbot.gnar.servers.music.MusicManager
+import xyz.gnarbot.gnar.commands.CommandHandler
+import xyz.gnarbot.gnar.music.MusicManager
 
 class GuildData(val id: Long, val shard: Shard, val bot: Bot) {
     val guild : Guild get() = shard.getGuildById(id)

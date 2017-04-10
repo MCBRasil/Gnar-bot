@@ -3,8 +3,8 @@ package xyz.gnarbot.gnar.commands.executors.games
 import com.mashape.unirest.http.Unirest
 import net.dv8tion.jda.core.entities.Message
 import org.json.JSONObject
-import xyz.gnarbot.gnar.commands.handlers.Command
-import xyz.gnarbot.gnar.commands.handlers.CommandExecutor
+import xyz.gnarbot.gnar.commands.Command
+import xyz.gnarbot.gnar.commands.CommandExecutor
 import java.awt.Color
 
 @Command(aliases = arrayOf("overwatch", "ow"),

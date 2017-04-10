@@ -1,4 +1,4 @@
-package xyz.gnarbot.gnar.servers.listeners;
+package xyz.gnarbot.gnar.listeners;
 
 
 import net.dv8tion.jda.core.entities.ChannelType;
@@ -12,8 +12,8 @@ import net.dv8tion.jda.core.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import xyz.gnarbot.gnar.Bot;
-import xyz.gnarbot.gnar.servers.GuildData;
-import xyz.gnarbot.gnar.servers.Shard;
+import xyz.gnarbot.gnar.guilds.GuildData;
+import xyz.gnarbot.gnar.guilds.Shard;
 
 public class ShardListener extends ListenerAdapter {
     private final Shard shard;
