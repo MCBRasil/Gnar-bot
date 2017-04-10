@@ -148,7 +148,7 @@ public class CommandRegistry {
         register(DisableCommand.class);
         register(ListDisabledCommand.class);
 
-        //register(new JSCommandExecutor(new File("data/scripting/javascript/firstJSCommand.js")));
+//        register(new JSCommandExecutor(new File("data/scripting/javascript/firstJSCommand.js")));
     }
 
     public Map<String, CommandEntry> getCommandEntriesMap() {
@@ -160,7 +160,7 @@ public class CommandRegistry {
             throw new IllegalStateException("@Command annotation not found for class: " + cls.getName());
         }
 
-        CommandEntry entry = new CommandEntry(cls, bot);
+        CommandEntry entry = new CommandEntry(cls);
         for (String alias : entry.meta.aliases()) {
             registerCommand(alias, entry);
         }
@@ -211,10 +211,8 @@ public class CommandRegistry {
     public static class CommandEntry {
         public final Class<? extends CommandExecutor> cls;
         public final Command meta;
-        private final Bot bot;
 
-        CommandEntry(Class<? extends CommandExecutor> cls, Bot bot) {
-            this.bot = bot;
+        CommandEntry(Class<? extends CommandExecutor> cls) {
             this.cls = cls;
             this.meta = cls.getAnnotation(Command.class);
         }

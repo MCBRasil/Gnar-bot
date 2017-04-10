@@ -59,6 +59,6 @@ class GuildData(val id: Long, val shard: Shard, val bot: Bot) {
     }
 
     fun handleMessage(message: Message) {
-        commandHandler.callCommand(message, message.content)
+        commandHandler.callCommand(message)
     }
 }

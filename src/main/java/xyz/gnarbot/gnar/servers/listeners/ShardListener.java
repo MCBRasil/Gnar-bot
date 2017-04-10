@@ -31,8 +31,8 @@ public class ShardListener extends ListenerAdapter {
             return;
         }
 
-        if (event.getMessage().getContent().startsWith(bot.getPrefix())) {
-            if (event.isFromType(ChannelType.TEXT)) {
+        if (event.isFromType(ChannelType.TEXT)) {
+            if (event.getMessage().getContent().startsWith(bot.getPrefix())) {
                 GuildData guild = shard.getGuildData(event.getGuild());
                 guild.handleMessage(event.getMessage());
             }
