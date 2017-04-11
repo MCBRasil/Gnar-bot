@@ -7,7 +7,6 @@ import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.Command
 import xyz.gnarbot.gnar.commands.CommandExecutor
 
-
 @Command(
         aliases = arrayOf("info", "botinfo"),
         description = "Show information about the bot."
@@ -81,17 +80,21 @@ class BotInfoCommand : CommandExecutor() {
                 field("Uptime", "${d}d ${h}h ${m}m ${s}s")
 
                 field("Users") {
-                    append("Total: ").appendln(users)
-                    append("Online: ").appendln(online)
-                    append("Offline: ").appendln(offline)
-                    append("Inactive: ").appendln(inactive)
+                    buildString {
+                        append("Total: ").appendln(users)
+                        append("Online: ").appendln(online)
+                        append("Offline: ").appendln(offline)
+                        append("Inactive: ").appendln(inactive)
+                    }
                 }
 
                 field("Others") {
-                    appendln("Creators: **[Avarel](https://github.com/Avarel)** and **[Xevryll](https://github.com/xevryll)**")
-                    appendln("Contributor: **[Gatt](https://github.com/RealGatt)**")
-                    appendln("Commands: **$commandSize**")
-                    appendln("Library: Java **[JDA 3](https://github.com/DV8FromTheWorld/JDA)**")
+                    buildString {
+                        appendln("Creators: **[Avarel](https://github.com/Avarel)** and **[Xevryll](https://github.com/xevryll)**")
+                        appendln("Contributor: **[Gatt](https://github.com/RealGatt)**")
+                        appendln("Commands: **$commandSize**")
+                        appendln("Library: Java **[JDA 3](https://github.com/DV8FromTheWorld/JDA)**")
+                    }
                 }
             }
         }.rest().queue()

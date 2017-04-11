@@ -44,23 +44,24 @@ class GoogleCommand : CommandExecutor() {
                 description {
                     var count = 0
 
-                    for (block in blocks) {
-                        if (count >= 3) break
+                    buildString {
+                        for (block in blocks) {
+                            if (count >= 3) break
 
-                        val list = block.select(".r>a")
-                        if (list.isEmpty()) break
+                            val list = block.select(".r>a")
+                            if (list.isEmpty()) break
 
-                        val entry = list[0]
-                        val title = entry.text()
-                        val url = entry.absUrl("href").replace(")", "\\)")
-                        var desc: String? = null
+                            val entry = list[0]
+                            val title = entry.text()
+                            val url = entry.absUrl("href").replace(")", "\\)")
+                            var desc: String? = null
 
-                        val st = block.select(".st")
-                        if (!st.isEmpty()) desc = st[0].text()
+                            val st = block.select(".st")
+                            if (!st.isEmpty()) desc = st[0].text()
 
-                        appendln(b(link(title, url))).appendln(desc)
-
-                        count++
+                            appendln(b(link(title, url))).appendln(desc)
+                            count++
+                        }
                     }
                 }
             }.rest().queue()

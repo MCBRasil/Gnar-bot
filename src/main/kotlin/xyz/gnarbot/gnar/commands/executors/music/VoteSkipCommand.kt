@@ -50,10 +50,12 @@ class VoteSkipCommand : CommandExecutor() {
             message.respond().embed("Vote Skip") {
                 color = Constants.MUSIC_COLOR
                 description {
-                    append(b(message.author.name))
-                    append(" has voted to **skip** the current track!")
-                    appendln("React with :thumbsup: or :thumbsdown:")
-                    append("Whichever has the most votes in 30 seconds will win!")
+                    buildString {
+                        append(b(message.author.name))
+                        append(" has voted to **skip** the current track!")
+                        appendln("React with :thumbsup: or :thumbsdown:")
+                        append("Whichever has the most votes in 30 seconds will win!")
+                    }
                 }
             }.rest().queue { msg ->
                 msg.addReaction("👍").queue()
@@ -74,9 +76,11 @@ class VoteSkipCommand : CommandExecutor() {
                 msg.respond().embed("Vote Skip") {
                     color = Constants.MUSIC_COLOR
                     description {
-                        append("The vote has passed! ")
-                        append(_msg.reactions[0].count - 1).append(" to ").appendln(_msg.reactions[1].count - 1)
-                        append("The song has been skipped!")
+                        buildString {
+                            append("The vote has passed! ")
+                            append(_msg.reactions[0].count - 1).append(" to ").appendln(_msg.reactions[1].count - 1)
+                            append("The song has been skipped!")
+                        }
                     }
                 }.rest().queue()
 
@@ -89,8 +93,10 @@ class VoteSkipCommand : CommandExecutor() {
                 msg.respond().embed("Vote Skip") {
                     color = Constants.MUSIC_COLOR
                     description {
-                        appendln("The vote has failed! ")
-                        append("The song will stay!")
+                        buildString {
+                            appendln("The vote has failed! ")
+                            append("The song will stay!")
+                        }
                     }
                 }.rest().queue()
             }

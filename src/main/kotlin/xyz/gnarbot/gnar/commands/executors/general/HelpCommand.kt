@@ -12,7 +12,7 @@ import xyz.gnarbot.gnar.commands.CommandExecutor
 
 @Command(
         aliases = arrayOf("help", "guide"),
-        usage = "(command)",
+        usage = "[command]",
         description = "Display GN4R's list of commands."
 )
 class HelpCommand : CommandExecutor() {
@@ -72,8 +72,10 @@ class HelpCommand : CommandExecutor() {
 
                     for (page in pages) {
                         field("", true) {
-                            page.forEach {
-                                append("**[").append(bot.prefix).append(it.meta.aliases[0]).appendln("]()**")
+                            buildString {
+                                page.forEach {
+                                    append("**[").append(bot.prefix).append(it.meta.aliases[0]).appendln("]()**")
+                                }
                             }
                         }
                     }
@@ -81,27 +83,35 @@ class HelpCommand : CommandExecutor() {
 
                 field(true)
                 field("Additional Information") {
-                    append("To view a command's description, do `").append(bot.prefix).appendln("help [command]`.")
-                    append("__The commands that requires a named role must be created by you and assigned to a member in your guild.__")
+                    buildString {
+                        append("To view a command's description, do `").append(bot.prefix).appendln("help [command]`.")
+                        append("__The commands that requires a named role must be created by you and assigned to a member in your guild.__")
+                    }
                 }
 
                 field("News") {
-                    appendln("• **Incomplete**: disable commands with `_enable | _disable | _listdisabled`.")
-                    appendln("• No more role names! **Commands are now linked with Discord permissions.**")
-                    appendln("  - DJ commands for instance, requires you to be in a voice channel and have the `Manage Channel` permission of the channel.")
-                    appendln("  - Ban and kick commands requires the `Ban Member` and `Kick Member` permission respectively.")
-                    appendln("• `_nowplaying` links to the original songs.")
-                    appendln("• Optimizations, basically rewritten the bot's systems.")
+                    buildString {
+                        appendln("• **Incomplete**: disable commands with `_enable | _disable | _listdisabled`.")
+                        appendln("• No more role names! **Commands are now linked with Discord permissions.**")
+                        appendln("  - DJ commands for instance, requires you to be in a voice channel and have the `Manage Channel` permission of the channel.")
+                        appendln("  - Ban and kick commands requires the `Ban Member` and `Kick Member` permission respectively.")
+                        appendln("• `_nowplaying` links to the original songs.")
+                        appendln("• Optimizations, basically rewritten the bot's systems.")
+                    }
                 }
 
                 field("Contact", true) {
-                    appendln(b(link("Website", "http://gnarbot.xyz")))
-                    appendln(b(link("Discord Server", "http://discord.gg/NQRpmr2")))
+                    buildString {
+                        appendln(b(link("Website", "http://gnarbot.xyz")))
+                        appendln(b(link("Discord Server", "http://discord.gg/NQRpmr2")))
+                    }
                 }
 
                 field("Donations", true) {
-                    appendln(b(link("PayPal", "https://gnarbot.xyz/donate")))
-                    appendln(b(link("Patreon", "https://www.patreon.com/gnarbot")))
+                    buildString {
+                        appendln(b(link("PayPal", "https://gnarbot.xyz/donate")))
+                        appendln(b(link("Patreon", "https://www.patreon.com/gnarbot")))
+                    }
                 }
             }.rest().queue()
         }

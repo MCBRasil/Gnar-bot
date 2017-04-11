@@ -38,17 +38,19 @@ class YoutubeCommand : CommandExecutor() {
                 color = Color(141, 20, 0)
 
                 description {
-                    for (result in results) {
+                    buildString {
+                        for (result in results) {
 
-                        val title = result.title
-                        val desc = result.description
-                        val url = result.url
+                            val title = result.title
+                            val desc = result.description
+                            val url = result.url
 
-                        if (firstUrl == null) {
-                            firstUrl = url
+                            if (firstUrl == null) {
+                                firstUrl = url
+                            }
+
+                            appendln(b(link(title, url))).appendln(desc)
                         }
-
-                        appendln(b(link(title, url))).appendln(desc)
                     }
                 }
             }.rest().queue()

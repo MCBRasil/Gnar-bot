@@ -50,10 +50,12 @@ public class WhoIsCommand extends CommandExecutor {
 
                 .field("Discriminator", true, client.getDiscriminator())
 
-                .field("Roles", false, sb -> {
+                .field("Roles", false, () -> {
+                    StringBuilder sb = new StringBuilder();
                     for (Role role : client.getRoles()) {
                         sb.append("• ").append(role.getName()).append('\n');
                     }
+                    return sb.toString();
                 })
                 .rest().queue();
     }

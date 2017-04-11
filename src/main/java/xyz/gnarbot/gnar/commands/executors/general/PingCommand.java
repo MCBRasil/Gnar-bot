@@ -19,15 +19,13 @@ public class PingCommand extends CommandExecutor {
         message.respond().embed("Ping")
                 .setColor(Constants.COLOR)
                 .setDescription("Checking ping...")
-                .rest().queue(msg -> msg.editMessage(new EmbedBuilder().setTitle("Response Time")
+                .rest().queue(msg -> msg.editMessage(new EmbedBuilder().setTitle("Ping")
                         .setColor(Constants.COLOR)
-                        .field("Response Time", true, sb -> {
+                        .field("Response Time", true, () -> {
                             long ping = Math.abs(sentTime.until(msg.getCreationTime(), ChronoUnit.MILLIS));
-                            sb.append(ping).append(" ms");
+                            return ping + " ms";
                         })
-                        .field("JDA Heartbeat", true, sb -> {
-                            sb.append(getJDA().getPing()).append(" ms");
-                        })
+                        .field("Discord API", true, () -> getJDA().getPing() + " ms")
                         .build()).queue());
     }
 }

@@ -21,7 +21,8 @@ public class TextToBrickCommand extends CommandExecutor {
 
         message.respond().embed("Text to Brick")
                 .setColor(Constants.COLOR)
-                .description(sb -> {
+                .description(() -> {
+                    StringBuilder sb = new StringBuilder();
                     for (String a : StringUtils.join(args, " ").split("")) {
                         if (Character.isLetter(a.toLowerCase().charAt(0))) {
                             sb.append(":regional_indicator_").append(a.toLowerCase()).append(":");
@@ -32,6 +33,7 @@ public class TextToBrickCommand extends CommandExecutor {
                             sb.append(a);
                         }
                     }
+                    return sb.toString();
                 })
                 .rest().queue();
     }

@@ -7,15 +7,20 @@ import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.Command
 import xyz.gnarbot.gnar.commands.CommandExecutor
 
-@Command(aliases = arrayOf("donate"), description = "Show the getBot's uptime.")
+@Command(
+        aliases = arrayOf("donate"),
+        description = "Show the getBot's uptime."
+)
 class DonateCommand : CommandExecutor() {
     override fun execute(message: Message, args: Array<String>) {
         message.respond().embed("Donations") {
             color = Constants.COLOR
             description {
-                appendln("Want to donate to support Gnar?")
-                appendln(b(link("PayPal", "https://gnarbot.xyz/donate")))
-                appendln(b(link("Patreon", "https://www.patreon.com/gnarbot")))
+                buildString {
+                    appendln("Want to donate to support Gnar?")
+                    appendln(b(link("PayPal", "https://gnarbot.xyz/donate")))
+                    appendln(b(link("Patreon", "https://www.patreon.com/gnarbot")))
+                }
             }
         }.rest().queue()
     }

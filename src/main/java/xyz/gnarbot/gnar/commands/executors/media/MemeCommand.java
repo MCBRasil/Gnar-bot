@@ -12,6 +12,7 @@ import xyz.gnarbot.gnar.Credentials;
 import xyz.gnarbot.gnar.commands.Category;
 import xyz.gnarbot.gnar.commands.Command;
 import xyz.gnarbot.gnar.commands.CommandExecutor;
+import xyz.gnarbot.gnar.utils.Utils;
 
 import java.util.Map;
 import java.util.Set;
@@ -71,7 +72,8 @@ public class MemeCommand extends CommandExecutor {
 
                 int _page = page;
                 message.respond().embed("Meme List")
-                        .description(sb -> {
+                        .description(() -> {
+                            StringBuilder sb = new StringBuilder();
                             int i = 0;
                             for (String g : names) {
                                 i++;
@@ -79,6 +81,7 @@ public class MemeCommand extends CommandExecutor {
                                     sb.append("**#").append(i).append("** [").append(g).append("]()").append('\n');
                                 }
                             }
+                            return sb.toString();
                         })
                         .setFooter("Page [" + page + "/" + pages + "]")
                         .rest().queue();
@@ -87,7 +90,7 @@ public class MemeCommand extends CommandExecutor {
             }
 
             String request = StringUtils.join(args, " ");
-            String[] arguments = request.split("\\|");
+            String[] arguments = Utils.stringSplit(request, '|');
 
             int ld = 999;
             String id = null;

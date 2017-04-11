@@ -10,9 +10,8 @@ import xyz.gnarbot.gnar.utils.Utils
 import xyz.hexav.aje.AJEException
 import xyz.hexav.aje.ExpressionBuilder
 import java.awt.Color
-import java.util.*
 
-@Command(aliases = arrayOf("math"), usage = "-expression", description = "Calculate fancy math expressions.")
+@Command(aliases = arrayOf("math"), usage = "(expression)", description = "Calculate fancy math expressions.")
 class MathCommand : CommandExecutor() {
     override fun execute(message: Message, args: Array<String>) {
         if (args.isEmpty()) {
@@ -27,16 +26,20 @@ class MathCommand : CommandExecutor() {
             val lines = Utils.stringSplit(StringUtils.join(args, ' '), ';')
             lines.forEach { exp.addLine(it) }
 
-            field("Expressions", true, b(lines.map(String::trim).joinToString("\n")))
+            field("Expressions", true) {
+                b(lines.map(String::trim).joinToString("\n"))
+            }
 
             try {
-                val results = exp
-                        .build()
-                        .evalList()
+                val results = exp.build().evalList()
 
-                field("Result", true, b(Arrays.toString(results)))
+                field("Result", true) {
+                    b(results.contentToString())
+                }
             } catch (e: AJEException) {
-                field("Error", true, e.message)
+                field("Error", true) {
+                    e.message
+                }
                 color = Color.RED
             }
         }.rest().queue()

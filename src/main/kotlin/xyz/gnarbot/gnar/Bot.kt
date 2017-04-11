@@ -54,13 +54,13 @@ class Bot {
     val shards = mutableListOf<Shard>()
 
     /** @return Administrator users of the bot. */
-    val admins = hashSetOf<String>().apply {
+    val admins = mutableSetOf<String>().apply {
         JSONArray(JSONTokener(adminsFile.reader())).forEach {
             add(it as String)
         }
     }
 
-    val blocked = hashSetOf<String>().apply {
+    val blocked = mutableSetOf<String>().apply {
         JSONArray(JSONTokener(blockedFile.reader())).forEach {
             add(it as String)
         }

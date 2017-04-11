@@ -27,7 +27,8 @@ public class YesNoPoll extends Poll {
     public void start() {
         startingUser = msg.getAuthor();
         msg.respond().embed("Yes or No Poll")
-                .description(sb -> {
+                .description(() -> {
+                    StringBuilder sb = new StringBuilder();
                     sb.append(":pushpin: *A new poll has been started by* **")
                             .append(startingUser.getName())
                             .append("** `(Poll ID: ")
@@ -45,6 +46,7 @@ public class YesNoPoll extends Poll {
                             .append("  ")
                             .append(" ╠ ❌ - No  [0 Votes]\n")
                             .append("        ╚ ✅ - Yes [0 Votes]");
+                    return sb.toString();
                 })
                 .rest().queue(msg -> {
             msg.addReaction("❌");

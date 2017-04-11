@@ -34,17 +34,19 @@ class QueueCommand : CommandExecutor() {
             }
 
             field("Queue", false) {
-                if (queue.isEmpty()) {
-                    append(u("Empty queue.")).append("Add some music with `_play url|YT search`.")
-                } else for (track in queue) {
-                    queueLength += track.duration
-                    trackCount++
+                buildString {
+                    if (queue.isEmpty()) {
+                        append(u("Empty queue.")).append("Add some music with `_play url|YT search`.")
+                    } else for (track in queue) {
+                        queueLength += track.duration
+                        trackCount++
 
-                    appendln("**$trackCount** `[${Utils.getTimestamp(track.duration)}]` __[${track.info.title}](${track.info.uri})__")
+                        appendln("**$trackCount** `[${Utils.getTimestamp(track.duration)}]` __[${track.info.title}](${track.info.uri})__")
 
-                    if (length >= MessageEmbed.VALUE_MAX_LENGTH - 100) {
-                        append("... and **${queue.size - trackCount}** more tracks.")
-                        break
+                        if (length >= MessageEmbed.VALUE_MAX_LENGTH - 100) {
+                            append("... and **${queue.size - trackCount}** more tracks.")
+                            break
+                        }
                     }
                 }
             }

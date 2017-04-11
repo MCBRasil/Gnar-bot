@@ -18,9 +18,11 @@ class ListDisabledCommand : CommandExecutor() {
         message.respond().embed("Disabled Commands") {
             color = Constants.COLOR
             description {
-                guildData.commandHandler.disabled.forEach {
-                    append("• ")
-                    appendln(it.meta.aliases.joinToString())
+                buildString {
+                    guildData.commandHandler.disabled.forEach {
+                        append("• ")
+                        appendln(it.meta.aliases.joinToString())
+                    }
                 }
             }
             footer = "This command is not completed yet."

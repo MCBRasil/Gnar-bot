@@ -4,14 +4,13 @@ import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.Constants
 import xyz.gnarbot.gnar.commands.Command
 import xyz.gnarbot.gnar.commands.CommandExecutor
-import java.util.*
 import java.util.concurrent.TimeUnit
 
-@Command(aliases = arrayOf("remindme", "remind"), usage = "# -time_unit -msg")
+@Command(aliases = arrayOf("remindme", "remind"), usage = "(duration) (time unit) (msg)")
 class RemindMeCommand : CommandExecutor() {
     override fun execute(message: Message, args: Array<String>) {
         if (args.size >= 3) {
-            val string = Arrays.copyOfRange(args, 2, args.size).joinToString(" ")
+            val string = args.copyOfRange(2, args.size).joinToString(" ")
 
             val time = args[0].toIntOrNull() ?: kotlin.run {
                 message.respond().error("The time number was not an integer.").queue()
@@ -21,7 +20,7 @@ class RemindMeCommand : CommandExecutor() {
             val timeUnit = try {
                 TimeUnit.valueOf(args[1].toUpperCase())
             } catch (e: IllegalArgumentException) {
-                message.respond().error("The specified time unit was invalid. \n`${Arrays.toString(TimeUnit.values())}`").queue()
+                message.respond().error("The specified time unit was invalid. \n`${TimeUnit.values().contentToString()}`").queue()
                 return
             }
 

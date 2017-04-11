@@ -75,8 +75,10 @@ class OverwatchLookupCommand : CommandExecutor() {
 
         message.respond().embed("Overwatch Stats: $tag") {
             description {
-                appendln("Battle Tag: **__[$tag](https://playoverwatch.com/en-gb/career/pc/$region/$tag)__**")
-                appendln("Region: **__[${region!!.toUpperCase()}](http://masteroverwatch.com/leaderboards/pc/$region/mode/ranked/category/skillrating)__**")
+                buildString {
+                    appendln("Battle Tag: **__[$tag](https://playoverwatch.com/en-gb/career/pc/$region/$tag)__**")
+                    appendln("Region: **__[${region!!.toUpperCase()}](http://masteroverwatch.com/leaderboards/pc/$region/mode/ranked/category/skillrating)__**")
+                }
             }
 
             val overall = jso?.optJSONObject("stats")
@@ -95,28 +97,36 @@ class OverwatchLookupCommand : CommandExecutor() {
             overall.optJSONObject("quickplay")?.let {
                 it.optJSONObject("overall_stats")?.let {
                     field("General") {
-                        append("Level: **[${it.optInt("prestige") * 100 + it.optInt("level")}]()**")
-                        avatar = it.optString("avatar")
+                        buildString {
+                            append("Level: **[${it.optInt("prestige") * 100 + it.optInt("level")}]()**")
+                            avatar = it.optString("avatar")
+                        }
                     }
                 }
                 field("Quick Play", true) {
                     it.optJSONObject("average_stats")?.let {
-                        appendln("Avg. Elims: **[${it.optDouble("eliminations_avg")}]()**")
-                        appendln("Avg. Deaths: **[${it.optDouble("deaths_avg")}]()**")
+                        buildString {
+                            appendln("Avg. Elims: **[${it.optDouble("eliminations_avg")}]()**")
+                            appendln("Avg. Deaths: **[${it.optDouble("deaths_avg")}]()**")
+                        }
                     }
 
                     it.optJSONObject("overall_stats")?.let {
-                        appendln("Wins: **[${it.optInt("wins")}]()**")
+                        buildString {
+                            appendln("Wins: **[${it.optInt("wins")}]()**")
+                        }
                     }
 
                     it.optJSONObject("game_stats")?.let {
-                        appendln("K/D Ratio: **[${it.optDouble("kpd")}]()**")
-                        appendln("Played for: **[${it.optInt("time_played")} hours]()**")
-
                         eliminations += it.optDouble("eliminations").toInt()
                         medals += it.optDouble("medals").toInt()
                         dmg_done += it.optDouble("damage_done").toInt()
                         cards += it.optDouble("cards").toInt()
+
+                        buildString {
+                            appendln("K/D Ratio: **[${it.optDouble("kpd")}]()**")
+                            appendln("Played for: **[${it.optInt("time_played")} hours]()**")
+                        }
                     }
                 }
             }
@@ -127,63 +137,65 @@ class OverwatchLookupCommand : CommandExecutor() {
             overall.optJSONObject("competitive")?.let {
                 field("Competitive", true) {
 
-                    val cp_avg = it.optJSONObject("average_stats")
-
-                    if (cp_avg != null) {
-                        appendln("Avg. Elims: **[" + cp_avg.optDouble("eliminations_avg") + "]()**")
-                        appendln("Avg. Deaths: **[" + cp_avg.optDouble("deaths_avg") + "]()**")
-                    }
-
-                    it.optJSONObject("game_stats").let {
-                        appendln("Wins/Draws/Loses: **["
-                                + it.optInt("games_won") + "]()** | **["
-                                + it.optInt("games_tied") + "]()** | **["
-                                + it.optInt("games_lost") + "]()**")
-                        appendln("K/D Ratio: **[" + it.optDouble("kpd") + "]()**")
-                        appendln("Played for: **[" + it.optInt("time_played") + " hours]()**")
-
-                        eliminations += it.optDouble("eliminations").toInt()
-                        medals += it.optDouble("medals").toInt()
-                        dmg_done += it.optDouble("damage_done").toInt()
-                        cards += it.optDouble("cards").toInt()
-                    }
-
-                    it.optJSONObject("overall_stats")?.let {
-                        val rank = it.optInt("comprank")
-
-                        if (rank < 1500) {
-                            sideColor = Color(150, 90, 56)
-                            rankName = "Bronze"
-                        } else if (rank in 1500..1999) {
-                            sideColor = Color(168, 168, 168)
-                            rankName = "Silver"
-                        } else if (rank in 2000..2499) {
-                            sideColor = Color(201, 137, 16)
-                            rankName = "Gold"
-                        } else if (rank in 2500..2999) {
-                            sideColor = Color(229, 228, 226)
-                            rankName = "Platinum"
-                        } else if (rank in 3000..3499) {
-                            sideColor = Color(63, 125, 255)
-                            rankName = "Diamond"
-                        } else if (rank in 3500..3999) {
-                            sideColor = Color(255, 184, 12)
-                            rankName = "Master"
-                        } else if (rank >= 4000) {
-                            sideColor = Color(238, 180, 255)
-                            rankName = "Grand Master"
+                    buildString {
+                        it.optJSONObject("average_stats")?.let {
+                            appendln("Avg. Elims: **[" + it.optDouble("eliminations_avg") + "]()**")
+                            appendln("Avg. Deaths: **[" + it.optDouble("deaths_avg") + "]()**")
                         }
 
-                        appendln("Comp. Rank: **[:beginner: $rank]() ($rankName)**")
+                        it.optJSONObject("game_stats").let {
+                            appendln("Wins/Draws/Loses: **["
+                                    + it.optInt("games_won") + "]()** | **["
+                                    + it.optInt("games_tied") + "]()** | **["
+                                    + it.optInt("games_lost") + "]()**")
+                            appendln("K/D Ratio: **[" + it.optDouble("kpd") + "]()**")
+                            appendln("Played for: **[" + it.optInt("time_played") + " hours]()**")
+
+                            eliminations += it.optDouble("eliminations").toInt()
+                            medals += it.optDouble("medals").toInt()
+                            dmg_done += it.optDouble("damage_done").toInt()
+                            cards += it.optDouble("cards").toInt()
+                        }
+
+                        it.optJSONObject("overall_stats")?.let {
+                            val rank = it.optInt("comprank")
+
+                            if (rank < 1500) {
+                                sideColor = Color(150, 90, 56)
+                                rankName = "Bronze"
+                            } else if (rank in 1500..1999) {
+                                sideColor = Color(168, 168, 168)
+                                rankName = "Silver"
+                            } else if (rank in 2000..2499) {
+                                sideColor = Color(201, 137, 16)
+                                rankName = "Gold"
+                            } else if (rank in 2500..2999) {
+                                sideColor = Color(229, 228, 226)
+                                rankName = "Platinum"
+                            } else if (rank in 3000..3499) {
+                                sideColor = Color(63, 125, 255)
+                                rankName = "Diamond"
+                            } else if (rank in 3500..3999) {
+                                sideColor = Color(255, 184, 12)
+                                rankName = "Master"
+                            } else if (rank >= 4000) {
+                                sideColor = Color(238, 180, 255)
+                                rankName = "Grand Master"
+                            }
+
+                            appendln("Comp. Rank: **[:beginner: $rank]() ($rankName)**")
+                        }
                     }
                 }
             }
 
             field("Overall", false) {
-                appendln("Eliminations: **[$eliminations]()**")
-                appendln("Medals: **[$medals]()**")
-                appendln("Total Damage: **[$dmg_done]()**")
-                appendln("Cards: **[$cards]()**")
+                buildString {
+                    appendln("Eliminations: **[$eliminations]()**")
+                    appendln("Medals: **[$medals]()**")
+                    appendln("Total Damage: **[$dmg_done]()**")
+                    appendln("Cards: **[$cards]()**")
+                }
             }
 
             color = sideColor

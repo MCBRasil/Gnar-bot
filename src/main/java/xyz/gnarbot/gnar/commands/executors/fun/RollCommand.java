@@ -25,13 +25,9 @@ public class RollCommand extends CommandExecutor {
 
                 message.respond().embed("Roll a Number")
                         .setColor(Constants.COLOR)
-                        .description(sb -> {
-                            sb.append("You rolled a **")
-                                    .append(new Random().nextInt(Integer.valueOf(args[0])))
-                                    .append("** from range **[0 to ")
-                                    .append(args[0])
-                                    .append("]**.");
-                        })
+                        .description(() -> "You rolled a **"
+                                + new Random().nextInt(Integer.valueOf(args[0]))
+                                + "** from range **[0 to " + args[0]+ "]**.")
                         .rest().queue();
 
             } else {

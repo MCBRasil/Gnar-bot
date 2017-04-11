@@ -6,7 +6,6 @@ import net.dv8tion.jda.core.exceptions.PermissionException
 import xyz.gnarbot.gnar.Bot
 import xyz.gnarbot.gnar.guilds.GuildData
 import xyz.gnarbot.gnar.utils.Utils
-import java.util.*
 
 class CommandHandler(private val guildData: GuildData, private val bot: Bot) {
 
@@ -37,7 +36,7 @@ class CommandHandler(private val guildData: GuildData, private val bot: Bot) {
 
         val label = tokens[0].substring(bot.prefix.length).toLowerCase()
 
-        val args = Arrays.copyOfRange(tokens, 1, tokens.size) //tokens.subList(1, tokens.size)
+        val args = tokens.copyOfRange(1, tokens.size) //tokens.subList(1, tokens.size)
         
         val entry = bot.commandRegistry.getEntry(label) ?: return false
 
