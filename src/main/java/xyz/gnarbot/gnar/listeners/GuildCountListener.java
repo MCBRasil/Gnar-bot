@@ -8,7 +8,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.json.JSONObject;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.Credentials;
-import xyz.gnarbot.gnar.guilds.Shard;
+import xyz.gnarbot.gnar.Shard;
 
 public class GuildCountListener extends ListenerAdapter {
 
@@ -42,7 +42,7 @@ public class GuildCountListener extends ListenerAdapter {
     /**
      * Updates Server Counts on ad sites
      */
-    public void update() {
+    private void update() {
         int count = 0;
 
         for (Shard shard : bot.getShards()) {

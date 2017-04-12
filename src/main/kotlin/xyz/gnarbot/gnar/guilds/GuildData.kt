@@ -4,6 +4,7 @@ import net.dv8tion.jda.core.entities.Guild
 import net.dv8tion.jda.core.entities.Member
 import net.dv8tion.jda.core.entities.Message
 import xyz.gnarbot.gnar.Bot
+import xyz.gnarbot.gnar.Shard
 import xyz.gnarbot.gnar.commands.CommandHandler
 import xyz.gnarbot.gnar.music.MusicManager
 

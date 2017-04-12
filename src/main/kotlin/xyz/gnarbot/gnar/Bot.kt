@@ -6,16 +6,15 @@ import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManag
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
+import net.dv8tion.jda.core.AccountType
+import net.dv8tion.jda.core.JDABuilder
 import net.dv8tion.jda.core.entities.Game
-import net.dv8tion.jda.core.jda
 import org.json.JSONArray
 import org.json.JSONTokener
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import xyz.gnarbot.gnar.api.APIPortal
 import xyz.gnarbot.gnar.api.data.BotInfo
 import xyz.gnarbot.gnar.commands.CommandRegistry
-import xyz.gnarbot.gnar.guilds.Shard
 import xyz.gnarbot.gnar.listeners.GuildCountListener
 import java.io.File
 import kotlin.jvm.JvmStatic as static
@@ -77,7 +76,7 @@ class Bot {
      * @param numShards Number of shards to request.
      */
     fun start(token: String, numShards: Int) {
-        val api = APIPortal(this).apply { start() }
+        //val api = APIPortal(this).apply { start() }
 
         log.info("Initializing the Discord bot.")
         log.info("Requesting $numShards shards.")
@@ -85,21 +84,25 @@ class Bot {
         log.info("There are ${admins.size} administrators registered for the bot.")
         log.info("There are ${blocked.size} blocked users registered for the bot.")
 
-        shards += jda(token, numShards) { id ->
-            setAutoReconnect(true)
-            setGame(Game.of("$id | _help"))
-            setAudioEnabled(true)
-            setEnableShutdownHook(true)
+        for (id in 0 until numShards) {
+            val jda = with(JDABuilder(AccountType.BOT)) {
+                if (numShards > 1) useSharding(id, numShards)
+                setToken(token)
+                setAutoReconnect(true)
+                setGame(Game.of("$id | _help"))
+                setAudioEnabled(true)
+            }.buildBlocking()
 
-            log.info("Building shard $id. [ ${id + 1} / ${numShards} ]")
-        }.mapIndexed { id, jda ->
+            log.info("JDA $id is ready.")
+
             jda.selfUser.manager.setName("Gnarr").queue()
-            Shard(id, jda, this)
+
+            shards += Shard(id, jda, this)
         }
 
         log.info("Bot is now connected to Discord.")
 
-        api.registerRoutes()
+        //api.registerRoutes()
     }
 
     /**

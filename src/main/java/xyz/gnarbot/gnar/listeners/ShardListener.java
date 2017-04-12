@@ -4,7 +4,9 @@ package xyz.gnarbot.gnar.listeners;
 import net.dv8tion.jda.core.entities.ChannelType;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.VoiceChannel;
+import net.dv8tion.jda.core.events.DisconnectEvent;
 import net.dv8tion.jda.core.events.ReconnectedEvent;
+import net.dv8tion.jda.core.events.ResumedEvent;
 import net.dv8tion.jda.core.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.core.events.guild.voice.GenericGuildVoiceEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
@@ -12,8 +14,8 @@ import net.dv8tion.jda.core.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import xyz.gnarbot.gnar.Bot;
+import xyz.gnarbot.gnar.Shard;
 import xyz.gnarbot.gnar.guilds.GuildData;
-import xyz.gnarbot.gnar.guilds.Shard;
 
 public class ShardListener extends ListenerAdapter {
     private final Shard shard;
@@ -73,7 +75,17 @@ public class ShardListener extends ListenerAdapter {
     }
 
     @Override
+    public void onResume(ResumedEvent event) {
+        bot.getLog().info("JDA " + shard.getId() + " has resumed.");
+    }
+
+    @Override
     public void onReconnect(ReconnectedEvent event) {
-        shard.clearData(true);
+        bot.getLog().info("JDA " + shard.getId() + " has reconnected.");
+    }
+
+    @Override
+    public void onDisconnect(DisconnectEvent event) {
+        bot.getLog().info("JDA " + shard.getId() + " has disconnected.");
     }
 }

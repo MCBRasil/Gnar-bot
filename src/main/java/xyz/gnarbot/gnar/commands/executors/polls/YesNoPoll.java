@@ -27,27 +27,23 @@ public class YesNoPoll extends Poll {
     public void start() {
         startingUser = msg.getAuthor();
         msg.respond().embed("Yes or No Poll")
-                .description(() -> {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(":pushpin: *A new poll has been started by* **")
-                            .append(startingUser.getName())
-                            .append("** `(Poll ID: ")
-                            .append(getId())
-                            .append(")`\n\n")
-                            .append(":paperclip: Question:\n")
-                            .append("        ╚ ")
-                            .append(question)
-                            .append("\n\n")
-                            .append(":clock1: Time Left:\n")
-                            .append("        ╚ ")
-                            .append(minutes)
-                            .append(" minute(s) 0 second(s)\n\n")
-                            .append("     ")
-                            .append("  ")
-                            .append(" ╠ ❌ - No  [0 Votes]\n")
-                            .append("        ╚ ✅ - Yes [0 Votes]");
-                    return sb.toString();
-                })
+                .description(() -> ":pushpin: *A new poll has been started by* **" +
+                        startingUser.getName() +
+                        "** `(Poll ID: " +
+                        getId() +
+                        ")`\n\n" +
+                        ":paperclip: Question:\n" +
+                        "        ╚ " +
+                        question +
+                        "\n\n" +
+                        ":clock1: Time Left:\n" +
+                        "        ╚ " +
+                        minutes +
+                        " minute(s) 0 second(s)\n\n" +
+                        "     " +
+                        "  " +
+                        " ╠ ❌ - No  [0 Votes]\n" +
+                        "        ╚ ✅ - Yes [0 Votes]")
                 .rest().queue(msg -> {
             msg.addReaction("❌");
 

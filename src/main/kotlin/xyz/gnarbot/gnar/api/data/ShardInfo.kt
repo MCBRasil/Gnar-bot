@@ -1,7 +1,7 @@
 package xyz.gnarbot.gnar.api.data
 
 import net.dv8tion.jda.core.JDA
-import xyz.gnarbot.gnar.guilds.Shard
+import xyz.gnarbot.gnar.Shard
 
 class ShardInfo(shard: Shard) {
     val requests: Int = shard.guildData.values.map { it.commandHandler.requests }.sum()
