@@ -12,6 +12,6 @@ package xyz.gnarbot.gnar;
  */
 public class MainBot {
     public static void main(String[] args) {
-        new Bot().start(Credentials.PRODUCTION, 32);
+        new Bot(Credentials.PRODUCTION, 32).start();
     }
 }

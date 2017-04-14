@@ -74,6 +74,25 @@ public class ShardListener extends ListenerAdapter {
         }
     }
 
+//    @Override
+//    public void onMessageReactionAdd(MessageReactionAddEvent event) {
+//
+//        long msg_id = event.getMessageIdLong();
+//        if (event.getMember().equals(event.getGuild().getSelfMember())) return;
+//        event.getChannel().getMessageById(msg_id).queue((msg) -> {
+//            if (!msg.getAuthor().equals(shard.getSelfUser())) return;
+//            if (msg.getEmbeds().isEmpty()) return;
+//            MessageEmbed embed = msg.getEmbeds().get(0);
+//            if (!embed.getTitle().equals("Poll")) return;
+//
+//            User author = event.getMember();
+//            for (MessageReaction reaction : msg.getReactions()) {
+//                if (reaction.equals(event.getReaction())) continue;
+//                event.getReaction().removeReaction(author).queue();
+//            }
+//        });
+//    }
+
     @Override
     public void onResume(ResumedEvent event) {
         bot.getLog().info("JDA " + shard.getId() + " has resumed.");

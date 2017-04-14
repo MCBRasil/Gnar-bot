@@ -6,10 +6,9 @@ import xyz.gnarbot.gnar.api.data.ShardInfo
 import xyz.gnarbot.gnar.guilds.GuildData
 import xyz.gnarbot.gnar.listeners.ShardListener
 import xyz.gnarbot.gnar.listeners.UserListener
-import javax.servlet.Servlet
 
 /**
- * Individual shard instances of [JDA] of the bot that contains all the [Servlet] for each guild.
+ * Individual shard instances of [JDA] of the bot that contains all the [GuildData] for each guild.
  */
 class Shard(val id: Int, private val jda: JDA, val bot: Bot) : JDA by jda {
     val guildData = mutableMapOf<Long, GuildData>()
@@ -33,7 +32,7 @@ class Shard(val id: Int, private val jda: JDA, val bot: Bot) : JDA by jda {
      *
      * @return Host instance of Guild.
      *
-     * @see Servlet
+     * @see GuildData
      */
     fun getGuildData(guild: Guild) = getGuildData(guild.idLong)
 

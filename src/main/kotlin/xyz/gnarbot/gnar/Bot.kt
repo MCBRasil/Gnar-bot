@@ -21,8 +21,11 @@ import kotlin.jvm.JvmStatic as static
 
 /**
  * Main class of the bot. Implemented as a singleton.
+ *
+ * @param token Discord token.
+ * @param numShards Number of shards to request.
  */
-class Bot {
+class Bot(val token: String, val numShards: Int) {
     /** @returns The SLF4J logger instance of the bot. */
     val log: Logger = LoggerFactory.getLogger("Bot")
 
@@ -71,13 +74,8 @@ class Bot {
 
     /**
      * Start the bot.
-     *
-     * @param token Discord token.
-     * @param numShards Number of shards to request.
      */
-    fun start(token: String, numShards: Int) {
-        //val api = APIPortal(this).apply { start() }
-
+    fun start() {
         log.info("Initializing the Discord bot.")
         log.info("Requesting $numShards shards.")
 
@@ -101,8 +99,26 @@ class Bot {
         }
 
         log.info("Bot is now connected to Discord.")
+    }
 
-        //api.registerRoutes()
+    fun restart() {
+        for (id in 0 until shards.size) {
+            shards[id].shutdown()
+
+            val jda = with(JDABuilder(AccountType.BOT)) {
+                if (numShards > 1) useSharding(id, numShards)
+                setToken(token)
+                setAutoReconnect(true)
+                setGame(Game.of("$id | _help"))
+                setAudioEnabled(true)
+            }.buildBlocking()
+
+            log.info("JDA $id is ready.")
+
+            jda.selfUser.manager.setName("Gnarr").queue()
+
+            shards[id] = Shard(id, jda, this)
+        }
     }
 
     /**

@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '1.2.4'
+    id 'org.jetbrains.kotlin.jvm' version '1.1.1'
+}
+
+mainClassName = 'xyz.gnarbot.gnar.MainBot'
+
+version = '1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.1.1'
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.1.1'
+
+    compile group: 'net.dv8tion', name: 'JDA_K', version: '3.0.0_20'
+    compile group: 'xyz.avarel', name: 'AJE', version: '2.1.1'
+    compile group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    compile group: 'com.google.guava', name: 'guava', version: '21.0'
+    compile group: 'com.sedmelluq', name: 'lavaplayer', version: '1.2.35'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    compile group: 'ca.pjer', name: 'chatter-bot-api', version: '2.0.1'
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.10.2'
+    compile group: 'org.json', name: 'json', version: '20160810'
+
+    testCompile group: 'org.jetbrains.kotlin', name: 'kotlin-test-junit', version: '1.1.1'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+compileJava.options.encoding = 'UTF-8'
