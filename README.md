@@ -1,4 +1,4 @@
-# Gnar [![Dependency Status](https://www.versioneye.com/user/projects/58813ef2452b830054c17358/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58813ef2452b830054c17358) [![License](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](LICENSE) [![Chat](https://img.shields.io/badge/chat-discord-blue.svg?style=flat-square)](https://discord.gg/NQRpmr2)
+# Gnar [![Dependency Status](https://www.versioneye.com/user/projects/58f140fc9f10f8003f8856c5/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/58f140fc9f10f8003f8856c5) [![License](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](LICENSE) [![Chat](https://img.shields.io/badge/chat-discord-blue.svg?style=flat-square)](https://discord.gg/NQRpmr2)
 
 **Gnar** is an opens-source Discord bot written in Java and Kotlin, using JDA 3 and Lavaplayer.
 Gnar provides various features including musicManager playback, fun and moderation commands.
