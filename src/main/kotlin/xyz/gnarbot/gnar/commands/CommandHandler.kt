@@ -65,7 +65,7 @@ class CommandHandler(private val guildData: GuildData, private val bot: Bot) {
                     return false
                 }
             }
-            if (meta.scope.checkPermission(message, member, *meta.permissions)) {
+            if (!meta.scope.checkPermission(message, member, *meta.permissions)) {
                 val requirements = entry.meta.permissions.map(Permission::getName)
                 message.respond().error("You lack the following permissions: `$requirements` in " + when (meta.scope) {
                     Scope.GUILD -> "the guild `${message.guild.name}`."

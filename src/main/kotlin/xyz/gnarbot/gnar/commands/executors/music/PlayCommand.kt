@@ -66,8 +66,7 @@ class PlayCommand : CommandExecutor() {
             }
 
             val result = results[0]
-            val videoID = result.url
-            "https://www.youtube.com/watch?v=$videoID"
+            result.url
         }
 
         if (botChannel == null) {

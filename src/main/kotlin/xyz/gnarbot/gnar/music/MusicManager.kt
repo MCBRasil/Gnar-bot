@@ -46,12 +46,12 @@ class MusicManager(guildData: GuildData, val playerManager: AudioPlayerManager) 
         playerManager.loadItemOrdered(this, trackUrl, object : AudioLoadResultHandler {
             override fun trackLoaded(track: AudioTrack) {
                 if (scheduler.queue.size >= TrackScheduler.QUEUE_LIMIT) {
-                    message.respond().error("The queue can not exceed 20 songs.")
+                    message.respond().error("The queue can not exceed 20 songs.").queue()
                     return
                 }
 
                 if (track.duration > Duration.ofHours(1).toMillis()) {
-                    message.respond().error("The track can not exceed 1 hour.")
+                    message.respond().error("The track can not exceed 1 hour.").queue()
                     return
                 }
 
@@ -70,7 +70,7 @@ class MusicManager(guildData: GuildData, val playerManager: AudioPlayerManager) 
                 for (track in tracks) {
 
                     if (scheduler.queue.size >= TrackScheduler.QUEUE_LIMIT) {
-                        message.respond().info("Ignored ${tracks.size - added} songs as the queue can not exceed 20 songs.")
+                        message.respond().info("Ignored ${tracks.size - added} songs as the queue can not exceed 20 songs.").queue()
                         break
                     }
 
@@ -85,11 +85,11 @@ class MusicManager(guildData: GuildData, val playerManager: AudioPlayerManager) 
             }
 
             override fun noMatches() {
-                message.respond().error("Nothing found by `$trackUrl`.")
+                message.respond().error("Nothing found by `$trackUrl`.").queue()
             }
 
             override fun loadFailed(e: FriendlyException) {
-                message.respond().error("**Exception**: `${e.message}`")
+                message.respond().error("**Exception**: `${e.message}`").queue()
             }
         })
     }

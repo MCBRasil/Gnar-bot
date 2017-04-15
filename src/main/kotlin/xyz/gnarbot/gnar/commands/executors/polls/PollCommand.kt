@@ -13,7 +13,7 @@ class PollCommand : CommandExecutor() {
         val options = args.joinToString(" ").split(',').map(String::trim)
 
         message.respond().embed("Poll") {
-            description = "Vote through clicking the reactions on the choices below!"
+            description = "Vote through clicking the reactions on the choices below! Results will be final in 1 minute!"
             field("Options") {
                 buildString {
                     options.forEachIndexed { index, option ->
@@ -29,7 +29,7 @@ class PollCommand : CommandExecutor() {
             it.editMessage(it.embeds[0].edit().apply {
                 description = "Voting has ended! Check the results in the newer messages!"
                 clearFields()
-            }.build()).queueAfter(10, TimeUnit.SECONDS) {
+            }.build()).queueAfter(1, TimeUnit.MINUTES) {
                 it.respond().embed("Poll Results") {
                     description {
                         "Voting has ended! Here are the results!"
