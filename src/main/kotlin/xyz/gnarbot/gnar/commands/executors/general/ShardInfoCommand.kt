@@ -23,7 +23,7 @@ class ShardInfoCommand : CommandExecutor() {
         message.respond().embed("Shard Information") {
             color = Constants.COLOR
 
-            val pages = Lists.partition(bot.shards, 12)
+            val pages = Lists.partition(bot.shards.toList(), 12)
 
             if (page >= pages.size) page = pages.size
             else if (page <= 0) page = 1

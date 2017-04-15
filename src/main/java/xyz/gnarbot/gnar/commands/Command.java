@@ -34,6 +34,8 @@ public @interface Command {
 
     boolean administrator() default false;
 
+    boolean disableable() default true;
+
     Category category() default Category.GENERAL;
 
     Scope scope() default Scope.GUILD;

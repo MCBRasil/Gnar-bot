@@ -3,7 +3,7 @@ package xyz.gnarbot.gnar.commands;
 import xyz.gnarbot.gnar.Bot;
 import xyz.gnarbot.gnar.commands.executors.admin.GarbageCollectCommand;
 import xyz.gnarbot.gnar.commands.executors.admin.JavascriptCommand;
-import xyz.gnarbot.gnar.commands.executors.admin.RestartBotCommand;
+import xyz.gnarbot.gnar.commands.executors.admin.RestartShardsCommand;
 import xyz.gnarbot.gnar.commands.executors.admin.ThrowError;
 import xyz.gnarbot.gnar.commands.executors.fun.*;
 import xyz.gnarbot.gnar.commands.executors.games.GameLookupCommand;
@@ -119,7 +119,7 @@ public class CommandRegistry {
 
         // Administrator commands
         register(GarbageCollectCommand.class);
-        register(RestartBotCommand.class);
+        register(RestartShardsCommand.class);
         register(JavascriptCommand.class);
         register(ShardInfoCommand.class);
         register(ThrowError.class);

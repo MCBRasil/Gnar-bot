@@ -52,8 +52,14 @@ class CommandHandler(private val guildData: GuildData, private val bot: Bot) {
         val member = message.member
 
         if (meta.administrator) {
-            if (!bot.admins.contains(member.id)) {
+            if (!bot.admins.contains(member.idLong)) {
                 message.respond().error("This command is for bot administrators only.").queue()
+                return false
+            }
+        }
+        if (meta.serverOwner) {
+            if (message.guild.owner != member) {
+                message.respond().error("This command is for server owners only.").queue()
                 return false
             }
         }
@@ -104,8 +110,10 @@ class CommandHandler(private val guildData: GuildData, private val bot: Bot) {
      *
      * @param cmd Command entry.
      */
-    fun enableCommand(cmd: CommandRegistry.CommandEntry) {
+    fun enableCommand(cmd: CommandRegistry.CommandEntry) : CommandRegistry.CommandEntry? {
+        if (!disabled.contains(cmd)) return null
         disabled -= cmd
+        return cmd
     }
 
     /**
@@ -113,8 +121,8 @@ class CommandHandler(private val guildData: GuildData, private val bot: Bot) {
      *
      * @param label Command label.
      */
-    fun enableCommand(label: String) {
-        enableCommand(bot.commandRegistry.getEntry(label))
+    fun enableCommand(label: String) : CommandRegistry.CommandEntry? {
+        return bot.commandRegistry.getEntry(label)?.let(this::enableCommand)
     }
 
     /**
@@ -122,8 +130,11 @@ class CommandHandler(private val guildData: GuildData, private val bot: Bot) {
      *
      * @param cmd Command entry.
      */
-    fun disableCommand(cmd: CommandRegistry.CommandEntry) {
+    fun disableCommand(cmd: CommandRegistry.CommandEntry) : CommandRegistry.CommandEntry? {
+        if (disabled.contains(cmd)) return null
+        if (!cmd.meta.disableable) return null
         disabled += cmd
+        return cmd
     }
 
     /**
@@ -131,7 +142,7 @@ class CommandHandler(private val guildData: GuildData, private val bot: Bot) {
      *
      * @param label Command label.
      */
-    fun disableCommand(label: String) {
-        disableCommand(bot.commandRegistry.getEntry(label))
+    fun disableCommand(label: String) : CommandRegistry.CommandEntry? {
+        return bot.commandRegistry.getEntry(label)?.let(this::disableCommand)
     }
 }

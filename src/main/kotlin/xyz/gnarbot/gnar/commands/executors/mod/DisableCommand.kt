@@ -11,24 +11,26 @@ import xyz.gnarbot.gnar.commands.CommandExecutor
         aliases = arrayOf("disable"),
         usage = "[labels...]",
         description = "Disable commands.",
-        category = Category.BETA,
+        disableable = false,
+        category = Category.MODERATION,
         permissions = arrayOf(Permission.ADMINISTRATOR)
 )
 class DisableCommand : CommandExecutor() {
     override fun execute(message: Message, args: Array<String>) {
-        val disabled = args.map {
-            bot.commandRegistry.getEntry(it)?.let(guildData.commandHandler::disableCommand)
-        }.filterNotNull()
+        val disabled = args
+                .map(guildData.commandHandler::disableCommand)
+                .filterNotNull()
+                .map { it.meta.aliases[0] }
 
         message.respond().embed("Disabling Commands") {
             color = Constants.COLOR
-            description = if (disabled.isNotEmpty()) {
-                "Disabled `$disabled`"
-            } else {
-                "You didn't enter any valid commands."
+            description {
+                if (disabled.isNotEmpty()) {
+                    "Disabled `$disabled` command(s) on this server."
+                } else {
+                    "You didn't enter any enabled commands or commands that could be disabled."
+                }
             }
-
-            footer = "This command is not completed yet."
         }.rest().queue()
     }
 }

@@ -13,7 +13,8 @@ import xyz.gnarbot.gnar.commands.CommandExecutor
 @Command(
         aliases = arrayOf("help", "guide"),
         usage = "[command]",
-        description = "Display GN4R's list of commands."
+        description = "Display GN4R's list of commands.",
+        disableable = false
 )
 class HelpCommand : CommandExecutor() {
 

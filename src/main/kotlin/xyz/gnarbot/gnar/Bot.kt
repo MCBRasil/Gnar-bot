@@ -6,9 +6,8 @@ import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManag
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
-import net.dv8tion.jda.core.AccountType
-import net.dv8tion.jda.core.JDABuilder
 import net.dv8tion.jda.core.entities.Game
+import net.dv8tion.jda.core.jda
 import org.json.JSONArray
 import org.json.JSONTokener
 import org.slf4j.Logger
@@ -56,15 +55,15 @@ class Bot(val token: String, val numShards: Int) {
     val shards = mutableListOf<Shard>()
 
     /** @return Administrator users of the bot. */
-    val admins = mutableSetOf<String>().apply {
+    val admins = mutableSetOf<Long>().apply {
         JSONArray(JSONTokener(adminsFile.reader())).forEach {
-            add(it as String)
+            add(it as Long)
         }
     }
 
-    val blocked = mutableSetOf<String>().apply {
+    val blocked = mutableSetOf<Long>().apply {
         JSONArray(JSONTokener(blockedFile.reader())).forEach {
-            add(it as String)
+            add(it as Long)
         }
     }
 
@@ -83,13 +82,12 @@ class Bot(val token: String, val numShards: Int) {
         log.info("There are ${blocked.size} blocked users registered for the bot.")
 
         for (id in 0 until numShards) {
-            val jda = with(JDABuilder(AccountType.BOT)) {
-                if (numShards > 1) useSharding(id, numShards)
+            val jda = jda(token, id, numShards) {
                 setToken(token)
                 setAutoReconnect(true)
                 setGame(Game.of("$id | _help"))
                 setAudioEnabled(true)
-            }.buildBlocking()
+            }
 
             log.info("JDA $id is ready.")
 
@@ -98,27 +96,29 @@ class Bot(val token: String, val numShards: Int) {
             shards += Shard(id, jda, this)
         }
 
-        log.info("Bot is now connected to Discord.")
+        log.info("The bot is now fully connected to Discord.")
     }
 
     fun restart() {
+        log.info("Restarting the Discord bot shards.")
+
         for (id in 0 until shards.size) {
             shards[id].shutdown()
 
-            val jda = with(JDABuilder(AccountType.BOT)) {
-                if (numShards > 1) useSharding(id, numShards)
+            val jda = jda(token, id, numShards) {
                 setToken(token)
                 setAutoReconnect(true)
                 setGame(Game.of("$id | _help"))
                 setAudioEnabled(true)
-            }.buildBlocking()
+            }
 
-            log.info("JDA $id is ready.")
+            log.info("JDA $id has restarted.")
 
             jda.selfUser.manager.setName("Gnarr").queue()
 
             shards[id] = Shard(id, jda, this)
         }
+        log.info("Discord bot shards have now restarted.")
     }
 
     /**
